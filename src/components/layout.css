@@ -2,12 +2,29 @@ html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  overflow: hidden !important;
+  /* touch-action: none; */
+  
 }
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow: hidden !important;
+  box-sizing: border-box;
+  /* touch-action: none; */
+  touch-action: auto;
 }
+
+.scrollDiv{
+  overflow: scroll !important;
+  height:100vh;
+  margin: 0;
+  padding: 0;
+  /* touch-action: none; */
+  /* touch-action: pan-x pinch-zoom; */
+}
+
 article,
 aside,
 details,
