@@ -9,6 +9,7 @@ import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
 import FlyingSprite from "../components/sprite/FlyingSprite"
+import Synap from "../components/background/Synap"
 
 const IndexPage = ({ data }) => {
   return (
@@ -22,6 +23,7 @@ const IndexPage = ({ data }) => {
           />
         </Section>
       </PageContainer> */}
+      <Synap style={{ opacity: 0.3, width: "100vw", height: "100vh" }} />
       <div
         style={{
           width: "800px",
