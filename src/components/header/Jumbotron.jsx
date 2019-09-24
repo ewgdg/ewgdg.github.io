@@ -31,8 +31,8 @@ const Jumbotron = ({ image }) => {
         {`
           figure {
             overflow: hidden;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
           }
           figure:before {
             content: "";
