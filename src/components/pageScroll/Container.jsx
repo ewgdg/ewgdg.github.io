@@ -214,9 +214,9 @@ const useHandlers = (ref, activeSections, context) => {
       preventDefault(e)
       clearAnimationQueue()
       const touchPoint = e
-      touchStartY = touchPoint.pageY
+      touchStartY = touchPoint.clientY
       touchEventStart = e
-      touchPointYList.push(touchPoint.pageY)
+      touchPointYList.push(touchPoint.clientY)
       touchPointTimeStamp.push(Date.now())
       // touchEventList.push(e)
       // while (touchPointYList.length > 5) {
@@ -247,9 +247,9 @@ const useHandlers = (ref, activeSections, context) => {
       let verticalMove = 0
       if (touchPointYList.length > 0) {
         verticalMove =
-          touchPoint.pageY - touchPointYList[touchPointYList.length - 1]
+          touchPoint.clientY - touchPointYList[touchPointYList.length - 1]
       }
-      touchPointYList.push(touchPoint.pageY)
+      touchPointYList.push(touchPoint.clientY)
       touchPointTimeStamp.push(Date.now())
       touchEventList.push(e)
 
@@ -286,7 +286,7 @@ const useHandlers = (ref, activeSections, context) => {
       // e.stopPropagation()
       const touchPoint = e
       // touchEndX = touchPoint.clientX
-      touchEndY = touchPoint.pageY
+      touchEndY = touchPoint.clientY
 
       const verticalMove = touchEndY - touchPointYList[0]
       let idlingTime = Date.now() // - touchPointTimeStamp[touchPointTimeStamp.length - 1]
@@ -317,6 +317,7 @@ const useHandlers = (ref, activeSections, context) => {
 
     function pointerCancelHandler() {
       touchPointYList.splice(0)
+      isPointerDown = false
     }
     function keyDownHandler(e) {
       if (e.key === "Control") {
@@ -441,7 +442,7 @@ function Container({ children }) {
     ref.current.addEventListener("pointerup", touchEndHandler, {
       passive: false,
     })
-    ref.current.addEventListener("pointercancel", pointerCancelHandler, {
+    ref.current.addEventListener("pointerout", pointerCancelHandler, {
       passive: false,
     })
 
