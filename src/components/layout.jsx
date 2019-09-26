@@ -13,6 +13,7 @@ import { useStaticQuery, graphql } from "gatsby"
 
 import "./layout.css"
 
+import FlyingSprite from "./sprite/FlyingSprite"
 import LayoutContext from "../contexts/LayoutContext"
 
 const Layout = ({ children }) => {
@@ -38,9 +39,17 @@ const Layout = ({ children }) => {
 
   return (
     <LayoutContext.Provider value={contextValueRef.current}>
-      <div className="scrollDiv" ref={setContextCallBack}>
-        {/* <LayoutContext.Provider value={layer}> */}
-        {/* <button
+      <div
+        id="layoutBody"
+        style={{ position: "relative", height: "100vh", width: "100vw" }}
+      >
+        <div className="scrollDiv" ref={setContextCallBack}>
+          {/* change the position to absolute instead of fixed 
+        because i want the scrollDiv to handle the scroll triggered by the sprite */}
+          <FlyingSprite style={{ position: "absolute" }} />
+
+          {/* <LayoutContext.Provider value={layer}> */}
+          {/* <button
           type="button"
           onClick={() => {
             setValue(prev => prev + 1)
@@ -51,20 +60,21 @@ const Layout = ({ children }) => {
         </button>
         <p>value: {value}</p> */}
 
-        <div>
-          {/* style={{
+          <div>
+            {/* style={{
           margin: '0 auto',
           maxWidth: 960,
           padding: '0px 1.0875rem 1.45rem',
           paddingTop: 0,
         }} */}
-          <main>{children}</main>
-          <footer>
-            © {new Date().getFullYear()}, Built with{" "}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
-          </footer>
+            <main>{children}</main>
+            <footer>
+              © {new Date().getFullYear()}, Built with{" "}
+              <a href="https://www.gatsbyjs.org">Gatsby</a>
+            </footer>
+          </div>
+          {/* </LayoutContext.Provider> */}
         </div>
-        {/* </LayoutContext.Provider> */}
       </div>
     </LayoutContext.Provider>
   )

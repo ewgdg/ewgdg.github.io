@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useMemo, useState, useEffect } from "react"
 import { makeStyles } from "@material-ui/styles"
 import { graphql, useStaticQuery } from "gatsby"
@@ -18,6 +19,7 @@ const useStyles = makeStyles({
     "animation-iteration-count": "infinite",
     "animation-timing-function": "steps(7)",
     transform: "rotateY(180deg)",
+    // "pointer-events": "none",
   },
   "@keyframes bulinFly": {
     "100%": {
@@ -172,7 +174,7 @@ function startAnimationFlyingSprite(
   }
 }
 
-function FlyingSprite() {
+function FlyingSprite({ style }) {
   const query = graphql`
     query {
       file(relativePath: { eq: "bulin.png" }) {
@@ -211,6 +213,7 @@ function FlyingSprite() {
       style={{
         transform: `translate3d(${spriteState.x}px,${spriteState.y}px, 0) rotateY(${spriteState.rotateY}deg)`,
         display: spriteState.display ? "block" : "none",
+        ...style,
       }}
     />
   )
