@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
 
 // {"ease":".25,.1,.25,1","linear":"0,0,1,1","ease-in":".42,0,1,1","ease-out":"0,0,.58,1","ease-in-out":".42,0,.58,1"}
@@ -48,6 +49,9 @@ function scrollByAnimated(
   duration = 1000,
   easingFunc = easing.easeInOut2
 ) {
+  // if (duration <= 0) {
+  //   elem.scrollTop += change
+  // }
   let startingTime
   let scrolledAmt = 0
   const targetAmt = Math.abs(change)
@@ -69,7 +73,6 @@ function scrollByAnimated(
       )
 
       // equilvalent to elem.scrollBy(0, (nextScrolledAmt - scrolledAmt) * scale)
-      // eslint-disable-next-line no-param-reassign
       elem.scrollTop += (nextScrolledAmt - scrolledAmt) * scale
       scrolledAmt = nextScrolledAmt
 
@@ -93,7 +96,6 @@ function scrollByAnimated(
 }
 
 function clearAnimationQueue() {
-  console.log("canceling animation")
   animationQueue.forEach(animation => {
     animation.cancel()
   })

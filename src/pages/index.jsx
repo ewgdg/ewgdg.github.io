@@ -10,11 +10,13 @@ import Image from "../components/image"
 import SEO from "../components/seo"
 import FlyingSprite from "../components/sprite/FlyingSprite"
 import Synap from "../components/background/Synap"
+import About from "../components/landing/About"
 
 const IndexPage = ({ data }) => {
   return (
     <Layout>
       <SEO title="Home" />
+      <Synap style={{ opacity: 0.3, width: "100%", height: "100vh" }} />
       {/* <PageContainer>
         <Section>
           <HeaderContainer
@@ -23,17 +25,24 @@ const IndexPage = ({ data }) => {
           />
         </Section>
       </PageContainer> */}
-      <Synap style={{ opacity: 0.3, width: "100vw", height: "100vh" }} />
       <div
         style={{
           width: "800px",
           height: "800px",
           backgroundColor: "transparent",
-          position: "relative",
-          zIndex: "5",
+          position: "static",
         }}
       />
-      <FlyingSprite />
+      {/* <About /> */}
+      <div
+        style={{
+          width: "800px",
+          height: "800px",
+          backgroundColor: "transparent",
+          position: "static",
+        }}
+      />
+
       <h1>Hi people</h1>
       <p>Welcome to your new Gatsby site.</p>
       <p>Now go build something great.</p>

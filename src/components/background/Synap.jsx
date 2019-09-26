@@ -46,7 +46,7 @@ function Synap({ style }) {
         app.stage.addChild(lineContainer)
         app.stage.addChild(dotContainer)
 
-        const graph = new SynapGraph(100, app.view)
+        const graph = new SynapGraph(135, app.view)
         graph.generateGraph()
 
         graph.nodes.forEach(e => {
@@ -130,6 +130,11 @@ function Synap({ style }) {
       style={{
         position: "fixed",
         zIndex: -1,
+        touchAction: "none",
+        top: 0,
+        left: 0,
+        pointerEvents: "none",
+        userSelect: "none",
         ...style,
       }}
     />
