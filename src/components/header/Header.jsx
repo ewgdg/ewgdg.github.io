@@ -129,6 +129,7 @@ const Header = ({ position, color }) => (
         .navbar {
           background-color: transparent;
           color: ${color};
+          user-select: none;
            {
             /* box-shadow:none; */
           }

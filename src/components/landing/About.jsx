@@ -1,16 +1,24 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable new-cap */
-import React, { useLayoutEffect, useRef, useState } from "react"
+import React, {
+  useLayoutEffect,
+  useRef,
+  useState,
+  useEffect,
+  useContext,
+} from "react"
 import { TweenMax, TimelineLite, Power3, Power1 } from "gsap/TweenMax"
-import * as ScrollMagic from "scrollmagic"
+// import ScrollMagic from "scrollmagic-with-ssr"
 // import "scrollmagic/scrollmagic/minified/plugins/animation.gsap.min"
 // import "scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min"
 
-import "animation.gsap"
-import "debug.addIndicators"
 // import { TimelineMax } from "gsap/TimelineMax"
 import CharSequence from "components/landing/CharSequence"
 import { makeStyles } from "@material-ui/styles"
+import LayoutContext from "contexts/LayoutContext"
+
+import { getController, ScrollMagic } from "plugins/scrollmagic"
 
 const useStyles = makeStyles({
   charSequenceContainer: {
@@ -27,7 +35,7 @@ const useStyles = makeStyles({
   },
   charSequenceBackground: {
     backgroundImage:
-      "linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%)",
+      "linear-gradient(130deg, #a7fcf5 15%, #1fc8cb 50%, #2cb5d8 75%)",
     position: "absolute",
     top: 0,
     left: 0,
@@ -54,6 +62,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
   },
 })
 
@@ -62,13 +71,13 @@ function About() {
   const ribbonRef = useRef(null)
   const charSequenceBackgroundRef = useRef(null)
   const charRefs = useRef([])
-
+  const context = useContext(LayoutContext)
   const classes = useStyles()
   // add scrollmagic controll
-  useLayoutEffect(() => {
-    console.log(`render? ${ribbonRef.current}`)
-    const controller = new ScrollMagic.Controller()
-
+  useEffect(() => {
+    // const controller = context.scrollMagicController
+    // console.log(context)
+    const controller = getController(context.scrollLayer)
     let animation = new TimelineLite()
     // animate ribbon
     animation
@@ -109,7 +118,7 @@ function About() {
         "startAnimation+=0.35"
       )
       .staggerFrom(
-        "div#animatedLineGroup div.animatedline",
+        ".animatedline",
         0.1,
         {
           opacity: 0,
@@ -125,15 +134,15 @@ function About() {
     containerScene
       // .setTween(blockTween)
       .setTween(animation)
-      .addIndicators()
+      // .addIndicators()
       .addTo(controller)
 
-    // document.querySelector("div.scrollDiv").addEventListener("wheel", e => {
+    // document.querySelector("div#ribbon").addEventListener("scroll", e => {
     //   console.log(e)
     // })
     return () => {
       animation = null
-      if (controller && controller.destroy) controller.destroy()
+      if (controller) controller.removeScene(containerScene)
     }
   }, [ribbonContainerRef, ribbonRef, charRefs, charSequenceBackgroundRef])
 
@@ -156,11 +165,26 @@ function About() {
         </div>
         <div className={classes.textContainerInsideRibbon}>
           <div id="animatedLineGroup">
-            <div className="animatedline">line 1 testing</div>
-            <div className="animatedline">line 2 testing</div>
-            <div className="animatedline">line 3 testing</div>
-            <div className="animatedline">line 3 testing</div>
-            <div className="animatedline">line 3 testing</div>
+            <h2 className="animatedline">
+              My passion is about solving challenging problem.
+            </h2>
+            <div>
+              <div className="animatedline">
+                And that is <a href="#">why</a> I made this page.
+              </div>
+              <div className="animatedline" style={{ opacity: 0.8 }}>
+                If you want to learn more about me, keep reading.
+              </div>
+              <div className="animatedline" style={{ opacity: 0.6 }}>
+                Or send me an email (or call).
+              </div>
+              <div className="animatedline" style={{ opacity: 0.4 }}>
+                ... ...
+              </div>
+              <div className="animatedline" style={{ opacity: 0.2 }}>
+                ...
+              </div>
+            </div>
           </div>
         </div>
       </div>

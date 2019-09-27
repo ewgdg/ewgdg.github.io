@@ -65,6 +65,7 @@ const useHandlers = (ref, activeSections, context) => {
       easingFunc
     ) {
       if (isScrolling) {
+        preventDefault(event)
         return
       }
 
@@ -113,9 +114,9 @@ const useHandlers = (ref, activeSections, context) => {
 
       if (!useFallback && target) {
         if (!isScrolling) clearAnimationQueue()
-        if (fallbackOnLastCall && Date.now() - lastFallbackCall < 200) {
-          return
-        }
+        // if (fallbackOnLastCall && Date.now() - lastFallbackCall < 200) {
+        //   return
+        // }
         if (delta && Math.abs(delta) < 2) {
           return
         }
@@ -126,7 +127,8 @@ const useHandlers = (ref, activeSections, context) => {
         // event.preventDefault()
         // // event.stopPropagation()
         preventDefault(event)
-        const promise = scrollIntoView(target, scrollLayer, 777, easingFunc)
+        event.preventDefault()
+        const promise = scrollIntoView(target, scrollLayer, 777, undefined)
         promise.then(() => {
           isScrolling = false
         })
@@ -134,6 +136,7 @@ const useHandlers = (ref, activeSections, context) => {
         // scrollLayer.scrollTo(0, 0)
         // console.log(target.offsetTop)
       } else {
+        // console.log(event)
         // // if (delta === 0) {
         // // touch event
         // const touchstartEvent = touchEventStart
@@ -141,18 +144,15 @@ const useHandlers = (ref, activeSections, context) => {
         // const customStartEvent = new TouchEvent("touchstart", touchstartEvent)
         // // customEvent.type = "touchstart"
         // customStartEvent.isCustomEvent = true
-
         // setTimeout(scrollLayer.dispatchEvent(customStartEvent), 0)
         // for (let i = 0; i < touchEventList.length; i += 1) {
         //   const customMoveEvent = new TouchEvent("touchmove", touchEventList[i])
         //   customMoveEvent.isCustomEvent = true
-
         //   const delay = touchPointTimeStamp[i] - startTime
         //   setTimeout(scrollLayer.dispatchEvent(customMoveEvent), delay)
         // }
         // const customEndEvent = new TouchEvent("touchend", event)
         // customEndEvent.isCustomEvent = true
-
         // setTimeout(
         //   scrollLayer.dispatchEvent(customEndEvent),
         //   Date.now() - startTime
@@ -165,7 +165,7 @@ const useHandlers = (ref, activeSections, context) => {
         //   value = 100 * scale
         // }
         // // event.preventDefault()
-        preventDefault(event)
+        // preventDefault(event)
         // // event.stopPropagation()
         // if (Math.abs(value) >= 100)
         //   scrollByAnimated(
@@ -193,6 +193,7 @@ const useHandlers = (ref, activeSections, context) => {
     }
 
     function pointerDownHandler(e) {
+      // console.log(e)
       isPointerDown = true
 
       touchPointYList.splice(0)
@@ -217,7 +218,7 @@ const useHandlers = (ref, activeSections, context) => {
       touchStartY = touchPoint.clientY
       touchEventStart = e
       touchPointYList.push(touchPoint.clientY)
-      touchPointTimeStamp.push(Date.now())
+      touchPointTimeStamp.push(performance.now())
       // touchEventList.push(e)
       // while (touchPointYList.length > 5) {
       //   touchPointYList.unshift()
@@ -229,10 +230,13 @@ const useHandlers = (ref, activeSections, context) => {
       if (!isPointerDown) {
         return
       }
+
       if (isScrolling) {
         preventDefault(e)
+        e.preventDefault()
         return
       }
+      // console.log("move")
       // const touchList = e.changedTouches
       // if (touchList.length > 1) {
       //   console.log("wrong")
@@ -242,6 +246,7 @@ const useHandlers = (ref, activeSections, context) => {
       //   return
       // }
       preventDefault(e)
+      e.preventDefault()
       const touchPoint = e
 
       let verticalMove = 0
@@ -250,25 +255,27 @@ const useHandlers = (ref, activeSections, context) => {
           touchPoint.clientY - touchPointYList[touchPointYList.length - 1]
       }
       touchPointYList.push(touchPoint.clientY)
-      touchPointTimeStamp.push(Date.now())
-      touchEventList.push(e)
+      touchPointTimeStamp.push(performance.now())
 
       while (touchPointYList.length > 5) {
         touchPointYList.shift()
         touchPointTimeStamp.shift()
-        touchEventList.shift()
+        // touchEventList.shift()
       }
 
       if (Math.abs(verticalMove) > 0) {
         scrollByAnimated(
           context.scrollLayer,
           -verticalMove,
-          0,
+          1,
           easing.easeOutExpo
         )
       }
     }
     function pointerUpHandler(e) {
+      // console.log("up")
+      // console.log(isPointerDown)
+      if (!isPointerDown) return
       isPointerDown = false
 
       if (isScrolling || touchPointYList.length <= 0) {
@@ -289,7 +296,7 @@ const useHandlers = (ref, activeSections, context) => {
       touchEndY = touchPoint.clientY
 
       const verticalMove = touchEndY - touchPointYList[0]
-      let idlingTime = Date.now() // - touchPointTimeStamp[touchPointTimeStamp.length - 1]
+      let idlingTime = performance.now() // - touchPointTimeStamp[touchPointTimeStamp.length - 1]
 
       for (let i = touchPointYList.length - 1; i >= 0; i -= 1) {
         if (Math.abs(touchEndY - touchPointYList[i]) >= 2 || i === 0) {
@@ -316,8 +323,11 @@ const useHandlers = (ref, activeSections, context) => {
     }
 
     function pointerCancelHandler(e) {
+      if (!isPointerDown) return
+      // console.log("cancel")
       touchPointYList.splice(0)
       isPointerDown = false
+      // console.log(isPointerDown)
       preventDefault(e)
       e.preventDefault()
     }
@@ -326,9 +336,9 @@ const useHandlers = (ref, activeSections, context) => {
         // ctrl key is pressed
         isZooming = true
       } else if (e.key === "ArrowUp") {
-        scrollPage("up", e)
+        scrollPage("up", e, undefined, easing.easeOutCubic)
       } else if (e.key === "ArrowDown") {
-        scrollPage("down", e)
+        scrollPage("down", e, undefined, easing.easeOutCubic)
       }
     }
     function keyUpHandler(e) {
@@ -423,28 +433,29 @@ function Container({ children }) {
     wheelHander,
     keyUpHandler,
     keyDownHandler,
-    touchStartHandler,
-    touchMoveHandler,
-    touchEndHandler,
+    pointerDownHandler,
+    pointerMoveHandler,
+    pointerUpHandler,
     pointerCancelHandler,
   ] = useHandlers(ref, activeSections, context)
-  const { body } = document
-  // add dom event listener
-  useLayoutEffect(() => {
-    ref.current.addEventListener("wheel", wheelHander, { passive: false })
-    body.addEventListener("keydown", keyDownHandler)
-    body.addEventListener("keyup", keyUpHandler)
 
-    ref.current.addEventListener("pointerdown", touchStartHandler, {
+  // add dom event listener
+  useEffect(() => {
+    const { scrollLayer } = context
+    ref.current.addEventListener("wheel", wheelHander, { passive: false })
+    scrollLayer.addEventListener("keydown", keyDownHandler)
+    scrollLayer.addEventListener("keyup", keyUpHandler)
+
+    ref.current.addEventListener("pointerdown", pointerDownHandler, {
       passive: false,
     })
-    ref.current.addEventListener("pointermove", touchMoveHandler, {
+    scrollLayer.addEventListener("pointermove", pointerMoveHandler, {
       passive: false,
     })
-    ref.current.addEventListener("pointerup", touchEndHandler, {
+    scrollLayer.addEventListener("pointerup", pointerUpHandler, {
       passive: false,
     })
-    ref.current.addEventListener("pointerout", pointerCancelHandler, {
+    scrollLayer.addEventListener("pointerleave", pointerCancelHandler, {
       passive: false,
     })
 
@@ -458,13 +469,14 @@ function Container({ children }) {
     //   })
     return () => {
       ref.current.removeEventListener("wheel", wheelHander)
-      body.removeEventListener("keydown", keyDownHandler)
-      body.removeEventListener("keyup", keyUpHandler)
-      ref.current.removeEventListener("touchstart", touchStartHandler)
-      ref.current.removeEventListener("touchmove", touchMoveHandler)
-      ref.current.removeEventListener("touchend", touchEndHandler)
+      scrollLayer.removeEventListener("keydown", keyDownHandler)
+      scrollLayer.removeEventListener("keyup", keyUpHandler)
+      ref.current.removeEventListener("pointerdown", pointerDownHandler)
+      scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
+      scrollLayer.removeEventListener("pointerup", pointerUpHandler)
+      scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
     }
-  }, [wheelHander, keyUpHandler, keyDownHandler, body, ref.current])
+  }, [wheelHander, keyUpHandler, keyDownHandler, ref.current, context])
 
   return (
     <div className={classes.root} ref={ref} id="pageContainer">

@@ -38,16 +38,19 @@ exports.onCreateWebpackConfig = ({
         ),
         ScrollMagic: path.resolve(
           "node_modules",
-          "scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"
+          "scrollmagic-with-ssr/index.js"
         ),
         "animation.gsap": path.resolve(
           "node_modules",
+
           "scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js"
         ),
         "debug.addIndicators": path.resolve(
           "node_modules",
+
           "scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js"
         ),
+        "react-dom": "@hot-loader/react-dom",
       },
       // alias: {
       //   TweenLite: require.resolve("node_modules", {
