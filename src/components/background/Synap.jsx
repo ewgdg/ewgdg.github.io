@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useRef, useLayoutEffect } from "react"
-import * as PIXI from "pixi.js"
+// import * as PIXI from "pixi.js"
+import * as PIXI from "plugins/PIXI"
 import SynapGraph from "./SynapGraph"
 
+// console.log(PIXI)
 function Synap({ style }) {
   const refContainer = useRef(null)
 
@@ -14,6 +16,7 @@ function Synap({ style }) {
       resizeTo: refContainer.current,
       antialias: true,
       autoStart: true,
+      // forceCanvas: true,
     })
 
     refContainer.current.appendChild(app.view)

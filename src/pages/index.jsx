@@ -2,6 +2,7 @@ import React from "react"
 import { Link, graphql } from "gatsby"
 
 import PropTypes from "prop-types"
+import ObjectFitSection from "../components/landing/ObjectFitSection"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
@@ -11,20 +12,12 @@ import SEO from "../components/seo"
 import FlyingSprite from "../components/sprite/FlyingSprite"
 import Synap from "../components/background/Synap"
 import About from "../components/landing/About"
+import testImg from "../images/45-cos-crop-upper.jpg"
 
 const IndexPage = ({ data }) => {
   return (
     <Layout>
       <SEO title="Home" />
-      <Synap style={{ opacity: 0.3, width: "100%", height: "100vh" }} />
-      {/* <PageContainer>
-        <Section>
-          <HeaderContainer
-            imageFluid={data.fileName.childImageSharp.fluid}
-            headerProps={{ color: "white", position: "absolute" }}
-          />
-        </Section>
-      </PageContainer> */}
       <div
         style={{
           width: "800px",
@@ -33,7 +26,28 @@ const IndexPage = ({ data }) => {
           position: "static",
         }}
       />
-      {/* <About /> */}
+      <Synap style={{ opacity: 0.3, width: "100%", height: "100vh" }} />
+      <PageContainer>
+        <Section>
+          <ObjectFitSection>
+            <HeaderContainer
+              imageFluid={data.fileName.childImageSharp.fluid}
+              headerProps={{ color: "white", position: "absolute" }}
+            />
+
+            {/* <img src={testImg} alt="" style={{ height: "100vh" }} /> */}
+          </ObjectFitSection>
+        </Section>
+      </PageContainer>
+      <div
+        style={{
+          width: "800px",
+          height: "800px",
+          backgroundColor: "transparent",
+          position: "static",
+        }}
+      />
+      <About />
       <div
         style={{
           width: "800px",

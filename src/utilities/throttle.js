@@ -1,20 +1,23 @@
 export default function throttle(fn, limit, recordLastCall = false) {
-  let lastTimeStamp = Date.now()
+  let lastTimeStamp = performance.now()
   let lastCall = null
-  function throttled(...arg) {
-    const currentTimeStamp = Date.now()
-    const timePast = currentTimeStamp - lastTimeStamp
-    if (timePast < limit) {
+  function throttled(...args) {
+    const currentTimeStamp = performance.now()
+    const elapsedTime = currentTimeStamp - lastTimeStamp
+    if (elapsedTime < limit) {
       if (!recordLastCall) {
         return
       }
-      clearTimeout(lastCall)
-      lastCall = setTimeout(() => {
-        throttled.apply(null, [...arg])
-      }, limit - timePast)
+      // clearTimeout(lastCall)
+      if (lastCall === null) {
+        lastCall = setTimeout(() => {
+          throttled(...args)
+        }, limit - elapsedTime)
+      }
     } else {
-      fn.apply(null, [...arg])
-      lastTimeStamp = Date.now()
+      lastTimeStamp = performance.now()
+      fn(...args)
+      clearTimeout(lastCall)
       lastCall = null
     }
   }

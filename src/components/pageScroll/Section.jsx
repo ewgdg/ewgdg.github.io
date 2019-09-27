@@ -6,8 +6,9 @@ import { makeStyles } from "@material-ui/styles"
 const useStyles = makeStyles({
   root: {
     height: "100vh",
-    width: "100wh",
+    width: "100%",
     // border: "red solid 2px",
+    // pointerEvents: "none",
   },
 })
 

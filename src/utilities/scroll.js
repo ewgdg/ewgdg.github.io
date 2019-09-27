@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
-
+import throttle from "./throttle"
 // {"ease":".25,.1,.25,1","linear":"0,0,1,1","ease-in":".42,0,1,1","ease-out":"0,0,.58,1","ease-in-out":".42,0,.58,1"}
 const easeInOut2 = BezierEasing(0.65, 0.1, 0.35, 0.99)
 const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
@@ -67,16 +67,16 @@ function scrollByAnimated(
     function scrollByRaf(currentTime) {
       requestId = requestAnimationFrame(scrollByRaf)
 
-      const pastDuration = currentTime - startingTime
+      const elapsedDuration = currentTime - startingTime
       const nextScrolledAmt = Math.ceil(
-        easingFunc(Math.min(1, pastDuration / duration)) * targetAmt
+        easingFunc(Math.min(1, elapsedDuration / duration)) * targetAmt
       )
 
       // equilvalent to elem.scrollBy(0, (nextScrolledAmt - scrolledAmt) * scale)
       elem.scrollTop += (nextScrolledAmt - scrolledAmt) * scale
       scrolledAmt = nextScrolledAmt
 
-      if (pastDuration >= duration) {
+      if (elapsedDuration >= duration) {
         // eslint-disable-next-line no-param-reassign
         elem.scrollTop += (targetAmt - scrolledAmt) * scale
         scrolledAmt = targetAmt
@@ -104,12 +104,71 @@ function clearAnimationQueue() {
 
 function scrollIntoView(elem, scrollLayer, duration = 700) {
   if (!scrollLayer) return Promise.reject()
-  // const scrollTop = getScrollTop(scrollLayer)
-  // const elemPosition = elem.offsetTop
-  // const change = elemPosition - scrollTop
-  const change = Math.round(elem.getBoundingClientRect().top)
+  const scrollTop = getScrollTop(scrollLayer)
+  const elemPosition = elem.offsetTop
+  const change = elemPosition - scrollTop
+  // const change = Math.round(elem.getBoundingClientRect().top)
 
   return scrollByAnimated(scrollLayer, change, duration)
+}
+
+class ScrollDetector {
+  constructor(scrollLayer, elem, duration) {
+    this.scrollLayer = scrollLayer
+    this.elem = elem
+    this.duration = duration
+  }
+
+  setEventListener(callback) {
+    this.eventListener = throttle(this.eventListenerFactory(callback), 30, true)
+    this.scrollLayer.addEventListener("scroll", this.eventListener)
+  }
+
+  eventListenerFactory(callback) {
+    let lastReadScrollTop = getScrollTop(this.scrollLayer)
+    let lastTimeStamp = performance.now()
+    let lastProgress = 0
+    return () => {
+      const st = getScrollTop(this.scrollLayer)
+      const pos = this.elem.offsetTop
+
+      let progress = null
+      if (this.duration > 0) {
+        const currentTime = performance.now()
+        const diff = currentTime - lastTimeStamp
+        lastTimeStamp = currentTime
+        if (diff > 33.4) {
+          // if there is a lag, ignore the scroll event
+          return
+        }
+        progress = st - pos
+        progress = Math.max(0, Math.min(this.duration, progress))
+        progress /= this.duration
+      } else if (st >= pos && lastReadScrollTop < pos) {
+        // enter
+        progress = 1
+      } else if (
+        st <= pos + this.duration &&
+        lastReadScrollTop >= pos + this.duration
+      ) {
+        // enter backward
+        progress = 0
+      }
+      lastReadScrollTop = st
+
+      if (progress !== lastProgress) {
+        callback(progress)
+      }
+      lastProgress = progress
+    }
+  }
+
+  destroy() {
+    this.scrollLayer.removeEventListener("scroll", this.eventListener)
+    this.eventListener = null
+    this.scrollLayer = null
+    this.elem = null
+  }
 }
 
 export {
@@ -119,4 +178,5 @@ export {
   clearAnimationQueue,
   animationQueue,
   easing,
+  ScrollDetector,
 }
