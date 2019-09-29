@@ -1,15 +1,9 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
-import React, { useEffect } from "react"
+import React, { useEffect, useRef, useCallback } from "react"
 
 function CharSequence({ string, charRefs, style, className }) {
-  useEffect(() => {
-    charRefs.current.length = string.length
-    return () => {
-      charRefs.current = []
-    }
-  }, [string])
   return (
     <>
       {Array.from(string).map((char, i) => (
@@ -17,8 +11,8 @@ function CharSequence({ string, charRefs, style, className }) {
           style={{ fontSize: "1em", ...style }}
           className={className}
           key={`${char}${i}`}
-          ref={elem => {
-            charRefs.current[i] = elem
+          ref={e => {
+            charRefs.current[i] = e
           }}
         >
           {char}

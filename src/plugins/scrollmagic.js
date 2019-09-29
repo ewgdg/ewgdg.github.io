@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable global-require */
 /* eslint-disable import/no-unresolved */
 let ScrollMagic
@@ -10,13 +11,19 @@ if (typeof window !== "undefined") {
     require("debug.addIndicators")
   }
 }
-
+let _scrollLayer
 function getController(scrollLayer) {
-  if (controller) return controller
-  controller = new ScrollMagic.Controller({
-    container: scrollLayer,
-    refreshInterval: 0,
-  })
+  if (_scrollLayer !== scrollLayer) {
+    if (controller && controller.destroy) controller.destroy(true)
+
+    controller = null
+    controller = new ScrollMagic.Controller({
+      container: scrollLayer,
+      refreshInterval: 0,
+    })
+    _scrollLayer = scrollLayer
+  }
+
   return controller
 }
 

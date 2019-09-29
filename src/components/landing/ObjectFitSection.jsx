@@ -19,12 +19,13 @@ function ObjectFitSection({ children }) {
   const contentRef = useRef(null)
   const [y, setY] = useState(0)
   const context = useContext(LayoutContext)
+  if (!context.scrollLayer) return null
   useEffect(() => {
     const controller = getController(context.scrollLayer)
 
     let lastTimeStamp = performance.now()
     const scene = new ScrollMagic.Scene({
-      triggerElement: "#objectFit",
+      triggerElement: containerRef.current,
       triggerHook: 0,
       duration: "100%",
       reverse: true,
@@ -47,12 +48,14 @@ function ObjectFitSection({ children }) {
 
     return () => {
       controller.removeScene(scene)
+      scene.destroy(true)
+      setY(0)
     }
   }, [])
 
   return (
     <div
-      id="objectFit"
+      className="objectFit"
       ref={containerRef}
       style={{
         overflow: "hidden",
@@ -60,11 +63,7 @@ function ObjectFitSection({ children }) {
         height: "100%",
       }}
     >
-      <div
-        id="contentfit"
-        ref={contentRef}
-        style={{ transform: `translate(0,${y}%)` }}
-      >
+      <div ref={contentRef} style={{ transform: `translate(0,${y}%)` }}>
         {children}
       </div>
     </div>

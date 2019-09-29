@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 
-const Jumbotron = ({ image, headline, bottomline, children }) => {
+const Jumbotron = ({ image, headline, bottomline, children, darkFilter }) => {
   let imgFluid = image
 
   if (!imgFluid) {
@@ -27,9 +27,10 @@ const Jumbotron = ({ image, headline, bottomline, children }) => {
       <Img
         fluid={imgFluid}
         style={{
-          minWidth: "100%",
-          minHeight: "100%",
+          width: "100%",
+          height: "100%",
           objectFit: "cover",
+          margin: 0,
         }}
       />
 
@@ -57,6 +58,7 @@ const Jumbotron = ({ image, headline, bottomline, children }) => {
             pointer-events: none;
             user-select: none;
             position: relative;
+            margin: 0;
           }
           figure:after {
             content: "";
@@ -64,9 +66,10 @@ const Jumbotron = ({ image, headline, bottomline, children }) => {
             position: absolute;
             width: 100%;
             height: 100%;
-            opacity: 0.3;
+            opacity: ${darkFilter};
             top: 0;
             left: 0;
+            margin: 0;
           }
           .headlineContainer {
             position: absolute;
@@ -97,10 +100,12 @@ const Jumbotron = ({ image, headline, bottomline, children }) => {
 Jumbotron.propTypes = {
   image: PropTypes.shape({ base64: PropTypes.string }),
   headline: PropTypes.string,
+  darkFilter: PropTypes.number,
 }
 Jumbotron.defaultProps = {
   image: null,
   headline: "",
+  darkFilter: 0.3,
 }
 
 export default Jumbotron
