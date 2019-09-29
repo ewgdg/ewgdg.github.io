@@ -22,16 +22,14 @@ import { getController, ScrollMagic } from "plugins/scrollmagic"
 
 const useStyles = makeStyles({
   charSequenceContainer: {
-    width: "20%",
-    height: "25%",
-    textAlign: "center",
-    fontSize: "3.5em",
-    position: "absolute",
+    height: "4rem",
+    width: "100%",
+    fontSize: "3.5rem",
+    position: "relative",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    top: 0,
-    left: 0,
+    paddingLeft: "20%",
   },
   charSequenceBackground: {
     backgroundImage:
@@ -39,14 +37,14 @@ const useStyles = makeStyles({
     position: "absolute",
     top: 0,
     left: 0,
-    width: "100%",
+    width: "120%",
     height: "100%",
     zIndex: -1,
     opacity: 0.6,
   },
   ribbon: {
     width: "100%",
-    height: "35vh",
+    height: "350px",
     backgroundColor: "rgb(255, 32, 126)",
     opacity: 0.6,
   },
@@ -63,6 +61,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
+    padding: "0 10% 0 10%",
   },
 })
 
@@ -72,13 +71,20 @@ function About() {
   const charSequenceBackgroundRef = useRef(null)
   const charRefs = useRef([])
   const context = useContext(LayoutContext)
+  if (!context.scrollLayer) return null
   const classes = useStyles()
   // add scrollmagic controll
   useEffect(() => {
-    // const controller = context.scrollMagicController
-    // console.log(context)
+    console.log("useEf fect ")
+    console.log(charRefs)
+    // if (!ribbonContainerRef.current || (charRefs.length > 0 && !charRefs[0])) {
+    //   console.log("check n ull")
+    //   return () => {}
+    // }
+
     const controller = getController(context.scrollLayer)
-    let animation = new TimelineLite()
+    console.log(controller)
+    const animation = new TimelineLite()
     // animate ribbon
     animation
       .add("startAnimation")
@@ -127,28 +133,53 @@ function About() {
         undefined,
         "ribbonFinished"
       )
+      .add("endAnimation")
 
     const containerScene = new ScrollMagic.Scene({
-      triggerElement: "#ribbonContainer",
+      triggerElement: ribbonContainerRef.current,
     })
     containerScene
       // .setTween(blockTween)
       .setTween(animation)
-      // .addIndicators()
+      .addIndicators()
       .addTo(controller)
+    console.log(containerScene)
 
     // document.querySelector("div#ribbon").addEventListener("scroll", e => {
     //   console.log(e)
     // })
     return () => {
-      animation = null
+      // animation = null
       if (controller) controller.removeScene(containerScene)
+      containerScene.destroy()
+      animation.pause("endAnimation", true)
+      animation.kill()
     }
-  }, [ribbonContainerRef, ribbonRef, charRefs, charSequenceBackgroundRef])
+  }, [context])
 
+  const [state, setState] = useState({ str: "aaaabb" })
+  const testRef = useRef(null)
   return (
     <>
-      <div style={{ position: "relative" }}>
+      <button
+        type="button"
+        onClick={() => {
+          setState({ str: "ssss" })
+        }}
+      >
+        reload
+      </button>
+      <div
+        ref={e => {
+          if (testRef.current !== e && e !== null) {
+            console.log("change ref")
+            testRef.current = e
+          }
+        }}
+      >
+        {state.str}
+      </div>
+      <div style={{ display: "inline-block" }}>
         <div className={classes.charSequenceContainer}>
           <CharSequence string="About" charRefs={charRefs} />
           <div
@@ -156,6 +187,8 @@ function About() {
             className={classes.charSequenceBackground}
           />
         </div>
+      </div>
+      <div style={{ position: "relative" }}>
         <div
           id="ribbonContainer"
           ref={ribbonContainerRef}
@@ -171,6 +204,16 @@ function About() {
             <div>
               <div className="animatedline">
                 And that is <a href="#">why</a> I made this page.
+              </div>
+              <div className="animatedline">
+                I play games and read fantasy fictions for entertainment.
+              </div>
+              <div className="animatedline">
+                I am good at imagination and substitution to extract fun from
+                them.
+              </div>
+              <div className="animatedline">
+                My favourite fruits are guava and durian.
               </div>
               <div className="animatedline" style={{ opacity: 0.8 }}>
                 If you want to learn more about me, keep reading.

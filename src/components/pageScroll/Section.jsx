@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles({
   root: {
-    height: "100vh",
+    minHeight: "100vh",
     width: "100%",
     // border: "red solid 2px",
     // pointerEvents: "none",

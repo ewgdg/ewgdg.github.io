@@ -2,22 +2,29 @@ import React from "react"
 import { Link, graphql } from "gatsby"
 
 import PropTypes from "prop-types"
+
 import ObjectFitSection from "../components/landing/ObjectFitSection"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
-import Layout from "../components/layout"
+import Layout from "../components/Layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
 import FlyingSprite from "../components/sprite/FlyingSprite"
 import Synap from "../components/background/Synap"
-import About from "../components/landing/About"
+import About from "../components/contents/About"
 import testImg from "../images/45-cos-crop-upper.jpg"
+import About2 from "../components/contents/About2"
+import About3 from "../components/contents/About3"
 
 const IndexPage = ({ data }) => {
   return (
     <Layout>
       <SEO title="Home" />
+
+
+      <About3 />
+      <About2 />
       <div
         style={{
           width: "800px",
@@ -64,6 +71,7 @@ const IndexPage = ({ data }) => {
         <Image />
       </div>
       <Link to="/page-2/">Go to page 2</Link>
+
     </Layout>
   )
 }
