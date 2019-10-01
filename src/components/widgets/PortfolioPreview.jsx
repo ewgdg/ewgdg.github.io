@@ -10,25 +10,25 @@ import ImageBasedCard from "components/thumbnail/ImageBasedCard"
 import CardContainer from "components/thumbnail/CardContainer"
 import AnimatedTitle from "components/heading/AnimatedTitle"
 import Container from "@material-ui/core/Container"
-import ObjectFitSection from "../landing/ObjectFitSection"
+import ObjectFitSection from "../decorators/ObjectFitSection"
+import FlexContainer from "../decorators/FlexContainer"
 
-function About2() {
+function PortfolioPreview() {
   return (
-    <Container>
-      <div style={{ textAlign: "center" }}>
-        <AnimatedTitle title="Games" />
-        <p>I enjoy gaming, and I made myself some small games:</p>
-
-        <div>
-          <CardContainer>
-            <ImageBasedCard />
-
-            <ImageBasedCard />
-          </CardContainer>
+    <FlexContainer>
+      <Container>
+        <div style={{ textAlign: "center" }}>
+          <AnimatedTitle title="Games" />
+          <p>I enjoy gaming, and I made myself some small games:</p>
         </div>
-      </div>
-    </Container>
+
+        <CardContainer>
+          <ImageBasedCard />
+          <ImageBasedCard />
+        </CardContainer>
+      </Container>
+    </FlexContainer>
   )
 }
 
-export default About2
+export default PortfolioPreview

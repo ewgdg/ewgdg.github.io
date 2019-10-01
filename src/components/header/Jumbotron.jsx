@@ -4,7 +4,14 @@ import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 
-const Jumbotron = ({ image, headline, bottomline, children, darkFilter }) => {
+const Jumbotron = ({
+  image,
+  headline,
+  bottomline,
+  children,
+  darkFilter,
+  imageAttachAsBackground,
+}) => {
   let imgFluid = image
 
   if (!imgFluid) {
@@ -22,17 +29,28 @@ const Jumbotron = ({ image, headline, bottomline, children, darkFilter }) => {
     imgFluid = useStaticQuery(query).fileName.childImageSharp.fluid
   }
 
+  let figureStyle = {}
+  if (imageAttachAsBackground) {
+    figureStyle = {
+      backgroundAttachment: "fixed",
+      backgroundImage: `url(${imgFluid.src})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center center",
+    }
+  }
   return (
-    <figure>
-      <Img
-        fluid={imgFluid}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          margin: 0,
-        }}
-      />
+    <figure style={figureStyle}>
+      {!imageAttachAsBackground && (
+        <Img
+          fluid={imgFluid}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            margin: 0,
+          }}
+        />
+      )}
 
       <div className="headlineContainer">
         <div style={{ margin: 0, padding: 0 }}>
@@ -101,11 +119,13 @@ Jumbotron.propTypes = {
   image: PropTypes.shape({ base64: PropTypes.string }),
   headline: PropTypes.string,
   darkFilter: PropTypes.number,
+  imageAttachAsBackground: PropTypes.bool,
 }
 Jumbotron.defaultProps = {
   image: null,
   headline: "",
   darkFilter: 0.3,
+  imageAttachAsBackground: true,
 }
 
 export default Jumbotron

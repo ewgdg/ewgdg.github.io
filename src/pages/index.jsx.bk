@@ -3,7 +3,7 @@ import { Link, graphql } from "gatsby"
 
 import PropTypes from "prop-types"
 
-import ObjectFitSection from "../components/landing/ObjectFitSection"
+import ObjectFitSection from "../components/decorators/ObjectFitSection"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
@@ -12,18 +12,18 @@ import Image from "../components/image"
 import SEO from "../components/seo"
 import FlyingSprite from "../components/sprite/FlyingSprite"
 import Synap from "../components/background/Synap"
-import About from "../components/contents/About"
+import AboutPreview from "../components/widgets/AboutPreview"
 import testImg from "../images/45-cos-crop-upper.jpg"
-import About2 from "../components/contents/About2"
-import About3 from "../components/contents/About3"
+import BlogPreview from "../components/widgets/BlogPreview"
+import PortfolioPreview from "../components/widgets/PortfolioPreview"
 
 const IndexPage = ({ data }) => {
   return (
     <Layout>
       <SEO title="Home" />
-
-
-      <About3 />
+      <ObjectFitSection>
+        <About3 />
+      </ObjectFitSection>
       <About2 />
       <div
         style={{
@@ -34,18 +34,18 @@ const IndexPage = ({ data }) => {
         }}
       />
       <Synap style={{ opacity: 0.3, width: "100%", height: "100vh" }} />
-      <PageContainer>
+      {/* <PageContainer>
         <Section>
-          <ObjectFitSection>
-            <HeaderContainer
-              imageFluid={data.fileName.childImageSharp.fluid}
-              headerProps={{ color: "white", position: "absolute" }}
-            />
+          <ObjectFitSection> */}
+      <HeaderContainer
+        imageFluid={data.fileName.childImageSharp.fluid}
+        headerProps={{ color: "white", position: "absolute" }}
+      />
 
-            {/* <img src={testImg} alt="" style={{ height: "100vh" }} /> */}
-          </ObjectFitSection>
+      {/* <img src={testImg} alt="" style={{ height: "100vh" }} /> */}
+      {/* </ObjectFitSection>
         </Section>
-      </PageContainer>
+      </PageContainer> */}
       <div
         style={{
           width: "800px",
@@ -54,7 +54,9 @@ const IndexPage = ({ data }) => {
           position: "static",
         }}
       />
+
       <About />
+
       <div
         style={{
           width: "800px",
@@ -71,7 +73,6 @@ const IndexPage = ({ data }) => {
         <Image />
       </div>
       <Link to="/page-2/">Go to page 2</Link>
-
     </Layout>
   )
 }

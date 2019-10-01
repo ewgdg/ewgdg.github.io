@@ -14,11 +14,12 @@ import { TweenMax, TimelineLite, Power3, Power1 } from "gsap/TweenMax"
 // import "scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min"
 
 // import { TimelineMax } from "gsap/TimelineMax"
-import CharSequence from "components/landing/CharSequence"
+import CharSequence from "components/decorators/CharSequence"
 import { makeStyles } from "@material-ui/styles"
 import LayoutContext from "contexts/LayoutContext"
 
 import { getController, ScrollMagic } from "plugins/scrollmagic"
+import FlexContainer from "../decorators/FlexContainer"
 
 const useStyles = makeStyles({
   charSequenceContainer: {
@@ -152,7 +153,7 @@ function About() {
       // animation = null
       if (controller) controller.removeScene(containerScene)
       containerScene.destroy()
-      animation.pause("endAnimation", true)
+      animation.progress(1)
       animation.kill()
     }
   }, [context])
@@ -160,78 +161,62 @@ function About() {
   const [state, setState] = useState({ str: "aaaabb" })
   const testRef = useRef(null)
   return (
-    <>
-      <button
-        type="button"
-        onClick={() => {
-          setState({ str: "ssss" })
-        }}
-      >
-        reload
-      </button>
-      <div
-        ref={e => {
-          if (testRef.current !== e && e !== null) {
-            console.log("change ref")
-            testRef.current = e
-          }
-        }}
-      >
-        {state.str}
-      </div>
-      <div style={{ display: "inline-block" }}>
-        <div className={classes.charSequenceContainer}>
-          <CharSequence string="About" charRefs={charRefs} />
+    <FlexContainer>
+      <div style={{ width: "100%", height: "auto" }}>
+        <div style={{ display: "inline-block" }}>
+          <div className={classes.charSequenceContainer}>
+            <CharSequence string="About" charRefs={charRefs} />
+            <div
+              ref={charSequenceBackgroundRef}
+              className={classes.charSequenceBackground}
+            />
+          </div>
+        </div>
+        <div style={{ position: "relative" }}>
           <div
-            ref={charSequenceBackgroundRef}
-            className={classes.charSequenceBackground}
-          />
-        </div>
-      </div>
-      <div style={{ position: "relative" }}>
-        <div
-          id="ribbonContainer"
-          ref={ribbonContainerRef}
-          className={classes.skewed}
-        >
-          <div id="ribbon" ref={ribbonRef} className={classes.ribbon} />
-        </div>
-        <div className={classes.textContainerInsideRibbon}>
-          <div id="animatedLineGroup">
-            <h2 className="animatedline">
-              My passion is about solving challenging problem.
-            </h2>
-            <div>
-              <div className="animatedline">
-                And that is <a href="#">why</a> I made this page.
-              </div>
-              <div className="animatedline">
-                I play games and read fantasy fictions for entertainment.
-              </div>
-              <div className="animatedline">
-                I am good at imagination and substitution to extract fun from
-                them.
-              </div>
-              <div className="animatedline">
-                My favourite fruits are guava and durian.
-              </div>
-              <div className="animatedline" style={{ opacity: 0.8 }}>
-                If you want to learn more about me, keep reading.
-              </div>
-              <div className="animatedline" style={{ opacity: 0.6 }}>
-                Or send me an email (or call).
-              </div>
-              <div className="animatedline" style={{ opacity: 0.4 }}>
-                ... ...
-              </div>
-              <div className="animatedline" style={{ opacity: 0.2 }}>
-                ...
+            id="ribbonContainer"
+            ref={ribbonContainerRef}
+            className={classes.skewed}
+          >
+            <div id="ribbon" ref={ribbonRef} className={classes.ribbon} />
+          </div>
+          <div className={classes.textContainerInsideRibbon}>
+            <div id="animatedLineGroup">
+              <h2 className="animatedline">
+                My passion is about solving challenging problem.
+              </h2>
+              <div>
+                <div className="animatedline">
+                  And that is <a href="#">why</a> I made this page.
+                </div>
+                <div className="animatedline">
+                  I play games and read fantasy fictions for entertainment.
+                </div>
+                <div className="animatedline">
+                  I am good at imagination and substitution to extract fun from
+                  them.
+                </div>
+                <div className="animatedline">
+                  My favourite fruits are guava and durian.
+                </div>
+                <div className="animatedline" style={{ opacity: 0.8 }}>
+                  If you want to learn more about me, keep reading.
+                </div>
+                <div className="animatedline" style={{ opacity: 0.6 }}>
+                  Or send me an email (or call).
+                </div>
+                <div className="animatedline" style={{ opacity: 0.4 }}>
+                  ... ...
+                </div>
+                <div className="animatedline" style={{ opacity: 0.2 }}>
+                  ...
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </FlexContainer>
   )
 }
 

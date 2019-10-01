@@ -25,6 +25,7 @@ import "typeface-roboto"
 
 import FlyingSprite from "./sprite/FlyingSprite"
 import LayoutContext from "../contexts/LayoutContext"
+import Synap from "./background/Synap"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -62,15 +63,30 @@ const Layout = ({ children }) => {
     <LayoutContext.Provider value={contextValueRef.current}>
       <div
         id="layoutBody"
-        style={{ position: "relative", height: "100vh", width: "100vw" }}
+        style={{ position: "relative", maxHeight: "100vh", maxWidth: "100vw" }}
       >
+        <Synap style={{ opacity: 0.3, width: "100vw", height: "100vh" }} />
         <div
           id="scrollDiv"
           tabIndex="0"
           className="scrollDiv"
           ref={setContextCallBack}
+          style={{
+            overflowY: "scroll !important",
+            overflowX: "hidden",
+            height: "100vh",
+            width: "auto",
+            margin: 0,
+            padding: 0,
+            outline: "none",
+            boxSizing: "border-box",
+            /* position:relative; */
+            /* touch-action: none; */
+            touchAction: "pan-x pinch-zoom",
+          }}
         >
           <FlyingSprite style={{ position: "fixed" }} />
+
           {/* <LayoutContext.Provider value={layer}> */}
           {/* <button
           type="button"
