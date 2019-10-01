@@ -66,9 +66,10 @@ const useHandlers = (ref, activeSections, context) => {
     ) {
       if (isScrolling) {
         preventDefault(event)
+        event.preventDefault()
         return
       }
-
+      console.log("scroll")
       let useFallback = false
       let activeSecRef = null
 
@@ -92,6 +93,8 @@ const useHandlers = (ref, activeSections, context) => {
         // scrolling up
         scale = -1
         if (!useFallback) {
+          console.log("current activer:")
+          console.log(activeSecRef.current)
           if (isAboveViewportBottom(activeSecRef.current)) {
             target = activeSecRef
           } else {
@@ -112,6 +115,7 @@ const useHandlers = (ref, activeSections, context) => {
         return
       }
 
+      console.log(target)
       if (!useFallback && target) {
         if (!isScrolling) clearAnimationQueue()
         // if (fallbackOnLastCall && Date.now() - lastFallbackCall < 200) {
@@ -185,6 +189,7 @@ const useHandlers = (ref, activeSections, context) => {
 
       if (delta < 0) {
         // scrolling up
+        console.log("scrollup")
         scrollPage("up", e, delta)
       } else if (delta > 0) {
         // scrolling down
@@ -422,7 +427,7 @@ function Container({ children }) {
       )
     }
     return res
-  }, [children])
+  }, [children, addActiveSection, removeActiveSection, childrenRefs])
 
   // create ref for container
   const ref = useRef(null)

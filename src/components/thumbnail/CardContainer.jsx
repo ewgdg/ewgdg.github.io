@@ -3,9 +3,13 @@ import Grid from "@material-ui/core/Grid"
 
 function CardContainer({ children, style }) {
   return (
-    <Grid container spacing={3} justify="space-evenly" style={style}>
-      {children}
-    </Grid>
+    // https://stackoverflow.com/questions/19718634/how-to-disable-margin-collapsing
+    // display inline-block to prevent margin collapse to parent
+    <div style={{ display: "inline-block", width: "100%" }}>
+      <Grid container spacing={3} justify="space-around" style={{ ...style }}>
+        {children}
+      </Grid>
+    </div>
   )
 }
 

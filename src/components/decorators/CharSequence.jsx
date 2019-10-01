@@ -3,6 +3,7 @@
 /* eslint-disable no-param-reassign */
 import React, { useEffect, useRef, useCallback } from "react"
 
+// given a string return a list of chars for animation
 function CharSequence({ string, charRefs, style, className }) {
   return (
     <>

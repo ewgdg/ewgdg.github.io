@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useRef, useLayoutEffect } from "react"
 // import * as PIXI from "pixi.js"
 import * as PIXI from "plugins/PIXI"
+import React, { useLayoutEffect, useRef } from "react"
+import { debounce } from "utilities/throttle"
 import SynapGraph from "./SynapGraph"
-
 // console.log(PIXI)
 function Synap({ style }) {
   const refContainer = useRef(null)
@@ -75,7 +75,7 @@ function Synap({ style }) {
           lineContainer.addChild(graphicEdge)
         })
 
-        const speed = 0.2
+        const speed = 0.25
         tickerCallback = deltaTime => {
           for (let i = 0; i < graphicNodes.length; i += 1) {
             const graphicNode = graphicNodes[i]
@@ -103,7 +103,7 @@ function Synap({ style }) {
     }
     loadApp()
 
-    function onResize() {
+    const onResize = debounce(() => {
       const currentCanvasSize = [app.view.width, app.view.height]
       if (
         currentCanvasSize[0] <= canvasSize[0] &&
@@ -114,7 +114,7 @@ function Synap({ style }) {
       canvasSize = currentCanvasSize
       resetApp()
       loadApp()
-    }
+    }, 100)
     window.addEventListener("resize", onResize)
 
     return () => {

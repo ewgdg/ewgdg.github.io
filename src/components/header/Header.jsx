@@ -1,6 +1,7 @@
+/* eslint-disable react/destructuring-assignment */
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useContext } from "react"
 import AppBar from "@material-ui/core/AppBar"
 import Button from "@material-ui/core/Button"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -14,6 +15,7 @@ import Fab from "@material-ui/core/Fab"
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
 import Zoom from "@material-ui/core/Zoom"
 import classNames from "classnames"
+import LayoutContext from "contexts/LayoutContext"
 // const Header = ({ siteTitle }) => (
 //   <header
 //     style={{
@@ -61,10 +63,11 @@ import classNames from "classnames"
 function BackToTop(props) {
   const { children, anchorId } = props
   // const classes = useStyles();
-
+  const context = useContext(LayoutContext)
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
+    target: context.scrollLayer,
   })
 
   const handleClick = event => {
@@ -130,9 +133,6 @@ const Header = ({ position, color }) => (
           background-color: transparent;
           color: ${color};
           user-select: none;
-           {
-            /* box-shadow:none; */
-          }
         }
       `}
     </style>

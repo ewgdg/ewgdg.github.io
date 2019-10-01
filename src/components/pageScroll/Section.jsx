@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles({
   root: {
-    minHeight: "100vh",
+    height: "100vh",
     width: "100%",
     // border: "red solid 2px",
     // pointerEvents: "none",
@@ -34,14 +34,16 @@ function Section({
     <VisibilitySensor
       onChange={callback}
       partialVisibility
-      offset={{ top: 2, bottom: 2, left: 1, right: 1 }}
-      resizeCheck
-      scrollCheck
-      intervalDelay={250}
+      offset={{ top: 5, bottom: 5, left: 1, right: 1 }}
+      intervalDelay={100}
     >
-      <div ref={forwardedRef} className={classes.root}>
+      <section
+        ref={forwardedRef}
+        className={`${classes.root} section`}
+        style={{ boxSizing: "border-box", userSelect: "none" }}
+      >
         {children}
-      </div>
+      </section>
     </VisibilitySensor>
   )
 }
