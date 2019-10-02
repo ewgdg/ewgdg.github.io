@@ -1,35 +1,27 @@
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
-import {
-  TweenLite,
-  TimelineLite,
-  Power3,
-  Power1,
-  Power2,
-  Power0,
-} from "gsap/TweenLite"
+import { TweenLite, Power2 } from "gsap/TweenLite"
 import "gsap/ScrollToPlugin"
 import { getController } from "plugins/scrollmagic"
 import throttle from "./throttle"
 
-// {"ease":".25,.1,.25,1","linear":"0,0,1,1","ease-in":".42,0,1,1","ease-out":"0,0,.58,1","ease-in-out":".42,0,.58,1"}
 const easeInOut2 = BezierEasing(0.65, 0.1, 0.35, 0.99)
-const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
-const ease = BezierEasing(0.25, 0.1, 0.25, 1)
-const easeOut = BezierEasing(0, 0, 0.58, 1)
-const linear = BezierEasing(0, 0, 1, 1)
-const easeOutCubic = BezierEasing(0.215, 0.61, 0.355, 1)
-const easeOutExpo = BezierEasing(0.19, 1, 0.22, 1)
-const easeOutBow = BezierEasing(0, 0.66, 0, 0.99)
+// const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
+// const ease = BezierEasing(0.25, 0.1, 0.25, 1)
+// const easeOut = BezierEasing(0, 0, 0.58, 1)
+// const linear = BezierEasing(0, 0, 1, 1)
+// const easeOutCubic = BezierEasing(0.215, 0.61, 0.355, 1)
+// const easeOutExpo = BezierEasing(0.19, 1, 0.22, 1)
+// const easeOutBow = BezierEasing(0, 0.66, 0, 0.99)
 const easing = {
   easeInOut2,
-  easeInOut,
-  ease,
-  easeOut,
-  linear,
-  easeOutCubic,
-  easeOutExpo,
-  easeOutBow,
+  // easeInOut,
+  // ease,
+  // easeOut,
+  // linear,
+  // easeOutCubic,
+  // easeOutExpo,
+  // easeOutBow,
 }
 
 const getWindowScrollTop = () => {
@@ -67,10 +59,51 @@ function sendScrollEvent(scrollLayer) {
   })
   scrollLayer.dispatchEvent(scrollEvent)
 }
+/* an raf implementation of scrolling function */
+function legacyScrollByAnimated(elem, change, duration = 1000) {
+  let startingTime
+  let scrolledAmt = 0
+  const targetAmt = Math.abs(change)
+  const scale = change < 0 ? -1 : 1
+  let requestId
+  const easingFunc = easeInOut2
+  const animation = {
+    cancel: () => {
+      cancelAnimationFrame(requestId)
+    },
+  }
+  animationQueue.push(animation)
+  return new Promise(resolve => {
+    function scrollByRaf(currentTime) {
+      requestId = requestAnimationFrame(scrollByRaf)
+
+      const elapsedDuration = currentTime - startingTime
+      const nextScrolledAmt =
+        easingFunc(Math.min(1, elapsedDuration / duration)) * targetAmt
+
+      // equilvalent to elem.scrollBy(0, (nextScrolledAmt - scrolledAmt) * scale)
+      elem.scrollTop += (nextScrolledAmt - scrolledAmt) * scale
+      scrolledAmt = nextScrolledAmt
+
+      if (elapsedDuration >= duration) {
+        // eslint-disable-next-line no-param-reassign
+        elem.scrollTop += (targetAmt - scrolledAmt) * scale
+        scrolledAmt = targetAmt
+      }
+      if (scrolledAmt >= targetAmt) {
+        resolve()
+        cancelAnimationFrame(requestId)
+        animationQueue.shift()
+      }
+    }
+
+    requestId = requestAnimationFrame(timeStamp => {
+      startingTime = timeStamp
+      scrollByRaf(timeStamp)
+    })
+  })
+}
 function scrollByAnimated(elem, change, duration = 1000) {
-  // if (duration <= 0) {
-  //   elem.scrollTop += change
-  // }
   let tween
   const controller = getController(elem)
   const promise = new Promise(resolve => {
@@ -81,7 +114,7 @@ function scrollByAnimated(elem, change, duration = 1000) {
       ease: Power2.easeInOut,
     }).eventCallback("onUpdate", () => {
       /* 
-        manually trigger the scrollmagic update before change scrollTop
+        manually trigger the scrollmagic update after changing scrollTop
         otherwise there might be a delay and 
         the delay will cause unstable behavior 
       */
@@ -100,51 +133,10 @@ function scrollByAnimated(elem, change, duration = 1000) {
   }
   animationQueue.push(animation)
   return promise
-
-  // let startingTime
-  // let scrolledAmt = 0
-  // const targetAmt = Math.abs(change)
-  // const scale = change < 0 ? -1 : 1
-  // let requestId
-  // const animation = {
-  //   cancel: () => {
-  //     cancelAnimationFrame(requestId)
-  //   },
-  // }
-  // animationQueue.push(animation)
-  // return new Promise(resolve => {
-  //   function scrollByRaf(currentTime) {
-  //     requestId = requestAnimationFrame(scrollByRaf)
-
-  //     const elapsedDuration = currentTime - startingTime
-  //     const nextScrolledAmt = Math.ceil(
-  //       easingFunc(Math.min(1, elapsedDuration / duration)) * targetAmt
-  //     )
-
-  //     // equilvalent to elem.scrollBy(0, (nextScrolledAmt - scrolledAmt) * scale)
-  //     elem.scrollTop += (nextScrolledAmt - scrolledAmt) * scale
-  //     scrolledAmt = nextScrolledAmt
-
-  //     if (elapsedDuration >= duration) {
-  //       // eslint-disable-next-line no-param-reassign
-  //       elem.scrollTop += (targetAmt - scrolledAmt) * scale
-  //       scrolledAmt = targetAmt
-  //     }
-  //     if (scrolledAmt >= targetAmt) {
-  //       resolve()
-  //       cancelAnimationFrame(requestId)
-  //       animationQueue.shift()
-  //     }
-  //   }
-
-  //   requestId = requestAnimationFrame(timeStamp => {
-  //     startingTime = timeStamp
-  //     scrollByRaf(timeStamp)
-  //   })
-  // })
 }
 
 function clearAnimationQueue() {
+  console.log(animationQueue)
   animationQueue.forEach(animation => {
     animation.cancel()
   })
@@ -153,12 +145,14 @@ function clearAnimationQueue() {
 
 function scrollIntoView(elem, scrollLayer, duration = 700) {
   if (!scrollLayer) return Promise.reject()
-  // const scrollTop = getScrollTop(scrollLayer)
-  // const elemPosition = elem.offsetTop
-  // const change = elemPosition - scrollTop
-  // const change = Math.round(elem.getBoundingClientRect().top)
-
-  // return scrollByAnimated(scrollLayer, change, duration)
+  /*
+   * alternative way using legacy scrollByAnimated
+   * const scrollTop = getScrollTop(scrollLayer)
+   * const elemPosition = elem.offsetTop
+   * const change = elemPosition - scrollTop
+   * const change = (elem.getBoundingClientRect().top)
+   * return legacyScrollByAnimated(scrollLayer, change, duration)
+   */
   const controller = getController(scrollLayer)
   return new Promise(resolve => {
     // sendScrollEvent(scrollLayer)
@@ -168,16 +162,12 @@ function scrollIntoView(elem, scrollLayer, duration = 700) {
       ease: Power2.easeInOut,
     }).eventCallback("onUpdate", () => {
       /* 
-        manually trigger the scrollmagic update before change scrollTop
+        manually trigger the scrollmagic update after changing scrollTop
         otherwise there might be a delay and 
         the delay will cause unstable behavior 
       */
       controller.update(true)
     })
-
-    // .eventCallback("onUpdate", () => {
-    //   sendScrollEvent(scrollLayer)
-    // })
   })
 }
 
@@ -248,4 +238,5 @@ export {
   animationQueue,
   easing,
   ScrollDetector,
+  legacyScrollByAnimated,
 }
