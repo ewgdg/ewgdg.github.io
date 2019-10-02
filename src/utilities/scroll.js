@@ -136,7 +136,7 @@ function scrollByAnimated(elem, change, duration = 1000) {
 }
 
 function clearAnimationQueue() {
-  console.log(animationQueue)
+  // console.log(animationQueue)
   animationQueue.forEach(animation => {
     animation.cancel()
   })

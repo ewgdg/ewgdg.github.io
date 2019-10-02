@@ -16,13 +16,14 @@ import PortfolioPreview from "../components/widgets/PortfolioPreview"
 import AboutPreview from "../components/widgets/AboutPreview"
 import BlogPreview from "../components/widgets/BlogPreview"
 
-export const IndexPageTemplate = ({ headerImage }) => {
+export const IndexPageTemplate = ({ jumbotronProps }) => {
+  console.log(jumbotronProps)
   return (
     <PageContainer>
       <Section>
         <HeaderContainer
-          imageFluid={headerImage}
           headerProps={{ color: "white", position: "absolute" }}
+          jumbotronProps={jumbotronProps}
         />
       </Section>
       <Section>
@@ -47,12 +48,12 @@ IndexPageTemplate.propTypes = {}
 
 const IndexPage = ({ data }) => {
   const { frontmatter } = data.markdownRemark
-
+  const image = frontmatter.jumbotronProps.image.childImageSharp.fluid
   return (
     <Layout>
       <SEO title="Home" />
       <IndexPageTemplate
-        headerImage={frontmatter.image.childImageSharp.fluid}
+        jumbotronProps={{ ...frontmatter.jumbotronProps, image }}
       />
     </Layout>
   )
@@ -64,14 +65,18 @@ IndexPage.propTypes = {
     }),
   }),
 }
-export const pageQuery = graphql`
+export const query = graphql`
   query IndexPageTemplate {
     markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
       frontmatter {
-        image {
-          childImageSharp {
-            fluid(maxWidth: 2048, quality: 100) {
-              ...GatsbyImageSharpFluid
+        jumbotronProps {
+          headline
+          subtitle
+          image {
+            childImageSharp {
+              fluid(maxWidth: 2048, quality: 100) {
+                ...GatsbyImageSharpFluid
+              }
             }
           }
         }

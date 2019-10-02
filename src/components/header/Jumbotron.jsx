@@ -7,8 +7,7 @@ import Img from "gatsby-image"
 const Jumbotron = ({
   image,
   headline,
-  bottomline,
-  children,
+  subtitle,
   darkFilter,
   imageAttachAsBackground,
 }) => {
@@ -33,11 +32,15 @@ const Jumbotron = ({
   if (imageAttachAsBackground) {
     figureStyle = {
       backgroundAttachment: "fixed",
-      backgroundImage: `url(${imgFluid.src})`,
+      backgroundImage: `url(${imgFluid.src || imgFluid})`,
       backgroundSize: "cover",
       backgroundPosition: "center center",
     }
   }
+
+  console.log(subtitle)
+  const lines = headline.split("\\n")
+  const [firstLine, ...restLines] = lines
   return (
     <figure style={figureStyle}>
       {!imageAttachAsBackground && (
@@ -55,15 +58,16 @@ const Jumbotron = ({
       <div className="headlineContainer">
         <div style={{ margin: 0, padding: 0 }}>
           <h1 className="headline">
-            Keyboard is
-            {headline}
+            {/* Keyboard is */}
+            {firstLine}
           </h1>
-          <p style={{ margin: 0 }}>键盘侠</p>
-          {children}
-          <h1 className="headline">
-            My weapon
-            {bottomline}
-          </h1>
+          <p style={{ margin: 0 }}>{subtitle}</p>
+          {restLines.map(line => (
+            <h1 className="headline" key={line}>
+              {/* My weapon */}
+              {line}
+            </h1>
+          ))}
         </div>
       </div>
 
@@ -116,7 +120,10 @@ const Jumbotron = ({
 }
 
 Jumbotron.propTypes = {
-  image: PropTypes.shape({ base64: PropTypes.string }),
+  image: PropTypes.oneOfType([
+    PropTypes.shape({ src: PropTypes.string }),
+    PropTypes.string,
+  ]),
   headline: PropTypes.string,
   darkFilter: PropTypes.number,
   imageAttachAsBackground: PropTypes.bool,
