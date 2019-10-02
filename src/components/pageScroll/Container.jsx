@@ -12,6 +12,7 @@ import {
   isAnyInViewport,
   isAboveViewportBottom,
   isBelowViewportTop,
+  isInViewport,
 } from "../../utilities/isInViewport"
 import {
   scrollIntoView,
@@ -32,7 +33,7 @@ const useStyles = makeStyles({
     // "touch-action": "pan-x pinch-zoom",
   },
 })
-const useHandlers = (ref, activeSections, context) => {
+const useHandlers = (ref, childrenRefs, context) => {
   // create dom event handler, same as useCallback( function factory(param)(args) )
   return useMemo(() => {
     let isScrolling = false
@@ -40,15 +41,8 @@ const useHandlers = (ref, activeSections, context) => {
 
     const touchPointYList = []
     const touchPointTimeStamp = []
-    const touchEventList = []
     let isPointerDown = false
-    let touchEventStart
-    let touchStartX
-    let touchStartY
-    let touchEndX
-    let touchEndY
-    let fallbackOnLastCall = false
-    const lastFallbackCall = 0
+
     function preventDefault(e) {
       if (e.cancelable || !e.isCustomEvent) {
         // e.preventDefault()
@@ -57,44 +51,41 @@ const useHandlers = (ref, activeSections, context) => {
         e.stopPropagation()
       }
     }
-    function scrollPage(
-      direction,
-      event,
-      delta,
-      scrollLayer = context.scrollLayer,
-      easingFunc
-    ) {
+    function scrollPage(direction, event, scrollLayer = context.scrollLayer) {
       if (isScrolling) {
         preventDefault(event)
         event.preventDefault()
         return
       }
-      console.log("scroll")
+
       let useFallback = false
       let activeSecRef = null
 
       // ignore the scroll event if the container is not in viewport
       if (!ref.current || !isAnyInViewport(ref.current)) {
         useFallback = true
-      } else if (activeSections.current.length <= 0) {
-        useFallback = true
       } else {
-        // eslint-disable-next-line prefer-destructuring
-        activeSecRef = activeSections.current[0]
+        const size = childrenRefs.length
+
+        for (let i = 0; i < size; i += 1) {
+          const childRef = childrenRefs[i]
+          const elem = childRef.current
+          if (isAnyInViewport(elem, 5)) {
+            activeSecRef = childRef
+            break
+          }
+        }
         if (!activeSecRef || !activeSecRef.current) {
           useFallback = true
         }
       }
 
       let target = null
-      let scale = 0
 
       if (direction === "up") {
         // scrolling up
-        scale = -1
+
         if (!useFallback) {
-          console.log("current activer:")
-          console.log(activeSecRef.current)
           if (isAboveViewportBottom(activeSecRef.current)) {
             target = activeSecRef
           } else {
@@ -103,7 +94,7 @@ const useHandlers = (ref, activeSections, context) => {
         }
       } else if (direction === "down") {
         // scrolling down
-        scale = 1
+
         if (!useFallback) {
           if (isBelowViewportTop(activeSecRef.current)) {
             target = activeSecRef
@@ -115,68 +106,19 @@ const useHandlers = (ref, activeSections, context) => {
         return
       }
 
-      console.log(target)
       if (!useFallback && target) {
         if (!isScrolling) clearAnimationQueue()
-        // if (fallbackOnLastCall && Date.now() - lastFallbackCall < 200) {
-        //   return
-        // }
-        if (delta && Math.abs(delta) < 2) {
-          return
-        }
-        fallbackOnLastCall = false
+
         target = target.current
 
         isScrolling = true
-        // event.preventDefault()
-        // // event.stopPropagation()
+
         preventDefault(event)
         event.preventDefault()
-        const promise = scrollIntoView(target, scrollLayer, 777, undefined)
+        const promise = scrollIntoView(target, scrollLayer, 777)
         promise.then(() => {
           isScrolling = false
         })
-        // scrollLayer.scrollTo(0, target.offsetTop)
-        // scrollLayer.scrollTo(0, 0)
-        // console.log(target.offsetTop)
-      } else {
-        // console.log(event)
-        // // if (delta === 0) {
-        // // touch event
-        // const touchstartEvent = touchEventStart
-        // const startTime = touchPointTimeStamp[0]
-        // const customStartEvent = new TouchEvent("touchstart", touchstartEvent)
-        // // customEvent.type = "touchstart"
-        // customStartEvent.isCustomEvent = true
-        // setTimeout(scrollLayer.dispatchEvent(customStartEvent), 0)
-        // for (let i = 0; i < touchEventList.length; i += 1) {
-        //   const customMoveEvent = new TouchEvent("touchmove", touchEventList[i])
-        //   customMoveEvent.isCustomEvent = true
-        //   const delay = touchPointTimeStamp[i] - startTime
-        //   setTimeout(scrollLayer.dispatchEvent(customMoveEvent), delay)
-        // }
-        // const customEndEvent = new TouchEvent("touchend", event)
-        // customEndEvent.isCustomEvent = true
-        // setTimeout(
-        //   scrollLayer.dispatchEvent(customEndEvent),
-        //   Date.now() - startTime
-        // )
-        // // }
-        // fallbackOnLastCall = true
-        // lastFallbackCall = Date.now()
-        // let value = delta
-        // if (!delta) {
-        //   value = 100 * scale
-        // }
-        // // event.preventDefault()
-        // preventDefault(event)
-        // // event.stopPropagation()
-        // if (Math.abs(value) >= 100)
-        //   scrollByAnimated(
-        //     scrollLayer,
-        //     value,
-        //     Math.sqrt(Math.abs(value) / 100) * 333
-        //   )
       }
     }
 
@@ -186,50 +128,36 @@ const useHandlers = (ref, activeSections, context) => {
         return
       }
       const delta = e.deltaY
-
+      if (Math.abs(delta) <= 2) {
+        return
+      }
       if (delta < 0) {
         // scrolling up
-        console.log("scrollup")
-        scrollPage("up", e, delta)
+
+        scrollPage("up", e)
       } else if (delta > 0) {
         // scrolling down
-        scrollPage("down", e, delta)
+        scrollPage("down", e)
       }
     }
 
     function pointerDownHandler(e) {
-      // console.log(e)
       isPointerDown = true
 
       touchPointYList.splice(0)
       touchPointTimeStamp.splice(0)
-      touchEventList.splice(0)
+
       if (isScrolling) {
         preventDefault(e)
         return
       }
-      // const touchList = e.changedTouches
-      // if (touchList.length > 1) {
-      //   touchPointYList.splice(0)
-      //   touchPointTimeStamp.splice(0)
-      //   touchEventList.splice(0)
-      //   return
-      // }
-      // e.preventDefault()
-      // e.stopPropagation()
+
       preventDefault(e)
       clearAnimationQueue()
       const touchPoint = e
-      touchStartY = touchPoint.clientY
-      touchEventStart = e
+
       touchPointYList.push(touchPoint.clientY)
       touchPointTimeStamp.push(performance.now())
-      // touchEventList.push(e)
-      // while (touchPointYList.length > 5) {
-      //   touchPointYList.unshift()
-      //   touchPointTimeStamp.unshift()
-      //   touchEventList.unshift()
-      // }
     }
     function pointerMoveHandler(e) {
       if (!isPointerDown) {
@@ -241,15 +169,7 @@ const useHandlers = (ref, activeSections, context) => {
         e.preventDefault()
         return
       }
-      // console.log("move")
-      // const touchList = e.changedTouches
-      // if (touchList.length > 1) {
-      //   console.log("wrong")
-      //   touchPointYList.splice(0)
-      //   touchPointTimeStamp.splice(0)
-      //   touchEventList.splice(0)
-      //   return
-      // }
+
       preventDefault(e)
       e.preventDefault()
       const touchPoint = e
@@ -265,43 +185,34 @@ const useHandlers = (ref, activeSections, context) => {
       while (touchPointYList.length > 5) {
         touchPointYList.shift()
         touchPointTimeStamp.shift()
-        // touchEventList.shift()
       }
 
       if (Math.abs(verticalMove) > 0) {
-        scrollByAnimated(
-          context.scrollLayer,
-          -verticalMove,
-          1,
-          easing.easeOutExpo
-        )
+        scrollByAnimated(context.scrollLayer, -verticalMove, 1)
       }
     }
     function pointerUpHandler(e) {
-      // console.log("up")
-      // console.log(isPointerDown)
       if (!isPointerDown) return
       isPointerDown = false
 
       if (isScrolling || touchPointYList.length <= 0) {
         preventDefault(e)
+        e.preventDefault()
         return
       }
-      // const touchList = e.changedTouches
-      // if (touchList.length > 1) return
+
       preventDefault(e)
 
       if (touchPointYList.length <= 0) {
         return
       }
 
-      // e.stopPropagation()
       const touchPoint = e
-      // touchEndX = touchPoint.clientX
-      touchEndY = touchPoint.clientY
+
+      const touchEndY = touchPoint.clientY
 
       const verticalMove = touchEndY - touchPointYList[0]
-      let idlingTime = performance.now() // - touchPointTimeStamp[touchPointTimeStamp.length - 1]
+      let idlingTime = performance.now()
 
       for (let i = touchPointYList.length - 1; i >= 0; i -= 1) {
         if (Math.abs(touchEndY - touchPointYList[i]) >= 2 || i === 0) {
@@ -316,23 +227,19 @@ const useHandlers = (ref, activeSections, context) => {
         ready = false
       }
       if (ready && verticalMove > 0) {
-        // verticalSpeed = Math.max(0, verticalSpeed - 125)
-        scrollPage("up", e, 0, undefined, easing.easeOutCubic)
+        scrollPage("up", e)
       } else if (ready && verticalMove < 0) {
-        // verticalSpeed = Math.max(0, verticalSpeed - 125)
-        scrollPage("down", e, 0, undefined, easing.easeOutCubic)
+        scrollPage("down", e)
       }
-      // touchPointYList.splice(0)
-      // touchPointTimeStamp.splice(0)
-      // touchEventList.splice(0)
     }
 
     function pointerCancelHandler(e) {
       if (!isPointerDown) return
-      // console.log("cancel")
+
       touchPointYList.splice(0)
+      touchPointTimeStamp.splice(0)
       isPointerDown = false
-      // console.log(isPointerDown)
+
       preventDefault(e)
       e.preventDefault()
     }
@@ -361,15 +268,9 @@ const useHandlers = (ref, activeSections, context) => {
       pointerUpHandler,
       pointerCancelHandler,
     ]
-  }, [ref, activeSections, context])
+  }, [ref, context, childrenRefs])
 }
 function Container({ children }) {
-  /* 
-    avoid adding more children once the containder is instantiated,
-    otherwise the list of childrenRefs will be updated and the data of previous state is removed,
-    the active sections will be lost.
-  */
-
   const classes = useStyles()
 
   // get or create references for child nodes
@@ -394,25 +295,6 @@ function Container({ children }) {
     return list
   }, [React.Children.count(children)])
 
-  const activeSections = useMemo(() => {
-    return { current: [] }
-  }, [childrenRefs])
-
-  const addActiveSection = useCallback(
-    sectionRef => {
-      activeSections.current.unshift(sectionRef)
-    },
-    [activeSections]
-  )
-  const removeActiveSection = useCallback(
-    sectionRef => {
-      activeSections.current = activeSections.current.filter(
-        elem => !Object.is(sectionRef, elem)
-      )
-    },
-    [activeSections]
-  )
-
   // clone children to add props
   const clonedChildren = useMemo(() => {
     const res = []
@@ -421,13 +303,11 @@ function Container({ children }) {
       res.push(
         React.cloneElement(childrenArray[i], {
           forwardedRef: childrenRefs[i],
-          addActiveSection,
-          removeActiveSection,
         })
       )
     }
     return res
-  }, [children, addActiveSection, removeActiveSection, childrenRefs])
+  }, [children, childrenRefs])
 
   // create ref for container
   const ref = useRef(null)
@@ -442,7 +322,7 @@ function Container({ children }) {
     pointerMoveHandler,
     pointerUpHandler,
     pointerCancelHandler,
-  ] = useHandlers(ref, activeSections, context)
+  ] = useHandlers(ref, childrenRefs, context)
 
   // add dom event listener
   useEffect(() => {
@@ -464,14 +344,6 @@ function Container({ children }) {
       passive: false,
     })
 
-    // console.log(document.querySelector("button#tester"))
-    // document
-    //   .querySelector("button#tester")
-    //   .addEventListener("touchstart", e => {
-    //     console.log("touch button")
-    //     console.log(e)
-    //     // e.stopPropagation()
-    //   })
     return () => {
       ref.current.removeEventListener("wheel", wheelHander)
       scrollLayer.removeEventListener("keydown", keyDownHandler)
@@ -485,9 +357,6 @@ function Container({ children }) {
 
   return (
     <div className={classes.root} ref={ref} id="pageContainer">
-      {/* <button type="button" id="tester">
-        tester
-      </button> */}
       {clonedChildren}
     </div>
   )

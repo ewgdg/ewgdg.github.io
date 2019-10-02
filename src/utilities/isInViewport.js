@@ -33,15 +33,15 @@ function isBelowViewportTop(elem) {
   return distance.top - offset > 0
 }
 
-function isAnyInViewport(elem) {
+function isAnyInViewport(elem, offset = 0) {
   if (!elem) return false
   const distance = elem.getBoundingClientRect()
   return (
-    distance.top <=
+    distance.top + offset <=
       (window.innerHeight || document.documentElement.clientHeight) &&
     distance.left <=
       (window.innerWidth || document.documentElement.clientWidth) &&
-    distance.bottom >= 0 &&
+    distance.bottom - offset >= 0 &&
     distance.right >= 0
   )
 }

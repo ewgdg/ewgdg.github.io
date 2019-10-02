@@ -1,6 +1,5 @@
-import React, { useCallback } from "react"
+import React from "react"
 import PropTypes from "prop-types"
-import VisibilitySensor from "react-visibility-sensor"
 import { makeStyles } from "@material-ui/styles"
 
 const useStyles = makeStyles({
@@ -12,39 +11,17 @@ const useStyles = makeStyles({
   },
 })
 
-function Section({
-  children,
-  forwardedRef,
-  addActiveSection,
-  removeActiveSection,
-}) {
+function Section({ children, forwardedRef }) {
   const classes = useStyles()
-  const callback = useCallback(
-    isVisible => {
-      if (isVisible) {
-        addActiveSection(forwardedRef)
-      } else {
-        removeActiveSection(forwardedRef)
-      }
-    },
-    [forwardedRef, addActiveSection, removeActiveSection]
-  )
 
   return (
-    <VisibilitySensor
-      onChange={callback}
-      partialVisibility
-      offset={{ top: 5, bottom: 5, left: 1, right: 1 }}
-      intervalDelay={100}
+    <section
+      ref={forwardedRef}
+      className={`${classes.root} section`}
+      style={{ boxSizing: "border-box", userSelect: "none" }}
     >
-      <section
-        ref={forwardedRef}
-        className={`${classes.root} section`}
-        style={{ boxSizing: "border-box", userSelect: "none" }}
-      >
-        {children}
-      </section>
-    </VisibilitySensor>
+      {children}
+    </section>
   )
 }
 
@@ -53,14 +30,10 @@ Section.propTypes = {
   forwardedRef: PropTypes.shape({
     current: PropTypes.any,
   }),
-  addActiveSection: PropTypes.func,
-  removeActiveSection: PropTypes.func,
 }
 Section.defaultProps = {
   children: undefined,
   forwardedRef: undefined,
-  addActiveSection: undefined,
-  removeActiveSection: undefined,
 }
 
 export default Section
