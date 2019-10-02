@@ -67,12 +67,7 @@ function sendScrollEvent(scrollLayer) {
   })
   scrollLayer.dispatchEvent(scrollEvent)
 }
-function scrollByAnimated(
-  elem,
-  change,
-  duration = 1000,
-  easingFunc = easing.easeInOut2
-) {
+function scrollByAnimated(elem, change, duration = 1000) {
   // if (duration <= 0) {
   //   elem.scrollTop += change
   // }
