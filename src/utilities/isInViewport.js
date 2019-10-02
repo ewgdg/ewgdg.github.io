@@ -17,19 +17,19 @@ function isInViewport(elem) {
   )
 }
 
-function isAboveViewportBottom(elem) {
+function isAboveViewportBottom(elem, offset = 1) {
   if (!elem) return false
   const distance = elem.getBoundingClientRect()
-  const offset = 1
+
   return (
     distance.bottom + offset <
     (window.innerHeight || document.documentElement.clientHeight)
   )
 }
-function isBelowViewportTop(elem) {
+function isBelowViewportTop(elem, offset = 1) {
   if (!elem) return false
   const distance = elem.getBoundingClientRect()
-  const offset = 1
+
   return distance.top - offset > 0
 }
 

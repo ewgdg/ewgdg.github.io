@@ -1,36 +1,22 @@
-import React, {
-  useMemo,
-  useRef,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useContext,
-} from "react"
+import React, { useMemo, useRef, useEffect, useContext } from "react"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import {
   isAnyInViewport,
   isAboveViewportBottom,
   isBelowViewportTop,
-  isInViewport,
 } from "../../utilities/isInViewport"
 import {
   scrollIntoView,
   scrollByAnimated,
   clearAnimationQueue,
-  animationQueue,
-  easing,
 } from "../../utilities/scroll"
 import LayoutContext from "../../contexts/LayoutContext"
 
 const useStyles = makeStyles({
   root: {
-    // background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
     border: 0,
     borderRadius: 3,
-    // boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
-    // color: "white",
-    // "touch-action": "pan-x pinch-zoom",
   },
 })
 const useHandlers = (ref, childrenRefs, context) => {
@@ -65,9 +51,18 @@ const useHandlers = (ref, childrenRefs, context) => {
       if (!ref.current || !isAnyInViewport(ref.current)) {
         useFallback = true
       } else {
+        // find current active section that is in viewport
         const size = childrenRefs.length
-
-        for (let i = 0; i < size; i += 1) {
+        let i0
+        let step
+        if (direction === "up") {
+          i0 = 0
+          step = 1
+        } else if (direction === "down") {
+          i0 = size - 1
+          step = -1
+        }
+        for (let i = i0; i < size && i >= 0; i += step) {
           const childRef = childrenRefs[i]
           const elem = childRef.current
           if (isAnyInViewport(elem, 5)) {
@@ -248,9 +243,9 @@ const useHandlers = (ref, childrenRefs, context) => {
         // ctrl key is pressed
         isZooming = true
       } else if (e.key === "ArrowUp") {
-        scrollPage("up", e, undefined, easing.easeOutCubic)
+        scrollPage("up", e)
       } else if (e.key === "ArrowDown") {
-        scrollPage("down", e, undefined, easing.easeOutCubic)
+        scrollPage("down", e)
       }
     }
     function keyUpHandler(e) {
