@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import Jumbotron from "./Jumbotron"
 import Header from "./Header"
 
-function HeaderContainer({ imageFluid, headerProps }) {
+function HeaderContainer({ jumbotronProps, headerProps }) {
   return (
     <div
       style={{
@@ -14,12 +14,12 @@ function HeaderContainer({ imageFluid, headerProps }) {
       }}
     >
       <Header {...headerProps} />
-      {imageFluid && <Jumbotron image={imageFluid} />}
+      {jumbotronProps.image && <Jumbotron {...jumbotronProps} />}
     </div>
   )
 }
 HeaderContainer.propTypes = {
-  imageFluid: PropTypes.shape({}),
+  jumbotronProps: PropTypes.shape({ image: PropTypes.any }),
   headerProps: PropTypes.shape({
     color: PropTypes.string,
     display: PropTypes.string,
@@ -31,7 +31,7 @@ HeaderContainer.defaultProps = {
     position: "absolute",
     color: "white",
   },
-  imageFluid: null,
+  jumbotronProps: { image: null },
 }
 
 export default HeaderContainer

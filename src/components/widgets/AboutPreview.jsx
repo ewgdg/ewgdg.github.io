@@ -20,6 +20,7 @@ import LayoutContext from "contexts/LayoutContext"
 
 import { getController, ScrollMagic } from "plugins/scrollmagic"
 import FlexContainer from "../decorators/FlexContainer"
+import { debounce } from "../../utilities/throttle"
 
 const useStyles = makeStyles({
   charSequenceContainer: {
@@ -144,7 +145,13 @@ function About() {
       .setTween(animation)
       .addIndicators()
       .addTo(controller)
-    console.log(containerScene)
+    // console.log(containerScene)
+    const onResize = debounce(() => {
+      containerScene.refresh()
+      // scene.progress(old)
+    }, 100)
+    // reset trigger elem when resizing as start position may changes
+    window.addEventListener("resize", onResize)
 
     // document.querySelector("div#ribbon").addEventListener("scroll", e => {
     //   console.log(e)
@@ -155,11 +162,10 @@ function About() {
       containerScene.destroy()
       animation.progress(1)
       animation.kill()
+      window.removeEventListener("resize", onResize)
     }
   }, [context])
 
-  const [state, setState] = useState({ str: "aaaabb" })
-  const testRef = useRef(null)
   return (
     <FlexContainer>
       <div style={{ width: "100%", height: "auto" }}>

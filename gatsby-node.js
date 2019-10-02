@@ -111,18 +111,20 @@ exports.createPages = async ({ actions, graphql }) => {
   posts.forEach(edge => {
     const { id } = edge.node
     const { node } = edge
-    createPage({
-      path: node.fields.slug,
-      tags: node.frontmatter.tags,
-      component: path.resolve(
-        `src/templates/${String(node.frontmatter.templateKey)}.jsx`
-      ),
-      // additional data can be passed via context
-      context: {
-        id,
-        slug: node.fields.slug,
-      },
-    })
+    if (node.frontmatter.templateKey) {
+      createPage({
+        path: node.fields.slug,
+        tags: node.frontmatter.tags,
+        component: path.resolve(
+          `src/templates/${String(node.frontmatter.templateKey)}.jsx`
+        ),
+        // additional data can be passed via context
+        context: {
+          id,
+          slug: node.fields.slug,
+        },
+      })
+    }
   })
 }
 

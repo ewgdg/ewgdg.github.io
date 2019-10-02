@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import AppBar from "@material-ui/core/AppBar"
 import Button from "@material-ui/core/Button"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -10,12 +10,15 @@ import MenuIcon from "@material-ui/icons/Menu"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 import Grid from "@material-ui/core/Grid"
-import useScrollTrigger from "@material-ui/core/useScrollTrigger"
 import Fab from "@material-ui/core/Fab"
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
 import Zoom from "@material-ui/core/Zoom"
 import classNames from "classnames"
 import LayoutContext from "contexts/LayoutContext"
+import { getController, ScrollMagic } from "plugins/scrollmagic"
+
+import { scrollIntoView } from "../../utilities/scroll"
+
 // const Header = ({ siteTitle }) => (
 //   <header
 //     style={{
@@ -60,12 +63,33 @@ import LayoutContext from "contexts/LayoutContext"
 // Header.defaultProps = {
 //   siteTitle: '',
 // };
+
+function useScrollTrigger({ threshold, target }) {
+  const [trigger, setTrigger] = useState(false)
+  useEffect(() => {
+    const controller = getController(target)
+    const scene = new ScrollMagic.Scene({
+      triggerHook: 0,
+      offset: threshold,
+    })
+      .on("start", e => {
+        setTrigger(e.scrollDirection !== "REVERSE")
+      })
+      .addTo(controller)
+      .addIndicators()
+
+    return () => {
+      if (controller) controller.removeScene(scene)
+      scene.destroy(true)
+    }
+  }, [threshold, target])
+  return trigger
+}
 function BackToTop(props) {
   const { children, anchorId } = props
   // const classes = useStyles();
   const context = useContext(LayoutContext)
   const trigger = useScrollTrigger({
-    disableHysteresis: true,
     threshold: 100,
     target: context.scrollLayer,
   })
@@ -75,7 +99,8 @@ function BackToTop(props) {
       `#${anchorId}`
     )
     if (anchor) {
-      anchor.scrollIntoView({ behavior: "smooth", block: "start" })
+      scrollIntoView(anchor, context.scrollLayer, 888)
+      // anchor.scrollIntoView({ behavior: "smooth", block: "start" })
     }
   }
 
