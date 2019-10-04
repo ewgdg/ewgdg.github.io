@@ -10,7 +10,7 @@ import ImageBasedCard from "components/thumbnail/ImageBasedCard"
 import CardContainer from "components/thumbnail/CardContainer"
 import AnimatedTitle from "components/heading/AnimatedTitle"
 import Container from "@material-ui/core/Container"
-import ObjectFitSection from "../decorators/ObjectFitSection"
+import ParallaxSection from "../decorators/ParallaxSection"
 import FlexContainer from "../decorators/FlexContainer"
 
 function PortfolioPreview() {

@@ -1,0 +1,69 @@
+/* eslint-disable react/prop-types */
+import React, { useEffect, useRef } from "react"
+import { graphql } from "gatsby"
+import uuid from "uuid/v4"
+import GridList from "@material-ui/core/GridList"
+import GridListTile from "@material-ui/core/GridListTile"
+import { makeStyles } from "@material-ui/styles"
+import Grid from "@material-ui/core/Grid"
+import Layout from "../components/Layout"
+import SEO from "../components/Seo"
+import HeaderContainer from "../components/header/HeaderContainer"
+import Bubble from "../components/bubbles/Bubble"
+import ParallaxSection from "../components/decorators/ParallaxSection"
+import BubbleTank from "../components/bubbles/BubbleTank"
+
+export const AboutPageTemplate = ({ jumbotronProps }) => {
+  const tileData = []
+  tileData.length = 20
+  tileData.fill(1)
+  const cellHeight = 200
+  const cellsPerRow = 5
+
+  return (
+    <div>
+      <HeaderContainer
+        headerProps={{ color: "white", position: "absolute" }}
+        jumbotronProps={jumbotronProps}
+      />
+      <BubbleTank
+        data={tileData}
+        cellHeight={cellHeight}
+        cellsPerRow={cellsPerRow}
+        header="Some fun facts about me"
+      />
+    </div>
+  )
+}
+
+export default function AboutPage({ data }) {
+  const { frontmatter } = data.markdownRemark
+  const image = frontmatter.jumbotronProps.image.childImageSharp.fluid
+  return (
+    <Layout>
+      <SEO title="Home" />
+      <AboutPageTemplate
+        jumbotronProps={{ ...frontmatter.jumbotronProps, image }}
+      />
+    </Layout>
+  )
+}
+export const query = graphql`
+  query AboutPageTempate {
+    markdownRemark(frontmatter: { templateKey: { eq: "AboutPage" } }) {
+      frontmatter {
+        jumbotronProps: jumbotron {
+          headline
+          subtitle
+          image {
+            childImageSharp {
+              fluid(maxWidth: 2048, quality: 100) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
