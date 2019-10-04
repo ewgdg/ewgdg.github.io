@@ -19,10 +19,18 @@ import { debounce } from "utilities/throttle"
  gradually moves the given child component down and hide the overflow part,
  when scrolling down the page 
 */
-function ObjectFitSection({ children, style }) {
+function ParallaxSection({
+  children,
+  style,
+  triggerHook = 0,
+  maxProgressValue = 50,
+  progressUnit = "%",
+  fade = 0,
+}) {
   const containerRef = useRef(null)
   const contentRef = useRef(null)
-  const [y, setY] = useState(1)
+  const [y, setY] = useState(0)
+  const [opacity, setOpacity] = useState(1)
   const context = useContext(LayoutContext)
   if (!context.scrollLayer) return null
   useEffect(() => {
@@ -31,7 +39,7 @@ function ObjectFitSection({ children, style }) {
     // const lastTimeStamp = performance.now()
     const scene = new ScrollMagic.Scene({
       triggerElement: containerRef.current,
-      triggerHook: 0,
+      triggerHook,
       duration: context.scrollLayer.clientHeight,
       reverse: true,
     })
@@ -53,9 +61,10 @@ function ObjectFitSection({ children, style }) {
         //     (event.scrollPos - event.startPos) / (event.endPos - event.startPos)
         //   )
         // )
-        const newY = progress * 100 * 0.5
-
+        const newY = `${progress * maxProgressValue}${progressUnit}`
+        const newOpacity = 1 - progress * fade
         setY(newY)
+        setOpacity(newOpacity)
 
         // console.log(`newY ${newY}`)
         // contentRef.current.style.position = "fixed"
@@ -95,8 +104,10 @@ function ObjectFitSection({ children, style }) {
       <div
         ref={contentRef}
         style={{
-          transform: `translate3d(0,${y}%,0)`,
+          position: "relative",
+          transform: `translate3d(0,${y},0)`,
           backfaceVisibility: "hidden",
+          opacity: `${opacity}`,
         }}
       >
         {children}
@@ -105,4 +116,4 @@ function ObjectFitSection({ children, style }) {
   )
 }
 
-export default ObjectFitSection
+export default ParallaxSection

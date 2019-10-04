@@ -1,10 +1,11 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/require-default-props */
 import React from "react"
 import { Link, graphql } from "gatsby"
 
 import PropTypes from "prop-types"
 
-import ObjectFitSection from "../components/decorators/ObjectFitSection"
+import ParallaxSection from "../components/decorators/ParallaxSection"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
@@ -17,7 +18,6 @@ import AboutPreview from "../components/widgets/AboutPreview"
 import BlogPreview from "../components/widgets/BlogPreview"
 
 export const IndexPageTemplate = ({ jumbotronProps }) => {
-  console.log(jumbotronProps)
   return (
     <PageContainer>
       <Section>
@@ -27,19 +27,19 @@ export const IndexPageTemplate = ({ jumbotronProps }) => {
         />
       </Section>
       <Section>
-        <ObjectFitSection>
+        <ParallaxSection>
           <AboutPreview />
-        </ObjectFitSection>
+        </ParallaxSection>
       </Section>
       <Section>
-        <ObjectFitSection>
+        <ParallaxSection>
           <PortfolioPreview />
-        </ObjectFitSection>
+        </ParallaxSection>
       </Section>
       <Section>
-        <ObjectFitSection>
+        <ParallaxSection>
           <BlogPreview />
-        </ObjectFitSection>
+        </ParallaxSection>
       </Section>
     </PageContainer>
   )
@@ -67,9 +67,9 @@ IndexPage.propTypes = {
 }
 export const query = graphql`
   query IndexPageTemplate {
-    markdownRemark(frontmatter: { templateKey: { eq: "index-page" } }) {
+    markdownRemark(frontmatter: { templateKey: { eq: "IndexPage" } }) {
       frontmatter {
-        jumbotronProps {
+        jumbotronProps: jumbotron {
           headline
           subtitle
           image {

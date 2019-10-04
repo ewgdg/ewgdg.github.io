@@ -36,7 +36,8 @@
     "react-helmet": "^5.2.1",
     "scrollmagic": "^2.0.7",
     "styled-jsx": "^3.2.2",
-    "typeface-roboto": "0.0.75"
+    "typeface-roboto": "0.0.75",
+    "uuid": "^3.3.3"
   },
   "devDependencies": {
     "@hot-loader/react-dom": "^16.9.0",
