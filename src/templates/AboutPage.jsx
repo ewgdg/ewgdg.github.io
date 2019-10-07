@@ -13,7 +13,7 @@ import Bubble from "../components/bubbles/Bubble"
 import ParallaxSection from "../components/decorators/ParallaxSection"
 import BubbleTank from "../components/bubbles/BubbleTank"
 
-export const AboutPageTemplate = ({ jumbotronProps }) => {
+export const AboutPageTemplate = ({ jumbotronProps, facts }) => {
   const tileData = []
   tileData.length = 20
   tileData.fill(1)
@@ -27,7 +27,7 @@ export const AboutPageTemplate = ({ jumbotronProps }) => {
         jumbotronProps={jumbotronProps}
       />
       <BubbleTank
-        data={tileData}
+        data={facts}
         cellHeight={cellHeight}
         cellsPerRow={cellsPerRow}
         header="Some fun facts about me"
@@ -38,12 +38,13 @@ export const AboutPageTemplate = ({ jumbotronProps }) => {
 
 export default function AboutPage({ data }) {
   const { frontmatter } = data.markdownRemark
-  const image = frontmatter.jumbotronProps.image.childImageSharp.fluid
+  const { facts } = frontmatter
   return (
     <Layout>
       <SEO title="Home" />
       <AboutPageTemplate
-        jumbotronProps={{ ...frontmatter.jumbotronProps, image }}
+        jumbotronProps={frontmatter.jumbotronProps}
+        facts={facts}
       />
     </Layout>
   )
@@ -62,6 +63,18 @@ export const query = graphql`
               }
             }
           }
+        }
+        facts {
+          title
+          description
+          image {
+            childImageSharp {
+              fluid(maxWidth: 700, quality: 80) {
+                ...GatsbyImageSharpFluid
+              }
+            }
+          }
+          links
         }
       }
     }

@@ -1,5 +1,6 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useMemo } from "react"
 import uuid from "uuid/v4"
 import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
@@ -33,6 +34,12 @@ const useTileStyles = makeStyles({
     overflow: "visible",
   },
 })
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
+  }
+}
 function useInitCells(dataSize, cellsPerRow) {
   const willMount = useRef(true)
 
@@ -62,7 +69,7 @@ function useInitCells(dataSize, cellsPerRow) {
   return cells.current
 }
 function random(min, max, isInteger = true) {
-  let res = Math.random() * (max - min + 1)
+  let res = Math.random() * (max - min + (isInteger ? 1 : 0))
   if (isInteger) res = Math.floor(res)
   return res + min
 }
@@ -132,6 +139,8 @@ function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
           maxY: rows * cellHeight - radius * 2 + boundingOffset,
           minY: 0 - boundingOffset,
         },
+        fade: random(0.3, 1, false),
+        maxProgress: random(0, 0.8, false),
       })
     }
   }
@@ -151,6 +160,11 @@ export default function BubbleTank({
   const bubbles = useInitBubbles(dataSize, cellHeight, cellsPerRow)
   const cells = useInitCells(dataSize, cellsPerRow)
   const viewportHeight = window.innerHeight
+  const unorderedData = useMemo(() => {
+    const copy = [...data]
+    shuffle(copy)
+    return copy
+  }, [data])
   return (
     <GridList
       spacing={0}
@@ -178,23 +192,29 @@ export default function BubbleTank({
       )}
       {cells.map(index => {
         let component = null
-        let bubble = null
+        let bubbleProps = null
 
         if (index >= 0) {
-          bubble = bubbles[index]
+          bubbleProps = bubbles[index]
+          const bubbleData = unorderedData[index]
           component = (
             <Bubble
-              radius={bubble.radius}
+              radius={bubbleProps.radius}
               style={{
                 color: "white",
-                backgroundColor: bubble.color,
+                backgroundColor: bubbleProps.color,
                 position: "absolute",
-                top: `${bubble.pos[1]}px`,
-                left: `${bubble.pos[0]}px`,
+                top: `${bubbleProps.pos[1]}px`,
+                left: `${bubbleProps.pos[0]}px`,
               }}
-              boundings={bubble.boundings}
+              boundings={bubbleProps.boundings}
+              title={bubbleData.title}
+              description={bubbleData.description}
+              image={bubbleData.image}
+              links={bubbleData.links}
+              key={index}
             >
-              {data[index]}
+              {bubbleData.title}
             </Bubble>
           )
         }
@@ -203,8 +223,8 @@ export default function BubbleTank({
           <GridListTile
             classes={tileClasses}
             key={uuid()}
-            cols={bubble ? bubble.cols : 1}
-            rows={bubble ? bubble.rows : 1}
+            cols={bubbleProps ? bubbleProps.cols : 1}
+            rows={bubbleProps ? bubbleProps.rows : 1}
           >
             <ParallaxSection
               style={{
@@ -214,31 +234,17 @@ export default function BubbleTank({
                 width: "auto",
               }}
               triggerHook={0.5}
-              maxProgressValue={Math.random() * viewportHeight}
+              maxProgressValue={
+                bubbleProps && bubbleProps.maxProgress * viewportHeight
+              }
               progressUnit="px"
-              fade={Math.random()}
+              fade={bubbleProps && bubbleProps.fade}
             >
               {component}
             </ParallaxSection>
           </GridListTile>
         )
       })}
-      <GridListTile
-        key={uuid()}
-        style={{ border: "1px solid black" }}
-        cols={2}
-        rows={2}
-      >
-        <div>Featured</div>
-      </GridListTile>
-      <GridListTile
-        key={uuid()}
-        style={{ border: "1px solid black" }}
-        cols={1}
-        rows={1}
-      >
-        <div>Featured s</div>
-      </GridListTile>
     </GridList>
   )
 }

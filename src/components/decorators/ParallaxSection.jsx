@@ -71,7 +71,7 @@ function ParallaxSection({
         // contentRef.current.style.zIndex = 0
       })
       .addTo(controller)
-      .addIndicators()
+    // .addIndicators()
 
     const onResize = debounce(() => {
       scene.refresh()

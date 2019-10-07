@@ -5,7 +5,11 @@ import { useState } from "react"
 import { TweenLite } from "gsap/TweenLite"
 import { Elastic } from "gsap/EasePack"
 import TimelineLite from "gsap/TimelineLite"
+import Img from "gatsby-image"
 import FlexContainer from "../decorators/FlexContainer"
+import TransitionsModal, {
+  useModalController,
+} from "../modals/TransitionsModal"
 
 const useStyles = makeStyles({
   circle: {
@@ -17,18 +21,33 @@ const useStyles = makeStyles({
     height: ({ radius }) => `${radius ? radius * 2 : 100}px`,
     fontSize: ({ radius }) => `${radius * 0.33}px`,
     pointerEvents: "auto",
+    userSelect: "none",
+    "&:focus": {
+      outline: "none",
+    },
   },
 })
 function random(min, max, isInteger = true) {
-  let res = Math.random() * (max - min + 1)
+  let res = Math.random() * (max - min + (isInteger ? 1 : 0))
   if (isInteger) res = Math.floor(res)
   return res + min
 }
 
 // compoenent
-function Bubble({ style, children, className, radius, boundings }) {
+function Bubble({
+  style,
+  children,
+  className,
+  radius,
+  boundings,
+  title,
+  description,
+  links,
+  image,
+}) {
   const [pos, setPos] = useState({ x: style.left, y: style.top })
   const ref = useRef(null)
+  const { top, left, ...otherStyle } = style
   useEffect(() => {
     let y = parseFloat(style.top.replace("px", ""))
     let x = parseFloat(style.left.replace("px", ""))
@@ -41,8 +60,8 @@ function Bubble({ style, children, className, radius, boundings }) {
     let targetSinTheta = 0
 
     function setNextTarget() {
-      targetX = random(boundings.minX, boundings.maxX)
-      targetY = random(boundings.minY, boundings.maxY)
+      targetX = random(boundings.minX, boundings.maxX, false)
+      targetY = random(boundings.minY, boundings.maxY, false)
       const hypotenuse = Math.sqrt(
         (targetX - x) * (targetX - x) + (targetY - y) * (targetY - y)
       )
@@ -78,8 +97,10 @@ function Bubble({ style, children, className, radius, boundings }) {
     startAnimation()
 
     // on mouseover
+    let isHover = false
     function onmouseenter() {
-      TweenLite.to(ref.current, 2.5, {
+      isHover = true
+      TweenLite.to(ref.current, 2, {
         scale: 1.2,
         ease: Elastic.easeOut.config(1, 0.2),
       })
@@ -87,9 +108,11 @@ function Bubble({ style, children, className, radius, boundings }) {
       cancelAnimationFrame(rafId)
     }
     function onmouseleave() {
+      if (!isHover) return
+      isHover = false
       TweenLite.to(ref.current, 2, {
         scale: 1,
-        ease: Elastic.easeOut.config(1, 0.25),
+        ease: Elastic.easeOut.config(1, 0.2),
       })
       // animation.reverse()
       startAnimation()
@@ -102,19 +125,60 @@ function Bubble({ style, children, className, radius, boundings }) {
       ref.current.removeEventListener("mouseenter", onmouseenter)
       ref.current.removeEventListener("mouseleave", onmouseleave)
     }
-  }, [boundings.x, boundings.y, radius, style.top, style.left])
+  }, [boundings.x, boundings.y, radius])
 
   const classes = useStyles({ radius })
+  const [
+    modalOpenState,
+    modalHandleOpen,
+    modalHandleClose,
+  ] = useModalController()
+
+  const imageStyle = {
+    width: "100%",
+    height: "300px",
+    maxHeight: "55vh",
+    objectFit: "contain",
+  }
   return (
-    <div
-      style={{ ...style, left: pos.x, top: pos.y }}
-      className={`${classes.circle} ${className}`}
-      ref={ref}
-    >
-      <FlexContainer style={{ margin: 0, height: "100%" }}>
-        {children}
-      </FlexContainer>
-    </div>
+    <>
+      <div
+        style={{ ...otherStyle, left: pos.x, top: pos.y }}
+        className={`${classes.circle} ${className}`}
+        ref={ref}
+        role="button"
+        onClick={() => {
+          modalHandleOpen()
+          const event = new Event("mouseleave")
+          ref.current.dispatchEvent(event)
+        }}
+        onKeyPress={modalHandleOpen}
+        tabIndex="0"
+      >
+        <FlexContainer style={{ margin: 0, height: "100%" }}>
+          {children}
+        </FlexContainer>
+      </div>
+      <TransitionsModal
+        open={modalOpenState}
+        handleClose={modalHandleClose}
+        title={title}
+        links={links}
+        description={description}
+      >
+        {image &&
+          (image.childImageSharp ? (
+            <Img
+              fluid={image.childImageSharp.fluid}
+              imgStyle={imageStyle}
+              objectFit="contain"
+              style={imageStyle}
+            />
+          ) : (
+            <img src={image} alt={title} style={imageStyle} />
+          ))}
+      </TransitionsModal>
+    </>
   )
 }
 
