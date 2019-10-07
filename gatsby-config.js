@@ -5,7 +5,6 @@ module.exports = {
     author: "Xian Zhang",
   },
   plugins: [
-    "gatsby-plugin-react-helmet",
     {
       // keep as first gatsby-source-filesystem plugin for gatsby image support
       resolve: "gatsby-source-filesystem",
@@ -28,6 +27,7 @@ module.exports = {
         name: "pages",
       },
     },
+    "gatsby-plugin-react-helmet",
     "gatsby-plugin-sharp",
     "gatsby-transformer-sharp",
     {

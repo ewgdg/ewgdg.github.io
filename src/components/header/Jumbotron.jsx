@@ -16,7 +16,7 @@ const Jumbotron = ({
   if (!imgFluid) {
     const query = graphql`
       query {
-        fileName: file(relativePath: { eq: "gatsby-astronaut.png" }) {
+        image: file(relativePath: { eq: "gatsby-astronaut.png" }) {
           childImageSharp {
             fluid(maxWidth: 1000) {
               ...GatsbyImageSharpFluid
@@ -25,27 +25,29 @@ const Jumbotron = ({
         }
       }
     `
-    imgFluid = useStaticQuery(query).fileName.childImageSharp.fluid
+    imgFluid = useStaticQuery(query).image
   }
 
   let figureStyle = {}
   if (imageAttachAsBackground) {
     figureStyle = {
       backgroundAttachment: "fixed",
-      backgroundImage: `url(${imgFluid.src || imgFluid})`,
+      backgroundImage: `url(${
+        imgFluid.childImageSharp ? imgFluid.childImageSharp.fluid.src : imgFluid
+      })`,
       backgroundSize: "cover",
       backgroundPosition: "center center",
     }
   }
 
   console.log(subtitle)
-  const lines = headline.split("\\n")
+  const lines = headline.split("\n")
   const [firstLine, ...restLines] = lines
   return (
     <figure style={figureStyle}>
       {!imageAttachAsBackground && (
         <Img
-          fluid={imgFluid}
+          fluid={imgFluid.childImageSharp.fluid}
           style={{
             width: "100%",
             height: "100%",

@@ -48,13 +48,11 @@ IndexPageTemplate.propTypes = {}
 
 const IndexPage = ({ data }) => {
   const { frontmatter } = data.markdownRemark
-  const image = frontmatter.jumbotronProps.image.childImageSharp.fluid
+
   return (
     <Layout>
       <SEO title="Home" />
-      <IndexPageTemplate
-        jumbotronProps={{ ...frontmatter.jumbotronProps, image }}
-      />
+      <IndexPageTemplate jumbotronProps={frontmatter.jumbotronProps} />
     </Layout>
   )
 }
