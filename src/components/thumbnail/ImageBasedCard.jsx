@@ -13,8 +13,8 @@ const useStyles = makeStyles({
   card: {
     maxWidth: "100%",
     backgroundColor: "transparent",
-    height: "100%",
-    minHeight: "350px",
+    maxHeight: "100%",
+    height: "350px",
   },
   media: {
     height: "100%",
@@ -38,16 +38,16 @@ const useStyles = makeStyles({
 })
 
 /* return a card that shows description on hover */
-export default function ImageCard({ onClick }) {
+export default function ImageCard({ onClick, style }) {
   const classes = useStyles()
 
   return (
-    <Grid item xs={5}>
+    <Grid item xs={5} style={{ height: "400px", ...style }}>
       <Card className={classes.card}>
         <CardActionArea className={classes.action} onClick={onClick}>
           <CardMedia
             className={classes.media}
-            image="/splash.png"
+            image="/img/splash.png"
             title="Contemplative Reptile"
           />
 

@@ -26,8 +26,9 @@ import "typeface-roboto"
 import FlyingSprite from "./sprite/FlyingSprite"
 import LayoutContext from "../contexts/LayoutContext"
 import Synap from "./background/Synap"
+import Section from "./pageScroll/Section"
 
-const Layout = ({ children }) => {
+const Layout = ({ children, appendFooter }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -111,7 +112,7 @@ const Layout = ({ children }) => {
                 © {new Date().getFullYear()}, Built with{" "}
                 <a href="https://www.gatsbyjs.org">Gatsby</a>
               </footer> */}
-              <Footer />
+              {appendFooter && <Footer />}
             </div>
           )}
         </div>
@@ -122,6 +123,11 @@ const Layout = ({ children }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  appendFooter: PropTypes.bool,
+}
+
+Layout.defaultProps = {
+  appendFooter: true,
 }
 
 export default Layout

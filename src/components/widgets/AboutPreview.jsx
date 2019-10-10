@@ -19,6 +19,7 @@ import { makeStyles } from "@material-ui/styles"
 import LayoutContext from "contexts/LayoutContext"
 
 import { getController, ScrollMagic } from "plugins/scrollmagic"
+import { ScrollDetector } from "utilities/scroll"
 import FlexContainer from "../decorators/FlexContainer"
 import { debounce } from "../../utilities/throttle"
 
@@ -85,7 +86,7 @@ function About() {
     // }
 
     const controller = getController(context.scrollLayer)
-    console.log(controller)
+    // console.log(controller)
     const animation = new TimelineLite()
     // animate ribbon
     animation
@@ -137,32 +138,52 @@ function About() {
       )
       .add("endAnimation")
 
-    const containerScene = new ScrollMagic.Scene({
-      triggerElement: ribbonContainerRef.current,
+    // const containerScene = new ScrollMagic.Scene({
+    //   triggerElement: ribbonContainerRef.current,
+    // })
+    // containerScene
+    //   // .setTween(blockTween)
+    //   .setTween(animation)
+    //   .addIndicators()
+    // .addTo(controller)
+
+    animation.pause()
+
+    const scrollDetector = new ScrollDetector(
+      context.scrollLayer,
+      ribbonContainerRef.current,
+      0.5,
+      0,
+      0
+    )
+    scrollDetector.setEventListener(progress => {
+      if (progress > 0) {
+        animation.play()
+      } else {
+        animation.reverse()
+      }
     })
-    containerScene
-      // .setTween(blockTween)
-      .setTween(animation)
-      .addIndicators()
-      .addTo(controller)
+    scrollDetector.update()
+
     // console.log(containerScene)
-    const onResize = debounce(() => {
-      containerScene.refresh()
-      // scene.progress(old)
-    }, 100)
-    // reset trigger elem when resizing as start position may changes
-    window.addEventListener("resize", onResize)
+    // const onResize = debounce(() => {
+    //   containerScene.refresh()
+    //   // scene.progress(old)
+    // }, 100)
+    // // reset trigger elem when resizing as start position may changes
+    // window.addEventListener("resize", onResize)
 
     // document.querySelector("div#ribbon").addEventListener("scroll", e => {
     //   console.log(e)
     // })
     return () => {
       // animation = null
-      if (controller) controller.removeScene(containerScene)
-      containerScene.destroy()
+      // if (controller) controller.removeScene(containerScene)
+      // containerScene.destroy()
       animation.progress(1)
       animation.kill()
-      window.removeEventListener("resize", onResize)
+      // window.removeEventListener("resize", onResize)
+      scrollDetector.destroy()
     }
   }, [context])
 
@@ -196,14 +217,7 @@ function About() {
                   And that is <a href="#">why</a> I made this page.
                 </div>
                 <div className="animatedline">
-                  I play games and read fantasy fictions for entertainment.
-                </div>
-                <div className="animatedline">
-                  I am good at imagination and substitution to extract fun from
-                  them.
-                </div>
-                <div className="animatedline">
-                  My favourite fruits are guava and durian.
+                  I like technology, gaming, and programming.
                 </div>
                 <div className="animatedline" style={{ opacity: 0.8 }}>
                   If you want to learn more about me, keep reading.
