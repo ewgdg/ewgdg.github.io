@@ -17,9 +17,15 @@ function TextLink({ text, links, isInternal = true }) {
   for (let i = 0; i < splited.length; i += 2) {
     res.push(splited[i])
     res.push(
-      <LinkCom to={links[i / 2]}>
-        {matched[i / 2].replace(/({|})/g, "")}
-      </LinkCom>
+      isInternal ? (
+        <LinkCom to={links[i / 2]} key={i / 2}>
+          {matched[i / 2].replace(/({|})/g, "")}
+        </LinkCom>
+      ) : (
+        <LinkCom href={links[i / 2]} key={i / 2}>
+          {matched[i / 2].replace(/({|})/g, "")}
+        </LinkCom>
+      )
     )
     res.push(splited[i + 1])
   }

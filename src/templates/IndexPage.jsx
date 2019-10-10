@@ -16,6 +16,7 @@ import SEO from "../components/Seo"
 import PortfolioPreview from "../components/widgets/PortfolioPreview"
 import AboutPreview from "../components/widgets/AboutPreview"
 import BlogPreview from "../components/widgets/BlogPreview"
+import Footer from "../components/footer/Footer"
 
 export const IndexPageTemplate = ({ jumbotronProps }) => {
   return (
@@ -41,6 +42,9 @@ export const IndexPageTemplate = ({ jumbotronProps }) => {
           <BlogPreview />
         </ParallaxSection>
       </Section>
+      <Section style={{ height: "auto" }}>
+        <Footer />
+      </Section>
     </PageContainer>
   )
 }
@@ -50,7 +54,7 @@ const IndexPage = ({ data }) => {
   const { frontmatter } = data.markdownRemark
 
   return (
-    <Layout>
+    <Layout appendFooter={false}>
       <SEO title="Home" />
       <IndexPageTemplate jumbotronProps={frontmatter.jumbotronProps} />
     </Layout>

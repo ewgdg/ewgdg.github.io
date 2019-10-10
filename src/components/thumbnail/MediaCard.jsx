@@ -13,20 +13,30 @@ const useStyles = makeStyles({
   card: {
     maxWidth: "100%",
     backgroundColor: "transparent",
-    minHeight: "100%",
+    height: "100%",
+  },
+  actionArea: {
+    height: "90%",
   },
   media: {
-    minHeight: "250px",
+    height: "65%",
+  },
+  content: {
+    height: "35%",
+    overflow: "hidden",
+  },
+  action: {
+    height: "10%",
   },
 })
 
-export default function MediaCard({ onClick, image }) {
+export default function MediaCard({ onClick, image, style }) {
   const classes = useStyles()
 
   return (
-    <Grid item xs={5}>
+    <Grid item xs={5} style={{ height: "450px", ...style }}>
       <Card className={classes.card}>
-        <CardActionArea onClick={onClick}>
+        <CardActionArea onClick={onClick} className={classes.actionArea}>
           {image ? (
             <CardMedia
               className={classes.media}
@@ -49,7 +59,7 @@ export default function MediaCard({ onClick, image }) {
               </div>
             </Grid>
           )}
-          <CardContent>
+          <CardContent className={classes.content}>
             <Typography gutterBottom variant="h5" component="h2">
               Lizard
             </Typography>
@@ -59,7 +69,7 @@ export default function MediaCard({ onClick, image }) {
             </Typography>
           </CardContent>
         </CardActionArea>
-        <CardActions>
+        <CardActions className={classes.action}>
           <Button size="small" color="primary" onClick={onClick}>
             Learn More
           </Button>

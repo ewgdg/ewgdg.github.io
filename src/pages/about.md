@@ -15,6 +15,7 @@ facts:
     description: |
       My favourite fruit is guava and durian. 
       Yes, I like tropical fruits.
+    image: /img/guava.jpg
   - title: Old games 
     description: |
       Some old games are quite impressive to me including 'Baldur's gate' and 'Nox'.
@@ -30,8 +31,9 @@ facts:
       I like to 'gamify' my task so that I am more motivated.
   - title: Reading 
     description: |
-      My another hobbies is reading. 
-      I train myself to read multiple lines at once because I am so thirsty for the new line when I read, espically when I found a good story， like the story of Sherlock Holmes.
+      My another hobby is reading. 
+      I train myself to read multiple lines at once because I am so thirsty for the new line when I read, espically if I found a good story, like the story of Sherlock Holmes. I spent most of my teenage hanging around book mall.
+    image: /img/bookmall.png
   - title: Anime 
     description: |
       I am also a big fan of anime. 
@@ -47,7 +49,7 @@ facts:
   - title: Name 
     description: |
       My name is Xian.
-      If you are curious about how to pronounce it, I wrote a {post} here.
+      If you are curious about how to pronounce it, I wrote a post {here}.
     links:
       - /
   - title: Music 
@@ -65,14 +67,16 @@ facts:
       However I am not able to handle my backside well, I need a photo to assist me.
       If you ever saw myself wearing a hat, that is probably another failure on my way becoming a legendary barber.
     image: /img/hair-cutting.jpg
-  - title: Nickname 
+  - title: Nickname
     description: |
       My nickname, especially when in game, is 'ewgdg'.
       I simply created this word by faceroll.
       If it has to have some meanings, it means 'creation'.
+    image: /img/ewgdg.png
   - title: Color 
     description: |
-      I like red. It stands for life.
+      I like red. It stands for life, or HP(Hit Point) in games.
+    image: /img/hp.jpg
   - title: Number 
     description: |
       Number 9 is my lucky number, because it takes 9 strokes to write my name.

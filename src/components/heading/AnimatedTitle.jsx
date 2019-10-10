@@ -2,6 +2,7 @@ import React, { useRef, useContext, useEffect } from "react"
 import LayoutContext from "contexts/LayoutContext"
 import { TimelineLite, Power2 } from "gsap/TweenMax"
 import { getController, ScrollMagic } from "plugins/scrollmagic"
+import { ScrollDetector } from "utilities/scroll"
 
 function AnimatedTitle({ title }) {
   const context = useContext(LayoutContext)
@@ -20,12 +21,29 @@ function AnimatedTitle({ title }) {
       })
       .add("endAnimation")
     // animation.to("#texttest", 0.7, { text: "my second test" }, 0.2)
-    scene.setTween(animation).addTo(controller)
+    // scene.setTween(animation).addTo(controller)
+    animation.pause()
+    const scrollDetector = new ScrollDetector(
+      context.scrollLayer,
+      headlineRef.current,
+      0.5,
+      0,
+      0
+    )
+    scrollDetector.setEventListener(progress => {
+      if (progress > 0) {
+        animation.play()
+      } else {
+        animation.reverse()
+      }
+    })
+    scrollDetector.update()
     return () => {
-      controller.removeScene(scene)
-      scene.destroy()
-      animation.pause("endAnimation", true)
+      // controller.removeScene(scene)
+      // scene.destroy()
+      animation.progress(0)
       animation.kill()
+      scrollDetector.destroy()
     }
   }, [context])
   return (

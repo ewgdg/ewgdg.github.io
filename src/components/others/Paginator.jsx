@@ -1,0 +1,77 @@
+/* eslint-disable react/prop-types */
+import React, { useMemo, useCallback } from "react"
+import ReactPaginate from "react-paginate"
+import { makeStyles } from "@material-ui/core/styles"
+
+const useStyles = makeStyles({
+  pagination: {
+    display: "inline-block",
+    paddingLeft: "15px",
+    paddingRight: "15px",
+    fontFamily: "roboto",
+    fontSize: "14px",
+    margin: "auto",
+    marginTop: "10px",
+    marginBottom: "10px",
+    "& li": {
+      display: "inline",
+      color: "#337ab7",
+      float: "left",
+      margin: 0,
+      border: "1px solid rgba(122,122,122,0.2)",
+      boxSizing: "border-box",
+      "&.prev-border": {
+        borderRadius: "5px 0px 0px 5px",
+      },
+      "&.next-border": {
+        borderRadius: "0px 5px 5px 0px",
+      },
+      "& a": {
+        display: "inline-block",
+        padding: "0.3em 0.9em",
+        textDecoration: "none",
+        margin: 0,
+        userSelect: "none",
+        outline: "none",
+        "&.active": {
+          backgroundColor: "#337ab7",
+          color: "white",
+        },
+        "&:hover:not(.active)": {
+          backgroundColor: "rgba(166,166,166,0.2)",
+        },
+      },
+    },
+  },
+  center: {
+    textAlign: "center",
+  },
+})
+
+function Paginator({ pageCount = 0, handlePageClick, style }) {
+  const classes = useStyles()
+  // const handlePageClick = useCallback(pageData => {
+  //   const currentPage = pageData.selected
+  //   console.log(currentPage)
+  // }, [])
+
+  return (
+    <div className={classes.center} style={style}>
+      <ReactPaginate
+        previousLabel="prev"
+        nextLabel="next"
+        breakLabel="..."
+        pageCount={pageCount}
+        marginPagesDisplayed={2}
+        pageRangeDisplayed={5}
+        onPageChange={handlePageClick}
+        containerClassName={classes.pagination}
+        activeLinkClassName="active"
+        nextClassName="next-border"
+        previousClassName="prev-border"
+      />
+    </div>
+  )
+}
+
+export default Paginator
