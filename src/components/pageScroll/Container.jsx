@@ -137,6 +137,13 @@ const useHandlers = (ref, childrenRefs, context) => {
     }
 
     function pointerDownHandler(e) {
+      // check event path, if found clickable, ignore this pointer move
+      const test = e.path.some(elem => {
+        return elem.tagName === "INPUT" || elem.tagName === "BUTTON"
+      })
+      if (test) {
+        return
+      }
       isPointerDown = true
 
       touchPointYList.splice(0)
@@ -166,7 +173,7 @@ const useHandlers = (ref, childrenRefs, context) => {
       }
 
       preventDefault(e)
-      e.preventDefault()
+      // e.preventDefault()
       const touchPoint = e
 
       let verticalMove = 0

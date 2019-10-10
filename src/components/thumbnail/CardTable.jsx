@@ -46,13 +46,14 @@ function CardTable({ datalist = [], itemsPerPage = 4, CardComp = MediaCard }) {
       }}
     >
       <TextField
-        id="searchTable"
-        label="Search field"
+        label="Search"
         type="search"
         margin="normal"
         variant="outlined"
-        onInput={onSearchFieldChange}
+        onChange={onSearchFieldChange}
+        style={{ marginLeft: "8px", marginRight: "8px" }}
       />
+
       <Container style={{ height: "80%" }}>
         <CardContainer>
           {pageData.map((data, i) => (
