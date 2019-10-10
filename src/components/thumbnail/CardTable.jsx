@@ -8,36 +8,54 @@ import Paginator from "../others/Paginator"
 import CardContainer from "./CardContainer"
 
 function CardTable({ datalist = [], itemsPerPage = 4, CardComp = MediaCard }) {
-  const pageCount = useMemo(() => {
-    return datalist.length / itemsPerPage
-  }, [datalist, itemsPerPage])
   const [currentPage, setPage] = useState(0)
   const [keywords, setKeywords] = useState([])
   const filtered = useMemo(() => {
     const regex = new RegExp(`(${keywords.join("|")})`, "i")
-    const startIdx = currentPage * itemsPerPage
-    const endIdx = startIdx + itemsPerPage
-    return datalist.slice(startIdx, endIdx).filter(data => {
+    return datalist.filter(data => {
       return regex.test(data)
     })
-  }, [currentPage, keywords])
+  }, [keywords])
+  const pageData = useMemo(() => {
+    const startIdx = currentPage * itemsPerPage
+    const endIdx = startIdx + itemsPerPage
+    return filtered.slice(startIdx, endIdx)
+  }, [currentPage, filtered])
+
+  const pageCount = useMemo(() => {
+    return filtered.length / itemsPerPage
+  }, [filtered, itemsPerPage])
 
   const handlePageClick = useCallback(page => {
     console.log(page)
     setPage(page.selected)
   })
+
+  const onSearchFieldChange = useCallback(event => {
+    const { value } = event.target
+    setKeywords(value.split(/[.!?\s+-]/g))
+    setPage(0)
+  })
   return (
-    <div style={{ position: "relative", height: "100%", width: "100%" }}>
+    <div
+      style={{
+        position: "relative",
+        height: "100%",
+        width: "100%",
+        textAlign: "center",
+      }}
+    >
       <TextField
-        id="outlined-search"
+        id="searchTable"
         label="Search field"
         type="search"
         margin="normal"
         variant="outlined"
+        onInput={onSearchFieldChange}
       />
       <Container style={{ height: "80%" }}>
         <CardContainer>
-          {filtered.map((data, i) => (
+          {pageData.map((data, i) => (
             <CardComp key={i} style={{ height: "45%" }} />
           ))}
         </CardContainer>
