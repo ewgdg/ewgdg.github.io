@@ -1,11 +1,13 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useMemo } from "react"
+import React, { useEffect, useRef, useMemo, useState } from "react"
 import uuid from "uuid/v4"
 import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
 import { makeStyles } from "@material-ui/styles"
 import ListSubheader from "@material-ui/core/ListSubheader"
+import { debounce } from "utilities/throttle"
 import Bubble from "./Bubble"
 import ParallaxSection from "../sections/ParallaxSection"
 
@@ -73,19 +75,32 @@ function random(min, max, isInteger = true) {
   if (isInteger) res = Math.floor(res)
   return res + min
 }
+// function useInitFactory(fn, dependencyList) {
+//   const willMount = useRef(true)
+
+//   // useEffect is called after component is mounted
+//   useEffect(() => {
+//     willMount.current = false
+//     return () => {
+//       willMount.current = true
+//     }
+//   }, dependencyList)
+// }
 function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
   const willMount = useRef(true)
-
+  console.log("remount refresh")
   // useEffect is called after component is mounted
   useEffect(() => {
+    console.log("remount reset willmount")
     willMount.current = false
     return () => {
       willMount.current = true
     }
-  }, [dataSize, cellsPerRow])
+  }, [dataSize, cellsPerRow, willMount.current])
 
   const bubbles = useRef(null)
   if (willMount.current) {
+    console.log("remount")
     const colors = [
       "Violet",
       "Aqua",
@@ -110,6 +125,7 @@ function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
     bubbles.current = []
     // init
     const cellWidth = window.innerWidth / cellsPerRow
+    cellHeight = Math.min(cellWidth * 1.5, cellHeight)
     for (let i = 0; i < dataSize; i += 1) {
       const maxRadius = Math.min(cellHeight, cellWidth) / 1.5
       const radius = random(maxRadius / 2, maxRadius, false)
@@ -144,7 +160,7 @@ function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
       })
     }
   }
-  return bubbles.current
+  return [bubbles.current, willMount]
 }
 
 export default function BubbleTank({
@@ -157,8 +173,25 @@ export default function BubbleTank({
   const tileClasses = useTileStyles()
 
   const dataSize = data.length
-  const bubbles = useInitBubbles(dataSize, cellHeight, cellsPerRow)
+  const [bubbles, willMountBubble] = useInitBubbles(
+    dataSize,
+    cellHeight,
+    cellsPerRow
+  )
   const cells = useInitCells(dataSize, cellsPerRow)
+  const [update, setUpdate] = useState({})
+  useEffect(() => {
+    function onresize() {
+      willMountBubble.current = true
+      setUpdate({})
+    }
+    const debounced = debounce(onresize, 100)
+    window.addEventListener("resize", debounced)
+    return () => {
+      window.removeEventListener("resize", debounced)
+    }
+  }, [])
+
   const viewportHeight = window.innerHeight
   const unorderedData = useMemo(() => {
     const copy = [...data]
@@ -190,13 +223,13 @@ export default function BubbleTank({
           </ListSubheader>
         </GridListTile>
       )}
-      {cells.map(index => {
+      {cells.map((bubbleIndex, i) => {
         let component = null
         let bubbleProps = null
-
-        if (index >= 0) {
-          bubbleProps = bubbles[index]
-          const bubbleData = unorderedData[index]
+        // get the bubble index for each cell
+        if (bubbleIndex >= 0) {
+          bubbleProps = bubbles[bubbleIndex]
+          const bubbleData = unorderedData[bubbleIndex]
           component = (
             <Bubble
               radius={bubbleProps.radius}
@@ -212,7 +245,7 @@ export default function BubbleTank({
               description={bubbleData.description}
               image={bubbleData.image}
               links={bubbleData.links}
-              key={index}
+              key={bubbleIndex}
             >
               {bubbleData.title}
             </Bubble>
@@ -222,7 +255,7 @@ export default function BubbleTank({
         return (
           <GridListTile
             classes={tileClasses}
-            key={uuid()}
+            key={i}
             cols={bubbleProps ? bubbleProps.cols : 1}
             rows={bubbleProps ? bubbleProps.rows : 1}
           >
@@ -235,10 +268,10 @@ export default function BubbleTank({
               }}
               triggerHook={0.5}
               maxProgressValue={
-                bubbleProps && bubbleProps.maxProgress * viewportHeight
+                bubbleProps ? bubbleProps.maxProgress * viewportHeight : 0
               }
               progressUnit="px"
-              fade={bubbleProps && bubbleProps.fade}
+              fade={bubbleProps ? bubbleProps.fade : 0}
             >
               {component}
             </ParallaxSection>

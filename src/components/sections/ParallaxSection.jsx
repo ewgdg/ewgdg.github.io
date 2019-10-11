@@ -88,7 +88,14 @@ function ParallaxSection({
       setY(0)
       window.removeEventListener("resize", onResize)
     }
-  }, [context])
+  }, [
+    context,
+    maxProgressValue,
+    children,
+    triggerHook,
+    progressUnit,
+    triggerHook,
+  ])
 
   return (
     <div

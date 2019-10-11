@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react"
 
 import useLayoutContext from "./useLayoutContext"
 
+// set value based on path arrary for deep nested obj
 function setValue(obj, path, value) {
   if (path)
     path.reduce((accumulator, currentValue, index, arr) => {
