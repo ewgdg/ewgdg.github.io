@@ -5,18 +5,19 @@ import { Link, graphql } from "gatsby"
 
 import PropTypes from "prop-types"
 
-import ParallaxSection from "../components/decorators/ParallaxSection"
+import ParallaxSection from "../components/sections/ParallaxSection"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
-import Layout from "../components/Layout"
+import Layout from "../components/layouts/PersistedLayout"
 
 import SEO from "../components/Seo"
 
-import PortfolioPreview from "../components/widgets/PortfolioPreview"
-import AboutPreview from "../components/widgets/AboutPreview"
-import BlogPreview from "../components/widgets/BlogPreview"
+import PortfolioWiget from "../components/widgets/PortfolioWidget"
+import AboutWidget from "../components/widgets/AboutWidget"
+import BlogWidget from "../components/widgets/BlogWidget"
 import Footer from "../components/footer/Footer"
+import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
 export const IndexPageTemplate = ({ jumbotronProps }) => {
   return (
@@ -29,17 +30,17 @@ export const IndexPageTemplate = ({ jumbotronProps }) => {
       </Section>
       <Section>
         <ParallaxSection>
-          <AboutPreview />
+          <AboutWidget />
         </ParallaxSection>
       </Section>
       <Section>
         <ParallaxSection>
-          <PortfolioPreview />
+          <PortfolioWiget />
         </ParallaxSection>
       </Section>
       <Section>
         <ParallaxSection>
-          <BlogPreview />
+          <BlogWidget />
         </ParallaxSection>
       </Section>
       <Section style={{ height: "auto" }}>
@@ -50,14 +51,14 @@ export const IndexPageTemplate = ({ jumbotronProps }) => {
 }
 IndexPageTemplate.propTypes = {}
 
-const IndexPage = ({ data }) => {
+const IndexPage = ({ data, uri }) => {
   const { frontmatter } = data.markdownRemark
-
+  useRestoreScrollTop([uri])
   return (
-    <Layout appendFooter={false}>
+    <>
       <SEO title="Home" />
       <IndexPageTemplate jumbotronProps={frontmatter.jumbotronProps} />
-    </Layout>
+    </>
   )
 }
 IndexPage.propTypes = {

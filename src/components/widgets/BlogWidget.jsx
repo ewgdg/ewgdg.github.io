@@ -5,7 +5,7 @@ import MediaCard from "components/thumbnail/MediaCard"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import Button from "@material-ui/core/Button"
-import FlexContainer from "../decorators/FlexContainer"
+import FlexContainer from "../sections/FlexContainer"
 
 function BlogPreview() {
   return (

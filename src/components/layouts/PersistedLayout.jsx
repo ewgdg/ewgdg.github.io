@@ -18,17 +18,18 @@ import React, {
 } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import Footer from "./footer/Footer"
+import { Location } from "@reach/router"
+import Footer from "../footer/Footer"
 import "./layout.css"
 import "typeface-roboto"
 // import ScrollMagic from "scrollmagic-with-ssr"
 
-import FlyingSprite from "./sprite/FlyingSprite"
-import LayoutContext from "../contexts/LayoutContext"
-import Synap from "./background/Synap"
-import Section from "./pageScroll/Section"
+import FlyingSprite from "../sprite/FlyingSprite"
+import LayoutContext from "../../contexts/LayoutContext"
+import Synap from "../background/Synap"
+import Section from "../pageScroll/Section"
 
-const Layout = ({ children, appendFooter }) => {
+const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -46,6 +47,7 @@ const Layout = ({ children, appendFooter }) => {
 
   const contextValueRef = useRef({
     scrollLayer: null,
+    historyState: {},
   })
 
   // if the context is not resolved then the children will not be mounted
@@ -60,11 +62,19 @@ const Layout = ({ children, appendFooter }) => {
     [contextValueRef]
   )
 
+  useLayoutEffect(() => {
+    // reset scroll pos each page refresh on location change
+    // contextValueRef.current.scrollLayer.scrollTop = 0
+  })
   return (
     <LayoutContext.Provider value={contextValueRef.current}>
       <div
         id="layoutBody"
-        style={{ position: "relative", maxHeight: "100vh", maxWidth: "100vw" }}
+        style={{
+          position: "relative",
+          maxHeight: "100vh",
+          maxWidth: "100vw",
+        }}
       >
         <Synap style={{ opacity: 0.3, width: "100vw", height: "100vh" }} />
         <div
@@ -75,6 +85,7 @@ const Layout = ({ children, appendFooter }) => {
           style={{
             overflowY: "scroll !important",
             overflowX: "hidden",
+
             height: "100vh",
             width: "auto",
             margin: 0,
@@ -112,7 +123,6 @@ const Layout = ({ children, appendFooter }) => {
                 © {new Date().getFullYear()}, Built with{" "}
                 <a href="https://www.gatsbyjs.org">Gatsby</a>
               </footer> */}
-              {appendFooter && <Footer />}
             </div>
           )}
         </div>

@@ -1,18 +1,21 @@
 /* eslint-disable react/prop-types */
-import React from "react"
+import React, { useCallback, useLayoutEffect } from "react"
 import { graphql } from "gatsby"
 import CardTable from "../components/thumbnail/CardTable"
-import Layout from "../components/Layout"
+import Layout from "../components/layouts/PersistedLayout"
 import SEO from "../components/Seo"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
 import Footer from "../components/footer/Footer"
 
-function BlogPageTemplate({ jumbotronProps }) {
+import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
+
+function BlogPageTemplate({ jumbotronProps, uri }) {
   const data = []
   data.length = 10
   data.fill("1")
+
   return (
     <div>
       <PageContainer>
@@ -23,7 +26,7 @@ function BlogPageTemplate({ jumbotronProps }) {
           />
         </Section>
         <Section>
-          <CardTable datalist={data} />
+          <CardTable datalist={data} name="BlogTable" uri={uri} />
         </Section>
         <Section style={{ height: "auto" }}>
           <Footer />
@@ -34,14 +37,16 @@ function BlogPageTemplate({ jumbotronProps }) {
 }
 export { BlogPageTemplate }
 
-function BlogPage({ data }) {
+function BlogPage({ data, uri }) {
   const { frontmatter } = data.markdownRemark
+  useRestoreScrollTop([uri])
+
   return (
-    <Layout appendFooter={false}>
+    <>
       <SEO title="Blog" />
 
-      <BlogPageTemplate jumbotronProps={frontmatter.jumbotronProps} />
-    </Layout>
+      <BlogPageTemplate jumbotronProps={frontmatter.jumbotronProps} uri={uri} />
+    </>
   )
 }
 

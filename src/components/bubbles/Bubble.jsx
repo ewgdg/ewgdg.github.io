@@ -6,7 +6,7 @@ import { TweenLite } from "gsap/TweenLite"
 import { Elastic } from "gsap/EasePack"
 import TimelineLite from "gsap/TimelineLite"
 import Img from "gatsby-image"
-import FlexContainer from "../decorators/FlexContainer"
+import FlexContainer from "../sections/FlexContainer"
 import TransitionsModal, {
   useModalController,
 } from "../modals/TransitionsModal"
