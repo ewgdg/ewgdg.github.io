@@ -6,6 +6,7 @@ import MediaCard from "components/thumbnail/MediaCard"
 import Container from "@material-ui/core/Container"
 import TextField from "@material-ui/core/TextField"
 import { useLayoutEffect } from "react"
+import { Backdrop } from "@material-ui/core/Backdrop"
 import Paginator from "../others/Paginator"
 import CardContainer from "./CardContainer"
 import useRestoreComponentState from "../../contexts/useRestoreComponentState"
@@ -32,11 +33,16 @@ function CardTable({
       return regex.test(data)
     })
   }, [keywords])
+  const prevsItemsPerPage = useRef(itemsPerPage)
   const pageData = useMemo(() => {
+    if (prevsItemsPerPage.current !== itemsPerPage) {
+      setPage((currentPage * prevsItemsPerPage.current) / itemsPerPage)
+      prevsItemsPerPage.current = itemsPerPage
+    }
     const startIdx = currentPage * itemsPerPage
     const endIdx = startIdx + itemsPerPage
     return filtered.slice(startIdx, endIdx)
-  }, [currentPage, filtered])
+  }, [currentPage, filtered, itemsPerPage])
 
   const pageCount = useMemo(() => {
     return filtered.length / itemsPerPage
@@ -82,6 +88,7 @@ function CardTable({
         textAlign: "center",
       }}
     >
+      {/* search bar */}
       <TextField
         label="Search"
         type="search"
@@ -95,7 +102,10 @@ function CardTable({
       <Container style={{ height: "80%" }}>
         <CardContainer>
           {pageData.map((data, i) => (
-            <CardComp key={i} style={{ height: "45%" }} />
+            <CardComp
+              key={i}
+              style={{ height: itemsPerPage > 2 ? "45%" : "95%" }}
+            />
           ))}
         </CardContainer>
       </Container>

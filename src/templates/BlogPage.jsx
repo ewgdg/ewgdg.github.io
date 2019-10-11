@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback, useLayoutEffect } from "react"
+import React, { useCallback, useLayoutEffect, useEffect, useState } from "react"
 import { graphql } from "gatsby"
+import { debounce } from "utilities/throttle"
 import CardTable from "../components/thumbnail/CardTable"
 import Layout from "../components/layouts/PersistedLayout"
 import SEO from "../components/Seo"
@@ -15,7 +16,27 @@ function BlogPageTemplate({ jumbotronProps, uri }) {
   const data = []
   data.length = 10
   data.fill("1")
+  const [itemsPerPage, setItemsPerPage] = useState(4)
+  console.log(itemsPerPage)
+  useEffect(() => {
+    function calculateItemsPerPage() {
+      let items = 4
+      console.log(window.innerHeight)
+      if (window.innerHeight < 600) {
+        items = 2
+      }
+      return items
+    }
+    setItemsPerPage(calculateItemsPerPage())
+    const onresize = debounce(() => {
+      setItemsPerPage(calculateItemsPerPage())
+    }, 100)
+    window.addEventListener("resize", onresize)
 
+    return () => {
+      window.removeEventListener("resize", onresize)
+    }
+  }, [])
   return (
     <div>
       <PageContainer>
@@ -26,7 +47,12 @@ function BlogPageTemplate({ jumbotronProps, uri }) {
           />
         </Section>
         <Section>
-          <CardTable datalist={data} name="BlogTable" uri={uri} />
+          <CardTable
+            datalist={data}
+            name="BlogTable"
+            uri={uri}
+            itemsPerPage={itemsPerPage}
+          />
         </Section>
         <Section style={{ height: "auto" }}>
           <Footer />
