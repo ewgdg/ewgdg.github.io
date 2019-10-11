@@ -14,13 +14,13 @@ import { TweenMax, TimelineLite, Power3, Power1 } from "gsap/TweenMax"
 // import "scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min"
 
 // import { TimelineMax } from "gsap/TimelineMax"
-import CharSequence from "components/decorators/CharSequence"
+import CharSequence from "components/sections/CharSequence"
 import { makeStyles } from "@material-ui/styles"
 import LayoutContext from "contexts/LayoutContext"
 
 import { getController, ScrollMagic } from "plugins/scrollmagic"
 import { ScrollDetector } from "utilities/scroll"
-import FlexContainer from "../decorators/FlexContainer"
+import FlexContainer from "../sections/FlexContainer"
 import { debounce } from "../../utilities/throttle"
 
 const useStyles = makeStyles({
@@ -78,8 +78,6 @@ function About() {
   const classes = useStyles()
   // add scrollmagic controll
   useEffect(() => {
-    console.log("useEf fect ")
-    console.log(charRefs)
     // if (!ribbonContainerRef.current || (charRefs.length > 0 && !charRefs[0])) {
     //   console.log("check n ull")
     //   return () => {}

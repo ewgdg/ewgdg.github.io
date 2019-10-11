@@ -7,7 +7,7 @@ import GridListTile from "@material-ui/core/GridListTile"
 import { makeStyles } from "@material-ui/styles"
 import ListSubheader from "@material-ui/core/ListSubheader"
 import Bubble from "./Bubble"
-import ParallaxSection from "../decorators/ParallaxSection"
+import ParallaxSection from "../sections/ParallaxSection"
 
 const useStyles = makeStyles({
   gridList: {

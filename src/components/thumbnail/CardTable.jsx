@@ -1,17 +1,33 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
-import React, { useMemo, useCallback, useState } from "react"
+import React, { useMemo, useCallback, useState, useRef } from "react"
 import MediaCard from "components/thumbnail/MediaCard"
 import Container from "@material-ui/core/Container"
 import TextField from "@material-ui/core/TextField"
+import { useLayoutEffect } from "react"
 import Paginator from "../others/Paginator"
 import CardContainer from "./CardContainer"
+import useRestoreComponentState from "../../contexts/useRestoreComponentState"
+import useLayoutContext from "../../contexts/useLayoutContext"
 
-function CardTable({ datalist = [], itemsPerPage = 4, CardComp = MediaCard }) {
+function CardTable({
+  datalist = [],
+  itemsPerPage = 4,
+  CardComp = MediaCard,
+  name,
+  uri,
+}) {
   const [currentPage, setPage] = useState(0)
-  const [keywords, setKeywords] = useState([])
+  const [keywords, setKeywords] = useState("")
   const filtered = useMemo(() => {
-    const regex = new RegExp(`(${keywords.join("|")})`, "i")
+    const regex = new RegExp(
+      `(${keywords
+        .trim()
+        .split(/[.!?\s+-]/g)
+        .join("|")})`,
+      "i"
+    )
     return datalist.filter(data => {
       return regex.test(data)
     })
@@ -27,15 +43,36 @@ function CardTable({ datalist = [], itemsPerPage = 4, CardComp = MediaCard }) {
   }, [filtered, itemsPerPage])
 
   const handlePageClick = useCallback(page => {
-    console.log(page)
     setPage(page.selected)
   })
 
   const onSearchFieldChange = useCallback(event => {
     const { value } = event.target
-    setKeywords(value.split(/[.!?\s+-]/g))
+    setKeywords(value)
     setPage(0)
   })
+
+  const stateHolder = useRef({ currentPage, keywords })
+  stateHolder.current.currentPage = currentPage
+  stateHolder.current.keywords = keywords
+
+  const getCurrentState = useCallback(() => {
+    const { currentPage, keywords } = stateHolder.current
+    return {
+      currentPage,
+      keywords,
+    }
+  }, [])
+
+  const historyState = useRestoreComponentState([uri, name], getCurrentState)
+
+  useLayoutEffect(() => {
+    if (historyState) {
+      setKeywords(historyState.keywords)
+      setPage(historyState.currentPage)
+    }
+  }, [])
+
   return (
     <div
       style={{
@@ -51,6 +88,7 @@ function CardTable({ datalist = [], itemsPerPage = 4, CardComp = MediaCard }) {
         margin="normal"
         variant="outlined"
         onChange={onSearchFieldChange}
+        value={keywords}
         style={{ marginLeft: "8px", marginRight: "8px" }}
       />
 
@@ -65,6 +103,7 @@ function CardTable({ datalist = [], itemsPerPage = 4, CardComp = MediaCard }) {
         style={{ position: "absolute", bottom: "0", width: "100%" }}
         pageCount={pageCount}
         handlePageClick={handlePageClick}
+        currentPage={currentPage}
       />
     </div>
   )

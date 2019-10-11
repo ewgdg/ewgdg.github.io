@@ -17,7 +17,10 @@ import classNames from "classnames"
 import LayoutContext from "contexts/LayoutContext"
 import { getController, ScrollMagic } from "plugins/scrollmagic"
 
+import { navigate } from "@reach/router"
 import { scrollIntoView } from "../../utilities/scroll"
+import { clearHistoryState } from "../../contexts/useRestoreComponentState"
+import useLayoutContext from "../../contexts/useLayoutContext"
 
 // const Header = ({ siteTitle }) => (
 //   <header
@@ -126,43 +129,74 @@ BackToTop.propTypes = {
   anchorId: PropTypes.string.isRequired,
 }
 
-const Header = ({ position, color }) => (
-  <div>
-    <AppBar position={position} id="navbar-top" className="navbar">
-      <Toolbar style={{ justifyContent: "space-around" }} variant="dense">
-        <IconButton edge="start" color="inherit" aria-label="menu">
-          {/* <MenuIcon /> */}
-          <Typography variant="h6" className="title">
-            Xian
-          </Typography>
-        </IconButton>
+const Header = ({ position, color, style }) => {
+  const context = useLayoutContext()
+  return (
+    <div>
+      <AppBar
+        position={position}
+        id="navbar-top"
+        className="navbar"
+        style={style}
+      >
+        <Toolbar style={{ justifyContent: "space-around" }} variant="dense">
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={() => {
+              clearHistoryState(["/"], context)
+              navigate("/")
+            }}
+          >
+            {/* <MenuIcon /> */}
+            <Typography variant="h6" className="title">
+              Xian
+            </Typography>
+          </IconButton>
 
-        <Box display="flex" flexDirection="row">
-          <Typography variant="h6" className="title">
-            News center
-          </Typography>
-        </Box>
+          <Button
+            onClick={() => {
+              navigate("/about")
+            }}
+            color="inherit"
+          >
+            <Box display="flex" flexDirection="row">
+              <Typography variant="h6" className="title">
+                About
+              </Typography>
+            </Box>
+          </Button>
 
-        <Button color="inherit">Login</Button>
-      </Toolbar>
+          <Button
+            onClick={() => {
+              clearHistoryState(["/blog"], context)
+              navigate("/blog")
+            }}
+            color="inherit"
+          >
+            Blog
+          </Button>
+        </Toolbar>
 
-      <BackToTop anchorId="navbar-top">
-        <Fab color="secondary" size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </BackToTop>
-    </AppBar>
-    <style jsx global>
-      {`
-        .navbar {
-          background-color: transparent;
-          color: ${color};
-          user-select: none;
-        }
-      `}
-    </style>
-  </div>
-)
+        <BackToTop anchorId="navbar-top">
+          <Fab color="secondary" size="small" aria-label="scroll back to top">
+            <KeyboardArrowUpIcon />
+          </Fab>
+        </BackToTop>
+      </AppBar>
+      <style jsx global>
+        {`
+          .navbar {
+            background-color: transparent;
+            color: ${color};
+            user-select: none;
+          }
+        `}
+      </style>
+    </div>
+  )
+}
 
 Header.propTypes = {
   position: PropTypes.string,

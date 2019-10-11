@@ -48,7 +48,7 @@ const useStyles = makeStyles({
   },
 })
 
-function Paginator({ pageCount = 0, handlePageClick, style }) {
+function Paginator({ pageCount = 0, handlePageClick, currentPage, style }) {
   const classes = useStyles()
   // const handlePageClick = useCallback(pageData => {
   //   const currentPage = pageData.selected
@@ -69,6 +69,7 @@ function Paginator({ pageCount = 0, handlePageClick, style }) {
         activeLinkClassName="active"
         nextClassName="next-border"
         previousClassName="prev-border"
+        forcePage={currentPage}
       />
     </div>
   )
