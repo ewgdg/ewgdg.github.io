@@ -41,7 +41,7 @@ export default function MediaCard({
 }) {
   const classes = useStyles()
   return (
-    <Grid item xs={5} style={{ height: "450px", ...style }}>
+    <Grid item xs={5} style={{ height: "450px", maxHeight: "100%", ...style }}>
       <Card className={classes.card}>
         <CardActionArea
           onClick={() => {

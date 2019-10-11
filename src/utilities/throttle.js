@@ -24,7 +24,7 @@ export default function throttle(fn, limit, recordLastCall = false) {
   return throttled
 }
 
-export function debounce(fn, delay) {
+export function debounce(fn, delay = 30) {
   let timeout
   return (...args) => {
     if (timeout) clearTimeout(timeout)

@@ -30,10 +30,10 @@ const useStyles = makeStyles({
     },
   },
 })
-function StyledTitle({ title }) {
+function StyledTitle({ title, style }) {
   const classes = useStyles()
   return (
-    <div style={{ textAlign: "center" }}>
+    <div style={{ textAlign: "center", ...style }}>
       <h2 className={classes.heading}>
         <strong> {title} </strong>
       </h2>

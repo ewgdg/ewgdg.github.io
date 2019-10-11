@@ -8,7 +8,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import MediaCard from "components/thumbnail/MediaCard"
 import ImageBasedCard from "components/thumbnail/ImageBasedCard"
 import CardContainer from "components/thumbnail/CardContainer"
-import AnimatedTitle from "components/heading/AnimatedTitle"
+import AnimatedTitle from "components/titles/AnimatedTitle"
 import Container from "@material-ui/core/Container"
 import ParallaxSection from "../sections/ParallaxSection"
 import FlexContainer from "../sections/FlexContainer"
@@ -16,7 +16,7 @@ import FlexContainer from "../sections/FlexContainer"
 function PortfolioPreview() {
   return (
     <FlexContainer>
-      <Container>
+      <Container style={{ maxHeight: "100%" }}>
         <div style={{ textAlign: "center" }}>
           <AnimatedTitle title="Games" />
           <p>I enjoy gaming, and I made myself some small games:</p>

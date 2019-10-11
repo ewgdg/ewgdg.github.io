@@ -1,5 +1,5 @@
 import React from "react"
-import StyledTitle from "components/heading/StyledTitle"
+import StyledTitle from "components/titles/StyledTitle"
 import CardContainer from "components/thumbnail/CardContainer"
 import MediaCard from "components/thumbnail/MediaCard"
 import Container from "@material-ui/core/Container"
@@ -10,16 +10,27 @@ import FlexContainer from "../sections/FlexContainer"
 function BlogPreview() {
   return (
     <FlexContainer>
-      <Container>
-        <div>
-          <StyledTitle title="Blog" />
-          <p style={{ textAlign: "center" }}>Know what I am thinking:</p>
+      <Container style={{ maxHeight: "100%", height: "600px" }}>
+        <div style={{ height: "15%" }}>
+          <StyledTitle title="Blog" style={{ height: "50%" }} />
+          <p
+            style={{
+              display: "block",
+              textAlign: "center",
+              height: "50%",
+              boxSizing: "border-box",
+            }}
+          >
+            Know what I am thinking:
+          </p>
         </div>
-        <CardContainer style={{ marginBottom: "25px" }}>
-          <MediaCard />
-          <MediaCard />
-        </CardContainer>
-        <Grid container justify="center">
+        <div style={{ height: "75%" }}>
+          <CardContainer style={{ marginBottom: "25px" }}>
+            <MediaCard />
+            <MediaCard />
+          </CardContainer>
+        </div>
+        <Grid container justify="center" style={{ maxHeight: "10%" }}>
           <Button variant="outlined" color="secondary">
             View more
           </Button>
