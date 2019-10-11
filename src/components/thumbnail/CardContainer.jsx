@@ -9,7 +9,7 @@ function CardContainer({ children, style }) {
       style={{
         display: "inline-block",
         width: "100%",
-        margin: "10px",
+        margin: "0",
         height: "100%",
       }}
     >

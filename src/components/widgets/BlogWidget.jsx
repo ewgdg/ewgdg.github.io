@@ -30,7 +30,12 @@ function BlogPreview() {
             <MediaCard />
           </CardContainer>
         </div>
-        <Grid container justify="center" style={{ maxHeight: "10%" }}>
+        <Grid
+          container
+          justify="center"
+          alignItems="flex-end"
+          style={{ maxHeight: "10%" }}
+        >
           <Button variant="outlined" color="secondary">
             View more
           </Button>
