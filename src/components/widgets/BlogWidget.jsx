@@ -1,13 +1,58 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-props-no-spreading */
 import React from "react"
-import StyledTitle from "components/titles/StyledTitle"
-import CardContainer from "components/thumbnail/CardContainer"
-import MediaCard from "components/thumbnail/MediaCard"
 import Container from "@material-ui/core/Container"
 import Grid from "@material-ui/core/Grid"
 import Button from "@material-ui/core/Button"
+import { graphql, useStaticQuery, navigate } from "gatsby"
+import MediaCard from "../thumbnail/MediaCard"
+import CardContainer from "../thumbnail/CardContainer"
+import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
+import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
 
 function BlogPreview() {
+  const { allMarkdownRemark } = useStaticQuery(graphql`
+    query {
+      allMarkdownRemark(
+        sort: { order: DESC, fields: [frontmatter___date] }
+        limit: 2
+        filter: {
+          frontmatter: {
+            templateKey: { eq: "BlogPost" }
+            featuredPost: { eq: true }
+            portfolio: { ne: true }
+          }
+        }
+      ) {
+        edges {
+          post: node {
+            excerpt(pruneLength: 400)
+            id
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+              description
+              templateKey
+              date(formatString: "MMMM DD, YYYY")
+              tags
+              featuredPost
+              featuredImage {
+                childImageSharp {
+                  fluid(maxWidth: 500, quality: 100) {
+                    ...GatsbyImageSharpFluid
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `)
+  const flatten = useFlattenMarkdownData(allMarkdownRemark)
   return (
     <FlexContainer>
       <Container style={{ maxHeight: "100%", height: "600px" }}>
@@ -26,8 +71,9 @@ function BlogPreview() {
         </div>
         <div style={{ height: "75%" }}>
           <CardContainer style={{ marginBottom: "25px" }}>
-            <MediaCard />
-            <MediaCard />
+            {flatten.map((cardData, i) => (
+              <MediaCard {...cardData} key={i} />
+            ))}
           </CardContainer>
         </div>
         <Grid
@@ -36,7 +82,13 @@ function BlogPreview() {
           alignItems="flex-end"
           style={{ maxHeight: "10%" }}
         >
-          <Button variant="outlined" color="secondary">
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => {
+              navigate("/blog")
+            }}
+          >
             View more
           </Button>
         </Grid>

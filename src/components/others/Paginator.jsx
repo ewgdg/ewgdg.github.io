@@ -13,6 +13,13 @@ const useStyles = makeStyles({
     margin: "auto",
     marginTop: "10px",
     marginBottom: "10px",
+    maxHeight: "100%",
+    "@media (max-height: 450px)": {
+      "&": {
+        marginBottom: "0px",
+        marginTop: "2px",
+      },
+    },
     "& li": {
       display: "inline",
       color: "#337ab7",
@@ -20,6 +27,7 @@ const useStyles = makeStyles({
       margin: 0,
       border: "1px solid rgba(122,122,122,0.2)",
       boxSizing: "border-box",
+      maxHeight: "100%",
       "&.prev-border": {
         borderRadius: "5px 0px 0px 5px",
       },
@@ -27,6 +35,7 @@ const useStyles = makeStyles({
         borderRadius: "0px 5px 5px 0px",
       },
       "& a": {
+        maxHeight: "100%",
         display: "inline-block",
         padding: "0.3em 0.9em",
         textDecoration: "none",
@@ -39,6 +48,11 @@ const useStyles = makeStyles({
         },
         "&:hover:not(.active)": {
           backgroundColor: "rgba(166,166,166,0.2)",
+        },
+        "@media (max-height: 450px)": {
+          "&": {
+            padding: "0.15em 0.6em",
+          },
         },
       },
     },
@@ -70,6 +84,7 @@ function Paginator({ pageCount = 0, handlePageClick, currentPage, style }) {
         nextClassName="next-border"
         previousClassName="prev-border"
         forcePage={currentPage}
+        style={{ maxHeight: "100%" }}
       />
     </div>
   )

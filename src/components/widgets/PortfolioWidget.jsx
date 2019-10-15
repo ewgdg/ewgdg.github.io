@@ -1,19 +1,56 @@
-import React, { useEffect, useContext, useRef } from "react"
-import { TweenMax, TimelineLite, Power2 } from "gsap/TweenMax"
-import "gsap/TextPlugin"
-import { getController, ScrollMagic } from "plugins/scrollmagic"
-import LayoutContext from "contexts/LayoutContext"
-import Jumbotron from "components/header/Jumbotron"
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/jsx-props-no-spreading */
+import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
-import MediaCard from "components/thumbnail/MediaCard"
-import ImageBasedCard from "components/thumbnail/ImageBasedCard"
-import CardContainer from "components/thumbnail/CardContainer"
-import AnimatedTitle from "components/titles/AnimatedTitle"
 import Container from "@material-ui/core/Container"
-import ParallaxSection from "../sections/ParallaxSection"
+
+import ImageBasedCard from "../thumbnail/ImageBasedCard"
+import CardContainer from "../thumbnail/CardContainer"
+import AnimatedTitle from "../titles/AnimatedTitle"
+
 import FlexContainer from "../sections/FlexContainer"
+import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
 
 function PortfolioPreview() {
+  const { allMarkdownRemark } = useStaticQuery(graphql`
+    query {
+      allMarkdownRemark(
+        sort: { order: DESC, fields: [frontmatter___date] }
+        limit: 2
+        filter: {
+          frontmatter: { portfolio: { eq: true }, featuredPost: { eq: true } }
+        }
+      ) {
+        edges {
+          post: node {
+            excerpt(pruneLength: 400)
+            id
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+              description
+              templateKey
+              date(formatString: "MMMM DD, YYYY")
+              tags
+              externalLink
+              featuredPost
+              featuredImage {
+                childImageSharp {
+                  fluid(maxWidth: 500, quality: 100) {
+                    ...GatsbyImageSharpFluid
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `)
+  const flatten = useFlattenMarkdownData(allMarkdownRemark)
+
   return (
     <FlexContainer>
       <Container style={{ maxHeight: "100%" }}>
@@ -23,8 +60,9 @@ function PortfolioPreview() {
         </div>
 
         <CardContainer>
-          <ImageBasedCard />
-          <ImageBasedCard />
+          {flatten.map((postProps, i) => (
+            <ImageBasedCard key={i} {...postProps} />
+          ))}
         </CardContainer>
       </Container>
     </FlexContainer>

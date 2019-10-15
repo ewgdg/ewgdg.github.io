@@ -9,7 +9,6 @@ import CardMedia from "@material-ui/core/CardMedia"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
-import { navigate } from "gatsby"
 
 const useStyles = makeStyles({
   card: {
@@ -43,18 +42,13 @@ export default function MediaCard({
   return (
     <Grid item xs={5} style={{ height: "450px", maxHeight: "100%", ...style }}>
       <Card className={classes.card}>
-        <CardActionArea
-          onClick={() => {
-            navigate(
-              "/blog/2017-01-04-just-in-small-batch-of-jamaican-blue-mountain-in-store-next-week"
-            )
-          }}
-          className={classes.actionArea}
-        >
+        <CardActionArea onClick={onClick} className={classes.actionArea}>
           {image ? (
             <CardMedia
               className={classes.media}
-              image="/splash.png"
+              image={
+                image.childImageSharp ? image.childImageSharp.fluid.src : image
+              }
               title={title}
             />
           ) : (
@@ -74,10 +68,20 @@ export default function MediaCard({
             </Grid>
           )}
           <CardContent className={classes.content}>
-            <Typography gutterBottom variant="h5" component="h2">
+            <Typography
+              gutterBottom
+              variant="h6"
+              component="h2"
+              style={{ height: "50%", overflow: "hidden" }}
+            >
               {title}
             </Typography>
-            <Typography variant="body2" color="textSecondary" component="p">
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              component="p"
+              style={{ height: "50%", overflow: "hidden" }}
+            >
               {description}
             </Typography>
           </CardContent>

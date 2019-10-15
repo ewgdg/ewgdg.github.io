@@ -13,14 +13,12 @@ import { Link } from "@reach/router"
 import { graphql } from "gatsby"
 import Paper from "@material-ui/core/Paper"
 import Container from "@material-ui/core/Container"
-import Layout from "../components/layouts/PersistedLayout"
 
 import "github-markdown-css"
 
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
-import { useLayoutEffect } from "react"
-import useRecordScrollTop from "../contexts/useRestoreScrollTop"
+
 import useResetScrollTop from "../contexts/useResetScrollTop"
 
 function BackToList() {
@@ -45,6 +43,7 @@ export const BlogPostTemplate = ({
   title,
   helmet,
 }) => {
+  const ContentElem = typeof content === "object" ? content : null
   return (
     <section className="section">
       {helmet || ""}
@@ -58,12 +57,15 @@ export const BlogPostTemplate = ({
             <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
               {title}
             </h1>
-            <p>{description}</p>
+            {description && <p>{description}</p>}
             <hr />
-            <article
-              className="markdown-body"
-              dangerouslySetInnerHTML={{ __html: content }}
-            />
+            {ContentElem ||
+              (content && (
+                <article
+                  className="markdown-body"
+                  dangerouslySetInnerHTML={{ __html: content }}
+                />
+              ))}
           </div>
         </Paper>
         <BackToList />
@@ -88,8 +90,7 @@ export const BlogPostTemplate = ({
 }
 
 BlogPostTemplate.propTypes = {
-  content: PropTypes.node.isRequired,
-  contentComponent: PropTypes.func,
+  content: PropTypes.node,
   description: PropTypes.string,
   title: PropTypes.string,
   helmet: PropTypes.object,

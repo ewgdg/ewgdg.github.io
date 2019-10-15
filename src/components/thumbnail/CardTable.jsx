@@ -1,16 +1,19 @@
 /* eslint-disable no-shadow */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
-import React, { useMemo, useCallback, useState, useRef } from "react"
-import MediaCard from "components/thumbnail/MediaCard"
+import React, {
+  useMemo,
+  useCallback,
+  useState,
+  useRef,
+  useLayoutEffect,
+} from "react"
 import Container from "@material-ui/core/Container"
 import TextField from "@material-ui/core/TextField"
-import { useLayoutEffect } from "react"
-import { Backdrop } from "@material-ui/core/Backdrop"
+import MediaCard from "./MediaCard"
 import Paginator from "../others/Paginator"
 import CardContainer from "./CardContainer"
 import useRestoreComponentState from "../../contexts/useRestoreComponentState"
-import useLayoutContext from "../../contexts/useLayoutContext"
 
 function CardTable({
   datalist = [],
@@ -29,9 +32,17 @@ function CardTable({
         .join("|")})`,
       "i"
     )
-    return datalist.filter(data => {
-      return regex.test(data)
+    const filtered1 = datalist.filter(data => {
+      return data.title && regex.test(data.title)
     })
+    const filtered2 = datalist.filter(data => {
+      return data.description && regex.test(data.description)
+    })
+    const filtered3 = datalist.filter(data => {
+      return data.tags && data.tags.some(tag => regex.test(tag))
+    })
+
+    return [...new Set([...filtered1, ...filtered2, ...filtered3])]
   }, [keywords])
   const prevsItemsPerPage = useRef(itemsPerPage)
   const pageData = useMemo(() => {
@@ -92,25 +103,38 @@ function CardTable({
       <TextField
         label="Search"
         type="search"
-        margin="normal"
         variant="outlined"
         onChange={onSearchFieldChange}
         value={keywords}
         style={{ marginLeft: "8px", marginRight: "8px" }}
+        margin="dense"
       />
 
-      <Container style={{ height: "80%" }}>
+      <Container
+        style={{
+          height: itemsPerPage > 2 ? "90%" : "85%",
+          marginTop: itemsPerPage > 2 ? "1%" : "0",
+        }}
+      >
         <CardContainer>
           {pageData.map((data, i) => (
             <CardComp
               key={i}
               style={{ height: itemsPerPage > 2 ? "45%" : "95%" }}
+              title={data.title}
+              description={data.description}
+              image={data.image}
+              onClick={data.onClick}
             />
           ))}
         </CardContainer>
       </Container>
       <Paginator
-        style={{ position: "absolute", bottom: "0", width: "100%" }}
+        style={{
+          position: "absolute",
+          bottom: "0",
+          width: "100%",
+        }}
         pageCount={pageCount}
         handlePageClick={handlePageClick}
         currentPage={currentPage}

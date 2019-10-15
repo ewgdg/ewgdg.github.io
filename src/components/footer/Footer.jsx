@@ -28,10 +28,9 @@ function Footer() {
         <IconButton
           color="primary"
           onClick={() => {
-            window.location.href = "mailto:xian.z512^gmail.com".replace(
-              "^",
-              "@"
-            )
+            window.location.href = "m&a&i#l#&t#o:$x#&i$a$n&#$.$z$#5$1#&$2$#^$#g$m#a$i&$l#$.$c#o&#m$"
+              .replace(/\^/g, "@")
+              .replace(/[#&$]/g, "")
           }}
         >
           <EmailRoundedIcon htmlColor="white" />

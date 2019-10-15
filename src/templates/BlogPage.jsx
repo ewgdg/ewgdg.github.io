@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useCallback, useLayoutEffect, useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { graphql } from "gatsby"
-import { debounce } from "utilities/throttle"
+import { debounce } from "../utilities/throttle"
 import CardTable from "../components/thumbnail/CardTable"
-import Layout from "../components/layouts/PersistedLayout"
 import SEO from "../components/Seo"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
@@ -11,18 +10,17 @@ import HeaderContainer from "../components/header/HeaderContainer"
 import Footer from "../components/footer/Footer"
 
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
+import useFlattenMarkdownData from "../components/others/useFlattenMarkdownData"
 
-function BlogPageTemplate({ jumbotronProps, uri }) {
+function BlogPageTemplate({ jumbotronProps, uri, blogRollData }) {
   const data = []
   data.length = 10
   data.fill("1")
   const [itemsPerPage, setItemsPerPage] = useState(4)
-  console.log(itemsPerPage)
   useEffect(() => {
     function calculateItemsPerPage() {
       let items = 4
-      console.log(window.innerHeight)
-      if (window.innerHeight < 600) {
+      if (window.innerHeight < 625) {
         items = 2
       }
       return items
@@ -48,7 +46,7 @@ function BlogPageTemplate({ jumbotronProps, uri }) {
         </Section>
         <Section>
           <CardTable
-            datalist={data}
+            datalist={blogRollData}
             name="BlogTable"
             uri={uri}
             itemsPerPage={itemsPerPage}
@@ -66,12 +64,17 @@ export { BlogPageTemplate }
 function BlogPage({ data, uri }) {
   const { frontmatter } = data.markdownRemark
   useRestoreScrollTop([uri])
-
+  // flatten blog data
+  const cardTableDataList = useFlattenMarkdownData(data.allMarkdownRemark)
   return (
     <>
       <SEO title="Blog" />
 
-      <BlogPageTemplate jumbotronProps={frontmatter.jumbotronProps} uri={uri} />
+      <BlogPageTemplate
+        jumbotronProps={frontmatter.jumbotronProps}
+        uri={uri}
+        blogRollData={cardTableDataList}
+      />
     </>
   )
 }
@@ -89,6 +92,40 @@ export const query = graphql`
             childImageSharp {
               fluid(maxWidth: 2048, quality: 100) {
                 ...GatsbyImageSharpFluid
+              }
+            }
+          }
+        }
+      }
+    }
+    allMarkdownRemark(
+      sort: { order: DESC, fields: [frontmatter___date] }
+      filter: {
+        frontmatter: {
+          templateKey: { eq: "BlogPost" }
+          portfolio: { ne: true }
+        }
+      }
+    ) {
+      edges {
+        post: node {
+          excerpt(pruneLength: 400)
+          id
+          fields {
+            slug
+          }
+          frontmatter {
+            title
+            templateKey
+            date(formatString: "MMMM DD, YYYY")
+            tags
+            description
+            featuredPost
+            featuredImage {
+              childImageSharp {
+                fluid(maxWidth: 500, quality: 100) {
+                  ...GatsbyImageSharpFluid
+                }
               }
             }
           }

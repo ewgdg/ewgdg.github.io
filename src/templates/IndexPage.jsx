@@ -1,7 +1,8 @@
+/* eslint-disable no-shadow */
 /* eslint-disable react/prop-types */
 /* eslint-disable react/require-default-props */
 import React from "react"
-import { Link, graphql } from "gatsby"
+import { graphql } from "gatsby"
 
 import PropTypes from "prop-types"
 
@@ -9,7 +10,6 @@ import ParallaxSection from "../components/sections/ParallaxSection"
 import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
-import Layout from "../components/layouts/PersistedLayout"
 
 import SEO from "../components/Seo"
 
@@ -20,6 +20,8 @@ import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
 export const IndexPageTemplate = ({ jumbotronProps }) => {
+  // ParallaxSection = isPreview ? "div" : ParallaxSection
+  // PageContainer = isPreview ? "div" : PageContainer
   return (
     <PageContainer>
       <Section>

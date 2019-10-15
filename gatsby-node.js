@@ -111,7 +111,10 @@ exports.createPages = async ({ actions, graphql }) => {
   posts.forEach(edge => {
     const { id } = edge.node
     const { node } = edge
-    if (node.frontmatter.templateKey) {
+    if (
+      node.frontmatter.templateKey &&
+      path.resolve(`src/templates/${String(node.frontmatter.templateKey)}.jsx`)
+    ) {
       createPage({
         path: node.fields.slug,
         tags: node.frontmatter.tags,

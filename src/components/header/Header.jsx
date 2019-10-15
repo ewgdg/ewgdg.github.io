@@ -1,89 +1,47 @@
 /* eslint-disable react/destructuring-assignment */
-import { Link } from "gatsby"
+
 import PropTypes from "prop-types"
 import React, { useContext, useEffect, useState } from "react"
 import AppBar from "@material-ui/core/AppBar"
 import Button from "@material-ui/core/Button"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
-import MenuIcon from "@material-ui/icons/Menu"
+
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
-import Grid from "@material-ui/core/Grid"
+
 import Fab from "@material-ui/core/Fab"
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
 import Zoom from "@material-ui/core/Zoom"
-import classNames from "classnames"
-import LayoutContext from "contexts/LayoutContext"
-import { getController, ScrollMagic } from "plugins/scrollmagic"
 
-import { navigate } from "@reach/router"
-import { scrollIntoView } from "../../utilities/scroll"
+import { navigate } from "gatsby"
+
+import LayoutContext from "../../contexts/LayoutContext"
+import { scrollIntoView, ScrollDetector } from "../../utilities/scroll"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
 
-// const Header = ({ siteTitle }) => (
-//   <header
-//     style={{
-//       background: 'rebeccapurple',
-//       marginBottom: '1.45rem',
-//     }}
-//   >
-//     <div
-//       style={{
-//         margin: '0 auto',
-//         maxWidth: 960,
-//         padding: '1.45rem 1.0875rem',
-//       }}
-//     >
-//       <h1 style={{ margin: 0 }}>
-//         <Link
-//           to="/"
-//           style={{
-//             color: 'white',
-//             textDecoration: 'none',
-//           }}
-//         >
-//           {siteTitle}
-//         </Link>
-//       </h1>
-//     </div>
-//     <style jsx>
-//       {`
-//         .testred {
-//           color: red;
-//         }
-//       `}
-
-//     </style>
-//   </header>
-// );
-
-// Header.propTypes = {
-//   siteTitle: PropTypes.string,
-// };
-
-// Header.defaultProps = {
-//   siteTitle: '',
-// };
-
 function useScrollTrigger({ threshold, target }) {
   const [trigger, setTrigger] = useState(false)
+
   useEffect(() => {
-    const controller = getController(target)
-    const scene = new ScrollMagic.Scene({
+    const scene = new ScrollDetector({
+      scrollLayer: target,
       triggerHook: 0,
       offset: threshold,
     })
-      .on("start", e => {
-        setTrigger(e.scrollDirection !== "REVERSE")
-      })
-      .addTo(controller)
-      .addIndicators()
+
+    scene.setEventListener(progress => {
+      if (progress > 0) {
+        setTrigger(true)
+      } else {
+        setTrigger(false)
+      }
+    })
 
     return () => {
-      if (controller) controller.removeScene(scene)
-      scene.destroy(true)
+      scene.destroy()
+      setTrigger(false)
     }
   }, [threshold, target])
   return trigger

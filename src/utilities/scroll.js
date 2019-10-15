@@ -1,8 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
 import { TweenLite, Power2 } from "gsap/TweenLite"
 import "gsap/ScrollToPlugin"
-import { getController } from "plugins/scrollmagic"
+// import { getController } from "../plugins/scrollmagic"
 import throttle from "./throttle"
 
 const easeInOut2 = BezierEasing(0.65, 0.1, 0.35, 0.99)
@@ -46,44 +47,66 @@ function getScrollTop(elem) {
 
 /* detect scroll for elem might dynamically change pos */
 class ScrollDetector {
-  constructor(scrollLayer, elem, triggerHook, duration, throttleLimit = 30) {
+  constructor({
+    scrollLayer,
+    triggerElement,
+    triggerHook = 0,
+    duration = 0,
+    throttleLimit = 30,
+    offset = 0,
+  }) {
     this.scrollLayer = scrollLayer
     this.triggerHook = triggerHook
-    this.elem = elem
+    this.triggerElement = triggerElement
     this.duration = duration
     this.throttleLimit = throttleLimit
+    this.offset = offset
     ScrollDetector.scrollDetectors.push(this)
   }
 
   setEventListener(callback) {
+    if (this.eventListener) {
+      this.scrollLayer.removeEventListener("scroll", this.eventListener)
+    }
     this.eventListener = throttle(
       this.eventListenerFactory(callback),
       this.throttleLimit,
       true
     )
     this.scrollLayer.addEventListener("scroll", this.eventListener)
+    // immediately update
+    this.update()
   }
 
   update() {
     if (this.eventListener) this.eventListener()
   }
 
+  updateDuration(newDuration) {
+    this.duration = newDuration
+    this.update()
+  }
+
   eventListenerFactory(callback) {
     let lastProgress = 0
 
     return () => {
-      const pos = this.elem.getBoundingClientRect().top
+      const pos =
+        (this.triggerElement
+          ? this.triggerElement.getBoundingClientRect().top -
+            this.scrollLayer.getBoundingClientRect().top
+          : -this.scrollLayer.scrollTop) + this.offset
 
       let progress = null
-      const offset = this.triggerHook * window.innerHeight
+      const triggerPos = this.triggerHook * window.innerHeight
 
       if (this.duration > 0) {
-        progress = -(pos - offset)
+        progress = -(pos - triggerPos)
         progress = Math.max(0, Math.min(this.duration, progress))
         progress /= this.duration
-      } else if (pos - offset <= 0) {
+      } else if (pos - triggerPos <= 0) {
         progress = 1
-      } else if (pos - offset > 0) {
+      } else if (pos - triggerPos > 0) {
         progress = 0
       }
 
@@ -101,7 +124,7 @@ class ScrollDetector {
     this.scrollLayer.removeEventListener("scroll", this.eventListener)
     this.eventListener = null
     this.scrollLayer = null
-    this.elem = null
+    this.triggerElement = null
   }
 }
 ScrollDetector.scrollDetectors = []
@@ -170,7 +193,7 @@ function legacyScrollByAnimated(elem, change, duration = 1000) {
 }
 function scrollByAnimated(elem, change, duration = 1000) {
   let tween
-  const controller = getController(elem)
+  // const controller = getController(elem)
   const promise = new Promise(resolve => {
     sendScrollEvent(elem)
     tween = TweenLite.to(elem, duration / 1000, {
@@ -183,7 +206,7 @@ function scrollByAnimated(elem, change, duration = 1000) {
         otherwise there might be a delay and 
         the delay will cause unstable behavior 
       */
-      controller.update(true)
+      // controller.update(true)
       ScrollDetector.updateAll()
     })
   }).then(() => {
@@ -219,7 +242,7 @@ function scrollIntoView(elem, scrollLayer, duration = 700) {
    * const change = (elem.getBoundingClientRect().top)
    * return legacyScrollByAnimated(scrollLayer, change, duration)
    */
-  const controller = getController(scrollLayer)
+  // const controller = getController(scrollLayer)
   return new Promise(resolve => {
     // sendScrollEvent(scrollLayer)
     TweenLite.to(scrollLayer, duration / 1000, {
@@ -232,7 +255,7 @@ function scrollIntoView(elem, scrollLayer, duration = 700) {
         otherwise there might be a delay and 
         the delay will cause unstable behavior 
       */
-      controller.update(true)
+      // controller.update(true)
       ScrollDetector.updateAll()
     })
   })
