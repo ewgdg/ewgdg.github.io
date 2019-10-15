@@ -11,7 +11,7 @@ import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
 
-import SEO from "../components/SEO"
+import SEO from "../components/header/SEO"
 
 import PortfolioWiget from "../components/widgets/PortfolioWidget"
 import AboutWidget from "../components/widgets/AboutWidget"

@@ -2,7 +2,7 @@
 import React from "react"
 import { graphql } from "gatsby"
 
-import SEO from "../components/SEO"
+import SEO from "../components/header/SEO"
 import HeaderContainer from "../components/header/HeaderContainer"
 
 import BubbleTank from "../components/bubbles/BubbleTank"
