@@ -22,6 +22,7 @@ function BlogPreview() {
             templateKey: { eq: "BlogPost" }
             featuredPost: { eq: true }
             portfolio: { ne: true }
+            isTemplate: { ne: true }
           }
         }
       ) {

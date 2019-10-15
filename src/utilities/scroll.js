@@ -2,9 +2,13 @@
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
 import { TweenLite, Power2 } from "gsap/TweenLite"
-import "gsap/ScrollToPlugin"
+import ScrollToPlugin from "gsap/ScrollToPlugin"
 // import { getController } from "../plugins/scrollmagic"
 import throttle from "./throttle"
+
+// prevent tree shaking
+// eslint-disable-next-line no-unused-vars
+const plugins = [ScrollToPlugin]
 
 const easeInOut2 = BezierEasing(0.65, 0.1, 0.35, 0.99)
 // const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
@@ -195,7 +199,7 @@ function scrollByAnimated(elem, change, duration = 1000) {
   let tween
   // const controller = getController(elem)
   const promise = new Promise(resolve => {
-    sendScrollEvent(elem)
+    // sendScrollEvent(elem)
     tween = TweenLite.to(elem, duration / 1000, {
       scrollTo: { y: `+=${change}` },
       onComplete: resolve,

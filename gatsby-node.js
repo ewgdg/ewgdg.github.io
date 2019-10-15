@@ -86,7 +86,10 @@ exports.createPages = async ({ actions, graphql }) => {
     const { node } = edge
     if (
       node.frontmatter.templateKey &&
-      path.resolve(`src/templates/${String(node.frontmatter.templateKey)}.jsx`)
+      path.resolve(
+        `src/templates/${String(node.frontmatter.templateKey)}.jsx`
+      ) &&
+      !node.frontmatter.isTemplate
     ) {
       createPage({
         path: node.fields.slug,

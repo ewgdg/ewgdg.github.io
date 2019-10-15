@@ -24,6 +24,21 @@ collections:
       - {label: "Featured Image", name: "featuredimage", widget: image, required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
       - {label: "Tags", name: "tags", widget: "list", requiored: false}
+  - name: "portfolio"
+    label: "Porfolio Post"
+    folder: "src/pages/portfolio"
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields:
+      - {label: "Template Key", name: "templateKey", widget: "hidden", default: "BlogPost"}
+      - {label: "Is Portfolio", name: "portfolio", widget: "hidden", default: true}
+      - {label: "Title", name: "title", widget: "string", default: 'untitled'}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Description", name: "description", widget: "text", required: false}
+      - {label: "Featured Post", name: "featuredPost", widget: "boolean", default: false }
+      - {label: "Featured Image", name: "featuredimage", widget: image, required: false}
+      - {label: "Body", name: "body", widget: "markdown", required: false}
+      - {label: "Tags", name: "tags", widget: "list", requiored: false}
 
   - name: "pages"
     label: "Pages"

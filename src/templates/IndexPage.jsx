@@ -20,8 +20,6 @@ import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
 export const IndexPageTemplate = ({ jumbotronProps }) => {
-  // ParallaxSection = isPreview ? "div" : ParallaxSection
-  // PageContainer = isPreview ? "div" : PageContainer
   return (
     <PageContainer>
       <Section>
