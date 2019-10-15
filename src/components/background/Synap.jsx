@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
-// import * as PIXI from "pixi.js"
-import * as PIXI from "plugins/PIXI"
+
 import React, { useLayoutEffect, useRef } from "react"
-import { debounce } from "utilities/throttle"
+import { debounce } from "../../utilities/throttle"
+import * as PIXI from "../../plugins/PIXI"
 import SynapGraph from "./SynapGraph"
 // console.log(PIXI)
 function Synap({ style }) {

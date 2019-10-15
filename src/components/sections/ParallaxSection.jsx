@@ -1,18 +1,12 @@
-/* eslint-disable import/no-unresolved */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
-import React, {
-  useLayoutEffect,
-  useRef,
-  useContext,
-  useEffect,
-  useState,
-} from "react"
+import React, { useRef, useContext, useEffect, useState } from "react"
 // import Img from "gatsby-image"
-import { TweenMax, TimelineLite, Power3, Power1, Power0 } from "gsap/TweenMax"
-import { getController, ScrollMagic } from "plugins/scrollmagic"
-import { ScrollDetector } from "utilities/scroll"
-import LayoutContext from "contexts/LayoutContext"
-import { debounce } from "utilities/throttle"
+
+// import { getController, ScrollMagic } from "../../plugins/scrollmagic"
+import LayoutContext from "../../contexts/LayoutContext"
+import throttle, { debounce } from "../../utilities/throttle"
+import { ScrollDetector } from "../../utilities/scroll"
 
 /* 
  wrap the child component into div container,
@@ -34,48 +28,42 @@ function ParallaxSection({
   const context = useContext(LayoutContext)
   if (!context.scrollLayer) return null
   useEffect(() => {
-    const controller = getController(context.scrollLayer)
+    // const controller = getController(context.scrollLayer)
 
-    // const lastTimeStamp = performance.now()
-    const scene = new ScrollMagic.Scene({
+    // const scene = new ScrollMagic.Scene({
+    //   triggerElement: containerRef.current,
+    //   triggerHook,
+    //   duration: context.scrollLayer.clientHeight,
+    //   reverse: true,
+    // })
+    // scene
+    //   .on("progress", event => {
+    //     const { progress } = event
+
+    //     const newY = `${progress * maxProgressValue}${progressUnit}`
+    //     const newOpacity = 1 - progress * fade
+    //     setY(newY)
+    //     setOpacity(newOpacity)
+    //   })
+    //   .addTo(controller)
+    // .addIndicators()
+    const scene = new ScrollDetector({
+      scrollLayer: context.scrollLayer,
       triggerElement: containerRef.current,
       triggerHook,
       duration: context.scrollLayer.clientHeight,
-      reverse: true,
+      throttleLimit: 0,
     })
-    scene
-      .on("progress", event => {
-        // const currentTime = performance.now()
-        // const diff = currentTime - lastTimeStamp
-        // lastTimeStamp = currentTime
-        // if (diff > 60) {
-        //   // if there is a lag, ignore the event
-        //   return
-        // }
-
-        const { progress } = event
-        // const progress = Math.min(
-        //   1,
-        //   Math.max(
-        //     0,
-        //     (event.scrollPos - event.startPos) / (event.endPos - event.startPos)
-        //   )
-        // )
-        const newY = `${progress * maxProgressValue}${progressUnit}`
-        const newOpacity = 1 - progress * fade
-        setY(newY)
-        setOpacity(newOpacity)
-
-        // console.log(`newY ${newY}`)
-        // contentRef.current.style.position = "fixed"
-        // contentRef.current.style.zIndex = 0
-      })
-      .addTo(controller)
-    // .addIndicators()
+    scene.setEventListener(progress => {
+      const newY = `${progress * maxProgressValue}${progressUnit}`
+      const newOpacity = 1 - progress * fade
+      setY(newY)
+      setOpacity(newOpacity)
+    })
 
     const onResize = debounce(() => {
-      scene.refresh()
-      scene.duration(context.scrollLayer.clientHeight)
+      // scene.refresh()
+      scene.updateDuration(context.scrollLayer.clientHeight)
       // scene.progress(old)
     }, 100)
     // reset trigger elem when resizing as start position may changes
@@ -83,8 +71,8 @@ function ParallaxSection({
 
     return () => {
       // console.log("destroy")
-      controller.removeScene(scene)
-      scene.destroy(true)
+      // controller.removeScene(scene)
+      scene.destroy()
       setY(0)
       window.removeEventListener("resize", onResize)
     }

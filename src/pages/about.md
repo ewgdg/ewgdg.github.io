@@ -32,7 +32,8 @@ facts:
   - title: Reading 
     description: |
       My another hobby is reading. 
-      I train myself to read multiple lines at once because I am so thirsty for the new line when I read, espically if I found a good story, like the story of Sherlock Holmes. I spent most of my teenage hanging around book mall.
+      I train myself to read multiple lines at once because I am so thirsty for the new line when I read, espically if I found a good story, like the story of Sherlock Holmes. 
+      I spent most of my teenage hanging around book mall. Of course, for the free air conditioning.
     image: /img/bookmall.png
   - title: Anime 
     description: |

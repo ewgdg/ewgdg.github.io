@@ -1,16 +1,10 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef } from "react"
+import React from "react"
 import { graphql } from "gatsby"
-import uuid from "uuid/v4"
-import GridList from "@material-ui/core/GridList"
-import GridListTile from "@material-ui/core/GridListTile"
-import { makeStyles } from "@material-ui/styles"
-import Grid from "@material-ui/core/Grid"
-import Layout from "../components/layouts/PersistedLayout"
+
 import SEO from "../components/Seo"
 import HeaderContainer from "../components/header/HeaderContainer"
-import Bubble from "../components/bubbles/Bubble"
-import ParallaxSection from "../components/sections/ParallaxSection"
+
 import BubbleTank from "../components/bubbles/BubbleTank"
 import Footer from "../components/footer/Footer"
 import useResetScrollTop from "../contexts/useResetScrollTop"

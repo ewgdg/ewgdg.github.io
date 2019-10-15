@@ -36,6 +36,9 @@ function useHistoryState(path) {
   custom hook to record page state between route change
 */
 function useRestoreComponentState(path, getCurrentState) {
+  if (!path) {
+    return null
+  }
   const context = useLayoutContext()
   const oldPath = useRef([])
   useEffect(() => {

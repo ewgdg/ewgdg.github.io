@@ -1,27 +1,17 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable import/no-unresolved */
 /* eslint-disable new-cap */
-import React, {
-  useLayoutEffect,
-  useRef,
-  useState,
-  useEffect,
-  useContext,
-} from "react"
-import { TweenMax, TimelineLite, Power3, Power1 } from "gsap/TweenMax"
-// import ScrollMagic from "scrollmagic-with-ssr"
-// import "scrollmagic/scrollmagic/minified/plugins/animation.gsap.min"
-// import "scrollmagic/scrollmagic/minified/plugins/debug.addIndicators.min"
+import React, { useRef, useEffect, useContext } from "react"
+import { TimelineLite, Power3, Power1 } from "gsap/TweenMax"
 
-// import { TimelineMax } from "gsap/TimelineMax"
-import CharSequence from "components/sections/CharSequence"
 import { makeStyles } from "@material-ui/styles"
-import LayoutContext from "contexts/LayoutContext"
+import { Link } from "gatsby"
+import LayoutContext from "../../contexts/LayoutContext"
 
-import { getController, ScrollMagic } from "plugins/scrollmagic"
-import { ScrollDetector } from "utilities/scroll"
+import CharSequence from "../sections/CharSequence"
+import { ScrollDetector } from "../../utilities/scroll"
 import FlexContainer from "../sections/FlexContainer"
-import { debounce } from "../../utilities/throttle"
 
 const useStyles = makeStyles({
   charSequenceContainer: {
@@ -76,15 +66,8 @@ function About() {
   const context = useContext(LayoutContext)
   if (!context.scrollLayer) return null
   const classes = useStyles()
-  // add scrollmagic controll
+  // add scroll animation controll
   useEffect(() => {
-    // if (!ribbonContainerRef.current || (charRefs.length > 0 && !charRefs[0])) {
-    //   console.log("check n ull")
-    //   return () => {}
-    // }
-
-    const controller = getController(context.scrollLayer)
-    // console.log(controller)
     const animation = new TimelineLite()
     // animate ribbon
     animation
@@ -136,24 +119,15 @@ function About() {
       )
       .add("endAnimation")
 
-    // const containerScene = new ScrollMagic.Scene({
-    //   triggerElement: ribbonContainerRef.current,
-    // })
-    // containerScene
-    //   // .setTween(blockTween)
-    //   .setTween(animation)
-    //   .addIndicators()
-    // .addTo(controller)
-
     animation.pause()
 
-    const scrollDetector = new ScrollDetector(
-      context.scrollLayer,
-      ribbonContainerRef.current,
-      0.5,
-      0,
-      0
-    )
+    const scrollDetector = new ScrollDetector({
+      scrollLayer: context.scrollLayer,
+      triggerElement: ribbonContainerRef.current,
+      triggerHook: 0.5,
+      duration: 0,
+      throttleLimit: 0,
+    })
     scrollDetector.setEventListener(progress => {
       if (progress > 0) {
         animation.play()
@@ -163,24 +137,10 @@ function About() {
     })
     scrollDetector.update()
 
-    // console.log(containerScene)
-    // const onResize = debounce(() => {
-    //   containerScene.refresh()
-    //   // scene.progress(old)
-    // }, 100)
-    // // reset trigger elem when resizing as start position may changes
-    // window.addEventListener("resize", onResize)
-
-    // document.querySelector("div#ribbon").addEventListener("scroll", e => {
-    //   console.log(e)
-    // })
     return () => {
-      // animation = null
-      // if (controller) controller.removeScene(containerScene)
-      // containerScene.destroy()
       animation.progress(1)
       animation.kill()
-      // window.removeEventListener("resize", onResize)
+
       scrollDetector.destroy()
     }
   }, [context])
@@ -212,16 +172,35 @@ function About() {
               </h2>
               <div>
                 <div className="animatedline">
-                  And that is <a href="#">why</a> I made this page.
+                  And that is <Link to="/blog">why</Link> I made this page.
                 </div>
                 <div className="animatedline">
-                  I like technology, gaming, and programming.
+                  I like technology and computer programming and many more.
                 </div>
                 <div className="animatedline" style={{ opacity: 0.8 }}>
-                  If you want to learn more about me, keep reading.
+                  If you want to learn more about me, keep{" "}
+                  <Link to="/about">reading</Link>.
                 </div>
                 <div className="animatedline" style={{ opacity: 0.6 }}>
-                  Or send me an email (or call).
+                  Or send me an{" "}
+                  <button
+                    style={{
+                      background: "none",
+                      border: "none",
+                      padding: "0",
+                      color: "#069",
+                      textDecoration: "underline",
+                      cursor: "pointer",
+                    }}
+                    type="button"
+                    onClick={() => {
+                      window.location.href = "m&a&i#l#&t#o:$x#&i$a$n&#$.$z$#5$1#&$2$#^$#g$m#a$i&$l#$.$c#o&#m$"
+                        .replace(/\^/g, "@")
+                        .replace(/[#&$]/g, "")
+                    }}
+                  >
+                    email.
+                  </button>
                 </div>
                 <div className="animatedline" style={{ opacity: 0.4 }}>
                   ... ...

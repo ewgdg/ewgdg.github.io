@@ -9,14 +9,14 @@ const Jumbotron = ({
   headline,
   subtitle,
   darkFilter,
-  imageAttachAsBackground,
+  imageAttachedAsBackground,
 }) => {
   let imgFluid = image
 
   if (!imgFluid) {
     const query = graphql`
       query {
-        image: file(relativePath: { eq: "gatsby-astronaut.png" }) {
+        image: file(relativePath: { eq: "home-jumbotron.jpg" }) {
           childImageSharp {
             fluid(maxWidth: 1000) {
               ...GatsbyImageSharpFluid
@@ -29,7 +29,7 @@ const Jumbotron = ({
   }
 
   let figureStyle = {}
-  if (imageAttachAsBackground) {
+  if (imageAttachedAsBackground) {
     figureStyle = {
       backgroundAttachment: "fixed",
       backgroundImage: `url(${
@@ -40,12 +40,11 @@ const Jumbotron = ({
     }
   }
 
-  console.log(subtitle)
   const lines = headline.split("\n")
   const [firstLine, ...restLines] = lines
   return (
     <figure style={figureStyle}>
-      {!imageAttachAsBackground && (
+      {!imageAttachedAsBackground && (
         <Img
           fluid={imgFluid.childImageSharp.fluid}
           style={{
@@ -59,14 +58,10 @@ const Jumbotron = ({
 
       <div className="headlineContainer">
         <div style={{ margin: 0, padding: 0 }}>
-          <h1 className="headline">
-            {/* Keyboard is */}
-            {firstLine}
-          </h1>
+          <h1 className="headline">{firstLine}</h1>
           <p style={{ margin: 0 }}>{subtitle}</p>
           {restLines.map(line => (
             <h1 className="headline" key={line}>
-              {/* My weapon */}
               {line}
             </h1>
           ))}
@@ -128,13 +123,13 @@ Jumbotron.propTypes = {
   ]),
   headline: PropTypes.string,
   darkFilter: PropTypes.number,
-  imageAttachAsBackground: PropTypes.bool,
+  imageAttachedAsBackground: PropTypes.bool,
 }
 Jumbotron.defaultProps = {
   image: null,
   headline: "",
   darkFilter: 0.3,
-  imageAttachAsBackground: true,
+  imageAttachedAsBackground: true,
 }
 
 export default Jumbotron
