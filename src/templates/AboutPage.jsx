@@ -40,7 +40,7 @@ export default function AboutPage({ data }) {
   useResetScrollTop()
   return (
     <>
-      <SEO title="Home" />
+      <SEO title="About" />
       <AboutPageTemplate
         jumbotronProps={frontmatter.jumbotronProps}
         facts={facts}
