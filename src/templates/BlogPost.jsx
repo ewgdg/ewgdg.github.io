@@ -69,22 +69,19 @@ export const BlogPostTemplate = ({
           </div>
         </Paper>
         <BackToList />
+        {tags && tags.length ? (
+          <div style={{ marginTop: `4rem` }}>
+            <h4>Tags</h4>
+            <ul className="taglist">
+              {tags.map(tag => (
+                <li key={`${tag}tag`}>
+                  <Link to={`/tags/${tag}/`}>{tag}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
       </Container>
-      {tags && tags.length ? (
-        <div style={{ marginTop: `4rem` }}>
-          <h4>Tags</h4>
-          <ul className="taglist">
-            {tags.map(tag => (
-              <li key={`${tag}tag`}>
-                <Link to={`/tags/${tag}/`}>{tag}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-      {/* </div>
-        </div>
-      </div> */}
     </section>
   )
 }
