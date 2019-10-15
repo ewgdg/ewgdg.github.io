@@ -83,12 +83,12 @@ module.exports = {
     "gatsby-plugin-styled-jsx",
     "gatsby-plugin-material-ui",
 
-    // {
-    //   resolve: "gatsby-plugin-netlify-cms",
-    //   options: {
-    //     modulePath: `${__dirname}/src/cms/cms.js`,
-    //   },
-    // },
+    {
+      resolve: "gatsby-plugin-netlify-cms",
+      options: {
+        modulePath: `${__dirname}/src/cms/cms.js`,
+      },
+    },
     "gatsby-plugin-netlify",
   ],
 }
