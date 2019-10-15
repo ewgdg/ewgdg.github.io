@@ -50,33 +50,6 @@ exports.onCreateWebpackConfig = ({
         ),
         "react-dom": "@hot-loader/react-dom",
       },
-      // alias: {
-      //   TweenLite: require.resolve("node_modules", {
-      //     paths: ["gsap/src/uncompressed/TweenLite.js"],
-      //   }),
-      //   TweenMax: require.resolve("node_modules", {
-      //     paths: ["gsap/src/uncompressed/TweenMax.js"],
-      //   }),
-      //   TimelineLite: require.resolve("node_modules", {
-      //     paths: ["gsap/src/uncompressed/TimelineLite.js"],
-      //   }),
-      //   TimelineMax: require.resolve("node_modules", {
-      //     paths: ["gsap/src/uncompressed/TimelineMax.js"],
-      //   }),
-      //   ScrollMagic: require.resolve("node_modules", {
-      //     paths: ["scrollmagic/scrollmagic/uncompressed/ScrollMagic.js"],
-      //   }),
-      //   "animation.gsap": require.resolve("node_modules", {
-      //     paths: [
-      //       "scrollmagic/scrollmagic/uncompressed/plugins/animation.gsap.js",
-      //     ],
-      //   }),
-      //   "debug.addIndicators": require.resolve("node_modules", {
-      //     paths: [
-      //       "scrollmagic/scrollmagic/uncompressed/plugins/debug.addIndicators.js",
-      //     ],
-      //   }),
-      // },
     },
   })
 }
@@ -136,13 +109,11 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
 
   fmImagesToRelative(node) // convert image paths for gatsby images
   if (node.internal.type === `MarkdownRemark`) {
-    console.log(node)
+    // console.log(node)
   }
   if (node.internal.type === `MarkdownRemark`) {
     const value = createFilePath({ node, getNode, basePath: `pages` })
-    // console.log(node)
-    // console.log("slug")
-    // console.log(value)
+
     createNodeField({
       name: `slug`,
       node,
