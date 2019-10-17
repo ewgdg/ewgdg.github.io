@@ -2,6 +2,9 @@
 import CMS from "netlify-cms-app"
 // import uploadcare from "netlify-cms-media-library-uploadcare"
 // import cloudinary from "netlify-cms-media-library-cloudinary"
+
+import "github-markdown-css"
+
 import BlogPostPreview from "./preview-templates/BlogPostPreview"
 import BlogPagePreview from "./preview-templates/BlogPagePreview"
 import IndexPagePreview from "./preview-templates/IndexPagePreview"
