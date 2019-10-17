@@ -1,10 +1,8 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { makeStyles } from "@material-ui/styles"
-import { useState } from "react"
 import { TweenLite } from "gsap/TweenLite"
 import { Elastic } from "gsap/EasePack"
-import TimelineLite from "gsap/TimelineLite"
 import Img from "gatsby-image"
 import FlexContainer from "../sections/FlexContainer"
 import TransitionsModal, {
