@@ -1,6 +1,6 @@
 ---
 templateKey: AboutPage
-image: /imganything/drink.jpg
+title: about
 jumbotron:
   image: /img/about-jumbotron.jpg
   headline: "Keyboard is\nMy weapon"
