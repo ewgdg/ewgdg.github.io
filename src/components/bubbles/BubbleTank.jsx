@@ -2,12 +2,11 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useMemo, useState } from "react"
-import uuid from "uuid/v4"
 import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
 import { makeStyles } from "@material-ui/styles"
 import ListSubheader from "@material-ui/core/ListSubheader"
-import { debounce } from "utilities/throttle"
+import { debounce } from "../../utilities/throttle"
 import Bubble from "./Bubble"
 import ParallaxSection from "../sections/ParallaxSection"
 
@@ -75,23 +74,12 @@ function random(min, max, isInteger = true) {
   if (isInteger) res = Math.floor(res)
   return res + min
 }
-// function useInitFactory(fn, dependencyList) {
-//   const willMount = useRef(true)
 
-//   // useEffect is called after component is mounted
-//   useEffect(() => {
-//     willMount.current = false
-//     return () => {
-//       willMount.current = true
-//     }
-//   }, dependencyList)
-// }
 function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
   const willMount = useRef(true)
-  console.log("remount refresh")
+
   // useEffect is called after component is mounted
   useEffect(() => {
-    console.log("remount reset willmount")
     willMount.current = false
     return () => {
       willMount.current = true
@@ -100,7 +88,6 @@ function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
 
   const bubbles = useRef(null)
   if (willMount.current) {
-    console.log("remount")
     const colors = [
       "Violet",
       "Aqua",
