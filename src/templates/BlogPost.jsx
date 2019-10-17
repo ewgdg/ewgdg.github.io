@@ -14,7 +14,7 @@ import { graphql } from "gatsby"
 import Paper from "@material-ui/core/Paper"
 import Container from "@material-ui/core/Container"
 
-import "github-markdown-css/github-markdown.css"
+import "github-markdown-css"
 
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
@@ -47,9 +47,6 @@ export const BlogPostTemplate = ({
   return (
     <section className="section">
       {helmet || ""}
-      {/* <div className="container content">
-        <div className="columns">
-          <div className="column is-10 is-offset-1"> */}
       <Container>
         <BackToList />
         <Paper>
@@ -59,7 +56,9 @@ export const BlogPostTemplate = ({
             </h1>
             {description && <p>{description}</p>}
             <hr />
-            {ContentElem ||
+            {(ContentElem && (
+              <article className="markdown-body">{ContentElem}</article>
+            )) ||
               (content && (
                 <article
                   className="markdown-body"

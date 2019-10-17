@@ -25,6 +25,7 @@ function useScrollTrigger({ threshold, target }) {
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
+    if (!target) return () => {}
     const scene = new ScrollDetector({
       scrollLayer: target,
       triggerHook: 0,
@@ -159,9 +160,11 @@ const Header = ({ position, color, style }) => {
 Header.propTypes = {
   position: PropTypes.string,
   color: PropTypes.string,
+  style: PropTypes.shapeOf({}),
 }
 Header.defaultProps = {
   position: "static",
   color: "black",
+  style: {},
 }
 export default Header
