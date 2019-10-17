@@ -160,7 +160,7 @@ const Header = ({ position, color, style }) => {
 Header.propTypes = {
   position: PropTypes.string,
   color: PropTypes.string,
-  style: PropTypes.shapeOf({}),
+  style: PropTypes.shape({}),
 }
 Header.defaultProps = {
   position: "static",
