@@ -9,6 +9,17 @@ import BubbleTank from "../components/bubbles/BubbleTank"
 import Footer from "../components/footer/Footer"
 import useResetScrollTop from "../contexts/useResetScrollTop"
 
+export const AboutPagePreview = ({ jumbotronProps }) => {
+  return (
+    <div>
+      <HeaderContainer
+        headerProps={{ color: "white", position: "absolute" }}
+        jumbotronProps={jumbotronProps}
+      />
+    </div>
+  )
+}
+
 export const AboutPageTemplate = ({ jumbotronProps, facts }) => {
   const tileData = []
   tileData.length = 20

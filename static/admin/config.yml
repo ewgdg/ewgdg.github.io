@@ -23,8 +23,8 @@ collections:
       - {label: "Featured Post", name: "featuredPost", widget: "boolean", default: false }
       - {label: "Featured Image", name: "featuredimage", widget: image, required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
-      - {label: "Tags", name: "tags", widget: "list", requiored: false}
-  - name: "portfolio"
+      - {label: "Tags", name: "tags", widget: "list", required: false}
+  - name: "portfolioPost"
     label: "Porfolio Post"
     folder: "src/pages/portfolio"
     create: true
@@ -38,7 +38,7 @@ collections:
       - {label: "Featured Post", name: "featuredPost", widget: "boolean", default: false }
       - {label: "Featured Image", name: "featuredimage", widget: image, required: false}
       - {label: "Body", name: "body", widget: "markdown", required: false}
-      - {label: "Tags", name: "tags", widget: "list", requiored: false}
+      - {label: "Tags", name: "tags", widget: "list", required: false}
 
   - name: "pages"
     label: "Pages"

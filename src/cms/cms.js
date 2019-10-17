@@ -6,12 +6,15 @@ import BlogPostPreview from "./preview-templates/BlogPostPreview"
 import BlogPagePreview from "./preview-templates/BlogPagePreview"
 import IndexPagePreview from "./preview-templates/IndexPagePreview"
 
+import AboutPagePreview from "./preview-templates/AboutPagePreview"
 // CMS.registerMediaLibrary(uploadcare)
 // CMS.registerMediaLibrary(cloudinary)
 
 CMS.registerPreviewTemplate("indexPage", IndexPagePreview)
+CMS.registerPreviewTemplate("aboutPage", AboutPagePreview)
 CMS.registerPreviewTemplate("blogListPage", BlogPagePreview)
 CMS.registerPreviewTemplate("blogPost", BlogPostPreview)
+CMS.registerPreviewTemplate("portfolioPost", BlogPostPreview)
 
 CMS.registerEditorComponent({
   // Internal id of the component
