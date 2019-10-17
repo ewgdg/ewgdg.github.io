@@ -12,6 +12,15 @@ import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import useFlattenMarkdownData from "../components/others/useFlattenMarkdownData"
 
+function BlogPagePreview({ jumbotronProps }) {
+  return (
+    <HeaderContainer
+      headerProps={{ color: "white", position: "absolute" }}
+      jumbotronProps={jumbotronProps}
+    />
+  )
+}
+
 function BlogPageTemplate({ jumbotronProps, uri, blogRollData }) {
   const data = []
   data.length = 10
@@ -35,6 +44,7 @@ function BlogPageTemplate({ jumbotronProps, uri, blogRollData }) {
       window.removeEventListener("resize", onresize)
     }
   }, [])
+
   return (
     <div>
       <PageContainer>
@@ -59,7 +69,7 @@ function BlogPageTemplate({ jumbotronProps, uri, blogRollData }) {
     </div>
   )
 }
-export { BlogPageTemplate }
+export { BlogPageTemplate, BlogPagePreview }
 
 function BlogPage({ data, uri }) {
   const { frontmatter } = data.markdownRemark

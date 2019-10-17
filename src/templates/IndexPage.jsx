@@ -19,6 +19,16 @@ import BlogWidget from "../components/widgets/BlogWidget"
 import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
+export const IndexPagePreview = ({ jumbotronProps }) => {
+  return (
+    <div>
+      <HeaderContainer
+        headerProps={{ color: "white", position: "absolute" }}
+        jumbotronProps={jumbotronProps}
+      />
+    </div>
+  )
+}
 export const IndexPageTemplate = ({ jumbotronProps }) => {
   return (
     <PageContainer>

@@ -1,17 +1,17 @@
 /* eslint-disable react/require-default-props */
 import React from "react"
 import PropTypes from "prop-types"
-import { BlogPagePreview as Preview } from "../../templates/BlogPage"
+import { AboutPagePreview as Preview } from "../../templates/AboutPage"
 
-const BlogPagePreview = ({ entry }) => {
+const AboutPagePreview = ({ entry }) => {
   const jumbotronProps = entry.getIn(["data", "jumbotron"])
   return <Preview jumbotronProps={jumbotronProps} />
 }
 
-BlogPagePreview.propTypes = {
+AboutPagePreview.propTypes = {
   entry: PropTypes.shape({
     getIn: PropTypes.func,
   }),
 }
 
-export default BlogPagePreview
+export default AboutPagePreview

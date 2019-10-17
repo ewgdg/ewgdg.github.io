@@ -14,16 +14,13 @@ import { graphql } from "gatsby"
 import Paper from "@material-ui/core/Paper"
 import Container from "@material-ui/core/Container"
 
-import css from "github-markdown-css"
+import "github-markdown-css/github-markdown.css"
 
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
 import useResetScrollTop from "../contexts/useResetScrollTop"
 
-// prevent from tree shaking
-// eslint-disable-next-line no-unused-vars
-const files = [css]
 function BackToList() {
   return (
     <div style={{ textAlign: "right" }}>
