@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+// import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
 
 const Jumbotron = ({
@@ -11,22 +11,22 @@ const Jumbotron = ({
   darkFilter,
   imageAttachedAsBackground,
 }) => {
-  let imgFluid = image
+  const imgFluid = image
 
-  if (!imgFluid) {
-    const query = graphql`
-      query {
-        image: file(relativePath: { eq: "home-jumbotron.jpg" }) {
-          childImageSharp {
-            fluid(maxWidth: 1000) {
-              ...GatsbyImageSharpFluid
-            }
-          }
-        }
-      }
-    `
-    imgFluid = useStaticQuery(query).image
-  }
+  // if (!imgFluid) {
+  //   const query = graphql`
+  //     query {
+  //       image: file(relativePath: { eq: "home-jumbotron.jpg" }) {
+  //         childImageSharp {
+  //           fluid(maxWidth: 1000) {
+  //             ...GatsbyImageSharpFluid
+  //           }
+  //         }
+  //       }
+  //     }
+  //   `
+  //   imgFluid = useStaticQuery(query).image
+  // }
 
   let figureStyle = {}
   if (imageAttachedAsBackground) {
