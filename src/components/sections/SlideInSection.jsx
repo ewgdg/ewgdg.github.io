@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useEffect } from "react"
-import { TweenLite } from "gsap/TweenLite"
+import { TweenLite, Power2 } from "gsap/TweenLite"
 import LayoutContext from "../../contexts/LayoutContext"
 import { ScrollDetector } from "../../utilities/scroll"
 /* slide the child in when the child elem is inside viewport */
 function SlideInSection({
   triggerHook = 1,
-  duration = 1.2,
+  duration = 1.1,
   fromY = 50,
   children,
   style,
@@ -27,6 +27,7 @@ function SlideInSection({
     const animation = TweenLite.from(containerRef.current, duration, {
       opacity: 0.1,
       y: fromY,
+      ease: Power2.easeOut,
     })
 
     animation.pause()

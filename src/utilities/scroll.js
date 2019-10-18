@@ -72,11 +72,14 @@ class ScrollDetector {
     if (this.eventListener) {
       this.scrollLayer.removeEventListener("scroll", this.eventListener)
     }
-    this.eventListener = throttle(
-      this.eventListenerFactory(callback),
-      this.throttleLimit,
-      true
-    )
+    this.eventListener =
+      this.throttleLimit > 0
+        ? throttle(
+            this.eventListenerFactory(callback),
+            this.throttleLimit,
+            true
+          )
+        : this.eventListenerFactory(callback)
     this.scrollLayer.addEventListener("scroll", this.eventListener)
     // immediately update
     this.update()
@@ -95,6 +98,7 @@ class ScrollDetector {
     let lastProgress = 0
 
     return () => {
+      if (!this.triggerElement || !this.scrollLayer) return
       const pos =
         (this.triggerElement
           ? this.triggerElement.getBoundingClientRect().top -

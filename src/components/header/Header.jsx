@@ -3,7 +3,6 @@
 import PropTypes from "prop-types"
 import React, { useContext, useEffect, useState } from "react"
 import AppBar from "@material-ui/core/AppBar"
-import Button from "@material-ui/core/Button"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
 
@@ -114,28 +113,34 @@ const Header = ({ position, color, style }) => {
             </Typography>
           </IconButton>
 
-          <Button
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
             onClick={() => {
               navigate("/about")
             }}
-            color="inherit"
           >
             <Box display="flex" flexDirection="row">
               <Typography variant="h6" className="title">
                 About
               </Typography>
             </Box>
-          </Button>
+          </IconButton>
 
-          <Button
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="menu"
             onClick={() => {
               clearHistoryState(["/blog"], context)
               navigate("/blog")
             }}
-            color="inherit"
           >
-            Blog
-          </Button>
+            <Typography variant="h6" className="title">
+              Blog
+            </Typography>
+          </IconButton>
         </Toolbar>
 
         <BackToTop anchorId="navbar-top">
