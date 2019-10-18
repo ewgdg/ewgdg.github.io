@@ -105,7 +105,7 @@ export const BlogPostTemplate = ({
             <ul className={classes.taglist}>
               {tags.map(tag => (
                 <li key={`${tag}tag`} className={classes.tag}>
-                  <Link to={`/blog#search?tags=${tag}`}>{tag}</Link>
+                  <Link to={`/blog?tags=${tag}#search`}>{tag}</Link>
                 </li>
               ))}
             </ul>
