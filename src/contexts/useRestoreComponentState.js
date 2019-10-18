@@ -57,5 +57,13 @@ function useRestoreComponentState(path, getCurrentState) {
   return res
 }
 
-export { useHistoryState, clearHistoryState }
+function setComponentState(path, state) {
+  if (!path) {
+    return null
+  }
+  const context = useLayoutContext()
+  setValue(context.historyState, path, state)
+}
+
+export { useHistoryState, clearHistoryState, setComponentState }
 export default useRestoreComponentState

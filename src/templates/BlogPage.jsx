@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useState } from "react"
 import { graphql } from "gatsby"
+import * as queryString from "query-string"
 import { debounce } from "../utilities/throttle"
 import CardTable from "../components/thumbnail/CardTable"
 import SEO from "../components/header/SEO"
@@ -8,9 +9,9 @@ import PageContainer from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
 import HeaderContainer from "../components/header/HeaderContainer"
 import Footer from "../components/footer/Footer"
-
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import useFlattenMarkdownData from "../components/others/useFlattenMarkdownData"
+import { setComponentState } from "../contexts/useRestoreComponentState"
 
 function BlogPagePreview({ jumbotronProps }) {
   return (
@@ -21,7 +22,12 @@ function BlogPagePreview({ jumbotronProps }) {
   )
 }
 
-function BlogPageTemplate({ jumbotronProps, uri, blogRollData }) {
+function BlogPageTemplate({
+  jumbotronProps,
+  uri,
+  blogRollData,
+  tableName = "blogTable",
+}) {
   const data = []
   data.length = 10
   data.fill("1")
@@ -54,10 +60,10 @@ function BlogPageTemplate({ jumbotronProps, uri, blogRollData }) {
             jumbotronProps={jumbotronProps}
           />
         </Section>
-        <Section>
+        <Section id="search">
           <CardTable
             datalist={blogRollData}
-            name="BlogTable"
+            name={tableName}
             uri={uri}
             itemsPerPage={itemsPerPage}
           />
@@ -71,9 +77,16 @@ function BlogPageTemplate({ jumbotronProps, uri, blogRollData }) {
 }
 export { BlogPageTemplate, BlogPagePreview }
 
-function BlogPage({ data, uri }) {
+function BlogPage({ data, uri, location }) {
+  const tableName = "blogTable"
+  if (location.search) {
+    const queryParams = queryString.parse(location.search)
+    if (queryParams.tags) {
+      setComponentState([uri, tableName], { keywords: queryParams.tags })
+    }
+  }
   const { frontmatter } = data.markdownRemark
-  useRestoreScrollTop([uri])
+  useRestoreScrollTop([uri], location.hash)
   // flatten blog data
   const cardTableDataList = useFlattenMarkdownData(data.allMarkdownRemark)
   return (
@@ -84,6 +97,7 @@ function BlogPage({ data, uri }) {
         jumbotronProps={frontmatter.jumbotronProps}
         uri={uri}
         blogRollData={cardTableDataList}
+        tableName={tableName}
       />
     </>
   )

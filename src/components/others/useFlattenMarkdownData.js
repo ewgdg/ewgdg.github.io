@@ -1,10 +1,13 @@
 import { useMemo } from "react"
 import { navigate } from "gatsby"
+import { clearHistoryState } from "../../contexts/useRestoreComponentState"
+import useLayoutContext from "../../contexts/useLayoutContext"
 
 export default function(rawData) {
   if (!(rawData && rawData.edges)) {
     return []
   }
+  const context = useLayoutContext()
   return useMemo(() => {
     const res = []
     rawData.edges.forEach(postData => {
@@ -24,6 +27,7 @@ export default function(rawData) {
           }
         }
         return () => {
+          clearHistoryState([post.fields.slug], context)
           navigate(post.fields.slug)
         }
       })()
