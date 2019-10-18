@@ -10,6 +10,7 @@ import CardContainer from "../thumbnail/CardContainer"
 import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
+import SlideInSection from "../sections/SlideInSection"
 
 function BlogPreview() {
   const { allMarkdownRemark } = useStaticQuery(graphql`
@@ -71,11 +72,13 @@ function BlogPreview() {
           </p>
         </div>
         <div style={{ height: "75%" }}>
-          <CardContainer style={{ marginBottom: "25px" }}>
-            {flatten.map((cardData, i) => (
-              <MediaCard {...cardData} key={i} />
-            ))}
-          </CardContainer>
+          <SlideInSection>
+            <CardContainer style={{ marginBottom: "25px" }}>
+              {flatten.map((cardData, i) => (
+                <MediaCard {...cardData} key={i} />
+              ))}
+            </CardContainer>
+          </SlideInSection>
         </div>
         <Grid
           container
