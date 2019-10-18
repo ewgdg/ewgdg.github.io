@@ -1,15 +1,12 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useEffect, useState } from "react"
-// import Img from "gatsby-image"
-
-// import { getController, ScrollMagic } from "../../plugins/scrollmagic"
 import LayoutContext from "../../contexts/LayoutContext"
-import throttle, { debounce } from "../../utilities/throttle"
+import { debounce } from "../../utilities/throttle"
 import { ScrollDetector } from "../../utilities/scroll"
 
 /* 
- wrap the child component into div container,
+ wrap the child component into a div container for animation purpose,
  gradually moves the given child component down and hide the overflow part,
  when scrolling down the page 
 */
@@ -28,25 +25,6 @@ function ParallaxSection({
   const context = useContext(LayoutContext)
   if (!context.scrollLayer) return null
   useEffect(() => {
-    // const controller = getController(context.scrollLayer)
-
-    // const scene = new ScrollMagic.Scene({
-    //   triggerElement: containerRef.current,
-    //   triggerHook,
-    //   duration: context.scrollLayer.clientHeight,
-    //   reverse: true,
-    // })
-    // scene
-    //   .on("progress", event => {
-    //     const { progress } = event
-
-    //     const newY = `${progress * maxProgressValue}${progressUnit}`
-    //     const newOpacity = 1 - progress * fade
-    //     setY(newY)
-    //     setOpacity(newOpacity)
-    //   })
-    //   .addTo(controller)
-    // .addIndicators()
     const scene = new ScrollDetector({
       scrollLayer: context.scrollLayer,
       triggerElement: containerRef.current,
@@ -62,28 +40,17 @@ function ParallaxSection({
     })
 
     const onResize = debounce(() => {
-      // scene.refresh()
       scene.updateDuration(context.scrollLayer.clientHeight)
-      // scene.progress(old)
     }, 100)
     // reset trigger elem when resizing as start position may changes
     window.addEventListener("resize", onResize)
 
     return () => {
-      // console.log("destroy")
-      // controller.removeScene(scene)
       scene.destroy()
       setY(0)
       window.removeEventListener("resize", onResize)
     }
-  }, [
-    context,
-    maxProgressValue,
-    children,
-    triggerHook,
-    progressUnit,
-    triggerHook,
-  ])
+  }, [context, maxProgressValue, children, triggerHook, progressUnit])
 
   return (
     <div

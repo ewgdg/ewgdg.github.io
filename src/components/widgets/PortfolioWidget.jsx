@@ -10,6 +10,7 @@ import AnimatedTitle from "../titles/AnimatedTitle"
 
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
+import SlideInSection from "../sections/SlideInSection"
 
 function PortfolioPreview() {
   const { allMarkdownRemark } = useStaticQuery(graphql`
@@ -58,12 +59,13 @@ function PortfolioPreview() {
           <AnimatedTitle title="Games" />
           <p>I enjoy gaming, and I made myself some small games:</p>
         </div>
-
-        <CardContainer>
-          {flatten.map((postProps, i) => (
-            <ImageBasedCard key={i} {...postProps} />
-          ))}
-        </CardContainer>
+        <SlideInSection>
+          <CardContainer>
+            {flatten.map((postProps, i) => (
+              <ImageBasedCard key={i} {...postProps} />
+            ))}
+          </CardContainer>
+        </SlideInSection>
       </Container>
     </FlexContainer>
   )
