@@ -3,7 +3,7 @@ import React from "react"
 import EmailRoundedIcon from "@material-ui/icons/EmailRounded"
 import IconButton from "@material-ui/core/IconButton"
 
-function Footer() {
+function Footer({ className }) {
   return (
     <footer
       style={{
@@ -11,7 +11,10 @@ function Footer() {
         backgroundColor: "#1a1a1a",
         padding: "10vh 6vw",
         margin: "0",
+        display: "block",
+        width: "100%",
       }}
+      className={className}
     >
       <p style={{ color: "white", fontSize: "1.5rem" }}>
         Let me show you how I solve problems.

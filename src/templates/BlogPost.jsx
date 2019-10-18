@@ -16,11 +16,39 @@ import Container from "@material-ui/core/Container"
 
 import "github-markdown-css"
 
+import { makeStyles } from "@material-ui/core/styles"
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
 import useResetScrollTop from "../contexts/useResetScrollTop"
 
+const useStyles = makeStyles({
+  taglist: {
+    listStyle: "none",
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "left",
+    alignItems: "center",
+    margin: 0,
+  },
+  tag: {
+    padding: "0 2rem 1rem 0",
+  },
+  pageContainer: {
+    position: "relative",
+    minHeight: "100vh",
+    "&::after": {
+      content: "''",
+      // reserve a space for footer
+      height: "350px",
+      display: "block",
+    },
+    "& footer": {
+      position: "absolute",
+      bottom: 0,
+    },
+  },
+})
 function BackToList() {
   return (
     <div style={{ textAlign: "right" }}>
@@ -45,6 +73,7 @@ export const BlogPostTemplate = ({
   includeBackButton = true,
 }) => {
   const ContentElem = typeof content === "object" ? content : null
+  const classes = useStyles()
   return (
     <section className="section">
       {helmet || ""}
@@ -69,12 +98,12 @@ export const BlogPostTemplate = ({
           </div>
         </Paper>
         {includeBackButton && <BackToList />}
-        {tags && tags.length ? (
+        {tags && includeBackButton && tags.length ? (
           <div style={{ marginTop: `4rem` }}>
             <h4>Tags</h4>
-            <ul className="taglist">
+            <ul className={classes.taglist}>
               {tags.map(tag => (
-                <li key={`${tag}tag`}>
+                <li key={`${tag}tag`} className={classes.tag}>
                   <Link to={`/tags/${tag}/`}>{tag}</Link>
                 </li>
               ))}
@@ -96,8 +125,9 @@ BlogPostTemplate.propTypes = {
 const BlogPost = ({ data }) => {
   const { markdownRemark: post } = data
   useResetScrollTop()
+  const classes = useStyles()
   return (
-    <>
+    <div className={classes.pageContainer}>
       <HeaderContainer
         headerProps={{
           color: "black",
@@ -121,8 +151,8 @@ const BlogPost = ({ data }) => {
         title={post.frontmatter.title}
         includeBackButton={!post.frontmatter.isPortfolio}
       />
-      <Footer />
-    </>
+      <Footer className="footer" />
+    </div>
   )
 }
 

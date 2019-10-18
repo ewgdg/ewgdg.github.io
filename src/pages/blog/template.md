@@ -9,4 +9,5 @@ isPortfolio: false
 isTemplate: true
 tags:
   - template
+  - test
 ---
