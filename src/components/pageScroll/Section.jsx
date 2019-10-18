@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/prop-types */
 import React from "react"
 import PropTypes from "prop-types"
@@ -13,7 +14,7 @@ const useStyles = makeStyles({
   },
 })
 
-function Section({ children, forwardedRef, style }) {
+function Section({ children, forwardedRef, style, id }) {
   const classes = useStyles()
 
   return (
@@ -21,6 +22,7 @@ function Section({ children, forwardedRef, style }) {
       ref={forwardedRef}
       className={`${classes.root} section`}
       style={{ boxSizing: "border-box", userSelect: "none", ...style }}
+      {...(id ? { id } : {})}
     >
       {children}
     </section>

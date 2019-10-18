@@ -21,6 +21,7 @@ import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
 import useResetScrollTop from "../contexts/useResetScrollTop"
+import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
 const useStyles = makeStyles({
   taglist: {
@@ -104,7 +105,7 @@ export const BlogPostTemplate = ({
             <ul className={classes.taglist}>
               {tags.map(tag => (
                 <li key={`${tag}tag`} className={classes.tag}>
-                  <Link to={`/tags/${tag}/`}>{tag}</Link>
+                  <Link to={`/blog#search?tags=${tag}`}>{tag}</Link>
                 </li>
               ))}
             </ul>
@@ -122,9 +123,9 @@ BlogPostTemplate.propTypes = {
   helmet: PropTypes.object,
 }
 
-const BlogPost = ({ data }) => {
+const BlogPost = ({ data, uri }) => {
   const { markdownRemark: post } = data
-  useResetScrollTop()
+  useRestoreScrollTop([uri])
   const classes = useStyles()
   return (
     <div className={classes.pageContainer}>
