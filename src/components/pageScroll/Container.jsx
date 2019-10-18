@@ -145,7 +145,7 @@ const useHandlers = (ref, childrenRefs, context) => {
         tagName === "TEXTAREA" ||
         tagName === "AREA" ||
         tagName === "SELECT" ||
-        elem.hasAttribute("tabindex")
+        elem.hasAttribute("clickable")
       )
     }
     function pointerDownHandler(e) {

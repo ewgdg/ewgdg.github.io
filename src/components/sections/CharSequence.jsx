@@ -1,7 +1,7 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-param-reassign */
-import React, { useEffect, useRef, useCallback } from "react"
+import React from "react"
 
 // given a string return a list of chars for animation
 function CharSequence({ string, charRefs, style, className }) {

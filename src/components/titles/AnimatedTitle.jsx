@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React, { useRef, useContext, useEffect } from "react"
 import { TimelineLite, Power2 } from "gsap/TweenMax"
 import { ScrollDetector } from "../../utilities/scroll"

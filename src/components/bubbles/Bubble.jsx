@@ -1,13 +1,18 @@
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useState } from "react"
 import { makeStyles } from "@material-ui/styles"
-import { TweenLite } from "gsap/TweenLite"
-import { Elastic } from "gsap/EasePack"
+// import from tweenmax since it auto import the plugins
+import { TweenLite, Elastic } from "gsap/TweenMax"
+// import { CSSPlugin } from "gsap/TweenMax"
+// import { Elastic } from "gsap/EasePack"
 import Img from "gatsby-image"
 import FlexContainer from "../sections/FlexContainer"
 import TransitionsModal, {
   useModalController,
 } from "../modals/TransitionsModal"
+
+// prevent plugins from being dropped by treeshaking, not neccessary for tweenmax
+// const plugins = [CSSPlugin]
 
 const useStyles = makeStyles({
   circle: {
@@ -123,7 +128,7 @@ function Bubble({
       ref.current.removeEventListener("mouseenter", onmouseenter)
       ref.current.removeEventListener("mouseleave", onmouseleave)
     }
-  }, [boundings.x, boundings.y, radius])
+  }, [boundings.x, boundings.y, radius, ref.current])
 
   const classes = useStyles({ radius })
   const [
