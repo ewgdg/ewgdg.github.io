@@ -8,18 +8,10 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, {
-  useMemo,
-  useRef,
-  useState,
-  useEffect,
-  useLayoutEffect,
-  useCallback,
-} from "react"
+import React, { useRef, useState, useCallback } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import { Location } from "@reach/router"
-import Footer from "../footer/Footer"
+
 import "./layout.css"
 import "typeface-roboto"
 // import ScrollMagic from "scrollmagic-with-ssr"
@@ -27,7 +19,6 @@ import "typeface-roboto"
 import FlyingSprite from "../sprite/FlyingSprite"
 import LayoutContext from "../../contexts/LayoutContext"
 import Synap from "../background/Synap"
-import Section from "../pageScroll/Section"
 
 const Layout = ({ children }) => {
   const data = useStaticQuery(graphql`
@@ -39,11 +30,6 @@ const Layout = ({ children }) => {
       }
     }
   `)
-
-  // // const [value, setValue] = useState(0)
-  // const scrollMagicController = useMemo(() => {
-  //   return new ScrollMagic.Controller()
-  // }, [])
 
   const contextValueRef = useRef({
     scrollLayer: null,
@@ -62,10 +48,11 @@ const Layout = ({ children }) => {
     [contextValueRef]
   )
 
-  useLayoutEffect(() => {
-    // reset scroll pos each page refresh on location change
-    // contextValueRef.current.scrollLayer.scrollTop = 0
-  })
+  // implement this on each page independently to allow recording states
+  // useLayoutEffect(() => {
+  // reset scroll pos each page refresh on location change
+  // contextValueRef.current.scrollLayer.scrollTop = 0
+  // })
   return (
     <LayoutContext.Provider value={contextValueRef.current}>
       <div
@@ -99,32 +86,7 @@ const Layout = ({ children }) => {
         >
           <FlyingSprite style={{ position: "fixed" }} />
 
-          {/* <LayoutContext.Provider value={layer}> */}
-          {/* <button
-          type="button"
-          onClick={() => {
-            setValue(prev => prev + 1)
-            console.log(contextValue)
-          }}
-        >
-          increase value
-        </button>
-        <p>value: {value}</p> */}
-          {resolved && (
-            <div>
-              {/* style={{
-          margin: '0 auto',
-          maxWidth: 960,
-          padding: '0px 1.0875rem 1.45rem',
-          paddingTop: 0,
-        }} */}
-              <div>{children}</div>
-              {/* <footer>
-                © {new Date().getFullYear()}, Built with{" "}
-                <a href="https://www.gatsbyjs.org">Gatsby</a>
-              </footer> */}
-            </div>
-          )}
+          {resolved && <div>{children}</div>}
         </div>
       </div>
     </LayoutContext.Provider>
@@ -133,11 +95,8 @@ const Layout = ({ children }) => {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  appendFooter: PropTypes.bool,
 }
 
-Layout.defaultProps = {
-  appendFooter: true,
-}
+Layout.defaultProps = {}
 
 export default Layout
