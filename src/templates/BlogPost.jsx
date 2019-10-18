@@ -42,13 +42,14 @@ export const BlogPostTemplate = ({
   tags,
   title,
   helmet,
+  includeBackButton = true,
 }) => {
   const ContentElem = typeof content === "object" ? content : null
   return (
     <section className="section">
       {helmet || ""}
       <Container>
-        <BackToList />
+        {includeBackButton && <BackToList />}
         <Paper>
           <div style={{ margin: "0 auto", padding: "45px" }}>
             <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
@@ -67,7 +68,7 @@ export const BlogPostTemplate = ({
               ))}
           </div>
         </Paper>
-        <BackToList />
+        {includeBackButton && <BackToList />}
         {tags && tags.length ? (
           <div style={{ marginTop: `4rem` }}>
             <h4>Tags</h4>
@@ -118,6 +119,7 @@ const BlogPost = ({ data }) => {
         }
         tags={post.frontmatter.tags}
         title={post.frontmatter.title}
+        includeBackButton={!post.frontmatter.isPortfolio}
       />
       <Footer />
     </>
@@ -138,6 +140,7 @@ export const pageQuery = graphql`
       id
       html
       frontmatter {
+        isPortfolio
         date(formatString: "MMMM DD, YYYY")
         title
         description

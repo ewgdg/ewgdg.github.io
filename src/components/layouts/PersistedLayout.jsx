@@ -8,7 +8,7 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { useRef, useState, useCallback } from "react"
+import React, { useState, useCallback } from "react"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 
@@ -17,7 +17,7 @@ import "typeface-roboto"
 // import ScrollMagic from "scrollmagic-with-ssr"
 
 import FlyingSprite from "../sprite/FlyingSprite"
-import LayoutContext from "../../contexts/LayoutContext"
+import LayoutContext, { contextValueRef } from "../../contexts/LayoutContext"
 import Synap from "../background/Synap"
 
 const Layout = ({ children }) => {
@@ -31,11 +31,6 @@ const Layout = ({ children }) => {
     }
   `)
 
-  const contextValueRef = useRef({
-    scrollLayer: null,
-    historyState: {},
-  })
-
   // if the context is not resolved then the children will not be mounted
   const [resolved, setResolved] = useState(false)
 
@@ -48,11 +43,6 @@ const Layout = ({ children }) => {
     [contextValueRef]
   )
 
-  // implement this on each page independently to allow recording states
-  // useLayoutEffect(() => {
-  // reset scroll pos each page refresh on location change
-  // contextValueRef.current.scrollLayer.scrollTop = 0
-  // })
   return (
     <LayoutContext.Provider value={contextValueRef.current}>
       <div

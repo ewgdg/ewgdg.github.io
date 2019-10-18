@@ -31,7 +31,7 @@ collections:
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
     fields:
       - {label: "Template Key", name: "templateKey", widget: "hidden", default: "BlogPost"}
-      - {label: "Is Portfolio", name: "portfolio", widget: "hidden", default: true}
+      - {label: "Is Portfolio", name: "isPortfolio", widget: "hidden", default: true}
       - {label: "Title", name: "title", widget: "string", default: 'untitled'}
       - {label: "Publish Date", name: "date", widget: "datetime"}
       - {label: "Description", name: "description", widget: "text", required: false}

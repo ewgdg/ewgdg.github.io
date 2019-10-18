@@ -6,5 +6,5 @@ featuredPost: true
 description: >-
   Survive inside a randomly generated maze.
 featuredImage: /img/maze-splash.png
-portfolio: true
+isPortfolio: true
 ---

@@ -113,7 +113,7 @@ export const query = graphql`
       filter: {
         frontmatter: {
           templateKey: { eq: "BlogPost" }
-          portfolio: { ne: true }
+          isPortfolio: { ne: true }
           isTemplate: { ne: true }
         }
       }
