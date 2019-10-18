@@ -19,7 +19,7 @@ function PortfolioPreview() {
         sort: { order: DESC, fields: [frontmatter___date] }
         limit: 2
         filter: {
-          frontmatter: { portfolio: { eq: true }, featuredPost: { eq: true } }
+          frontmatter: { isPortfolio: { eq: true }, featuredPost: { eq: true } }
         }
       ) {
         edges {

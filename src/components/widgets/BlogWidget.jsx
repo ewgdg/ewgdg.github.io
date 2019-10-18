@@ -22,7 +22,7 @@ function BlogPreview() {
           frontmatter: {
             templateKey: { eq: "BlogPost" }
             featuredPost: { eq: true }
-            portfolio: { ne: true }
+            isPortfolio: { ne: true }
             isTemplate: { ne: true }
           }
         }

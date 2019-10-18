@@ -85,8 +85,8 @@ function CardTable({
 
   useLayoutEffect(() => {
     if (historyState) {
-      setKeywords(historyState.keywords)
-      setPage(historyState.currentPage)
+      setKeywords(historyState.keywords || "")
+      setPage(historyState.currentPage || 0)
     }
   }, [])
 

@@ -27,9 +27,10 @@ function deleteValue(obj, path) {
 function clearHistoryState(path, context) {
   deleteValue(context.historyState, path)
 }
-function useHistoryState(path) {
-  const context = useLayoutContext()
-  return getValue(context.historyState, path)
+function useHistoryState(path, givenContext) {
+  const context = givenContext || useLayoutContext()
+  const { historyState } = context
+  return getValue(historyState, path)
 }
 
 /* 
@@ -42,16 +43,18 @@ function useRestoreComponentState(path, getCurrentState) {
   const context = useLayoutContext()
   const oldPath = useRef([])
   useEffect(() => {
-    const { historyState } = context
-    // clear old history
-    deleteValue(historyState, oldPath.current)
-    oldPath.current = path
     // on component unmount
     return () => {
+      const { historyState } = context
+      // clear old history
+      deleteValue(historyState, oldPath.current)
+      oldPath.current = path
       setValue(historyState, path, getCurrentState())
     }
-  }, [getCurrentState, path])
-  return useHistoryState(path)
+  })
+  // [getCurrentState, path, context]
+  const res = context.historyState["/"] // useHistoryState(path, context)
+  return res
 }
 
 export { useHistoryState, clearHistoryState }

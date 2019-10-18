@@ -5,6 +5,6 @@ featuredPost: true
 description: >-
   Use strategy to collect more cards.
 externalLink: https://gacha-simulator.firebaseapp.com
-portfolio: true
+isPortfolio: true
 featuredImage: /img/gacha-splash.png
 ---
