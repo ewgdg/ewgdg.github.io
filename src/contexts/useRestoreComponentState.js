@@ -51,9 +51,9 @@ function useRestoreComponentState(path, getCurrentState) {
       oldPath.current = path
       setValue(historyState, path, getCurrentState())
     }
-  })
-  // [getCurrentState, path, context]
-  const res = context.historyState["/"] // useHistoryState(path, context)
+  }, [getCurrentState, path, context])
+
+  const res = useHistoryState(path, context)
   return res
 }
 
