@@ -7,6 +7,7 @@ const useStyles = makeStyles({
   root: {
     height: "100vh",
     width: "100%",
+    userSelect: "none",
     // border: "red solid 2px",
     // pointerEvents: "none",
   },

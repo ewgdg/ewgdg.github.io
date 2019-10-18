@@ -14,7 +14,9 @@ function HeaderContainer({ jumbotronProps, headerProps }) {
       }}
     >
       <Header {...headerProps} />
-      {jumbotronProps.image && <Jumbotron {...jumbotronProps} />}
+      {jumbotronProps.image && (
+        <Jumbotron {...jumbotronProps} imageAttachedAsBackground={false} />
+      )}
     </div>
   )
 }

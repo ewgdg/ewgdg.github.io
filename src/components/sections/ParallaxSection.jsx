@@ -54,7 +54,7 @@ function ParallaxSection({
 
   return (
     <div
-      className="objectFit"
+      className="parallax-section"
       ref={containerRef}
       style={{
         overflow: "hidden",

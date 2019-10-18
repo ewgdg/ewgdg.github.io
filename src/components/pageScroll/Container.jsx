@@ -136,11 +136,29 @@ const useHandlers = (ref, childrenRefs, context) => {
       }
     }
 
+    function isClickable(elem) {
+      const { tagName } = elem
+      return (
+        tagName === "INPUT" ||
+        tagName === "BUTTON" ||
+        tagName === "A" ||
+        tagName === "TEXTAREA" ||
+        tagName === "AREA" ||
+        tagName === "SELECT" ||
+        elem.hasAttribute("tabindex")
+      )
+    }
     function pointerDownHandler(e) {
       // check event path, if found clickable, ignore this pointer move
-      const test = e.path.some(elem => {
-        return elem.tagName === "INPUT" || elem.tagName === "BUTTON"
-      })
+
+      let elem = e.target || e.srcElement
+      let test = false
+      while (elem) {
+        test = isClickable(elem)
+        if (test) break
+        elem = elem.parentElement
+      }
+
       if (test) {
         return
       }

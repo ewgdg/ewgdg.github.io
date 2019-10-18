@@ -14,6 +14,8 @@ const useStyles = makeStyles({
     marginTop: "10px",
     marginBottom: "10px",
     maxHeight: "100%",
+    userSelect: "none",
+    cursor: "pointer",
     "@media (max-height: 450px)": {
       "&": {
         marginBottom: "0px",
@@ -28,6 +30,7 @@ const useStyles = makeStyles({
       border: "1px solid rgba(122,122,122,0.2)",
       boxSizing: "border-box",
       maxHeight: "100%",
+      userSelect: "none",
       "&.prev-border": {
         borderRadius: "5px 0px 0px 5px",
       },

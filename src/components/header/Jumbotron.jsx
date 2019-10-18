@@ -3,6 +3,8 @@ import React from "react"
 import PropTypes from "prop-types"
 // import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"
+import BackgroundImage from "gatsby-background-image"
+import ParallaxSection from "../sections/ParallaxSection"
 
 const Jumbotron = ({
   image,
@@ -12,21 +14,6 @@ const Jumbotron = ({
   imageAttachedAsBackground,
 }) => {
   const imgFluid = image
-
-  // if (!imgFluid) {
-  //   const query = graphql`
-  //     query {
-  //       image: file(relativePath: { eq: "home-jumbotron.jpg" }) {
-  //         childImageSharp {
-  //           fluid(maxWidth: 1000) {
-  //             ...GatsbyImageSharpFluid
-  //           }
-  //         }
-  //       }
-  //     }
-  //   `
-  //   imgFluid = useStaticQuery(query).image
-  // }
 
   let figureStyle = {}
   if (imageAttachedAsBackground) {
@@ -45,13 +32,26 @@ const Jumbotron = ({
   return (
     <figure style={figureStyle}>
       {!imageAttachedAsBackground && (
-        <Img
+        // <ParallaxSection maxProgressValue={100}>
+        //   <Img
+        //     fluid={imgFluid.childImageSharp.fluid}
+        //     style={{
+        //       width: "100%",
+        //       height: "100vh",
+        //       objectFit: "cover",
+        //       margin: 0,
+        //     }}
+        //   />
+        // </ParallaxSection>
+        <BackgroundImage
           fluid={imgFluid.childImageSharp.fluid}
           style={{
             width: "100%",
-            height: "100%",
-            objectFit: "cover",
+            height: "100vh",
+            backgroundAttachment: "fixed",
             margin: 0,
+            backgroundSize: "cover",
+            backgroundPosition: "center center",
           }}
         />
       )}
@@ -129,7 +129,7 @@ Jumbotron.defaultProps = {
   image: null,
   headline: "",
   darkFilter: 0.3,
-  imageAttachedAsBackground: true,
+  imageAttachedAsBackground: false,
 }
 
 export default Jumbotron
