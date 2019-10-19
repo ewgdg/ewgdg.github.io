@@ -12,7 +12,7 @@ import Container from "@material-ui/core/Container"
 import TextField from "@material-ui/core/TextField"
 import MediaCard from "./MediaCard"
 import Paginator from "../others/Paginator"
-import CardContainer from "./CardContainer"
+import CardDivision from "./CardDivision"
 import useRestoreComponentState from "../../contexts/useRestoreComponentState"
 
 function CardTable({
@@ -116,7 +116,7 @@ function CardTable({
           marginTop: itemsPerPage > 2 ? "1%" : "0",
         }}
       >
-        <CardContainer>
+        <CardDivision>
           {pageData.map((data, i) => (
             <CardComp
               key={i}
@@ -127,7 +127,7 @@ function CardTable({
               onClick={data.onClick}
             />
           ))}
-        </CardContainer>
+        </CardDivision>
       </Container>
       <Paginator
         style={{

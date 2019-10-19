@@ -82,7 +82,7 @@ function BlogPage({ data, uri, location }) {
   if (location.search) {
     const queryParams = queryString.parse(location.search)
     if (queryParams.tags) {
-      setComponentState([uri, tableName], { keywords: queryParams.tags })
+      setComponentState([uri, tableName, "keywords"], queryParams.tags)
     }
   }
   const { frontmatter } = data.markdownRemark
