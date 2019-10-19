@@ -6,7 +6,7 @@ import Grid from "@material-ui/core/Grid"
 import Button from "@material-ui/core/Button"
 import { graphql, useStaticQuery, navigate } from "gatsby"
 import MediaCard from "../thumbnail/MediaCard"
-import CardContainer from "../thumbnail/CardContainer"
+import CardDivision from "../thumbnail/CardDivision"
 import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
@@ -73,11 +73,11 @@ function BlogPreview() {
         </div>
         <div style={{ height: "75%" }}>
           <SlideInSection>
-            <CardContainer style={{ marginBottom: "25px" }}>
+            <CardDivision style={{ marginBottom: "25px" }}>
               {flatten.map((cardData, i) => (
                 <MediaCard {...cardData} key={i} />
               ))}
-            </CardContainer>
+            </CardDivision>
           </SlideInSection>
         </div>
         <Grid

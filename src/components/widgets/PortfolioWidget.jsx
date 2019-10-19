@@ -5,7 +5,7 @@ import { useStaticQuery, graphql } from "gatsby"
 import Container from "@material-ui/core/Container"
 
 import ImageBasedCard from "../thumbnail/ImageBasedCard"
-import CardContainer from "../thumbnail/CardContainer"
+import CardDivision from "../thumbnail/CardDivision"
 import AnimatedTitle from "../titles/AnimatedTitle"
 
 import FlexContainer from "../sections/FlexContainer"
@@ -60,11 +60,11 @@ function PortfolioPreview() {
           <p>I enjoy gaming, and I made myself some small games:</p>
         </div>
         <SlideInSection>
-          <CardContainer>
+          <CardDivision>
             {flatten.map((postProps, i) => (
               <ImageBasedCard key={i} {...postProps} />
             ))}
-          </CardContainer>
+          </CardDivision>
         </SlideInSection>
       </Container>
     </FlexContainer>
