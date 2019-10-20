@@ -68,9 +68,9 @@ facts:
       However I am not able to handle my backside well, I need a photo to assist me.
       If you ever saw myself wearing a hat, that is probably another failure on my way becoming a legendary barber.
     image: /img/hair-cutting.jpg
-  - title: Nickname
+  - title: Alias
     description: |
-      My nickname, especially when in game, is 'ewgdg'.
+      My alias, especially when in game, is 'ewgdg'.
       I simply created this word by faceroll.
       If it has to have some meanings, it means 'creation'.
     image: /img/ewgdg.png
