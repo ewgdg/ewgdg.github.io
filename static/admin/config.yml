@@ -51,7 +51,7 @@ collections:
           - {label: Title, name: title, widget: string} 
           - {label: Jumbotron, name: jumbotron, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Headline, name: headline, widget: text}, {label: Subtitle, name: subtitle, widget: string}]}
         
-      - file: "src/pages/blog/index.md"
+      - file: "src/pages/blog.md"
         label: "Blog List Page"
         name: "blogListPage"
         fields:
