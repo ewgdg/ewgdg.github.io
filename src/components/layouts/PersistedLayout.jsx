@@ -8,9 +8,9 @@
  * See: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+// import { useStaticQuery, graphql } from "gatsby"
 
 import "./layout.css"
 import "typeface-roboto"
@@ -19,30 +19,54 @@ import "typeface-roboto"
 import FlyingSprite from "../sprite/FlyingSprite"
 import LayoutContext, { contextValueRef } from "../../contexts/LayoutContext"
 import Synap from "../background/Synap"
+import { debounce } from "../../utilities/throttle"
 
 const Layout = ({ children }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `)
+  // const data = useStaticQuery(graphql`
+  //   query SiteTitleQuery {
+  //     site {
+  //       siteMetadata {
+  //         title
+  //       }
+  //     }
+  //   }
+  // `)
 
   // if the context is not resolved then the children will not be mounted
   const [resolved, setResolved] = useState(false)
 
   const setContextCallBack = useCallback(
     e => {
-      contextValueRef.current = { ...contextValueRef.current, scrollLayer: e }
+      contextValueRef.current = {
+        ...contextValueRef.current,
+        scrollLayer: e,
+      }
+
       setResolved(!!e)
       if (e) e.focus()
     },
     [contextValueRef]
   )
 
+  useEffect(() => {
+    const { scrollLayer } = contextValueRef.current
+    // get init scrollHeight
+    contextValueRef.current.scrollHeight = scrollLayer.scrollHeight
+    const onResize = debounce(() => {
+      // reset scrollTop when resize
+
+      scrollLayer.scrollTop = Math.round(
+        (scrollLayer.scrollTop / contextValueRef.current.scrollHeight) *
+          scrollLayer.scrollHeight
+      )
+      contextValueRef.current.scrollHeight = scrollLayer.scrollHeight
+    }, 100)
+    window.addEventListener("resize", onResize)
+
+    return () => {
+      window.removeEventListener("resize", onResize)
+    }
+  }, [contextValueRef.current.scrollLayer])
   return (
     <LayoutContext.Provider value={contextValueRef.current}>
       <div
