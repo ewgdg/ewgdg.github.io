@@ -190,7 +190,7 @@ result, they failed to get back their privileges, and thus, finally,
 their continued feeling of frustration erupted and caused the
 strengthening of the Quebec nationalism.
 
-**Bibliography**
+### Bibliography
 
 > Behiels, Michael. *Quebec since 1800*. Toronto: Irwin Publishing,
 > 2002. Behiels explains the history events since 1800 in a French
