@@ -3,7 +3,7 @@ templateKey: AboutPage
 title: about
 jumbotron:
   image: /img/about-jumbotron.jpg
-  headline: "The keyboard is\nmightier than the submachine gun"
+  headline: "Keyboard is\nMy weapon"
   subtitle: 键盘侠
 facts:
   - title: Drink
