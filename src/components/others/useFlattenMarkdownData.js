@@ -27,8 +27,13 @@ export default function(rawData) {
           }
         }
         return () => {
-          clearHistoryState([post.fields.slug], context)
-          navigate(post.fields.slug)
+          // trim the last slash
+          let { slug } = post.fields
+          if (post.fields.slug.charAt(slug) === "/") {
+            slug = slug.slice(0, -1)
+          }
+          clearHistoryState([slug], context)
+          navigate(slug)
         }
       })()
       res.push({
