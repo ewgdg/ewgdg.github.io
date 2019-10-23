@@ -45,6 +45,6 @@ CMS.registerEditorComponent({
   // Preview output for this component. Can either be a string or a React component
   // (component gives better render performance)
   toPreview(obj) {
-    return `<div class='figureImage' style="${obj.containerStyle}"> <img src="${obj.src}" style="width:100%;object-fit:cover;" /> </div>`
+    return `<div class='figureImage' style="${obj.containerStyle}"> <img src="${obj.src}" style="width:100%;object-fit:cover;margin-bottom:0;" /> </div>`
   },
 })
