@@ -52,7 +52,7 @@ facts:
       My name is Xian.
       If you are curious about how to pronounce it, I wrote a post {here}.
     links:
-      - /
+      - /blog/2019-10-22-how-to-pronounce-my-name
   - title: Music 
     description: |
       Free Loop by Daniel Powter is one of my favourite english songs.
