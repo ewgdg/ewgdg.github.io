@@ -24,7 +24,7 @@ The first option is to read it the English way, i.e. she-yen/see-yen/shen, whate
 
 ![](/img/how-to-pronounce-my-name-image0.png)
 
-In this model, a sender broadcast a message, the name, to the receiver, and the receiver then decipher the message and respond to it by paying attention to the sender. The key is for both the sender and the receiver to have an agreement on the message. Pronouncing the exact sound is hard but recognizing the similar sound is relatively easy. As a result, all of those English version pronunciation like she-yen/see-yen/shen can be captured and recognized correctly by me as a receiver. The problem is solved. 
+In this model, a sender broadcasts a message, the name, to the receiver, and the receiver then deciphers the message and responds to it by paying attention to the sender. The key is for both the sender and the receiver to have an agreement on the message. Pronouncing the exact sound is hard but recognizing the similar sound is relatively easy. As a result, all of those English version pronunciation like she-yen/see-yen/shen can be captured and recognized correctly by me as a receiver. The problem is solved. 
 
 TD;DR: all of the above is BS, just call me whatever you like. As long as I can recognize it, I wouldn't mind it.
 
@@ -46,7 +46,7 @@ Or
 But I choose this symbol for a reason, there is a story behind it. 
 Johnny is not my real name, but it is a name I would use when ordering a coffee or takeout, when the waitress has a hard time to call my real name. I borrowed this name from my friend Johnny. 
 
-Johnny, like many other Chinese international students, was too hurried on having his first English name to really be able to figure the meaning out first.Or it could be the reason that his home stay family was so arrogant to give him this sarcastic English name. Anyway, the source of this name remains mysterious. On the other hand, Johnny is very satisfied with his English name. He likes it so much that he rarely tells his friends his original Chinese name. Obviously his intention failed and people came up with a nickname for him, ‘jie ni gui’(a Chinese name for Squirtle from Pokemon) for how ‘jie ni’ is similar to ‘Johnny’ in terms of pronunciation and how Johnny behaved like a turtle. 
+Johnny, like many other Chinese international students, was too hurried on having his first English name to really be able to figure the meaning out first. Or it could be the reason that his home stay family was so arrogant to give him this sarcastic English name. Anyway, the source of this name remains mysterious. On the other hand, Johnny is very satisfied with his English name. He likes it so much that he rarely tells his friends his original Chinese name. Obviously his intention failed and people came up with a nickname for him, ‘jie ni gui’(a Chinese name for Squirtle from Pokemon) for how ‘jie ni’ is similar to ‘Johnny’ in terms of pronunciation and how Johnny behaved like a turtle. 
 
 <div class='figureImage' style="width:15em;float: left;margin-right:1.2em;" > <img src="/img/highschool.jpg"/> </div>
 
