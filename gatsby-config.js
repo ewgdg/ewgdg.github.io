@@ -56,9 +56,10 @@ module.exports = {
               // base for generating different widths of each image.
               maxWidth: 2048,
               wrapperStyle: fluidResult => {
-                return "width:100%;margin:0;"
+                return "width:100%;margin-left:auto;margin-right:auto;margin-bottom:0;margin-top:0;pointer-events: none;"
               },
               linkImagesToOriginal: false,
+              quality: 80,
             },
           },
         ],

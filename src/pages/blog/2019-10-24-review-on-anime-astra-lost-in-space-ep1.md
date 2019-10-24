@@ -93,7 +93,7 @@ and re-used? \...
 
 
 And this is the challenging question I am going to solve today, why the
-need of human chain.
+need of the human chain.
 
 
 To solve this question, I here make three assumptions:

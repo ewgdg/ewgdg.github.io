@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/require-default-props */
@@ -20,7 +21,6 @@ import { makeStyles } from "@material-ui/core/styles"
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
-import useResetScrollTop from "../contexts/useResetScrollTop"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
 const useStyles = makeStyles({
@@ -70,6 +70,7 @@ export const BlogPostTemplate = ({
   description,
   tags,
   title,
+  publicationDate,
   helmet,
   includeBackButton = true,
 }) => {
@@ -82,10 +83,16 @@ export const BlogPostTemplate = ({
         {includeBackButton && <BackToList />}
         <Paper>
           <div style={{ margin: "0 auto", padding: "45px" }}>
-            <h1 className="title is-size-2 has-text-weight-bold is-bold-light">
-              {title}
-            </h1>
-            {description && <p>{description}</p>}
+            <div style={{ textAlign: "center" }}>
+              <h1 className="title">{title}</h1>
+              {description && <p>{description}</p>}
+              {publicationDate && (
+                <span>
+                  <small>Publication date: {publicationDate} </small>
+                </span>
+              )}
+            </div>
+
             <hr />
             {(ContentElem && (
               <article className="markdown-body">{ContentElem}</article>
@@ -139,6 +146,7 @@ const BlogPost = ({ data, uri }) => {
       <BlogPostTemplate
         content={post.html}
         description={post.frontmatter.description}
+        publicationDate={post.frontmatter.date}
         helmet={
           <Helmet titleTemplate="%s | Blog">
             <title>{`${post.frontmatter.title}`}</title>

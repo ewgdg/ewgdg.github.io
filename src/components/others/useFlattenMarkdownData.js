@@ -18,6 +18,7 @@ export default function(rawData) {
         : null
       const description = post.frontmatter.description || post.excerpt
       const { tags } = post.frontmatter
+      const publicationDate = post.frontmatter.date
       const onClick = (() => {
         if (post.frontmatter.externalLink) {
           return () => {
@@ -42,6 +43,7 @@ export default function(rawData) {
         description,
         onClick,
         tags,
+        publicationDate,
       })
     })
     return res
