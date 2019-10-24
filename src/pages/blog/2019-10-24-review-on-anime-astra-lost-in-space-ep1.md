@@ -4,7 +4,7 @@ title: 'Review on Anime, "Astra Lost in Space", Episode 1'
 date: 2019-10-24T21:18:44.563Z
 description: 'Lesson learnt: an obvious solution might not be an optimal solution.'
 featuredPost: false
-featuredimage: /img/review-on-astra-lost-in-space-image4.png
+featuredImage: /img/review-on-astra-lost-in-space-image4.png
 ---
 *Astra Lost in Space (彼方のアストラ Kanata no Asutora)* is an anime tv
 series released sept 2019. I am very impressed by this
@@ -124,7 +124,8 @@ accurate angle and the exact amount of initial force to reach to Kanata,
 a moving object, in the space vacuum when you have only one
 chance.
 
-A better solution, however, requires you to think deeper. What could be
+
+A better solution, however, requires you to think deeper. What could be
 the structure that gives you both flexibility and stability under the
 circumstance. If you look into your arm, you might realize that the arm
 structure might be a candidate solution to this question. Your arm
@@ -141,7 +142,8 @@ connected arm and each this connection resemble a joint on an arm.
 Remember that there is no gravity in space so it is very easy to move a
 human body. The human chain makes it possible to move freely in the
 neighbourhood of the spaceship, without propulsion.
-
+
+
 What a great show from "Astra Lost in Space".
 
 So here is the question, given that Zack is able to steer the spaceship
