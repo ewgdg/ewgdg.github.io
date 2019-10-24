@@ -54,7 +54,12 @@ function CardTable({
           return data.tags && data.tags.some(tag => regex.test(tag))
         })
 
-        newFiltered = [...new Set([...filtered1, ...filtered2, ...filtered3])]
+        newFiltered = [
+          ...new Set([...filtered1, ...filtered2, ...filtered3]),
+        ].sort(
+          (a, b) =>
+            Date.parse(b.publicationDate) - Date.parse(a.publicationDate)
+        )
       } else {
         newFiltered = datalist
       }
