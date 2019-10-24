@@ -1,6 +1,6 @@
 ---
 templateKey: BlogPost
-title: How to pronounce my name
+title: How to Pronounce My Name
 date: 2019-10-23T02:12:00.771Z
 description: ''
 featuredPost: false
