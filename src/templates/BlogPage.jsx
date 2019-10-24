@@ -28,9 +28,6 @@ function BlogPageTemplate({
   blogRollData,
   tableName = "blogTable",
 }) {
-  const data = []
-  data.length = 10
-  data.fill("1")
   const [itemsPerPage, setItemsPerPage] = useState(4)
   useEffect(() => {
     function calculateItemsPerPage() {
