@@ -7,13 +7,17 @@ import React, {
   useState,
   useRef,
   useLayoutEffect,
+  useEffect,
 } from "react"
 import Container from "@material-ui/core/Container"
 import TextField from "@material-ui/core/TextField"
+
 import MediaCard from "./MediaCard"
 import Paginator from "../others/Paginator"
 import CardDivision from "./CardDivision"
 import useRestoreComponentState from "../../contexts/useRestoreComponentState"
+import SlideInSection from "../sections/SlideInSection"
+import { debounce } from "../../utilities/throttle"
 
 function CardTable({
   datalist = [],
@@ -24,25 +28,59 @@ function CardTable({
 }) {
   const [currentPage, setPage] = useState(0)
   const [keywords, setKeywords] = useState("")
-  const filtered = useMemo(() => {
-    const regex = new RegExp(
-      `(${keywords
-        .trim()
-        .split(/[.!?\s+-]/g)
-        .join("|")})`,
-      "i"
-    )
-    const filtered1 = datalist.filter(data => {
-      return data.title && regex.test(data.title)
-    })
-    const filtered2 = datalist.filter(data => {
-      return data.description && regex.test(data.description)
-    })
-    const filtered3 = datalist.filter(data => {
-      return data.tags && data.tags.some(tag => regex.test(tag))
-    })
+  const [filtered, setFiltered] = useState(datalist)
+  const filter = useCallback(
+    (keywordsCopy, prevFiltered) => {
+      let newFiltered
+      if (keywordsCopy) {
+        const regex = new RegExp(
+          `(${keywordsCopy
+            .trim()
+            .split(/[.!?\s+-]/g)
+            .reduce(
+              (accum, current, idx, arr) =>
+                `${accum}\\b${current}${idx < arr.length - 1 ? "|" : ""}`,
+              ""
+            )})`,
+          "i"
+        )
+        const filtered1 = datalist.filter(data => {
+          return data.title && regex.test(data.title)
+        })
+        const filtered2 = datalist.filter(data => {
+          return data.description && regex.test(data.description)
+        })
+        const filtered3 = datalist.filter(data => {
+          return data.tags && data.tags.some(tag => regex.test(tag))
+        })
 
-    return [...new Set([...filtered1, ...filtered2, ...filtered3])]
+        newFiltered = [...new Set([...filtered1, ...filtered2, ...filtered3])]
+      } else {
+        newFiltered = datalist
+      }
+
+      let changed = false
+      if (newFiltered.length !== prevFiltered.length) {
+        changed = true
+      } else {
+        for (let i = 0; i < newFiltered.length; i += 1) {
+          if (newFiltered[i] !== prevFiltered[i]) {
+            changed = true
+            break
+          }
+        }
+      }
+
+      if (changed) {
+        setPage(0)
+        setFiltered(newFiltered)
+      }
+    },
+    [datalist]
+  )
+  const debouncedFilter = useCallback(debounce(filter, 300), [filter])
+  useEffect(() => {
+    debouncedFilter(keywords, filtered)
   }, [keywords])
   const prevsItemsPerPage = useRef(itemsPerPage)
   const pageData = useMemo(() => {
@@ -55,26 +93,48 @@ function CardTable({
     return filtered.slice(startIdx, endIdx)
   }, [currentPage, filtered, itemsPerPage])
 
+  // mem the component to prevent refresh the animation
+  const calculateDisplayedComponent = useCallback((pageData, itemsPerPage) => {
+    return (
+      <CardDivision>
+        {pageData.map(data => (
+          <CardComp
+            key={data.title}
+            style={{ height: itemsPerPage > 2 ? "45%" : "95%" }}
+            title={data.title}
+            description={data.description}
+            image={data.image}
+            onClick={data.onClick}
+          />
+        ))}
+      </CardDivision>
+    )
+  }, [])
+  const [displayedComponent, setDisplayedComponent] = useState(null)
+  useLayoutEffect(() => {
+    setDisplayedComponent(calculateDisplayedComponent(pageData, itemsPerPage))
+  }, [currentPage, filtered, itemsPerPage])
+
   const pageCount = useMemo(() => {
     return filtered.length / itemsPerPage
   }, [filtered, itemsPerPage])
 
   const handlePageClick = useCallback(page => {
     setPage(page.selected)
-  })
+  }, [])
 
   const onSearchFieldChange = useCallback(event => {
+    if (!event.target) return
     const { value } = event.target
     setKeywords(value)
-    setPage(0)
-  })
+  }, [])
 
-  const stateHolder = useRef({ currentPage, keywords })
-  stateHolder.current.currentPage = currentPage
-  stateHolder.current.keywords = keywords
+  const stateContainer = useRef({ currentPage, keywords })
+  stateContainer.current.currentPage = currentPage
+  stateContainer.current.keywords = keywords
 
   const getCurrentState = useCallback(() => {
-    const { currentPage, keywords } = stateHolder.current
+    const { currentPage, keywords } = stateContainer.current
     return {
       currentPage,
       keywords,
@@ -85,10 +145,12 @@ function CardTable({
 
   useLayoutEffect(() => {
     if (historyState) {
-      setKeywords(historyState.keywords || "")
+      const keywords = historyState.keywords || ""
+      setKeywords(keywords)
+      filter(keywords, datalist)
       setPage(historyState.currentPage || 0)
     }
-  }, [])
+  }, [datalist])
 
   return (
     <div
@@ -116,18 +178,9 @@ function CardTable({
           marginTop: itemsPerPage > 2 ? "1%" : "0",
         }}
       >
-        <CardDivision>
-          {pageData.map((data, i) => (
-            <CardComp
-              key={i}
-              style={{ height: itemsPerPage > 2 ? "45%" : "95%" }}
-              title={data.title}
-              description={data.description}
-              image={data.image}
-              onClick={data.onClick}
-            />
-          ))}
-        </CardDivision>
+        <SlideInSection style={{ height: "100%" }}>
+          {displayedComponent}
+        </SlideInSection>
       </Container>
       <Paginator
         style={{

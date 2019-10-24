@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
-import React, { useRef, useContext, useEffect } from "react"
+import React, { useRef, useContext, useLayoutEffect } from "react"
 import { TweenLite, Power2 } from "gsap/TweenMax"
 import LayoutContext from "../../contexts/LayoutContext"
 import { ScrollDetector } from "../../utilities/scroll"
@@ -16,7 +16,7 @@ function SlideInSection({
   const context = useContext(LayoutContext)
   const { scrollLayer } = context
   if (!scrollLayer) return null
-  useEffect(() => {
+  useLayoutEffect(() => {
     const scene = new ScrollDetector({
       scrollLayer: context.scrollLayer,
       triggerElement: containerRef.current,

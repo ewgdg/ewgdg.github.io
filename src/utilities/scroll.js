@@ -112,9 +112,9 @@ class ScrollDetector {
         progress = -(pos - triggerPos)
         progress = Math.max(0, Math.min(this.duration, progress))
         progress /= this.duration
-      } else if (pos - triggerPos <= 0) {
+      } else if (pos - triggerPos < 0) {
         progress = 1
-      } else if (pos - triggerPos > 0) {
+      } else if (pos - triggerPos >= 0) {
         progress = 0
       }
 
