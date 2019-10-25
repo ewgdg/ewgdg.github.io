@@ -5,12 +5,12 @@ import {
   isAnyInViewport,
   isAboveViewportBottom,
   isBelowViewportTop,
-} from "../../utilities/isInViewport"
+} from "../../utils/isInViewport"
 import {
   scrollIntoView,
   scrollByAnimated,
   clearAnimationQueue,
-} from "../../utilities/scroll"
+} from "../../utils/scroll"
 import LayoutContext from "../../contexts/LayoutContext"
 
 const useStyles = makeStyles({

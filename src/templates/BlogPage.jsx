@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react"
 import { graphql } from "gatsby"
 import * as queryString from "query-string"
-import { debounce } from "../utilities/throttle"
+import { debounce } from "../utils/throttle"
 import CardTable from "../components/thumbnail/CardTable"
 import SEO from "../components/header/SEO"
 import PageContainer from "../components/pageScroll/Container"
@@ -12,6 +12,7 @@ import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import useFlattenMarkdownData from "../components/others/useFlattenMarkdownData"
 import { setComponentState } from "../contexts/useRestoreComponentState"
+import "../queries/postsQueries"
 
 function BlogPagePreview({ jumbotronProps }) {
   return (
@@ -129,30 +130,7 @@ export const query = graphql`
         }
       }
     ) {
-      edges {
-        post: node {
-          excerpt(pruneLength: 400)
-          id
-          fields {
-            slug
-          }
-          frontmatter {
-            title
-            templateKey
-            date(formatString: "MMMM DD, YYYY")
-            tags
-            description
-            featuredPost
-            featuredImage {
-              childImageSharp {
-                fluid(maxWidth: 500, quality: 100) {
-                  ...GatsbyImageSharpFluid
-                }
-              }
-            }
-          }
-        }
-      }
+      ...PostsFragment
     }
   }
 `

@@ -16,7 +16,7 @@ import Zoom from "@material-ui/core/Zoom"
 import { navigate } from "gatsby"
 
 import LayoutContext from "../../contexts/LayoutContext"
-import { scrollIntoView, ScrollDetector } from "../../utilities/scroll"
+import { scrollIntoView, ScrollDetector } from "../../utils/scroll"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
 

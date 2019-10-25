@@ -3,7 +3,7 @@
 import React, { useRef, useContext, useLayoutEffect } from "react"
 import { TweenLite, Power2 } from "gsap/TweenMax"
 import LayoutContext from "../../contexts/LayoutContext"
-import { ScrollDetector } from "../../utilities/scroll"
+import { ScrollDetector } from "../../utils/scroll"
 /* slide the child in when the child elem is inside viewport */
 function SlideInSection({
   triggerHook = 1,

@@ -11,6 +11,7 @@ import AnimatedTitle from "../titles/AnimatedTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
 import SlideInSection from "../sections/SlideInSection"
+import "../../queries/postsQueries"
 
 function PortfolioPreview() {
   const { allMarkdownRemark } = useStaticQuery(graphql`
@@ -22,31 +23,7 @@ function PortfolioPreview() {
           frontmatter: { isPortfolio: { eq: true }, featuredPost: { eq: true } }
         }
       ) {
-        edges {
-          post: node {
-            excerpt(pruneLength: 400)
-            id
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-              description
-              templateKey
-              date(formatString: "MMMM DD, YYYY")
-              tags
-              externalLink
-              featuredPost
-              featuredImage {
-                childImageSharp {
-                  fluid(maxWidth: 500, quality: 100) {
-                    ...GatsbyImageSharpFluid
-                  }
-                }
-              }
-            }
-          }
-        }
+        ...PostsFragment
       }
     }
   `)
