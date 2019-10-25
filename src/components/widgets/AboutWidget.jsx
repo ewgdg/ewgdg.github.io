@@ -10,7 +10,7 @@ import { Link } from "gatsby"
 import LayoutContext from "../../contexts/LayoutContext"
 
 import CharSequence from "../sections/CharSequence"
-import { ScrollDetector } from "../../utilities/scroll"
+import { ScrollDetector } from "../../utils/scroll"
 import FlexContainer from "../sections/FlexContainer"
 
 const useStyles = makeStyles({

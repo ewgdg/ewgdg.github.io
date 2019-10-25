@@ -17,7 +17,7 @@ import Paginator from "../others/Paginator"
 import CardDivision from "./CardDivision"
 import useRestoreComponentState from "../../contexts/useRestoreComponentState"
 import SlideInSection from "../sections/SlideInSection"
-import { debounce } from "../../utilities/throttle"
+import { debounce } from "../../utils/throttle"
 
 function CardTable({
   datalist = [],

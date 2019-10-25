@@ -2,8 +2,8 @@
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useEffect, useState } from "react"
 import LayoutContext from "../../contexts/LayoutContext"
-import { debounce } from "../../utilities/throttle"
-import { ScrollDetector } from "../../utilities/scroll"
+import { debounce } from "../../utils/throttle"
+import { ScrollDetector } from "../../utils/scroll"
 
 /* 
  wrap the child component into a div container for animation purpose,

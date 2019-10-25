@@ -97,16 +97,5 @@ export const query = graphql`
     }
   }
 `
-// export const query = graphql`
-//   query {
-//     fileName: file(relativePath: { eq: "45-cos-crop-upper.jpg" }) {
-//       childImageSharp {
-//         fluid(maxWidth: 1980) {
-//           ...GatsbyImageSharpFluid
-//         }
-//       }
-//     }
-//   }
-// `
 
 export default IndexPage

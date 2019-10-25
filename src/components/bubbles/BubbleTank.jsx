@@ -6,7 +6,7 @@ import GridList from "@material-ui/core/GridList"
 import GridListTile from "@material-ui/core/GridListTile"
 import { makeStyles } from "@material-ui/styles"
 import ListSubheader from "@material-ui/core/ListSubheader"
-import { debounce } from "../../utilities/throttle"
+import { debounce } from "../../utils/throttle"
 import Bubble from "./Bubble"
 import ParallaxSection from "../sections/ParallaxSection"
 

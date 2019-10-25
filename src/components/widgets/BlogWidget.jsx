@@ -11,6 +11,7 @@ import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
 import SlideInSection from "../sections/SlideInSection"
+import "../../queries/postsQueries"
 
 function BlogPreview() {
   const { allMarkdownRemark } = useStaticQuery(graphql`
@@ -27,30 +28,7 @@ function BlogPreview() {
           }
         }
       ) {
-        edges {
-          post: node {
-            excerpt(pruneLength: 400)
-            id
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-              description
-              templateKey
-              date(formatString: "MMMM DD, YYYY")
-              tags
-              featuredPost
-              featuredImage {
-                childImageSharp {
-                  fluid(maxWidth: 500, quality: 100) {
-                    ...GatsbyImageSharpFluid
-                  }
-                }
-              }
-            }
-          }
-        }
+        ...PostsFragment
       }
     }
   `)
