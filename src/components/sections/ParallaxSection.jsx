@@ -17,6 +17,7 @@ function ParallaxSection({
   maxProgressValue = 50,
   progressUnit = "%",
   fade = 0,
+  innerDivStyle,
 }) {
   const containerRef = useRef(null)
   const contentRef = useRef(null)
@@ -70,6 +71,7 @@ function ParallaxSection({
           transform: `translate3d(0,${y},0)`,
           backfaceVisibility: "hidden",
           opacity: `${opacity}`,
+          ...innerDivStyle,
         }}
       >
         {children}
