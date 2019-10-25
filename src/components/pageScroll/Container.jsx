@@ -290,6 +290,8 @@ const useHandlers = (ref, childrenRefs, context) => {
     ]
   }, [ref, context, childrenRefs])
 }
+
+// a container component whose children should be of type Section
 function Container({ children }) {
   const classes = useStyles()
 
@@ -300,6 +302,7 @@ function Container({ children }) {
       ...React.createRef(null),
     }))
     const n = list.length
+    // build a linked list
     for (let i = 0; i < n; i += 1) {
       if (i < n - 1) {
         list[i].next = list[i + 1]

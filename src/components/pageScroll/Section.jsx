@@ -9,11 +9,13 @@ const useStyles = makeStyles({
     height: "100vh",
     width: "100%",
     userSelect: "none",
+    // position: "relative",
     // border: "red solid 2px",
     // pointerEvents: "none",
   },
 })
 
+// Section component whose parent should be type of Container
 function Section({ children, forwardedRef, style, id }) {
   const classes = useStyles()
 

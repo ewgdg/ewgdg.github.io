@@ -13,6 +13,7 @@ import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import useFlattenMarkdownData from "../components/others/useFlattenMarkdownData"
 import { setComponentState } from "../contexts/useRestoreComponentState"
 import "../queries/postsQueries"
+import ParallaxSection from "../components/sections/ParallaxSection"
 
 function BlogPagePreview({ jumbotronProps }) {
   return (
@@ -59,12 +60,14 @@ function BlogPageTemplate({
           />
         </Section>
         <Section id="search">
-          <CardTable
-            datalist={blogRollData}
-            name={tableName}
-            uri={uri}
-            itemsPerPage={itemsPerPage}
-          />
+          <ParallaxSection innerDivStyle={{ height: "100vh" }}>
+            <CardTable
+              datalist={blogRollData}
+              name={tableName}
+              uri={uri}
+              itemsPerPage={itemsPerPage}
+            />
+          </ParallaxSection>
         </Section>
         <Section style={{ height: "auto" }}>
           <Footer />
