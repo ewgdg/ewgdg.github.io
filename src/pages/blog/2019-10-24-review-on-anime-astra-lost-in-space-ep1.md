@@ -57,7 +57,7 @@ system.
 ![](/img/review-on-astra-lost-in-space-image2.png)
 
 More luckily, they found a spaceship! They regrouped themselves at the
-spaceship and it was at that moment they realized that Aries is still
+spaceship and it was at that moment they realized that Aries was still
 alone waiting for help with her thruster malfunctioning.
 
 ![](/img/review-on-astra-lost-in-space-image3.png)
