@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo, useCallback } from "react"
+import React from "react"
 import ReactPaginate from "react-paginate"
 import { makeStyles } from "@material-ui/core/styles"
 

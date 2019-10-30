@@ -1,13 +1,6 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-one-expression-per-line */
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React, { useState, useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 // import { useStaticQuery, graphql } from "gatsby"
@@ -22,16 +15,6 @@ import Synap from "../background/Synap"
 import { debounce } from "../../utils/throttle"
 
 const Layout = ({ children }) => {
-  // const data = useStaticQuery(graphql`
-  //   query SiteTitleQuery {
-  //     site {
-  //       siteMetadata {
-  //         title
-  //       }
-  //     }
-  //   }
-  // `)
-
   // if the context is not resolved then the children will not be mounted
   const [resolved, setResolved] = useState(false)
 

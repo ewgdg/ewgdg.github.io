@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React, { useLayoutEffect, useRef } from "react"
-import { debounce } from "../../utilities/throttle"
+import { debounce } from "../../utils/throttle"
 import * as PIXI from "../../plugins/PIXI"
 import SynapGraph from "./SynapGraph"
 // console.log(PIXI)

@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from "react"
 import { Link } from "gatsby"
-
+// to parse the about.md text
 function TextLink({ text, links, isInternal = true }) {
   const regEx = /{\w+}/g
   const matched = text.match(regEx)
