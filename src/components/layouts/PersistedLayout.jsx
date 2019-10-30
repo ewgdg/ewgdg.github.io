@@ -19,7 +19,7 @@ import "typeface-roboto"
 import FlyingSprite from "../sprite/FlyingSprite"
 import LayoutContext, { contextValueRef } from "../../contexts/LayoutContext"
 import Synap from "../background/Synap"
-import { debounce } from "../../utilities/throttle"
+import { debounce } from "../../utils/throttle"
 
 const Layout = ({ children }) => {
   // const data = useStaticQuery(graphql`
