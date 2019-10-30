@@ -4,6 +4,7 @@ title: Why I Created This Page
 date: 2019-10-30T19:29:43.803Z
 description: 'In short, to get a job.'
 featuredPost: true
+featuredImage: /img/blog-jumbotron.jpg
 tags:
   - jobs
   - why
