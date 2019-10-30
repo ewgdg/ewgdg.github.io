@@ -189,7 +189,7 @@ what is required before spending time on practicing.</span>
 
 <span dir="ltr"></span>
 
-<span dir="ltr">The short explanation of getting such a page is to find
+<span dir="ltr">The short explanation of the motivation of getting such a page is to find
 a job. Besides looking for a job, this page also has some other meanings
 to me. Suppose this world is a game, who is the one to define the
 rules for the game? I believe it is the ones with more impact on the
