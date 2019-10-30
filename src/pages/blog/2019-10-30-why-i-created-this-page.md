@@ -190,7 +190,7 @@ what is required before spending time on practicing.</span>
 
 <span dir="ltr">The short explanation of getting such a page is to find
 a job. Besides looking for a job, this page also has some other meanings
-to me. If viewing this world as a game, who is the one to define the
+to me. Suppose this world is a game, who is the one to define the
 rules for the game? I believe it is the ones with more impact on the
 world to define the rules. Steve Jobs had a great impact on the world,
 so he defined the beauty of his dressing code and had many followers.
