@@ -172,7 +172,9 @@ function About() {
               </h2>
               <div>
                 <div className="animatedline">
-                  And that is <Link to="/blog">why</Link> I made this page.
+                  And that is{" "}
+                  <Link to="/blog/2019-10-30-why-i-created-this-page">why</Link>{" "}
+                  I made this page.
                 </div>
                 <div className="animatedline">
                   I like technology and computer programming and many more.
