@@ -4,7 +4,7 @@ title: Why I Created This Page
 date: 2019-10-30T19:29:43.803Z
 description: 'In short, to get a job.'
 featuredPost: true
-featuredImage: /img/blog-jumbotron.jpg
+featuredImage: /img/steve-elizabeth-x.jpg
 tags:
   - jobs
   - why
@@ -205,8 +205,9 @@ is the proof. So this is why I created this page, to have an
 impact.</span>
 
 <div style='width:100%;margin:auto;text-align:center;'>
-<div class='figureImage' style="display:inline-block;width:40%;" > <img src="/img/why-i-created-this-page-image1.png"/> </div>
-<div class='figureImage' style="display:inline-block;width:40%;" > <img src="/img/why-i-created-this-page-image2.png"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image2.png"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image1.png"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/steve-elizabeth-x.jpg"/> </div>
 </div>
 
 
