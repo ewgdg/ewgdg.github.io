@@ -112,7 +112,8 @@ situation.
 The third assumption can be inferred from the first two, that Kanata
 would borrow fuel from others as he was the only one who need the fuel
 for the moment before he left the ship. What would you do if you were
-Kanata who knew he would run out of fuel?
+Kanata who knew he would run out of fuel? Based on this assumption, 
+there is no fuel left for others.
 
 
 
@@ -134,7 +135,7 @@ Each of the joints will give you some extent of freedom for moving you
 arm. The more joints you have the more control you gain. That is why
 there are many joints on the robotic arm.
 
-![](/img/review-on-astra-lost-in-space-image5.png)
+![](/img/robotic-arm.png)
 
 The human chain is an analogy to the arm structure. Each person on the
 chain can exert force to the next person he connects to through their
