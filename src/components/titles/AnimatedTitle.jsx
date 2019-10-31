@@ -1,8 +1,12 @@
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useEffect } from "react"
 import { TimelineLite, Power2 } from "gsap/TweenMax"
+import TextPlugin from "gsap/TextPlugin"
 import { ScrollDetector } from "../../utils/scroll"
 import LayoutContext from "../../contexts/LayoutContext"
+
+// eslint-disable-next-line no-unused-vars
+const plugins = [TextPlugin]
 
 function AnimatedTitle({ title }) {
   const context = useContext(LayoutContext)
@@ -23,12 +27,13 @@ function AnimatedTitle({ title }) {
       triggerHook: 0.5,
       duration: 0,
       throttleLimit: 0,
+      offset: 0,
     })
     scrollDetector.setEventListener(progress => {
       if (progress > 0) {
-        animation.play()
+        animation.play(0)
       } else {
-        animation.reverse()
+        // animation.reverse()
       }
     })
     scrollDetector.update()
@@ -37,7 +42,8 @@ function AnimatedTitle({ title }) {
       animation.kill()
       scrollDetector.destroy()
     }
-  }, [context])
+    // eslint-disable-next-line react/destructuring-assignment
+  }, [context.scrollLayer])
   return (
     <h2 ref={headlineRef} style={{ textAlign: "center" }}>
       <strong>{title}</strong>
