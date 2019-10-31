@@ -4,6 +4,7 @@ title: Why I Created This Page
 date: 2019-10-30T19:29:43.803Z
 description: 'In short, to get a job.'
 featuredPost: true
+featuredImage: /img/steve-elizabeth-x.jpg
 tags:
   - jobs
   - why
@@ -188,7 +189,7 @@ what is required before spending time on practicing.</span>
 
 <span dir="ltr"></span>
 
-<span dir="ltr">The short explanation of getting such a page is to find
+<span dir="ltr">The short explanation of the motivation of getting such a page is to find
 a job. Besides looking for a job, this page also has some other meanings
 to me. Suppose this world is a game, who is the one to define the
 rules for the game? I believe it is the ones with more impact on the
@@ -204,8 +205,9 @@ is the proof. So this is why I created this page, to have an
 impact.</span>
 
 <div style='width:100%;margin:auto;text-align:center;'>
-<div class='figureImage' style="display:inline-block;width:40%;" > <img src="/img/why-i-created-this-page-image1.png"/> </div>
-<div class='figureImage' style="display:inline-block;width:40%;" > <img src="/img/why-i-created-this-page-image2.png"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image2.png"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image1.png"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/steve-elizabeth-x.jpg"/> </div>
 </div>
 
 
