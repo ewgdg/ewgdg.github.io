@@ -36,10 +36,12 @@ function CardTable({
         const regex = new RegExp(
           `(${keywordsCopy
             .trim()
-            .split(/[.!?\s+-]/g)
+            .split(/[.!?,&^%$#@()+-]/g)
             .reduce(
               (accum, current, idx, arr) =>
-                `${accum}\\b${current}${idx < arr.length - 1 ? "|" : ""}`,
+                `${accum}\\b${current.trim()}${
+                  idx < arr.length - 1 ? "|" : ""
+                }`,
               ""
             )})`,
           "i"
