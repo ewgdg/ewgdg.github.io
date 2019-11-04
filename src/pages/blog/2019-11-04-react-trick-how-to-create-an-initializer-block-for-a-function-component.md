@@ -67,4 +67,4 @@ const component= ()=>{
 }
 ```
 
-The trick is that the effects passed to `useEffect` run after every completed render and hence the first time the component is rendered the `isInitialized` variable has a value of false. Since the first render, the `useEffect` will run the effects and the `isInitialized` will be true. Every other render of the component will read the proper initialization state as a result.
+The trick is that the effects passed to `useEffect` run after every completed render and hence the first time the component is rendered the `isInitialized` variable has a value of false. Since the first render, the `useEffect` will run the effects and the `isInitialized` will be true. Every other render of the component will not recalculate the initial state as a result.
