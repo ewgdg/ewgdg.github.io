@@ -1,6 +1,6 @@
 ---
 templateKey: BlogPost
-title: 'Vue Trick: Optimization for The v-for Directive'
+title: 'Vue Trick: Optimization for the v-for Directive'
 date: 2019-11-04T21:21:47.632Z
 description: |-
   Lesson learnt: an optimized solution might not be the
