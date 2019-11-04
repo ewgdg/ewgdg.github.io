@@ -59,7 +59,7 @@ var example2 = new Vue({
 ```
 
 
-Is there a better solution? Actually, there are some potential solutions to optimize for the extra cost. 
+Here I have to use an extra for-loop inside the `preparedItems` to push the filtered item into a result list. Is there a better solution? Actually, there are some potential solutions to optimize for the extra cost. 
 
 Solution 1: Re-invent the `v-for` directive such that it is more expressive. The problem of this solution is that it will sacrifice the readability of the code and re-inventing the wheel is not a very efficient way of solving problems. `v-for` is a very common directive, but a replacement of it might be unfamiliar and hard to read.
 
