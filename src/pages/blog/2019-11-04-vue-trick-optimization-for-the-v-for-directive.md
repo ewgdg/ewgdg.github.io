@@ -31,7 +31,7 @@ var example1 = new Vue({
   }
 })
 ```
-It is very simple to use and easy to understand. However, coming from back-end background, I noticed that there is a limitation for such a simple directive that there is no direct way to express step, initial index, and end index for the list iteration. Of course developers are smart enough to fix it by preparing the data through iterating, filtering, and mapping before passing the data to `v-for`. The problem is that all of the mentioned processing for the list come with costs, both time cost and space cost. Iterating the whole list for processing and then create a prepared copy of it costs extra O(n) in terms of both time and space complexity. For example, if I want to render items that is of odd index in a list, I have to do the following:
+It is very simple to use and easy to understand. However, coming from back-end background, I noticed that there is a limitation for such a simple directive that there is no direct way to express step, initial index, and end index for the list iteration. Of course developers are smart enough to fix it by preparing the data through iterating, filtering, and mapping before passing the data to `v-for`. The problem is that all of the mentioned processings for the list come with costs, both time cost and space cost. Iterating the whole list for processing and then create a prepared copy of it costs extra O(n) in terms of both time and space complexity. For example, if I want to render items that is of odd index in a list, I have to do the following:
 ```
 <ul id="example-2">
   <li v-for="item in preparedItems">
@@ -81,12 +81,12 @@ var example3 = new Vue({
     ],
   },
   methods: {
-    generator:function*({list=[],start=0,end=0,step=1,filter=()=>true}){
+    generator: function*({list=[],start=0,end=0,step=1,test=()=>true}){
       for(let i=start;i<end;i+=step){
-        while(!filter(list[i]) && i<end){
-	    i+=step
+        while(!test(list[i]) && i<end){
+	      i+=step
         }
-        yield list[i];
+        if(i<end) yield list[i];
       }
     }
   }
