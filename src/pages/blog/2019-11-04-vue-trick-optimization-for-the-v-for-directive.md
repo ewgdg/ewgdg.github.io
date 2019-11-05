@@ -85,10 +85,7 @@ var example3 = new Vue({
   methods: {
     generator: function*({list=[],start=0,end=0,step=1,test=()=>true}){
       for(let i=start;i<end;i+=step){
-        while(!test(list[i]) && i<end){
-	      i+=step
-        }
-        if(i<end) yield list[i];
+        if(test(list[i])) yield list[i];
       }
     }
   }
