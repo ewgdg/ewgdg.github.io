@@ -114,9 +114,12 @@ export const BlogPostTemplate = ({
                 </span>
               )}
             </div>
-            <br />
-            {imageComponent}
-            <br />
+            {imageComponent && (
+              <>
+                {imageComponent}
+                <br />
+              </>
+            )}
             <hr />
             {(ContentElem && (
               <article className="markdown-body">{ContentElem}</article>
