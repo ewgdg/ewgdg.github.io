@@ -6,7 +6,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-indent-props */
-import React from "react"
+import React, { useMemo } from "react"
 import PropTypes from "prop-types"
 // import { kebabCase } from "lodash"
 import Helmet from "react-helmet"
@@ -79,23 +79,24 @@ export const BlogPostTemplate = ({
   const ContentElem = typeof content === "object" ? content : null
   const classes = useStyles()
 
-  let imageComponent = null
-  if (featuredImage) {
-    const imageStyle = {
-      width: "100%",
-      maxHeight: "350px",
-      objectFit: "cover",
+  const imageComponent = useMemo(() => {
+    let result = null
+    if (featuredImage) {
+      const imageStyle = {
+        width: "100%",
+        maxHeight: "350px",
+        objectFit: "cover",
+      }
+      if (featuredImage.childImageSharp) {
+        result = (
+          <Img fluid={featuredImage.childImageSharp.fluid} style={imageStyle} />
+        )
+      } else {
+        result = <img src={featuredImage} alt="featured" style={imageStyle} />
+      }
     }
-    if (featuredImage.childImageSharp) {
-      imageComponent = (
-        <Img fluid={featuredImage.childImageSharp.fluid} style={imageStyle} />
-      )
-    } else {
-      imageComponent = (
-        <img src={featuredImage} alt="featured" style={imageStyle} />
-      )
-    }
-  }
+    return result
+  }, [featuredImage])
 
   return (
     <section className="section">
@@ -113,9 +114,9 @@ export const BlogPostTemplate = ({
                 </span>
               )}
             </div>
-
+            <br />
             {imageComponent}
-
+            <br />
             <hr />
             {(ContentElem && (
               <article className="markdown-body">{ContentElem}</article>
