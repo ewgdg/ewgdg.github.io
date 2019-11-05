@@ -18,6 +18,7 @@ import Container from "@material-ui/core/Container"
 import "github-markdown-css"
 
 import { makeStyles } from "@material-ui/core/styles"
+import Img from "gatsby-image"
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
@@ -72,10 +73,30 @@ export const BlogPostTemplate = ({
   title,
   publicationDate,
   helmet,
+  featuredImage = null,
   includeBackButton = true,
 }) => {
   const ContentElem = typeof content === "object" ? content : null
   const classes = useStyles()
+
+  let imageComponent = null
+  if (featuredImage) {
+    const imageStyle = {
+      width: "100%",
+      maxHeight: "350px",
+      objectFit: "cover",
+    }
+    if (featuredImage.childImageSharp) {
+      imageComponent = (
+        <Img fluid={featuredImage.childImageSharp.fluid} style={imageStyle} />
+      )
+    } else {
+      imageComponent = (
+        <img src={featuredImage} alt="featured" style={imageStyle} />
+      )
+    }
+  }
+
   return (
     <section className="section">
       {helmet || ""}
@@ -92,6 +113,8 @@ export const BlogPostTemplate = ({
                 </span>
               )}
             </div>
+
+            {imageComponent}
 
             <hr />
             {(ContentElem && (
@@ -128,6 +151,7 @@ BlogPostTemplate.propTypes = {
   description: PropTypes.string,
   title: PropTypes.string,
   helmet: PropTypes.object,
+  featuredImage: PropTypes.any,
 }
 
 const BlogPost = ({ data, uri }) => {
@@ -159,6 +183,7 @@ const BlogPost = ({ data, uri }) => {
         tags={post.frontmatter.tags}
         title={post.frontmatter.title}
         includeBackButton={!post.frontmatter.isPortfolio}
+        featuredImage={post.frontmatter.featuredImage}
       />
       <Footer className="footer" />
     </div>
@@ -184,6 +209,13 @@ export const pageQuery = graphql`
         title
         description
         tags
+        featuredImage {
+          childImageSharp {
+            fluid(maxWidth: 2048, quality: 50) {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
       }
     }
   }
