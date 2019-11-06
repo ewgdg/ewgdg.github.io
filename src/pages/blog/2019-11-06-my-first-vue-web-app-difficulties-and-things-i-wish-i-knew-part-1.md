@@ -50,7 +50,7 @@ web app. Here are some quotes from the talk:</span>
 > and make changes in order for it to work, and these sorts of cascading
 > changes are symptoms of coupling and that is what make software hard
 > to maintain... Templates separate technologies, not concerns. And they
-> do it by deliberately under-powered. ”.</span>
+> do it by deliberately under-powered.”</span>
 
 <span dir="ltr">Being able to stand on the shoulders of giants, I had a
 deeper understanding on the topic of web development. As a result, I
