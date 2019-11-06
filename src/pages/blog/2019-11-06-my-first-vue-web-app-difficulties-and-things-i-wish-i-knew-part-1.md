@@ -2,9 +2,16 @@
 templateKey: BlogPost
 title: 'My First Vue Web App: Difficulties and Things I Wish I Knew, Part 1'
 date: 2019-11-06T21:59:10.643Z
+description: My decision branch tree on dilemmas when developing my first Vue app.
 featuredPost: true
 featuredImage: >-
   /img/my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-1-image1.png
+tags:
+  - Vue
+  - JavaScript
+  - Js
+  - React
+  - Angular
 ---
 **<span dir="ltr">Background:</span>**
 
@@ -35,8 +42,8 @@ Javascript frameworks share some similarities on building interactive
 user interface. However, as a newbie, I really had no idea whether or
 not they were worth my time. A
 [<span class="underline">video</span>](https://www.youtube.com/watch?v=x7cQ3mrcKaY)
-by Pete Hunt talking about React finally convince me that JavaScript
-framework like React is a better choice for me to build a more dynamic
+by Pete Hunt talking about React finally convinced me that JavaScript
+framework like React was a better choice for me to build a more dynamic
 web app. Here are some quotes from the talk:</span>
 
 > <span dir="ltr">“How often do you go to other parts of your code base
@@ -150,3 +157,5 @@ and I eventually decided to use Nuxt.js which is framework of Vue.js for
 the purpose of SSR for my web project.</span>
 
 <span dir="ltr">To be continued.</span>
+
+Question of today: is the release of Angular 2 related to Osborne Effect causing developers escaping from Angular?
