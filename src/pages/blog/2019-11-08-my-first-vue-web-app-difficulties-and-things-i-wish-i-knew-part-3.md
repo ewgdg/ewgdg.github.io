@@ -28,7 +28,7 @@ To simulate the parallel computation in JavaScript, I can use the concept like c
 
 In JavaScript, we can use function* and yield to make coroutines. But the case was slightly different here. I wanted to yield the control back to the browser for rendering, not to my main JavaScript program and I did not want to modify too much of my code structure. Therefore, I used the keyword `setTimeout`, `async`, and `await`. The pseudo code is as follows: 
 
-<?prettify?>
+<?prettify lang=js?>
 ```
 function wait(ms) {
 
@@ -58,7 +58,7 @@ async function loadData(){
 
 The `await wait(0)` is the emulation of the `yield`. It asks the browser to reschedule the current execution into the event loop and thus suspend the execution and yield control to the browser. The browser then have a chance to render the progress bar update. The problem should have been solved in most cases. Unfortunately, it is not perfect for my case as I was using BootstrapVue framework for my UI progress bar. So the progress bar was a component from BootstrapVue and I had no control on the implementation of the component. It turned out that BootstrapVue required some time to play the animation to make it smooth. A change to the progress counter will change the display of the number but not the bar indicator without enough time to finish its animation. This kind of makes sense, as you don’t want any sudden sharp move of your indicator. The simple fix is to extend the waiting time with code like `await wait(10)`. The question is how long is long enough for the animation to finish. On some machines, it might takes 5 ms while on some others it takes 15 ms. The time span is not fixed. Fortunately, we have a rescue for it. The double `requestAnimationFrame` call:
 
-<?prettify?>
+<?prettify lang=js?>
 ```
 function waitForAnimation() {
 
