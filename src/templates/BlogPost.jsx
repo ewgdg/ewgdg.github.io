@@ -17,19 +17,17 @@ import Container from "@material-ui/core/Container"
 
 import "github-markdown-css"
 
-import prettify from "code-prettify/src/prettify"
-import "code-prettify/src/prettify.css"
+import Prism from "prismjs"
 
 import { makeStyles } from "@material-ui/core/styles"
 import Img from "gatsby-image"
+
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
-// eslint-disable-next-line no-unused-vars
-const plugins = [prettify]
-
+Prism.manual = true
 const useStyles = makeStyles({
   taglist: {
     listStyle: "none",
@@ -105,8 +103,9 @@ export const BlogPostTemplate = ({
   }, [featuredImage])
 
   useLayoutEffect(() => {
-    if (window) window.PR.prettyPrint()
-  })
+    // highlight code block syntax
+    Prism.highlightAll()
+  }, [content])
 
   return (
     <section className="section">
@@ -131,12 +130,15 @@ export const BlogPostTemplate = ({
               </>
             )}
             <hr />
+
             {(ContentElem && (
-              <article className="markdown-body">{ContentElem}</article>
+              <article className="markdown-body line-numbers">
+                {ContentElem}
+              </article>
             )) ||
               (content && (
                 <article
-                  className="markdown-body"
+                  className="markdown-body line-numbers"
                   dangerouslySetInnerHTML={{ __html: content }}
                 />
               ))}
