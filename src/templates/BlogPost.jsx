@@ -6,7 +6,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-indent-props */
-import React, { useMemo } from "react"
+import React, { useMemo, useLayoutEffect } from "react"
 import PropTypes from "prop-types"
 // import { kebabCase } from "lodash"
 import Helmet from "react-helmet"
@@ -17,12 +17,18 @@ import Container from "@material-ui/core/Container"
 
 import "github-markdown-css"
 
+import prettify from "code-prettify/src/prettify"
+import "code-prettify/src/prettify.css"
+
 import { makeStyles } from "@material-ui/core/styles"
 import Img from "gatsby-image"
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
+
+// eslint-disable-next-line no-unused-vars
+const plugins = [prettify]
 
 const useStyles = makeStyles({
   taglist: {
@@ -97,6 +103,10 @@ export const BlogPostTemplate = ({
     }
     return result
   }, [featuredImage])
+
+  useLayoutEffect(() => {
+    if (window) window.PR.prettyPrint()
+  })
 
   return (
     <section className="section">
