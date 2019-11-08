@@ -11,6 +11,7 @@
     "@reach/router": "^1.2.1",
     "bezier-easing": "^2.1.0",
     "classnames": "^2.2.6",
+    "code-prettify": "^0.1.0",
     "event-source-polyfill": "^1.0.8",
     "gatsby": "^2.15.14",
     "gatsby-background-image": "^0.8.15",
