@@ -22,6 +22,9 @@ The usage is as follows:
     {{ item.message }}
   </li>
 </ul>
+```
+<?prettify?>
+```
 var example1 = new Vue({
   el: '#example-1',
   data: {
@@ -42,6 +45,9 @@ It is very simple to use and easy to understand. However, coming from back-end b
     {{ item.message }}
   </li>
 </ul>
+```
+<?prettify?>
+```
 var example2 = new Vue({
   el: '#example-2',
   data: {
@@ -77,6 +83,9 @@ Solution 3: Use the generator. If you ever learnt co-routine in python you proba
     {{ item.message }}
   </li>
 </ul>
+```
+<?prettify?>
+```
 var example3 = new Vue({
   el: '#example-3',
   data: {
