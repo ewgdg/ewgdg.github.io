@@ -15,16 +15,15 @@ tags:
 `v-for` is a directive from Vue for List Rendering. 
 The usage is as follows:
 
-<?prettify?>
-```
+
+```html
 <ul id="example-1">
   <li v-for="item in items">
     {{ item.message }}
   </li>
 </ul>
 ```
-<?prettify?>
-```
+```js
 var example1 = new Vue({
   el: '#example-1',
   data: {
@@ -38,16 +37,14 @@ var example1 = new Vue({
 
 It is very simple to use and easy to understand. However, coming from back-end background, I noticed that there is a limitation for such a simple directive that there is no direct way to express step, initial index, and end index for the list iteration. Of course developers are smart enough to fix it by preparing the data through iterating, filtering, and mapping before passing the data to `v-for`. The problem is that all of the mentioned processings for the list come with costs, both time cost and space cost. Iterating the whole list for processing and then create a prepared copy of it costs extra O(n) in terms of both time and space complexity. For example, if I want to render items that is of odd index in a list, I have to do the following:
 
-<?prettify?>
-```
+```html
 <ul id="example-2">
   <li v-for="item in preparedItems">
     {{ item.message }}
   </li>
 </ul>
 ```
-<?prettify?>
-```
+```js
 var example2 = new Vue({
   el: '#example-2',
   data: {
@@ -76,16 +73,14 @@ Solution 2: Re-design the data layer or back-end API such that data is pre-proce
 
 Solution 3: Use the generator. If you ever learnt co-routine in python you probably notice that there is a keyword called yield in python and the yield statement allows you to make a generator to generate data without extra cost. Similarly, JS allows you to use the syntax. So to rewrite the previous example: 
 
-<?prettify?>
-```
+```html
 <ul id="example-3">
   <li v-for="item in generator({list=items,start=1,end=items.length,step=2})">
     {{ item.message }}
   </li>
 </ul>
 ```
-<?prettify?>
-```
+```js
 var example3 = new Vue({
   el: '#example-3',
   data: {
