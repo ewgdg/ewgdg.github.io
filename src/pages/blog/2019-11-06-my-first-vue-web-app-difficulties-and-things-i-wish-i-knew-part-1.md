@@ -157,5 +157,3 @@ and I eventually decided to use Nuxt.js which is framework of Vue.js for
 the purpose of SSR for my web project.</span>
 
 <span dir="ltr">To be continued.</span>
-
-Question of today: is the release of Angular 2 related to Osborne Effect causing developers escaping from Angular?
