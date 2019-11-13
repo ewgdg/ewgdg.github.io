@@ -68,7 +68,7 @@ trap to avoid the damage.</span>
 ![](/img/maze-generator-image8.png)<span dir="ltr"></span>
 
 <span dir="ltr">He keeps gaining his exp and he soon becomes level 2 and
-learns sprinting.</span>
+learns to sprint.</span>
 
 ![](/img/maze-generator-image2.png)<span dir="ltr"></span>
 
