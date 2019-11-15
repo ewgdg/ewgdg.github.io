@@ -14,6 +14,7 @@ export const postsFragment = graphql`
           title
           description
           templateKey
+          externalLink
           date(formatString: "MMMM DD, YYYY")
           tags
           featuredPost
