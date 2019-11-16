@@ -1,12 +1,11 @@
 ---
 templateKey: BlogPost
+isPortfolio: true
 title: Maze Generator
 date: 2019-10-14T14:54:00.000Z
+description: Survive inside a randomly generated maze.
 featuredPost: true
-description: >-
-  Survive inside a randomly generated maze.
 featuredImage: /img/maze-splash.png
-isPortfolio: true
 ---
 <span dir="ltr">This inspiration of game came from 3+ years ago by the
 algorithm Depth First Search and is developed by then. Being lost in a
@@ -128,5 +127,5 @@ players. Anyway, this is just a demo game and I
 haven’t touched it for a while. Maybe someday when I am a better
 developer, I will come back to complete developing the game. Here is the
 demo(Windows 10 only) download
-[link](https://1drv.ms/u/s\!AjhADX36RxGfiYsQbxDvgWqe8Nxwdg?e=nnvJNK)
+[link](https://1drv.ms/u/s!AjhADX36RxGfiYsQbxDvgWqe8Nxwdg)
 for whom is interested.</span>
