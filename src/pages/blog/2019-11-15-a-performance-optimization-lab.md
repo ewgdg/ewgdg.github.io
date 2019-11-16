@@ -17,7 +17,7 @@ The lab [requirement](https://1drv.ms/b/s!AjhADX36RxGfiYsZaGYIFiM3tYk4lw?e=vRaKH
 
 ![](/img/performance-optimization-lab-image2.png)
 
-In short, we are given a simple image process implementation that manipulate a sprite object on a bitmap image with three types of operations, shifting, rotating, and mirroring. The goal is to optimize this implementation.
+In short, we are given a simple image processing implementation that manipulate a sprite object on a bitmap image with three types of operations, shifting, rotating, and mirroring. The goal is to optimize this implementation.
 
 The key assumptions I noticed are:
 
