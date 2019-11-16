@@ -26,7 +26,7 @@ The first option is to read it the English way, i.e. she-yen/see-yen/shen, whate
 
 In this model, a sender broadcasts a message, the name, to the receiver, and the receiver then deciphers the message and responds to it by paying attention to the sender. The key is for both the sender and the receiver to have an agreement on the message. Pronouncing the exact sound is hard but recognizing the similar sound is relatively easy. As a result, all of those English version pronunciation like she-yen/see-yen/shen can be captured and recognized correctly by me as a receiver. The problem is solved. 
 
-TD;DR: all of the above is BS, just call me whatever you like. As long as I can recognize it, I wouldn't mind it.
+In short, all of the above is BS, just call me whatever you like. As long as I can recognize it, I wouldn't mind it.
 
 The second option, based on a similar idea, is to have myself another symbol that can represent myself so that both the sender and the receiver can understand it. The symbol I choose is ‘Johnny’.
 I know Johnny sounds weird. When I check the dictionary, Johnny has multiple strange definitions like 
@@ -41,7 +41,7 @@ Or
 
 > A gown fastened at the back, worn by hospital patients
 
-.
+
 
 But I choose this symbol for a reason, there is a story behind it. 
 Johnny is not my real name, but it is a name I would use when ordering a coffee or takeout, when the waitress has a hard time to call my real name. I borrowed this name from my friend Johnny. 
