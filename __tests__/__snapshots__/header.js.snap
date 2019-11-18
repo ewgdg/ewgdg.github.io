@@ -1,0 +1,181 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header renders correctly 1`] = `
+<div>
+  <header
+    className="MuiPaper-root MuiPaper-elevation4 MuiAppBar-root MuiAppBar-positionAbsolute navbar MuiAppBar-colorPrimary"
+    id="navbar-top"
+    style={Object {}}
+  >
+    <div
+      className="MuiToolbar-root MuiToolbar-dense MuiToolbar-gutters"
+      style={
+        Object {
+          "justifyContent": "space-around",
+        }
+      }
+    >
+      <button
+        aria-label="menu"
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <h6
+            className="MuiTypography-root title MuiTypography-h6"
+          >
+            Xian
+          </h6>
+        </span>
+      </button>
+      <button
+        aria-label="menu"
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <div
+            className="MuiBox-root MuiBox-root-84"
+          >
+            <h6
+              className="MuiTypography-root title MuiTypography-h6"
+            >
+              About
+            </h6>
+          </div>
+        </span>
+      </button>
+      <button
+        aria-label="menu"
+        className="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-edgeStart"
+        disabled={false}
+        onBlur={[Function]}
+        onClick={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiIconButton-label"
+        >
+          <h6
+            className="MuiTypography-root title MuiTypography-h6"
+          >
+            Blog
+          </h6>
+        </span>
+      </button>
+    </div>
+    <div
+      className="scroll-button"
+      onClick={[Function]}
+      role="presentation"
+      style={
+        Object {
+          "transform": "scale(0)",
+          "visibility": "hidden",
+        }
+      }
+    >
+      <button
+        aria-label="scroll back to top"
+        className="MuiButtonBase-root MuiFab-root MuiFab-sizeSmall MuiFab-secondary"
+        disabled={false}
+        onBlur={[Function]}
+        onDragLeave={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        onKeyUp={[Function]}
+        onMouseDown={[Function]}
+        onMouseLeave={[Function]}
+        onMouseUp={[Function]}
+        onTouchEnd={[Function]}
+        onTouchMove={[Function]}
+        onTouchStart={[Function]}
+        tabIndex={0}
+        type="button"
+      >
+        <span
+          className="MuiFab-label"
+        >
+          <svg
+            aria-hidden="true"
+            className="MuiSvgIcon-root"
+            focusable="false"
+            role="presentation"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"
+            />
+          </svg>
+        </span>
+      </button>
+      <style
+        jsx={true}
+      >
+        
+            .scroll-button {
+              position: fixed;
+              bottom: 2rem;
+              right: 2rem;
+            }
+          
+      </style>
+    </div>
+  </header>
+  <style
+    global={true}
+    jsx={true}
+  >
+    
+          .navbar {
+            background-color: transparent;
+            color: black;
+            user-select: none;
+          }
+        
+  </style>
+</div>
+`;
