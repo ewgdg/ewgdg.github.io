@@ -3,11 +3,14 @@ module.exports = {
   env: {
     browser: true,
     es6: true,
+    "jest/globals": true
   },
   extends: [
     'prettier',
     'airbnb',
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
   ],
   globals: {
     Atomics: 'readonly',
@@ -23,9 +26,15 @@ module.exports = {
   plugins: [
     'prettier',
     'react',
-    'prettier'
+    'prettier',
+    "jest"
   ],
   rules: {
-    'prettier/prettier':'error'
+    'prettier/prettier':'error',
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   },
 };
