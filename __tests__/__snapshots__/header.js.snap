@@ -152,9 +152,7 @@ exports[`Header renders correctly 1`] = `
           </svg>
         </span>
       </button>
-      <style
-        jsx={true}
-      >
+      <style>
         
             .scroll-button {
               position: fixed;
@@ -165,10 +163,7 @@ exports[`Header renders correctly 1`] = `
       </style>
     </div>
   </header>
-  <style
-    global={true}
-    jsx={true}
-  >
+  <style>
     
           .navbar {
             background-color: transparent;
