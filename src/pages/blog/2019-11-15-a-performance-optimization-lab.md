@@ -32,13 +32,13 @@ Before diving into the system level, I would like to start with algorithm improv
 
 Based on the second to fourth assumptions, we can further improve the algorithm by merging 25 operations into one before computing the output frame. To merge ops, we need 5 states corresponding to the 3 op types.  
 
-```
+```c
 int shiftvertical = 0 , shifthorizontal = 0, rotate = 0, mirror_x = 0, mirror_y = 0;  
 ```
 
 These states means that we are going to shift the object from its very initial position, which is represented by the info_array, vertically by `shiftvertical`, and horizontally by `shifthorizontal`, and rotate the object by `rotate` * 90 degrees, and mirror the object on x-axis if `mirrow_x` = 1 and on y-axis if `mirror_y` = 1, on the mentioned order. For each op, we are merging it with the previous states. Notice that the previous state will affect how to merge. For example, rotating 90 degrees before shifting up by y indicates shifting right by y before rotating 90 degrees and can be represented by states:
 
-```
+```c
 shiftvertical = 0; shifthorizontal = y; rotate = 1; mirror_x = 0; mirror_y = 0;
 ```
 
@@ -46,7 +46,7 @@ Notice the order of merged ops must be consistent to produce the correct result.
 
 The code snippet for merging a shifting up operation:
 
-```
+```c
 if (!strcmp(sensor_values[sensorValueIdx].key, "W")) {
            
             if(rotate&&mirror_x){
@@ -92,13 +92,13 @@ if (!strcmp(sensor_values[sensorValueIdx].key, "W")) {
 
 After merging 25 ops into 5 states, we can start to process the info_array by manipulating the indexes to produce the output frame. A trick here is to merge the index manipulations for rotation and mirror.
 
-```
-#define rotate_90_mirror_x(i,j,w,i2,j2) i2=(w-j-1);j2=(w-i-1) 
+```c
+#define rotate_90_mirror_x(i,j,w,i2,j2) i2=(w-j-1);j2=(w-i-1)
 #define rotate_90_mirror_y(i,j,w,i2,j2) i2=j;j2=i
 #define rotate_180_mirror_x(i,j,w,i2,j2) i2=i;j2=(w-j-1) // mirrory
 #define rotate_180_mirror_y(i,j,w,i2,j2) i2=(w-i-1);j2=j //mirrorx
-#define rotate_270_mirror_x(i,j,w,i2,j2) i2=j;j2=i //90+my
-#define rotate_270_mirror_y(i,j,w,i2,j2) i2=(w-j-1);j2=(w-i-1) //rotate90+mx
+#define rotate_270_mirror_x(i,j,w,i2,j2) i2=j;j2=i //rotate_90+my
+#define rotate_270_mirror_y(i,j,w,i2,j2) i2=(w-j-1);j2=(w-i-1) //rotate_90+mx
 ```
 
 No matter how many ops are merged, those merged states are applied on the same info_array, which means that the states can be used to distinguish unique frame. Therefore, we can cache some of the frequently shown frame into memory with their states as key.
