@@ -1,0 +1,137 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`About Widget render properly 1`] = `
+<div
+  class="makeStyles-flexContainer-6 undefined"
+>
+  <div
+    style="width: 100%; height: auto;"
+  >
+    <div
+      style="display: inline-block;"
+    >
+      <div
+        class="makeStyles-charSequenceContainer-1"
+      >
+        <span
+          style="font-size: 1em;"
+        >
+          A
+        </span>
+        <span
+          style="font-size: 1em;"
+        >
+          b
+        </span>
+        <span
+          style="font-size: 1em;"
+        >
+          o
+        </span>
+        <span
+          style="font-size: 1em;"
+        >
+          u
+        </span>
+        <span
+          style="font-size: 1em;"
+        >
+          t
+        </span>
+        <div
+          class="makeStyles-charSequenceBackground-2"
+          style="transform-origin: left; transform: matrix(0,0,0,1,0,0);"
+        />
+      </div>
+    </div>
+    <div
+      style="position: relative;"
+    >
+      <div
+        class="makeStyles-skewed-4"
+        id="ribbonContainer"
+      >
+        <div
+          class="makeStyles-ribbon-3"
+          id="ribbon"
+          style="transform-origin: right; transform: matrix(0,0,0,1,0,0);"
+        />
+      </div>
+      <div
+        class="makeStyles-textContainerInsideRibbon-5"
+      >
+        <div
+          id="animatedLineGroup"
+        >
+          <h2
+            class="animatedline"
+            style="opacity: 0;"
+          >
+            My passion is about solving challenging problem.
+          </h2>
+          <div>
+            <div
+              class="animatedline"
+              style="opacity: 0;"
+            >
+              And that is
+               
+              <a
+                href="/blog/2019-10-30-why-i-created-this-page"
+              >
+                why
+              </a>
+               
+              I made this page.
+            </div>
+            <div
+              class="animatedline"
+              style="opacity: 0;"
+            >
+              I like technology and computer programming and many more.
+            </div>
+            <div
+              class="animatedline"
+              style="opacity: 0;"
+            >
+              If you want to learn more about me, keep
+               
+              <a
+                href="/about"
+              >
+                reading
+              </a>
+              .
+            </div>
+            <div
+              class="animatedline"
+              style="opacity: 0;"
+            >
+              Or send me an
+               
+              <button
+                style="background: none; padding: 0px; color: rgb(0, 102, 153); text-decoration: underline; cursor: pointer;"
+                type="button"
+              >
+                email.
+              </button>
+            </div>
+            <div
+              class="animatedline"
+              style="opacity: 0;"
+            >
+              ... ...
+            </div>
+            <div
+              class="animatedline"
+              style="opacity: 0;"
+            >
+              ...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

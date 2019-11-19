@@ -55,6 +55,7 @@ module.exports = {
               // the content container as this plugin uses this as the
               // base for generating different widths of each image.
               maxWidth: 2048,
+              // eslint-disable-next-line no-unused-vars
               wrapperStyle: fluidResult => {
                 return "width:100%;margin-left:auto;margin-right:auto;margin-bottom:0;margin-top:0;pointer-events: none;"
               },

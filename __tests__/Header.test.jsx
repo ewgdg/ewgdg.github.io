@@ -10,7 +10,7 @@ describe("Header", () => {
     expect(tree).toMatchSnapshot()
   })
 
-  it("renders correctly with testing library", () => {
+  it("properly navigate upon click about link", () => {
     const { getByText } = render(<Header />)
     fireEvent.click(getByText(/about/i))
     expect(window.location.href).toBe("/about")
