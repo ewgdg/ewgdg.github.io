@@ -160,12 +160,14 @@ function startAnimationFlyingSprite(
     setDomElemState({ ...pos, display: true })
   }
 
-  requestAnimationFrame(timeStamp => {
+  rafId = requestAnimationFrame(timeStamp => {
+    // init pos
     flyingSpriteObject = new FlyingSpriteObject(
       timeStamp,
       speed,
       spriteDimension
     )
+    // step
     animationStep(timeStamp)
   })
 
