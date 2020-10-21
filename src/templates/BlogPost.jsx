@@ -113,7 +113,7 @@ export const BlogPostTemplate = ({
       <Container>
         {includeBackButton && <BackToList />}
         <Paper>
-          <div style={{ margin: "0 auto", padding: "45px" }}>
+          <div style={{ margin: "0 10%", padding: "45px" }}>
             <div style={{ textAlign: "center" }}>
               <h1 className="title">{title}</h1>
               {description && <p>{description}</p>}
