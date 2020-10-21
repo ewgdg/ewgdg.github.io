@@ -3,8 +3,8 @@ templateKey: AboutPage
 title: about
 jumbotron:
   image: /img/about-jumbotron.jpg
-  headline: "Keyboard is\nMy weapon"
-  subtitle: 键盘侠
+  headline: "Keyboard =\nMy weapon"
+  subtitle: 键来
 facts:
   - title: Drink
     description: |

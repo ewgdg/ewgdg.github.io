@@ -49,7 +49,21 @@ function getScrollTop(elem) {
   return top
 }
 
-/* detect scroll for elem might dynamically change pos */
+/* detect scroll for elem might dynamically change pos 
+duration	
+The duration of the scene.
+
+
+offset	
+Offset Value for the Trigger Position. If no triggerElement is defined this will be the scroll distance from the start of the page, after which the scene will start.
+
+triggerElement
+DOM object that defines the start of the scene. If undefined the scene will start right at the start of the page (unless an offset is set).
+
+triggerHook	
+Can be a number between 0 and 1 defining the position of the trigger Hook in relation to the viewport.
+a trigger hook triggers callback when reach trigger elem
+*/
 class ScrollDetector {
   constructor({
     scrollLayer,
@@ -99,13 +113,14 @@ class ScrollDetector {
 
     return () => {
       if (!this.triggerElement || !this.scrollLayer) return
-      const pos =
+      const pos = //relative pos of cur elem to viewport top 
         (this.triggerElement
           ? this.triggerElement.getBoundingClientRect().top -
-            this.scrollLayer.getBoundingClientRect().top
+            this.scrollLayer.getBoundingClientRect().top //the scroll layer is the root container with scroll bar , most of time it is the viewport
           : -this.scrollLayer.scrollTop) + this.offset
 
       let progress = null
+      //pos of trigger relative to viewport top 
       const triggerPos = this.triggerHook * window.innerHeight
 
       if (this.duration > 0) {
