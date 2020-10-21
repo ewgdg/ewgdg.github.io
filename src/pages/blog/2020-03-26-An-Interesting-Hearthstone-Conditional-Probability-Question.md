@@ -55,12 +55,14 @@ the only one that can save him or he is not rational or smart enough.
 
 Solve:
 
-P(AB) = P(both are titanic and he plays one of them) = 1/7 \* 1/7 = 1/49
-
-P(B) = P(at least one of card is titanic and he has to play the titanic)
-= 1-P(none is titanic) = 1- 6/7\*6/7 = 13/49
-
-P(A|B) = P(AB)/P(B) = **1/13**
+>P(AB) = P(both are titanic and he plays one of them) = 1/7 \* 1/7 = 1/49
+>
+>P(B)\
+= P(at least one of card is titanic and he has to play the titanic)\
+= 1-P(none is titanic)\
+ = 1- 6/7\*6/7 = 13/49
+>
+>P(A|B) = P(AB)/P(B) = **1/13**
 
 **Challenge Question 1 under M1:**
 
@@ -76,32 +78,32 @@ are equal.
 
 Define Event C: player1 plays the left one. We are looking for P(A|BC).
 
-P(ABC) = P(C|AB)\*P(AB) = 0.5 \* 1/49 = 1/98
+>P(ABC) = P(C|AB)\*P(AB) = 0.5 \* 1/49 = 1/98
 
-Define Event:<br/>
-B = B1 U B2 U B3<br/>
-B1 = only left side is titanic<br/>
-B2 = only right side is titanic<br/>
-B3 = both are titanic<br/>
+Define Event:\
+B = B1 U B2 U B3\
+B1 = only left side is titanic\
+B2 = only right side is titanic\
+B3 = both are titanic\
 B1,B2,B3 are mutually exclusive.
 
-P(CB)<br/>
+>P(CB)<br/>
   \= P(C and B1 U B2 U B3)<br/>
   \= P(CB1 U CB2 U CB3) *(distributive property)*<br/>
   \= P(CB1)+P(CB2)+P(CB3)<br/>
   \= P(C|B1)\*P(B1) + P(C|B2)\*P(B2) + P(C|B3)\*P(B3)<br/>
   \= 1 \* 6/49 + 0 \* 6/49 + ½ \* 1/49 = 13/98
-
-P(A|BC) = P(ABC)/P(BC) = **1/13**
+>
+>P(A|BC) = P(ABC)/P(BC) = **1/13**
 
 **Model 2 (M2):**
 
 Solve:
 
-P(AB) = P(both are titanic and he plays any one of them) = 1/7 \* 1/7 =
+>P(AB) = P(both are titanic and he plays any one of them) = 1/7 \* 1/7 =
 1/49
-
-P(B)<br/>
+>
+>P(B)<br/>
   \= P(at least one of card is titanic and he just happened to play the
 titanic)<br/>
   \= P(he plays a random card which just happened to be titanic)
@@ -109,8 +111,8 @@ titanic)<br/>
   \= P(he plays left card and left card is titanic)+ P(he plays right card
 and right card is titanic)<br/>
   \= ½ \* 1/7 + ½ \* 1/7 = 1/7
-
-P(A|B) = P(AB)/P(B) = **1/7**
+>
+>P(A|B) = P(AB)/P(B) = **1/7**
 
 
 **Summary:**
