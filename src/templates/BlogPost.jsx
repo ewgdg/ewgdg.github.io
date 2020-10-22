@@ -112,7 +112,7 @@ export const BlogPostTemplate = ({
       {helmet || ""}
       <Container>
         {includeBackButton && <BackToList />}
-        <Paper>
+        <Paper style={{zIndex:4, position:'relative'}}>
           <div style={{ margin: "0 10%", padding: "45px" }}>
             <div style={{ textAlign: "center" }}>
               <h1 className="title">{title}</h1>
