@@ -8,7 +8,8 @@
           "css",
           "markup",
           "clike",
-          "c"
+          "c",
+          "java"
         ],
         "plugins": [
           "line-numbers"

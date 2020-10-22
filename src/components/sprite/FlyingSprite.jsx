@@ -2,13 +2,15 @@
 import React, { useMemo, useState, useEffect } from "react"
 import { makeStyles } from "@material-ui/styles"
 import { graphql, useStaticQuery } from "gatsby"
+import { useContext } from 'react';
+import useLayoutContext from './../../contexts/useLayoutContext';
 
 const useStyles = makeStyles({
   bulin: {
     position: "fixed",
     left: "0",
     top: "0",
-    "z-index": "3",
+    "z-index": ({bulinZindex})=>bulinZindex,
     width: ({ dimension: { x } }) => `${x}px`,
     height: ({ dimension: { y } }) => `${y}px`,
     "background-image": ({ backgroundImage }) => `url(${backgroundImage})`,
@@ -40,7 +42,7 @@ function getViewPortDimension() {
 }
 
 function getInitialAngle() {
-  const region = Math.floor(Math.random() * 4)
+  const region = Math.floor(Math.random() * 4) //quadrant
   return [Math.floor(Math.random() * 51) + 20 + region * 90, region]
 }
 class FlyingSpriteObject {
@@ -186,9 +188,11 @@ function FlyingSprite({ style }) {
   `
   const imgSrc = useStaticQuery(query).file.publicURL
   const spriteDimension = { x: 130, y: 134 }
+
+  // const context = useLayoutContext();
   const styleProps = useMemo(
-    () => ({ backgroundImage: imgSrc, dimension: spriteDimension }),
-    []
+    () => ({ backgroundImage: imgSrc, dimension: spriteDimension,bulinZindex:3 }),
+    
   )
 
   const [spriteState, setSpriteState] = useState({
@@ -198,6 +202,7 @@ function FlyingSprite({ style }) {
     rotateY: 0,
   })
 
+  
   const classes = useStyles(styleProps)
 
   useEffect(() => {
