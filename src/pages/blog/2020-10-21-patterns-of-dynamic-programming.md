@@ -1,6 +1,6 @@
 ---
 templateKey: BlogPost
-title: 'Patterns of Dynamic Programming'
+title: Patterns of Dynamic Programming
 date: 2020-10-21T11:39:05.000Z
 description: Reasonable assumptions make differences.
 featuredPost: false
@@ -10,7 +10,7 @@ tags:
   - Probability
 ---
 Dynamic programming is a programming method or algorithm level
-optimization for certain problems.There are 2 concerns to be discussed
+optimization for certain problems. This article will focus on two concerns 
 here, they are when to apply it and how to apply it.
 
 **When to apply:**
@@ -25,7 +25,7 @@ indicates that memoization could be applied to optimize time complexity.
 
 **Example problem:**
 
-To practise it, let’s start with a simple example, the ‘subsequence sum’
+To practice it, let’s start with a simple example, the ‘subsequence sum’
 problem.
 
 The problem states that given an array **arr\[\]** of length **N** and a
