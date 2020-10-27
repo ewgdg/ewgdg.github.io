@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: Patterns of Dynamic Programming
 date: 2020-10-21T11:39:05.000Z
-description: Reasonable assumptions make differences.
+description: Observe patterns.
 featuredPost: false
 tags:
   - Dynamic Programming
