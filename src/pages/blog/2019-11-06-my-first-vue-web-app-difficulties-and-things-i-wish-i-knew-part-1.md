@@ -157,3 +157,5 @@ and I eventually decided to use Nuxt.js which is framework of Vue.js for
 the purpose of SSR for my web project.</span>
 
 <span dir="ltr">To be continued.</span>
+
+Check [Part 2](https://xianzhang.dev/blog/2019-11-07-my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-2) and [Part 3](https://xianzhang.dev/blog/2019-11-08-my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-3).
