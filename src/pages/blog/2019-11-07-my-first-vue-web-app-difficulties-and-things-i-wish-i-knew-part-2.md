@@ -27,3 +27,5 @@ My first vue app requires some heavy computations, and the whole app contains ma
 All of the states/properties in the Vuex store will be modified by Vue to be able to notify the watcher because all of the states in the store will be ‘touched’ during the renderings and computations. If a large amount of states send the change-notifications, the app will be very slow. It is important to minify the number of notifications. That requires the separation of internal states and external states. To reach the goal, I extracted the computation logic into an OOP class, and read only external states that are necessary for rendering from the object instance instantiated by the class into Vuex store.  It turned out that only a small fraction of states were related UI display so they were read into Vuex store. The problem is solved. This mistake reminds me that Vue is a rendering framework and heavy data processing should be separated from it.
 
 To be continued.
+
+Check [Part 3](https://xianzhang.dev/blog/2019-11-08-my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-3).
