@@ -5,9 +5,7 @@ date: 2020-10-21T11:39:05.000Z
 description: Reasonable assumptions make differences.
 featuredPost: false
 tags:
-  - Gaming
-  - HearthStone
-  - Probability
+  - Dynamic Programming
 ---
 Dynamic programming is a programming method or algorithm level
 optimization for certain problems. This article will focus on two concerns 
@@ -17,10 +15,10 @@ here, they are when to apply it and how to apply it.
 
 Dynamic programming is applied often when a problem can be divided into
 similar subproblems, and the problem can be solved by solving
-subproblems first. This indicates recursion.
+subproblems first (**optimal substructure**). This indicates recursion.
 
 The second sign is when you notice that there are a lot of repetitions
-on the same subproblems that are being queried during recursion. This
+on the same subproblems that are being queried during recursion (**overlapping subproblems**). This
 indicates that memoization could be applied to optimize time complexity.
 
 **Example problem:**
