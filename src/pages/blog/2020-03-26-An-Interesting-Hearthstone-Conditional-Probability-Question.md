@@ -1,7 +1,7 @@
 ---
 templateKey: BlogPost
-title: 'An Interesting Hearthstone Conditional Probability Question'
-date: 2020-3-26T13:00:00.000Z
+title: An Interesting Hearthstone Conditional Probability Question
+date: 2020-04-17T13:00:00.000Z
 description: Reasonable assumptions make differences.
 featuredPost: false
 tags:
