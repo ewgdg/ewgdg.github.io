@@ -12,7 +12,8 @@ In java.utils we have TreeSet which is quite useful for storing unique keys, but
 
 My design is based on java TreeMap. I use a linked list structure to store all nodes with the same key. To be able to go to previous and next item within the linked list, I implement a simple doubly linked list with a node structure.
 
-**Doubly Linked List**:
+**Doubly Linked List:**
+
 ```java
 class DLL<T>{
         //dummy head and dummy tail
@@ -65,7 +66,8 @@ class DLL<T>{
     }
 ```
 
-**Node:**
+**Node:**
+
 ```java
 class Node<K>{ 
         Node<K> prev,next;
