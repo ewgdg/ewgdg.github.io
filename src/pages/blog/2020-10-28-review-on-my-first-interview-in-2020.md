@@ -13,9 +13,7 @@ The first mistake I made is failing to provide insights on the company’s produ
 
 
 **Communication:** \
-To be honest, I am not a good English listener as I am not good at distinguishing subtle sounds, especially those blending sounds from linking words. I actually asked the interviewer to repeat his question twice. There is really nothing much I can do except for getting used to it. 
-
-Another mistake I made is in understanding the question description logically. During the interview, I asked my interviewer if I can enhance the data structure of given input, and he insisted that the input remains its structure. I misunderstood the context and added an extra constraint on my solution that I should not modify the input data structure. But actually although the input remains the same, I can instead preprocess the input data and create a new data structure to store the input data. I think a better way to avoid such a mistake is to make assumptions write them down. If those assumptions are wrong then the interviewer can point it out. Do not add extra constraints myself.
+One mistake I made is in understanding the question description logically. During the interview, I asked my interviewer if I can enhance the data structure of given input, and he insisted that the input remains its structure. I misunderstood the context and added an extra constraint on my solution that I should not modify the input data structure. But actually although the input remains the same, I can instead preprocess the input data and create a new data structure to store the input data. I think a better way to avoid such a mistake is to make assumptions write them down. If those assumptions are wrong then the interviewer can point it out. Do not add extra constraints myself.
 
 **Asking questions:** \
 When the problem is given by the interviewer, it is my turn to post questions on the given problem. I failed to ask meaningful questions before solving the problem. This made my solution less robotic and less optimal without knowing the real constraints on input. 
