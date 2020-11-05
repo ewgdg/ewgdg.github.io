@@ -112,15 +112,15 @@ class ScrollDetector {
     let lastProgress = 0
 
     return () => {
-      if (!this.triggerElement || !this.scrollLayer) return
-      const pos = //relative pos of cur elem to viewport top 
+      if (!this.scrollLayer) return
+      const pos = // relative pos of cur elem to viewport top
         (this.triggerElement
           ? this.triggerElement.getBoundingClientRect().top -
-            this.scrollLayer.getBoundingClientRect().top //the scroll layer is the root container with scroll bar , most of time it is the viewport
+            this.scrollLayer.getBoundingClientRect().top // the scroll layer is the root container with scroll bar , most of time it is the viewport
           : -this.scrollLayer.scrollTop) + this.offset
 
       let progress = null
-      //pos of trigger relative to viewport top 
+      // pos of trigger relative to viewport top
       const triggerPos = this.triggerHook * window.innerHeight
 
       if (this.duration > 0) {

@@ -15,18 +15,18 @@ import Zoom from "@material-ui/core/Zoom"
 
 import { navigate } from "gatsby"
 
-import LayoutContext from "../../contexts/LayoutContext"
+// import LayoutContext from "../../contexts/LayoutContext"
 import { scrollIntoView, ScrollDetector } from "../../utils/scroll"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
 
-function useScrollTrigger({ threshold, target }) {
+function useScrollTrigger({ threshold, scrollLayer }) {
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
-    if (!target) return () => {}
+    if (!scrollLayer) return () => {}
     const scene = new ScrollDetector({
-      scrollLayer: target,
+      scrollLayer,
       triggerHook: 0,
       offset: threshold,
     })
@@ -43,16 +43,17 @@ function useScrollTrigger({ threshold, target }) {
       scene.destroy()
       setTrigger(false)
     }
-  }, [threshold, target])
+  }, [threshold, scrollLayer])
   return trigger
 }
 function BackToTop(props) {
   const { children, anchorId } = props
   // const classes = useStyles();
-  const context = useContext(LayoutContext)
+  const context = useLayoutContext()
+  // trigger on whole page scroll instead of on a single elem
   const trigger = useScrollTrigger({
     threshold: 100,
-    target: context.scrollLayer,
+    scrollLayer: context.scrollLayer,
   })
 
   const handleClick = event => {
