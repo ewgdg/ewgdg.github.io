@@ -2,15 +2,15 @@
 import React, { useMemo, useState, useEffect } from "react"
 import { makeStyles } from "@material-ui/styles"
 import { graphql, useStaticQuery } from "gatsby"
-import { useContext } from 'react';
-import useLayoutContext from './../../contexts/useLayoutContext';
+import { useContext } from "react"
+import useLayoutContext from "../../contexts/useLayoutContext"
 
 const useStyles = makeStyles({
   bulin: {
     position: "fixed",
     left: "0",
     top: "0",
-    "z-index": ({bulinZindex})=>bulinZindex,
+    "z-index": ({ bulinZindex }) => bulinZindex,
     width: ({ dimension: { x } }) => `${x}px`,
     height: ({ dimension: { y } }) => `${y}px`,
     "background-image": ({ backgroundImage }) => `url(${backgroundImage})`,
@@ -42,7 +42,7 @@ function getViewPortDimension() {
 }
 
 function getInitialAngle() {
-  const region = Math.floor(Math.random() * 4) //quadrant
+  const region = Math.floor(Math.random() * 4) // quadrant
   return [Math.floor(Math.random() * 51) + 20 + region * 90, region]
 }
 class FlyingSpriteObject {
@@ -191,8 +191,12 @@ function FlyingSprite({ style }) {
 
   // const context = useLayoutContext();
   const styleProps = useMemo(
-    () => ({ backgroundImage: imgSrc, dimension: spriteDimension,bulinZindex:3 }),
-    
+    () => ({
+      backgroundImage: imgSrc,
+      dimension: spriteDimension,
+      bulinZindex: 3,
+    }),
+    [imgSrc, spriteDimension]
   )
 
   const [spriteState, setSpriteState] = useState({
@@ -202,7 +206,6 @@ function FlyingSprite({ style }) {
     rotateY: 0,
   })
 
-  
   const classes = useStyles(styleProps)
 
   useEffect(() => {
