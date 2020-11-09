@@ -11,6 +11,17 @@ tags:
   - initialization
   - initializer block
 ---
+This is an update on the blog in 2020:\
+React useState supports lazy initial state today:
+```javascript
+const [state, setState] = useState(() => {
+  const initialState = someExpensiveComputation(props);
+  return initialState;
+});
+
+```
+
+##
 React function components come with many advantages compared to its class components and become suggested since the new release of React hooks. The React hooks allow the function components to be stateful, but it is less obvious on how to initialize states inside a function component and today I am going to solve the question.
 
 Before diving into the details, I want to mention that there are actually two ways of persisting states in function components, `useRef` and `useState`. `useRef` is for internal states and modifying this type of states will not trigger re-rendering, while `useState` allows you to trigger re-rendering of the component. For the concern of simplicity, I will focus on `useRef` here but the idea is very similar for `useState`.
