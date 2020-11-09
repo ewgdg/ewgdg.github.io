@@ -1,6 +1,6 @@
 ---
 templateKey: BlogPost
-title: What is the purpose of an Easy Level Interview Question
+title: What Is The Purpose of An Easy Level Interview Question
 date: 2020-11-08T20:45:59.549Z
 description: |
   Do not despise it.
