@@ -12,7 +12,7 @@ tags:
   - initializer block
 ---
 This is an update on the blog in 2020:\
-React useState supports lazy initial state today:
+React useState actually supports lazy initial state:
 ```javascript
 const [state, setState] = useState(() => {
   const initialState = someExpensiveComputation(props);
