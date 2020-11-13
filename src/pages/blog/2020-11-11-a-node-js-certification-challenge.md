@@ -16,5 +16,11 @@ The challenge will begin tomorrow 2020-11-12, and I wish myself good luck.
 
 ---
 #### Day 1
-To be continue.
+I spent ~7 hours into the nodejs course today, I completed 40% of all materials.
+It turns out that I have been exposed to most of the materials with my personal projects.
+Maybe what I need is another certification focusing on restful service. 
+It is still a good resrouce for me to review what I have known and to learn something new.\
+completion list:\
+Node binary, debugging, key javascript concepts, package dependencies, node module system,  async control flow
+
 --- 
