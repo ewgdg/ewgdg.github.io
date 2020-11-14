@@ -24,3 +24,7 @@ completion list:\
 Node binary, debugging, key javascript concepts, package dependencies, node module system,  async control flow
 
 --- 
+#### Day 2
+I covered events and errors handling in ~2 hours. Current progress: 51%.
+
+---
