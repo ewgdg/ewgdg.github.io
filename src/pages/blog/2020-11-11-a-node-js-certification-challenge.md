@@ -28,3 +28,9 @@ Node binary, debugging, key javascript concepts, package dependencies, node modu
 I covered events and errors handling in ~2 hours. Current progress: 51%.
 
 ---
+#### Day 3 & 4
+~3 hours\
+current progress: 63%. \
+complete: Stream and Buffer.
+
+---
