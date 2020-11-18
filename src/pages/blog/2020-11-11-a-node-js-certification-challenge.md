@@ -38,3 +38,7 @@ complete: Stream and Buffer.
 progress: 71%, file system.
 
 ---
+#### Day 6
+84%, process + child_process + os 
+
+---
