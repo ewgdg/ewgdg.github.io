@@ -19,7 +19,9 @@ exports[`Footer renders correctly 1`] = `
        
       <a
         href="https://www.gatsbyjs.org"
+        rel="noopener noreferrer"
         style="color: white;"
+        target="_blank"
       >
         Gatsby
       </a>

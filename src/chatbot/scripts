@@ -1,0 +1,15 @@
+#prebuild
+python prebuild.py
+
+#init
+gcloud projects list
+gcloud config set project qa-chatbot-296302
+
+
+#cloud build
+gcloud builds submit --tag gcr.io/qa-chatbot-296302/chatbot
+
+
+#deploy
+gcloud run deploy --image gcr.io/qa-chatbot-296302/chatbot --platform managed
+or use google cloud console

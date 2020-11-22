@@ -3,6 +3,7 @@
 import React from "react"
 import { Link } from "gatsby"
 // to parse the about.md text
+// text in format : string {link text} string
 function TextLink({ text, links, isInternal = true }) {
   const regEx = /{\w+}/g
   const matched = text.match(regEx)

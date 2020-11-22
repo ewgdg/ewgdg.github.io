@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 
 import PropTypes from "prop-types"
-import React, { useContext, useEffect, useState } from "react"
+import React from "react"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
@@ -11,82 +11,13 @@ import Box from "@material-ui/core/Box"
 
 import Fab from "@material-ui/core/Fab"
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
-import Zoom from "@material-ui/core/Zoom"
 
 import { navigate } from "gatsby"
 
 // import LayoutContext from "../../contexts/LayoutContext"
-import { scrollIntoView, ScrollDetector } from "../../utils/scroll"
+import BackToTop from "./BackToTop"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
-
-function useScrollTrigger({ threshold, scrollLayer }) {
-  const [trigger, setTrigger] = useState(false)
-
-  useEffect(() => {
-    if (!scrollLayer) return () => {}
-    const scene = new ScrollDetector({
-      scrollLayer,
-      triggerHook: 0,
-      offset: threshold,
-    })
-
-    scene.setEventListener(progress => {
-      if (progress > 0) {
-        setTrigger(true)
-      } else {
-        setTrigger(false)
-      }
-    })
-
-    return () => {
-      scene.destroy()
-      setTrigger(false)
-    }
-  }, [threshold, scrollLayer])
-  return trigger
-}
-function BackToTop(props) {
-  const { children, anchorId } = props
-  // const classes = useStyles();
-  const context = useLayoutContext()
-  // trigger on whole page scroll instead of on a single elem
-  const trigger = useScrollTrigger({
-    threshold: 100,
-    scrollLayer: context.scrollLayer,
-  })
-
-  const handleClick = event => {
-    const anchor = (event.target.ownerDocument || document).querySelector(
-      `#${anchorId}`
-    )
-    if (anchor) {
-      scrollIntoView(anchor, context.scrollLayer, 888)
-      // anchor.scrollIntoView({ behavior: "smooth", block: "start" })
-    }
-  }
-
-  return (
-    <Zoom in={trigger}>
-      <div onClick={handleClick} role="presentation" className="scroll-button">
-        {children}
-        <style jsx>
-          {`
-            .scroll-button {
-              position: fixed;
-              bottom: 2rem;
-              right: 2rem;
-            }
-          `}
-        </style>
-      </div>
-    </Zoom>
-  )
-}
-BackToTop.propTypes = {
-  children: PropTypes.element.isRequired,
-  anchorId: PropTypes.string.isRequired,
-}
 
 const Header = ({ position, color, style }) => {
   const context = useLayoutContext()

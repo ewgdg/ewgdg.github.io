@@ -107,6 +107,7 @@ exports.createPages = async ({ actions, graphql }) => {
       })
     }
   })
+  return null
 }
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
