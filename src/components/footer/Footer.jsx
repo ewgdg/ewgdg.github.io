@@ -32,7 +32,12 @@ function Footer({ className }) {
       <p style={{ opacity: 0.6, color: "white" }}>
         <small>
           © {new Date().getFullYear()} Xian Zhang, Built with{" "}
-          <a href="https://www.gatsbyjs.org" style={{ color: "white" }}>
+          <a
+            href="https://www.gatsbyjs.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "white" }}
+          >
             Gatsby
           </a>
         </small>

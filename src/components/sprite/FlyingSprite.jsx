@@ -2,8 +2,8 @@
 import React, { useMemo, useState, useEffect } from "react"
 import { makeStyles } from "@material-ui/styles"
 import { graphql, useStaticQuery } from "gatsby"
-import { useContext } from "react"
-import useLayoutContext from "../../contexts/useLayoutContext"
+// import { useContext } from "react"
+// import useLayoutContext from "../../contexts/useLayoutContext"
 
 const useStyles = makeStyles({
   bulin: {
