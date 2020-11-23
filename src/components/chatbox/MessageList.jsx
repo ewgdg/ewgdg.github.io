@@ -2,6 +2,7 @@ import React, { useRef, useLayoutEffect, useEffect } from "react"
 import PropTypes from "prop-types"
 import Box from "@material-ui/core/Box"
 import { makeStyles } from "@material-ui/styles"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import Message from "./Message"
 
 const useStyles = makeStyles({
@@ -20,7 +21,7 @@ const MessageList = ({ messages }) => {
     outerRef.current.scrollTop = outerRef.current.scrollHeight
 
     return () => {}
-  }, [messages.length])
+  }, [messages])
   return (
     <Box ref={outerRef} className={classes.box}>
       {messages.map((message, i) => {
@@ -34,7 +35,14 @@ const MessageList = ({ messages }) => {
             key={i}
           >
             <Message color={message.fromClient ? "#25b7fa" : "#b3bcbc"}>
-              {message.data}
+              {message.loading ? (
+                <CircularProgress
+                  size="1rem"
+                  style={{ margin: "1px", padding: "1px" }}
+                />
+              ) : (
+                message.data
+              )}
             </Message>
           </Box>
         )
@@ -47,4 +55,4 @@ MessageList.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   messages: PropTypes.array.isRequired,
 }
-export default MessageList
+export default React.memo(MessageList)
