@@ -5,7 +5,6 @@ import React from "react"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
-
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 
@@ -13,13 +12,14 @@ import Fab from "@material-ui/core/Fab"
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
 
 import { navigate } from "gatsby"
+import Chat from "../chatbox/Chat"
 
 // import LayoutContext from "../../contexts/LayoutContext"
 import BackToTop from "./BackToTop"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
 
-const Header = ({ position, color, style }) => {
+const Header = ({ position, color, style, chatbox }) => {
   const context = useLayoutContext()
   return (
     <div>
@@ -80,6 +80,7 @@ const Header = ({ position, color, style }) => {
             <KeyboardArrowUpIcon />
           </Fab>
         </BackToTop>
+        {chatbox && <Chat />}
       </AppBar>
       <style jsx global>
         {`
@@ -98,10 +99,12 @@ Header.propTypes = {
   position: PropTypes.string,
   color: PropTypes.string,
   style: PropTypes.shape({}),
+  chatbox: PropTypes.bool,
 }
 Header.defaultProps = {
   position: "static",
   color: "black",
   style: {},
+  chatbox: false,
 }
 export default Header
