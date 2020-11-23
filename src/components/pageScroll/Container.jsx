@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useEffect, useContext } from "react"
+import React, { useMemo, useRef, useEffect, useContext, useState } from "react"
 import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import {
@@ -19,9 +19,9 @@ const useStyles = makeStyles({
     borderRadius: 3,
   },
 })
-const useHandlers = (ref, childrenRefs, context) => {
-  // create dom event handler, same as useCallback( function factory(param)(args) )
-  return useMemo(() => {
+const getHandlers = (ref, childrenRefs, context) => {
+  // create dom event handler, same as useCallback( function factory(param)(args) ) //no need useMemo if it is inside useEffect
+  return (() => {
     let isScrolling = false
     let isZooming = false
 
@@ -65,6 +65,7 @@ const useHandlers = (ref, childrenRefs, context) => {
         for (let i = i0; i < size && i >= 0; i += step) {
           const childRef = childrenRefs[i]
           const elem = childRef.current
+
           if (isAnyInViewport(elem, 5)) {
             activeSecRef = childRef
             break
@@ -288,7 +289,7 @@ const useHandlers = (ref, childrenRefs, context) => {
       pointerUpHandler,
       pointerCancelHandler,
     ]
-  }, [ref, context, childrenRefs])
+  })()
 }
 
 // a container component whose children should be of type Section
@@ -296,61 +297,126 @@ function Container({ children }) {
   const classes = useStyles()
 
   // get or create references for child nodes
-  const childrenRefs = useMemo(() => {
-    // createRef return an obj that is not extensible, so I need to copy it
-    const list = React.Children.map(children, () => ({
-      ...React.createRef(null),
-    }))
-    const n = list.length
-    // build a linked list
-    for (let i = 0; i < n; i += 1) {
-      if (i < n - 1) {
-        list[i].next = list[i + 1]
+  // my first try is to useMemo + createRef but perf is unstable, might be slow
+  // 1st alternative way is useState+useEffect(set refs to match count), since useEffect exec func after layout and paint, it will render this comp twice, the second render is triggered by setState within useEffect and
+  // 2nd another way is to introduce side effect outside useEffect + useRef([]), but might be a bad practice from stackoverlow. use if statement to check if we should update the side effect.
+  // if( change/size mismatch ) { update refs = Array(len).fill().map((_,i)=>{ refs[i]||createRef()  }) }, might not be a bad manner, this is effectively the beforeMount hook.
+  // third way is to use weakMap/array within useRef + calbackRef , <Item ref={(elem)=>map.set(item or index ,elem)}> , notice js array is a set of key-value paris and auto expand itself
+  // downside is not able to shrink size if nodes are deleted
+  // 4th combine 2nd and 3rd method: ////equivalent to 2nd method seems to me
+  // useRef([]) + calbackRefs + useEffect to shrink
+
+  // verdict:
+  // useState+callbackRef for ref which need to attach listener to be the safest way
+  // children refs, however, is for user interation so useRef+useEffect/useBeforeMountEffect should be enough
+
+  const count = React.Children.count(children)
+  const childrenRefs = useRef([])
+
+  useEffect(() => {
+    if (childrenRefs.current.length !== count) {
+      // shrink size
+      childrenRefs.current = childrenRefs.current.slice(0, count)
+    }
+    const list = childrenRefs.current
+    // link nodes
+    for (let i = 0; i < list.length; i += 1) {
+      const currentChildRef = list[i]
+      if (i < count - 1) {
+        currentChildRef.next = list[i + 1]
       } else {
-        list[i].next = null
+        currentChildRef.next = null
       }
       if (i > 0) {
-        list[i].prev = list[i - 1]
+        currentChildRef.prev = list[i - 1]
       } else {
-        list[i].prev = null
+        currentChildRef.prev = null
       }
     }
-    return list
-  }, [React.Children.count(children)])
+    // return () => {}
+  }, [count])
+
+  // const childrenRefs = useMemo(() => {
+  //   // createRef return an obj that is not extensible, so I need to copy it
+  //   const list = React.Children.map(children, () => ({
+  //     ...React.createRef(null),
+  //   }))
+  //   const n = list.length
+  //   // build a linked list
+  //   for (let i = 0; i < n; i += 1) {
+  //     if (i < n - 1) {
+  //       list[i].next = list[i + 1]
+  //     } else {
+  //       list[i].next = null
+  //     }
+  //     if (i > 0) {
+  //       list[i].prev = list[i - 1]
+  //     } else {
+  //       list[i].prev = null
+  //     }
+  //   }
+  //   return list
+  // }, [React.Children.count(children)])
 
   // clone children to add props
   const clonedChildren = useMemo(() => {
-    const res = []
-    const childrenArray = React.Children.toArray(children)
-    for (let i = 0; i < childrenArray.length; i += 1) {
-      res.push(
-        React.cloneElement(childrenArray[i], {
-          forwardedRef: childrenRefs[i],
-        })
-      )
-    }
+    // const res = []
+    // const childrenArray = React.Children.toArray(children)
+    // for (let i = 0; i < childrenArray.length; i += 1) {
+    //   res.push(
+    //     React.cloneElement(childrenArray[i], {
+    //       // another way is to use forwardRef HOC(child) + ref
+    //       forwardedRef: elem => {
+    //         childrenRefs[i] = elem
+    //       },
+    //     })
+    //   )
+    // }
+    const res = React.Children.map(children, (child, index) => {
+      return React.cloneElement(child, {
+        forwardedRef: elem => {
+          childrenRefs.current[index] = childrenRefs.current[index] || {
+            // createRef return an obj that is not extensible, so I need to copy it
+            ...React.createRef(),
+          }
+
+          childrenRefs.current[index].current = elem
+        },
+      })
+    })
+
     return res
-  }, [children, childrenRefs])
+  }, [children, childrenRefs.current])
 
   // create ref for container
-  const ref = useRef(null)
+  const [ref, setRef] = useState({ current: null })
+
+  const setRefCallback = useRef(null)
+  if (setRefCallback.current === null) {
+    // need bounded callback to prevent trigger setRef every render
+    setRefCallback.current = elem => {
+      if (elem !== ref.current) setRef({ current: elem })
+    }
+  }
 
   const context = useContext(LayoutContext)
 
-  const [
-    wheelHander,
-    keyUpHandler,
-    keyDownHandler,
-    pointerDownHandler,
-    pointerMoveHandler,
-    pointerUpHandler,
-    pointerCancelHandler,
-  ] = useHandlers(ref, childrenRefs, context)
-
   // add dom event listener
   useEffect(() => {
+    if (!ref.current) return () => {}
+
+    const [
+      wheelHandler,
+      keyUpHandler,
+      keyDownHandler,
+      pointerDownHandler,
+      pointerMoveHandler,
+      pointerUpHandler,
+      pointerCancelHandler,
+    ] = getHandlers(ref, childrenRefs.current, context)
     const { scrollLayer } = context
-    ref.current.addEventListener("wheel", wheelHander, { passive: false })
+    ref.current.addEventListener("wheel", wheelHandler, { passive: false })
+    // console.log(ref.current.getEventListener("wheel"))
     scrollLayer.addEventListener("keydown", keyDownHandler)
     scrollLayer.addEventListener("keyup", keyUpHandler)
 
@@ -368,18 +434,23 @@ function Container({ children }) {
     })
 
     return () => {
-      ref.current.removeEventListener("wheel", wheelHander)
+      ref.current.removeEventListener("wheel", wheelHandler)
       scrollLayer.removeEventListener("keydown", keyDownHandler)
       scrollLayer.removeEventListener("keyup", keyUpHandler)
       ref.current.removeEventListener("pointerdown", pointerDownHandler)
       scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
       scrollLayer.removeEventListener("pointerup", pointerUpHandler)
       scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
+      return null
     }
-  }, [wheelHander, keyUpHandler, keyDownHandler, ref.current, context])
+  }, [ref.current, context, children, childrenRefs.current])
 
   return (
-    <div className={classes.root} ref={ref} id="pageContainer">
+    <div
+      className={classes.root}
+      ref={setRefCallback.current}
+      id="pageContainer"
+    >
       {clonedChildren}
     </div>
   )
@@ -389,4 +460,4 @@ Container.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-export default Container
+export default React.memo(Container)
