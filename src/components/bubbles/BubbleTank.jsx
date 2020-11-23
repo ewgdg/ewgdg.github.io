@@ -86,7 +86,7 @@ function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
       // willMount.current = true
       setIsMounted(false)
     }
-  }, [dataSize, cellsPerRow, setIsMounted])
+  }, [dataSize, cellsPerRow, isMounted])
 
   const bubbles = useRef(null)
   if (!isMounted) {

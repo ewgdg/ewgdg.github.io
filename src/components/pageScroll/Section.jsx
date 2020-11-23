@@ -33,9 +33,10 @@ function Section({ children, forwardedRef, style, id }) {
 
 Section.propTypes = {
   children: PropTypes.node,
-  forwardedRef: PropTypes.shape({
-    current: PropTypes.any,
-  }),
+  // forwardedRef: PropTypes.shape({
+  //   current: PropTypes.any,
+  // }),
+  forwardedRef: PropTypes.func,
 }
 Section.defaultProps = {
   children: undefined,

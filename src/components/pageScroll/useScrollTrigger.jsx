@@ -4,10 +4,11 @@ import useLayoutContext from "../../contexts/useLayoutContext"
 
 function useScrollTrigger({ threshold, scrollLayer }) {
   const [trigger, setTrigger] = useState(false)
-
+  const defaultContext = useLayoutContext().scrollLayer
+  // eslint-disable-next-line no-param-reassign
+  scrollLayer = scrollLayer || defaultContext
   useEffect(() => {
-    // eslint-disable-next-line no-param-reassign
-    if (!scrollLayer) scrollLayer = useLayoutContext().scrollLayer
+    if (!scrollLayer) return () => {}
     const scene = new ScrollDetector({
       scrollLayer,
       triggerHook: 0,

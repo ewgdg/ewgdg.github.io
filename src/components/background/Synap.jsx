@@ -2,6 +2,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React, { useLayoutEffect, useRef } from "react"
+// import * as PIXI from "pixi.js"
 import { debounce } from "../../utils/throttle"
 import * as PIXI from "../../plugins/PIXI"
 import SynapGraph from "./SynapGraph"
@@ -34,6 +35,7 @@ function Synap({ style }) {
     }
 
     const loadApp = () => {
+      // eslint-disable-next-line no-unused-vars
       app.loader.load((loader, resources) => {
         const color = 0x787878
         const opacity = 1
