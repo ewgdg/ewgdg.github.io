@@ -12,6 +12,7 @@ import Box from "@material-ui/core/Box"
 import Button from "@material-ui/core/Button"
 import useScrollTrigger from "../pageScroll/useScrollTrigger"
 import MessageList from "./MessageList"
+import * as chatbot from "./chatbotAPI"
 
 const useStyles = makeStyles({
   icon: {
@@ -39,20 +40,47 @@ function Chat({ iconStyle }) {
     threshold: 100,
   })
 
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState([{ loading: true }])
 
   // we can replace this with update setUpdate = useState simply for rerender when we have textRef
   const [text, setText] = useState("")
   const textRef = useRef(text)
-  const sendMessage = useCallback(() => {
-    if (textRef.current) {
-      setMessages(oldmsgs => [
-        ...oldmsgs,
-        { data: textRef.current, fromClient: true },
-      ])
+
+  const waitForResponse = useCallback(
+    async req => {
+      const replyObj = {
+        loading: true,
+      }
+      setMessages(prev => [...prev, replyObj])
+      const reply = await chatbot.requestReply(req)
+
+      replyObj.loading = false
+      replyObj.data = reply
+      setMessages(prev => [...prev])
+    },
+    [setMessages]
+  )
+  const [controllable, setControllable] = useState(true)
+  const controllableRef = useRef(controllable)
+  const unblock = () => {
+    setControllable(true)
+    controllableRef.current = true
+  }
+  const block = () => {
+    setControllable(false)
+    controllableRef.current = false
+  }
+  const sendMessage = useCallback(async () => {
+    if (textRef.current && controllableRef.current) {
+      const question = textRef.current
+      textRef.current = ""
+      setMessages(oldmsgs => [...oldmsgs, { data: question, fromClient: true }])
       setText("")
+      block()
+      await waitForResponse(question)
+      unblock()
     }
-  }, [setMessages, textRef])
+  }, [setMessages, textRef, setControllable, controllableRef])
 
   const onTextChange = useCallback(
     e => {
@@ -63,13 +91,36 @@ function Chat({ iconStyle }) {
     [setText]
   )
 
+  const chatIconProps = React.useMemo(() => {
+    const res = bindTrigger(popupState)
+    const superOnClick = res.onClick
+    const onClickIcon = async e => {
+      superOnClick.call(res, e)
+
+      if (!controllableRef.current) return
+      // loading
+      const messageObj = {
+        loading: true,
+      }
+      setMessages(prev => [...prev, messageObj])
+      block()
+      const reply = await chatbot.sayHi()
+      messageObj.data = reply
+      messageObj.loading = false
+      unblock()
+      setMessages(prev => [...prev])
+    }
+    res.onClick = onClickIcon
+    return res
+  }, [popupState, controllableRef, setControllable])
+
   return (
     <div>
       <Zoom in={!trigger}>
         <ChatIcon
           className={classes.icon}
           // eslint-disable-next-line react/jsx-props-no-spreading
-          {...bindTrigger(popupState)}
+          {...chatIconProps}
         />
       </Zoom>
       <Popover
@@ -94,6 +145,7 @@ function Chat({ iconStyle }) {
               required
               onChange={onTextChange}
               value={text}
+              style={{ margin: "2px" }}
             />
             <Box display="flex" flexDirection="row" justifyContent="flex-end">
               <Button
@@ -102,6 +154,7 @@ function Chat({ iconStyle }) {
                 color="primary"
                 style={{ margin: "1px" }}
                 onClick={sendMessage}
+                disabled={!controllable}
               >
                 send
               </Button>
@@ -113,4 +166,4 @@ function Chat({ iconStyle }) {
   )
 }
 
-export default Chat
+export default React.memo(Chat)

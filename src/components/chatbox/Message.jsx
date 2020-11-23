@@ -9,10 +9,13 @@ const Message = ({ children, color }) => {
       style={{
         width: "auto",
         backgroundColor: color || "white",
-        display: "inline-block",
+        display: "inline-flex",
         padding: "1px 0.5rem",
         margin: "1px",
         maxWidth: "80%",
+
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       {children}
