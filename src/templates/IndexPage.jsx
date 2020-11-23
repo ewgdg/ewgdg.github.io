@@ -34,7 +34,7 @@ export const IndexPageTemplate = ({ jumbotronProps }) => {
     <PageContainer>
       <Section>
         <HeaderContainer
-          headerProps={{ color: "white", position: "absolute" }}
+          headerProps={{ color: "white", position: "absolute", chatbox: true }}
           jumbotronProps={jumbotronProps}
         />
       </Section>
