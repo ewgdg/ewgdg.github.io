@@ -1,6 +1,6 @@
 # Use the official lightweight Python image.
 # https://hub.docker.com/_/python
-FROM deepset/haystack-cpu
+FROM deepset/haystack-cpu:0.5.0
 # RUN apt-get -y install -f 
 # RUN apt-get update -y
 # RUN apt-get install git -y
@@ -11,6 +11,12 @@ ENV PYTHONUNBUFFERED True
 ENV APP_HOME .
 WORKDIR $APP_HOME
 COPY . ./
+
+# RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.node.sh | bash
+# RUN curl -O https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh && bash script.deb.sh >&1 2>&1
+# RUN apt-get update && apt-get install -y git-lfs
+# RUN git lfs install
+# RUN git clone https://huggingface.co/deepset/roberta-base-squad2
 
 # Install production dependencies.
 # RUN pip install torch==1.7.0+cpu torchvision==0.8.1+cpu torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html

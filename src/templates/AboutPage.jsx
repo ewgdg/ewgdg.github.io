@@ -30,7 +30,7 @@ export const AboutPageTemplate = ({ jumbotronProps, facts }) => {
   return (
     <div>
       <HeaderContainer
-        headerProps={{ color: "white", position: "absolute"}}
+        headerProps={{ color: "white", position: "absolute" }}
         jumbotronProps={jumbotronProps}
       />
       <BubbleTank

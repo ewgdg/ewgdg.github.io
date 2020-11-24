@@ -40,7 +40,7 @@ function Chat({ iconStyle }) {
     threshold: 100,
   })
 
-  const [messages, setMessages] = useState([{ loading: true }])
+  const [messages, setMessages] = useState([])
 
   // we can replace this with update setUpdate = useState simply for rerender when we have textRef
   const [text, setText] = useState("")
@@ -70,6 +70,7 @@ function Chat({ iconStyle }) {
     setControllable(false)
     controllableRef.current = false
   }
+
   const sendMessage = useCallback(async () => {
     if (textRef.current && controllableRef.current) {
       const question = textRef.current
