@@ -23,8 +23,7 @@ I am going to leverage the power of open source projects for the purpose of easi
 
 **Botpress**:
 \
-https://botpress.com/ for routine conversation , seems quite related
-.
+https://botpress.com/ for routine conversation , seems quite related.
 It uses flow editor, require me to define questions and answers.
 Natural language understanding. 
 dual-licensed under AGPLv3 and the Botpress Proprietary License.
@@ -33,22 +32,16 @@ A good backup solution.\
 After studying on the AGPLv3 license I realize it is not good for devs.
 
 **Rasa**: \
-https://rasa.com/   with the power of machine learning and NLU, sounds powerful
-.
-10.1k stars on github
-.
+https://rasa.com/   with the power of machine learning and NLU, sounds powerful.
+10.1k stars on github.
 Licensed under the Apache License, Version 2.0.
-Need to train with examples, troublesome if I need to modify dialogues frequently
-.
-Good for closed-domain conversation
-.
+Need to train with examples, troublesome if I need to modify dialogues frequently.
+Good for closed-domain conversation.
 
 **Opendialog**:
 \
-https://www.opendialog.ai/ for enterprise scale chatbots
-.
-30 stars on github
-.
+https://www.opendialog.ai/ for enterprise scale chatbots.
+30 stars on github.
 Well it might not be for individual devs.
 
 **Hugging Face**:
@@ -57,8 +50,7 @@ https://huggingface.co/transformers/index.html.
 Many models to use, 
 Some are  pre-trained.
 36.9k stars on github.
-Apache-2.0 License
-.
+Apache-2.0 License.
 I think this is my choice, the github stars won't lie to you.
 
 **Haystack**:
@@ -78,30 +70,39 @@ You might notice that it does not perform well on some cryptic questions; this i
 <details>
   <summary>Click to expand</summary>
 
+
 Q: Tell me about yourself.\
 A: I graduated from the UofT computer engineering department. I am interested in getting a career as a full stack developer. Therefore, I worked on some personal projects about web apps, one of them is server side rendering another one is about Jamstack, and it is a static site, I have learnt react.js and vue.js and javascript during the process. I am currently learning node js and that might help me gain exposure in this field.
+
 
 Q: What are your career goals?\
 A: In the short term, I am looking at getting a job in the industry and learning the ropes and ensuring I am able to use the skills. In the long term, I am certainly looking at growth and increasing my knowledge, along the way gaining both career and financial stability.
 
+
 Q: Why do you want this job?\
 A: I have been gearing up myself for this kind of job profile for a while now. I have read the job description and find myself suitable for the role, hence I am looking forward to this job.
  
+
 Q: Why should we hire you?\
 A: I have been interested in this field for a while now. I have accumulated the skills that are required to help me become a better developer. I have ever been a quality assurance engineer and realize that I am more capable of solving problems as a developer. Some of the skills I have acquired are frontend and backend technology like react.js and node.js. Along with that I am good at creative thinking, logical reasoning and team building. 
+
 
 Q: Why do you want to work for this company?\
 A: I am impressed by the work your company has done and the recent developments. It would be an honor to work in a company associated with such a great reputation.
  
+
 Q: What are your strengths?\
 A: I am good at this technology and am a quick learner and will quickly grasp the training that will be given to me. I achieved great academy performance with ~3.9 sessional gpa for my 3rd and 4th year study in university. I am an active problem solver; I created my personal page for the purpose of solving my real job hunting challenges.
  
+
 Q: What are your weaknesses?\
 A: One of them is that I am a little bit introverted. Sometimes I hesitate to talk or ask for help. When I applied for my postgraduate study, the professors from who I requested for recommendation letters failed to provide the letters on time but I was hesitant to bother them and lost my chances. I used to hate noise environments and lose focus dealing with noise, but I have trained myself to get adapted to it and I got my noise cancelling headphones. Another thing worth mentioning is that I am not a native English speaker and I have a limited vocabulary pool though I am trying to improve over it. 
  
+
 Q: Tell us about your favorite subjects.\
 A: Algorithms, Artificial intelligence. I like to solve challenging questions.
- 
+
+
 Q: How long do you want to work here?\
 A: I would love to work for as long as the company finds me relevant to the role, and I also find growth in the company, both in terms of climbing the career ladder and financial growth.
  
@@ -109,5 +110,6 @@ Q: Do you have any questions for me?\
 A: What are the day to day responsibilities of the job role? 
 What is expected of me in the first month, six months and a year?
 In your opinion, how can I become successful in this role?
+
 
 </details>
