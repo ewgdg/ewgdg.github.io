@@ -1,22 +1,23 @@
 /* eslint-disable no-restricted-syntax */
-const marked = require("marked")
+// const marked = require("marked")
 const { readFile, readdir, writeFile } = require("fs").promises
 const { rmdirSync, unlinkSync, mkdirSync } = require("fs")
-const { htmlToText } = require("html-to-text")
+// const { htmlToText } = require("html-to-text")
+const { markdownToTxt } = require("markdown-to-txt")
 const path = require("path")
-
+const he = require("he")
 // const os = require("os")
 
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  pedantic: false,
-  gfm: true,
-  breaks: false,
-  sanitize: false,
-  smartLists: true,
-  smartypants: false,
-  xhtml: false,
-})
+// marked.setOptions({
+//   renderer: new marked.Renderer(),
+//   pedantic: false,
+//   gfm: true,
+//   breaks: false,
+//   sanitize: false,
+//   smartLists: true,
+//   smartypants: false,
+//   xhtml: false,
+// })
 
 async function* walk(dir) {
   const subdirs = await readdir(dir, { withFileTypes: true })
@@ -42,6 +43,13 @@ const srcDir = path.resolve(__dirname, "..", "pages")
 // eslint-disable-next-line camelcase
 const targetDir = path.join(__dirname, "doc_dir")
 
+function stripHtml(html) {
+  // Create a new div element
+  const stripedHtml = html.replace(/<[^>]+>/g, "")
+  const decodedStripedHtml = he.decode(stripedHtml)
+  return decodedStripedHtml
+}
+
 ;(async () => {
   try {
     await rm(targetDir)
@@ -60,10 +68,13 @@ const targetDir = path.join(__dirname, "doc_dir")
         const file = item.value.name
         const { data } = item.value
         // console.log(item)
-        const html = marked(data.toString())
-        const text = htmlToText(html, {
-          wordwrap: null,
-        })
+        // const html = marked(data.toString())
+        // const text1 = htmlToText(data.toString(), {
+        //   wordwrap: 80,
+        // })
+        const text = he.decode(
+          he.decode(markdownToTxt(stripHtml(data.toString())))
+        )
         const fileDestDir = path.join(
           targetDir,
           path.relative(srcDir, path.dirname(file))

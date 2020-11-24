@@ -45,9 +45,13 @@ async function requestReply(message) {
   }
 
   let reply = null
+  let maxProb = null
   const answerSet = new Set()
   // eslint-disable-next-line no-restricted-syntax
   for (const answer of answers) {
+    if (!maxProb) {
+      maxProb = answer.probability
+    }
     // validate answer
     if (answer.answer && answer.probability >= 0.6) {
       // eslint-disable-next-line no-continue
@@ -55,7 +59,7 @@ async function requestReply(message) {
       else answerSet.add(answer.answer)
       if (reply === null) {
         reply = answer.answer
-      } else {
+      } else if (maxProb - answer.probability <= 0.16) {
         reply += `; ${answer.answer}`
       }
     }
