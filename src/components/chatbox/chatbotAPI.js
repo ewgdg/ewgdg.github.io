@@ -4,6 +4,7 @@ const baseURL = "https://qa-chatbot-wdwgobgfwq-nn.a.run.app"
 const axios = _axios.create({
   baseURL,
   timeout: 20000,
+  withCredentials: false,
 })
 
 async function sayHi() {
@@ -21,7 +22,7 @@ async function sayHi() {
   if (status === "ok") {
     reply = "Hi!"
   } else {
-    reply = "error!"
+    reply = "Error!"
   }
   return reply
 }
@@ -31,7 +32,7 @@ async function requestReply(message) {
   try {
     resp = await axios.get(`/qa/${encodeURIComponent(message)}`)
   } catch (e) {
-    return "error!"
+    return "Error!"
   }
   const {
     data: {
@@ -44,10 +45,14 @@ async function requestReply(message) {
   }
 
   let reply = null
+  const answerSet = new Set()
   // eslint-disable-next-line no-restricted-syntax
   for (const answer of answers) {
     // validate answer
-    if (answer.answer && answer.probability >= 0.5) {
+    if (answer.answer && answer.probability >= 0.6) {
+      // eslint-disable-next-line no-continue
+      if (answerSet.has(answer.answer)) continue
+      else answerSet.add(answer.answer)
       if (reply === null) {
         reply = answer.answer
       } else {

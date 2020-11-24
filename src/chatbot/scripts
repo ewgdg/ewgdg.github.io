@@ -1,5 +1,7 @@
 #prebuild
-python prebuild.py
+#python prebuild.py
+pip install pyyaml
+node prebuild.js
 
 #init
 gcloud projects list
