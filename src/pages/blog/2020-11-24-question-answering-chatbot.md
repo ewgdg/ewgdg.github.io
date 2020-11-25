@@ -8,8 +8,7 @@ featuredImage: /img/question-answering-chatbot-0.png
 ---
 Recently I got a phone interview about my experience and background kind stuff. What is interesting is that this interview is a non-technical one but the position I applied to is a technical position. This makes me wonder, is it the necessity for non-tech interviews? If so, how would I pass it? Today I am going to solve the problem.
 
-Screening interviews like this can evaluate a candidate's soft skills, most likely to be the communication skill. However, I don't think this contributes a big factor to the reasons. A developer is more about reading and writing skills, not oral speaking and listening skills.\
-There must be another reason behind it, and my guess is efficiency and curiosity. 
+Screening interviews like this can evaluate a candidate's soft skills, most likely to be the communication skill. However, I don't think this contributes a big factor to the reasons. A developer is more about reading and writing skills, not oral speaking and listening skills. There must be another reason behind it, and my guess is efficiency and curiosity. 
 
 During the interview I attended, I noticed that the interviewer barely read my resume. He preferred to read the resume with me and post questions during the process. So in my imagination, the interviewer might simply throw a pile of resumes into the air and whatever is left on the table is his pick. This is understandable as there are 200+ applicants to this single position and this maximizes his efficiency to reduce the remaining number of resumes. Reading the resume with the applicant during a phone interview is just another great strategy to use to increase the recruiter’s efficiency. A learner can receive information from many channels, two main channels are voice and text; study shows that students attend lectures get better performance than student study with textbooks. Talking in a phone interview is therefore better than reading the resume for the purpose of knowing the applicants. The interaction, the ability to ask questions, further increases the effectiveness of a phone interview.
 
@@ -68,50 +67,45 @@ You might notice that it does not perform well on some cryptic questions; this i
 
 Unfortunately, the result with extractive QA method is still poor, I might need to switch to classification method with sentence embedding model that can better fit the FAQ style in the future. 
 
+After adding another assisting sentence embedding document retriever for FAQ section, the result is more reliable now. 
+
+![](/img/question-answering-chatbot-1.png)
+
 ## Q&A section:
+
 <details>
   <summary>Click to expand</summary>
-
 
 Q: Tell me about yourself.\
 A: I graduated from the UofT computer engineering department. I am interested in getting a career as a full stack developer. Therefore, I worked on some personal projects about web apps, one of them is server side rendering another one is about Jamstack, and it is a static site, I have learnt react.js and vue.js and javascript during the process. I am currently learning node js and that might help me gain exposure in this field.
 
-
 Q: What are your career goals?\
 A: In the short term, I am looking at getting a job in the industry and learning the ropes and ensuring I am able to use the skills. In the long term, I am certainly looking at growth and increasing my knowledge, along the way gaining both career and financial stability.
 
-
 Q: Why do you want this job?\
 A: I have been gearing up myself for this kind of job profile for a while now. I have read the job description and find myself suitable for the role, hence I am looking forward to this job.
- 
 
 Q: Why should we hire you?\
 A: I have been interested in this field for a while now. I have accumulated the skills that are required to help me become a better developer. I have ever been a quality assurance engineer and realize that I am more capable of solving problems as a developer. Some of the skills I have acquired are frontend and backend technology like react.js and node.js. Along with that I am good at creative thinking, logical reasoning and team building. 
 
-
 Q: Why do you want to work for this company?\
 A: I am impressed by the work your company has done and the recent developments. It would be an honor to work in a company associated with such a great reputation.
- 
 
 Q: What are your strengths?\
 A: I am good at this technology and am a quick learner and will quickly grasp the training that will be given to me. I achieved great academy performance with ~3.9 sessional gpa for my 3rd and 4th year study in university. I am an active problem solver; I created my personal page for the purpose of solving my real job hunting challenges.
- 
 
 Q: What are your weaknesses?\
 A: One of them is that I am a little bit introverted. Sometimes I hesitate to talk or ask for help. When I applied for my postgraduate study, the professors from who I requested for recommendation letters failed to provide the letters on time but I was hesitant to bother them and lost my chances. I used to hate noise environments and lose focus dealing with noise, but I have trained myself to get adapted to it and I got my noise cancelling headphones. Another thing worth mentioning is that I am not a native English speaker and I have a limited vocabulary pool though I am trying to improve over it. 
- 
 
 Q: Tell us about your favorite subjects.\
 A: Algorithms, Artificial intelligence. I like to solve challenging questions.
 
-
 Q: How long do you want to work here?\
 A: I would love to work for as long as the company finds me relevant to the role, and I also find growth in the company, both in terms of climbing the career ladder and financial growth.
- 
+
 Q: Do you have any questions for me?\
 A: What are the day to day responsibilities of the job role? 
 What is expected of me in the first month, six months and a year?
 In your opinion, how can I become successful in this role?
-
 
 </details>
