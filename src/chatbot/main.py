@@ -52,7 +52,7 @@ sqlUrl = config["sqlUrl"]
 
 # prediction = finder2.get_answers_via_similar_questions(
 #     question="How is the virus spreading?", top_k_retriever=1)
-
+import time
 
 class Chatbot:
     def __init__(self):
@@ -67,12 +67,13 @@ class Chatbot:
 
     def waitEsReady(self):
         done = False
+        client = Elasticsearch(timeout=1000)
         while not done:
             try:
-                client = Elasticsearch()
-                client.health()
+                client.info()
                 done = True
             except:
+                time.sleep(2)
                 pass
 
     def load(self):
