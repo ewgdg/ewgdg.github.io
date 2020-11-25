@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import _axios from "axios"
 
 const baseURL = "https://qa-chatbot-wdwgobgfwq-nn.a.run.app"
@@ -47,16 +48,19 @@ async function requestReply(message) {
   let reply = null
   let maxProb = null
   const answerSet = new Set()
-  // eslint-disable-next-line no-restricted-syntax
+
   for (const answer of answers) {
     if (!maxProb) {
       maxProb = answer.probability
     }
+    if (answer.probability > maxProb) {
+      maxProb = answer.probability
+    }
+  }
+  // eslint-disable-next-line no-restricted-syntax
+  for (const answer of answers) {
     // validate answer
-    if (answer.answer && answer.probability >= 0.6) {
-      if (answer.probability > maxProb) {
-        maxProb = answer.probability
-      }
+    if (answer.answer && answer.probability >= 0.72) {
       // eslint-disable-next-line no-continue
       if (answerSet.has(answer.answer)) continue
       else answerSet.add(answer.answer)

@@ -2,11 +2,12 @@ from haystack.preprocessor.cleaning import clean_wiki_text
 from haystack.preprocessor.utils import convert_files_to_dicts
 # from haystack.preprocessor.utils import tika_convert_files_to_dicts
 from haystack.document_store.sql import SQLDocumentStore
-from haystack.reader.transformers import TransformersReader
+from haystack.document_store.faiss import FAISSDocumentStore
+# from haystack.reader.transformers import TransformersReader
 # from haystack.reader.farm import FARMReader
 # from transformers import 
 # from transformers.PreTrainedModel import from_pretrained
-
+from haystack.retriever.dense import EmbeddingRetriever
 import os
 import shutil
 # get documents that we want to query
@@ -46,6 +47,7 @@ processor.save(modelDir)
 
 
 document_store = SQLDocumentStore(url=sqlUrl)
+# document_store = FAISSDocumentStore(sql_url=sqlUrl)
 
 
 
@@ -53,7 +55,7 @@ document_store = SQLDocumentStore(url=sqlUrl)
 # convert files to dicts containing documents that can be indexed to our datastore
 # You can optionally supply a cleaning function that is applied to each doc (e.g. to remove footers)
 # It must take a str as input, and return a str.
-dicts = convert_files_to_dicts(dir_path=doc_dir, clean_func=clean_wiki_text, split_paragraphs=True)
+dicts = convert_files_to_dicts(dir_path=doc_dir, clean_func=clean_wiki_text, split_paragraphs=False)
 # dicts = tika_convert_files_to_dicts(dir_path=doc_dir,clean_func=clean_wiki_text, split_paragraphs=False)
 
 # We now have a list of dictionaries that we can write to our document store.
@@ -66,7 +68,10 @@ dicts = convert_files_to_dicts(dir_path=doc_dir, clean_func=clean_wiki_text, spl
 document_store.delete_all_documents()
 document_store.write_documents(dicts)
 
-
+retriever = EmbeddingRetriever(
+    document_store=document_store, embedding_model="sentence_bert-saved", use_gpu=False)
+document_store.update_embeddings(retriever)
+document_store.save('faiss1')
 
 #clean residues
 try:

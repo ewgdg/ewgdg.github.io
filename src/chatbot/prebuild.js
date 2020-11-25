@@ -1,9 +1,9 @@
 /* eslint-disable no-restricted-syntax */
-// const marked = require("marked")
+const marked = require("marked")
 const { readFile, readdir, writeFile } = require("fs").promises
 const { rmdirSync, unlinkSync, mkdirSync } = require("fs")
-// const { htmlToText } = require("html-to-text")
-const { markdownToTxt } = require("markdown-to-txt")
+const { htmlToText } = require("html-to-text")
+// const { markdownToTxt } = require("markdown-to-txt")
 const path = require("path")
 const he = require("he")
 // const os = require("os")
@@ -68,13 +68,15 @@ function stripHtml(html) {
         const file = item.value.name
         const { data } = item.value
         // console.log(item)
-        // const html = marked(data.toString())
-        // const text1 = htmlToText(data.toString(), {
-        //   wordwrap: 80,
-        // })
-        const text = he.decode(
-          he.decode(markdownToTxt(stripHtml(data.toString())))
+        const html = marked(data.toString())
+        const text = stripHtml(
+          htmlToText(html, {
+            wordwrap: null,
+          })
         )
+        // const text = he.decode(
+        //   he.decode(markdownToTxt(stripHtml(data.toString())))
+        // )
         const fileDestDir = path.join(
           targetDir,
           path.relative(srcDir, path.dirname(file))

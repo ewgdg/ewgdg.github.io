@@ -15,6 +15,8 @@ es_server = Popen(['elasticsearch-7.9.2/bin/elasticsearch'],
                   )
 
 
+
+
 done = False
 client = Elasticsearch(timeout=1000) # (hosts=[{"host": "localhost", "port": 9200}], http_auth=("", ""),scheme="http", ca_certs=False, verify_certs=True)
 while not done:
