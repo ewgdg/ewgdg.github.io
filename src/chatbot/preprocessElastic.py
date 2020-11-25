@@ -7,6 +7,8 @@ from haystack.retriever.dense import EmbeddingRetriever
 from haystack.document_store.elasticsearch import ElasticsearchDocumentStore
 import os
 from subprocess import Popen, PIPE, STDOUT
+import time
+
 es_server = Popen(['elasticsearch-7.9.2/bin/elasticsearch'],
                   stdout=PIPE, stderr=STDOUT,
                   preexec_fn=lambda: os.setuid(1)  # as daemon
@@ -14,14 +16,14 @@ es_server = Popen(['elasticsearch-7.9.2/bin/elasticsearch'],
 
 
 done = False
+client = Elasticsearch(timeout=1000) # (hosts=[{"host": "localhost", "port": 9200}], http_auth=("", ""),scheme="http", ca_certs=False, verify_certs=True)
 while not done:
-    try:
-        client = Elasticsearch(hosts=[{"host": "localhost", "port": 9200}], http_auth=("", ""),
-                                    scheme="http", ca_certs=False, verify_certs=True, timeout=30)
-        print(client.health())
+    try:                                   
+        client.info()
         done = True
     except:
-        print('error')
+        # print('error')
+        time.sleep(2)
         pass
 
 
