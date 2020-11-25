@@ -1,6 +1,6 @@
 from functools import singledispatch
 import numpy as np
-from haystack.document_store.sql import ORMBase
+from haystack.document_store.sql import ORMBase, SQLDocumentStore
 from sqlalchemy.engine import create_engine
 from sqlalchemy.orm.session import sessionmaker
 from sqlalchemy.pool import SingletonThreadPool
@@ -14,7 +14,7 @@ import yaml
 from haystack import Finder
 from haystack.reader.farm import FARMReader
 from haystack.document_store.faiss import FAISSDocumentStore
-# from haystack.retriever.sparse import TfidfRetriever
+from haystack.retriever.sparse import TfidfRetriever
 
 import uvicorn
 from fastapi import FastAPI
@@ -116,8 +116,9 @@ class Chatbot:
             self.finder2 = Finder(reader=None, retriever=self.retriever2)
 
         if(not self.document_store):
-            self.document_store = FAISSDocumentStore.load(faiss_file_path='faiss1',
-                                                          sql_url=sqlUrl)
+            self.document_store = SQLDocumentStore(url=sqlUrl)  
+            #FAISSDocumentStore.load(faiss_file_path='faiss1', sql_url=sqlUrl)
+                                                          
             self.initSql(url=sqlUrl, document_store=self.document_store)
         # else:  # reset session
         #     # self.document_store.session.close()
@@ -126,7 +127,7 @@ class Chatbot:
         # self.retriever = EmbeddingRetriever( #redice load by sharing the same retriever and set store on fly??
         #     document_store=self.document_store, embedding_model="sentence_bert-saved", use_gpu=False) if not self.retriever else self.retriever
         if(not self.retriever):
-            self.retriever = self.retriever2
+            self.retriever = TfidfRetriever(document_store=self.document_store)
         self.reader = FARMReader(model_name_or_path=modelDir,
                                  use_gpu=False, no_ans_boost=0) if not self.reader else self.reader
         # reader = TransformersReader(model_name_or_path="distilbert-base-uncased-distilled-squad", tokenizer="distilbert-base-uncased", use_gpu=-1)
@@ -134,11 +135,11 @@ class Chatbot:
             self.reader, self.retriever) if not self.finder else self.finder
 
     def getfinder1(self):
-        self.retriever.document_store = self.document_store
+        # self.retriever.document_store = self.document_store
         return self.finder
 
     def getfinder2(self):
-        self.retriever2.document_store = self.document_store2
+        # self.retriever2.document_store = self.document_store2
         return self.finder2
 
     def endSessions(self):
@@ -163,11 +164,11 @@ class Chatbot:
         for doc in documents:
             # TODO proper calibratation of pseudo probabilities
             cur_answer = {
-                "question": doc.text,
+                # "question": doc.text,
                 "answer": doc.meta["answer"],
                 # "document_id": doc.id,
                 # "context": doc.text,
-                "score": doc.score,
+                # "score": doc.score,
                 "probability": doc.probability/100,
                 # "offset_start": 0,
                 # "offset_end": len(doc.text),

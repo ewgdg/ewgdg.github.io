@@ -68,10 +68,10 @@ dicts = convert_files_to_dicts(dir_path=doc_dir, clean_func=clean_wiki_text, spl
 document_store.delete_all_documents()
 document_store.write_documents(dicts)
 
-retriever = EmbeddingRetriever(
-    document_store=document_store, embedding_model="sentence_bert-saved", use_gpu=False)
-document_store.update_embeddings(retriever)
-document_store.save('faiss1')
+# retriever = EmbeddingRetriever(
+#     document_store=document_store, embedding_model="sentence_bert-saved", use_gpu=False)
+# document_store.update_embeddings(retriever)
+# document_store.save('faiss1')
 
 #clean residues
 try:
