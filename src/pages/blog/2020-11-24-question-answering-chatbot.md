@@ -66,6 +66,8 @@ The result is as demonstrated:
 
 You might notice that it does not perform well on some cryptic questions; this is because the QA bot is based on my currently existing blog posts, and if there is no relevant context in my blog to the question, then the bot cannot answer it. To solve this issue, I created a new Q&A section below such that the bot can read the context and extract useful answers from it.
 
+Unfortunately, the result with extractive QA method is still poor, I might need to switch to classification method with sentence embedding model that can better fit the FAQ style in the future. 
+
 ## Q&A section:
 <details>
   <summary>Click to expand</summary>
