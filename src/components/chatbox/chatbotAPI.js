@@ -60,7 +60,7 @@ async function requestReply(message) {
   // eslint-disable-next-line no-restricted-syntax
   for (const answer of answers) {
     // validate answer
-    if (answer.answer && answer.probability >= 0.66) {
+    if (answer.answer && answer.probability >= 0.67) {
       // eslint-disable-next-line no-continue
       if (answerSet.has(answer.answer)) continue
       else answerSet.add(answer.answer)
