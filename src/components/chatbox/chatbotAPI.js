@@ -54,6 +54,9 @@ async function requestReply(message) {
     }
     // validate answer
     if (answer.answer && answer.probability >= 0.6) {
+      if (answer.probability > maxProb) {
+        maxProb = answer.probability
+      }
       // eslint-disable-next-line no-continue
       if (answerSet.has(answer.answer)) continue
       else answerSet.add(answer.answer)

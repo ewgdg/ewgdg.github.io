@@ -1,3 +1,9 @@
+import os
+from elasticsearch import Elasticsearch
+from subprocess import Popen, PIPE, STDOUT
+from haystack.document_store.elasticsearch import ElasticsearchDocumentStore
+from haystack.retriever.dense import EmbeddingRetriever
+import yaml
 from haystack import Finder
 from haystack.reader.farm import FARMReader
 from haystack.document_store.sql import SQLDocumentStore
@@ -7,9 +13,15 @@ from haystack.retriever.sparse import TfidfRetriever
 import uvicorn
 from fastapi import FastAPI
 # from fastapi.middleware.cors import CORSMiddleware
-from starlette.middleware.cors import CORSMiddleware 
+from starlette.middleware.cors import CORSMiddleware
 
-import os
+from subprocess import Popen, PIPE, STDOUT
+es_server = Popen(['elasticsearch-7.9.2/bin/elasticsearch'],
+                  stdout=PIPE, stderr=STDOUT,
+                  preexec_fn=lambda: os.setuid(1)  # as daemon
+                  )
+
+
 app = FastAPI()
 origins = [
     "https://xianzhang.dev",
@@ -21,24 +33,25 @@ origins = [
 allow_origin_regex = '.*\.xianzhang\.dev'
 app.add_middleware(CORSMiddleware,
                    allow_origins=["*"],
-                #    allow_origin_regex='.*',
+                   #    allow_origin_regex='.*',
                    allow_credentials=False,
                    allow_methods=["*"],
                    allow_headers=["*"],)
 
 
-import yaml
-
 dirname = os.path.dirname(__file__)
 
-configFile = os.path.join(dirname,'config.yaml')
+configFile = os.path.join(dirname, 'config.yaml')
 config = None
 with open(configFile) as file:
-  config = yaml.safe_load(file)
+    config = yaml.safe_load(file)
 
 modelDir = config["modelDir"]
 sqlUrl = config["sqlUrl"]
 
+
+# prediction = finder2.get_answers_via_similar_questions(
+#     question="How is the virus spreading?", top_k_retriever=1)
 
 
 class Chatbot:
@@ -48,7 +61,34 @@ class Chatbot:
         self.reader = None
         self.finder = None
 
+        self.document_store2 = None
+        self.retriever2 = None
+        self.finder2 = None
+
+    def waitEsReady(self):
+        done = False
+        while not done:
+            try:
+                client = Elasticsearch()
+                client.health()
+                done = True
+            except:
+                pass
+
     def load(self):
+        chatbot.waitEsReady()
+        if(not self.document_store2):
+            self.document_store2 = ElasticsearchDocumentStore(host="localhost", username="", password="",
+                                                              index="document",
+                                                              embedding_field="question_emb",
+                                                              embedding_dim=768,
+                                                              excluded_meta_data=["question_emb"])
+        if(not self.retriever2):
+            self.retriever2 = EmbeddingRetriever(document_store=self.document_store2,
+                                                 embedding_model="sentence_bert-saved", use_gpu=False)
+        if(not self.finder2):
+            self.finder2 = Finder(reader=None, retriever=self.retriever2)
+
         if(self.finder):
             return
         self.document_store = SQLDocumentStore(
@@ -78,9 +118,15 @@ def hi():
 def qa(question: str):
     if not chatbot.finder:
         chatbot.load()
-    results = chatbot.finder.get_answers(
-        question=question, top_k_retriever=3, top_k_reader=3)
-    return {"results": results}
+
+    results2 = chatbot.finder2.get_answers_via_similar_questions(
+        question, top_k_retriever=1)
+    if(results2.answers[0].answer.probabilty >= 80):
+        return {"results": results2}
+    else:
+        results = chatbot.finder.get_answers(
+            question=question, top_k_retriever=2, top_k_reader=2)
+        return {"results": {"answers": results2["answers"]+results["answers"]}}
 
 
 if __name__ == "__main__":
