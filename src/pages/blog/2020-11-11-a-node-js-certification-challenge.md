@@ -14,45 +14,61 @@ On openjsf.org there are 2 nodejs certifications; they are JSNSD and JSNAD respe
 
 The challenge will begin tomorrow 2020-11-12, and I wish myself good luck.
 
----
+- - -
+
 #### Day 1
+
 I spent ~7 hours into the nodejs course today, I completed 40% of all materials.
 It turns out that I have been exposed to most of the materials with my personal projects.
 Maybe what I need is another certification focusing on restful service. 
-It is still a good resource for me to review what I have known and to learn something new.\
-completion list:\
+It is still a good resource for me to review what I have known and to learn something new.
+\
+completion list:
+\
 Node binary, debugging, key JavaScript concepts, package dependencies, node module system,  async control flow
 
---- 
+- - -
+
 #### Day 2
+
 I covered events and errors handling in ~2 hours. Current progress: 51%.
 
----
+- - -
+
 #### Day 3 & 4
+
 ~3 hours\
 current progress: 63%. \
 complete: Stream and Buffer.
 
----
+- - -
+
 #### Day 5
+
 progress: 71%, file system.
 
----
+- - -
+
 #### Day 6
+
 84%, process + child process + os 
 
----
+- - -
+
 #### Day 7
+
 100%, I completed the course materials and decide to book an exam 10 days latter at 2020-11-29. The exam takes 2 hours and I may only use the browser within the VM to open some official documentation from node.js, JavaScript and related node modules. The challenge here is that the node.js documentation is really hard to read without built-in search engine. Without the power of search engine, it means I have to be very familiar with the doc. I can conclude that a search engine within doc is kind of important for the premium feel.
 
 How about the JSNSD certification focusing on for RESTful services? I might go with coursera.org for taking some backend courses about node/express.js; because I feel that express.js is a more suitable tool for that purpose and coursera.org also provides you with certification.
 
 What is next? I plan to practice with my node.js knowledge to deliver a simple microservice, a question answering chatbot. 
 
----
+- - -
 
-#### Exam Day 
+#### Exam Day
 
-to be continued.
+The exam is a little bit different from my imagination but I passed the exam anyway. My certificate ID number is LF-mt7qrutu8t. At this point, I decide to continue my node.js study together with mongo DB and express.js on coursera.com.
 
----
+![](/img/nodejs-challenge.png)
+
+- - -
