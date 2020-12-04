@@ -7,6 +7,7 @@ featuredPost: false
 tags:
   - challenge
   - node.js
+  - certification
 ---
 I have seen some frequently showing questions during job hunting. And one of them is “do you have node.js related experience?”. The real answer from me is no and this will often terminate the whole interview process immediately. To overcome this shortage, I decided to challenge myself and get a Node.js certification from openjsf.org in a short term to demonstrate my competence in node.js. I am going to record my progress daily on this blog post and measure how long I need to take to get that certification.
 
