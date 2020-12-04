@@ -67,8 +67,10 @@ What is next? I plan to practice with my node.js knowledge to deliver a simple m
 
 #### Exam Day
 
-The exam is a little bit different from my imagination but I passed the exam anyway. My certificate ID number is LF-mt7qrutu8t. At this point, I decide to continue my node.js study together with mongo DB and express.js on coursera.com.
+The exam is a little bit different from my imagination but I passed the exam anyway. My certificate ID number is LF-mt7qrutu8t. My original expected time to complete this challenge is 21 days and I spent 18 days on this challenge. Achievement reached: node.js learner; look at my badge earned below, what a wonderful reward for this gameplay!
 
 ![](/img/nodejs-challenge.png)
+
+At this point, I decide to continue my node.js study together with mongo DB and express.js on coursera.com. 
 
 - - -
