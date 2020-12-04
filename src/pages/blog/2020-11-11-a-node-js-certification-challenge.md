@@ -4,6 +4,7 @@ title: A Node.js certification challenge
 date: 2020-11-11T22:59:39.935Z
 description: To challenge myself.
 featuredPost: false
+featuredImage: /img/nodejs-challenge.png
 tags:
   - challenge
   - node.js
