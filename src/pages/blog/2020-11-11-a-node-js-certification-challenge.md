@@ -76,3 +76,9 @@ The exam is a little bit different from my imagination but I passed the exam any
 At this point, I decide to continue my node.js study together with mongo DB and express.js on coursera.com. 
 
 - - -
+
+#### Update on Dec 2020
+
+Completed my Coursera express.js backend course.
+
+![](/img/express-certificate.png)
