@@ -1,7 +1,7 @@
 /* eslint-disable react/require-default-props */
 import React from "react"
 import PropTypes from "prop-types"
-import { IndexPagePreview as Preview } from "../../templates/IndexPage"
+import Preview from "../../templates/IndexPagePreview"
 
 const IndexPagePreview = ({ entry }) => {
   const data = entry.getIn(["data"]).toJS()

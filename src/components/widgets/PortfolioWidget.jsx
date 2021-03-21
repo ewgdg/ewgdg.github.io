@@ -11,7 +11,7 @@ import AnimatedTitle from "../titles/AnimatedTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
 import SlideInSection from "../sections/SlideInSection"
-import "../../queries/postsQueries"
+// import "../../queries/postsQueries" //no need, gatsby export it to global space
 
 function PortfolioPreview() {
   const { allMarkdownRemark } = useStaticQuery(graphql`

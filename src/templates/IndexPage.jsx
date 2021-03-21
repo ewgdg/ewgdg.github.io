@@ -13,23 +13,13 @@ import HeaderContainer from "../components/header/HeaderContainer"
 
 import SEO from "../components/header/SEO"
 
-import PortfolioWiget from "../components/widgets/PortfolioWidget"
+import PortfolioWidget from "../components/widgets/PortfolioWidget"
 import AboutWidget from "../components/widgets/AboutWidget"
 import BlogWidget from "../components/widgets/BlogWidget"
 import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 
-export const IndexPagePreview = ({ jumbotronProps }) => {
-  return (
-    <div>
-      <HeaderContainer
-        headerProps={{ color: "white", position: "absolute" }}
-        jumbotronProps={jumbotronProps}
-      />
-    </div>
-  )
-}
-export const IndexPageTemplate = ({ jumbotronProps }) => {
+const IndexPageTemplate = ({ jumbotronProps }) => {
   return (
     <PageContainer>
       <Section>
@@ -45,7 +35,7 @@ export const IndexPageTemplate = ({ jumbotronProps }) => {
       </Section>
       <Section>
         <ParallaxSection>
-          <PortfolioWiget />
+          <PortfolioWidget />
         </ParallaxSection>
       </Section>
       <Section>
@@ -80,7 +70,7 @@ IndexPage.propTypes = {
 }
 export const query = graphql`
   query IndexPageTemplate {
-    markdownRemark(frontmatter: { templateKey: { eq: "IndexPage" } }) {
+    markdownRemark(frontmatter: { templateKey: { eq: "IndexPage" }, isTemplate:{ ne: true } }) {
       frontmatter {
         jumbotronProps: jumbotron {
           headline
