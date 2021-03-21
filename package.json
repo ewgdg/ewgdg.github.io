@@ -12,6 +12,7 @@
     "bezier-easing": "^2.1.0",
     "classnames": "^2.2.6",
     "code-prettify": "^0.1.0",
+    "cross-env": "^7.0.3",
     "eslint-plugin-jest": "^23.20.0",
     "event-source-polyfill": "^1.0.21",
     "gatsby": "^2.27.1",
@@ -84,7 +85,7 @@
   "license": "MIT",
   "scripts": {
     "cleanbuild": "gatsby clean && gatsby build",
-    "build": "gatsby build",
+    "build": "cross-env GATSBY_EXPERIMENTAL_PAGE_BUILD_ON_DATA_CHANGES=true gatsby build --log-pages",
     "develop": "gatsby develop -H 0.0.0.0 -p 8080",
     "format": "prettier --write \"**/*.{js,jsx,json,md}\"",
     "start": "npm run develop",
