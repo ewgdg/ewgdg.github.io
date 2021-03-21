@@ -14,7 +14,7 @@
         "plugins": [
           "line-numbers"
         ],
-        "theme": "default", //another theme is tomorrow
+        "theme": "default",
         "css": true
       }
     ]
