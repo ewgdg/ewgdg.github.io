@@ -18,6 +18,7 @@ import Chat from "../chatbox/Chat"
 import BackToTop from "./BackToTop"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
+import _JSXStyle from "styled-jsx/style";
 
 const Header = ({ position, color, style, chatbox }) => {
   const context = useLayoutContext()

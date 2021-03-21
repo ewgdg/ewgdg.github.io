@@ -1,9 +1,9 @@
 /* eslint-disable react/require-default-props */
-import React from "react"
+import React, { useEffect } from "react"
 import PropTypes from "prop-types"
-import { BlogPostTemplate } from "../../templates/BlogPost"
+import BlogPostTemplate from "../../templates/BlogPostTemplate"
 
-const BlogPostPreview = ({ entry, widgetFor }) => {
+const BlogPostPreview = ({ entry, widgetFor }) => { 
   return (
     <BlogPostTemplate
       content={widgetFor("body")}

@@ -177,16 +177,16 @@ function startAnimationFlyingSprite(
     cancelAnimationFrame(rafId)
   }
 }
-
+import imgSrc from '../../images/bulin.png'
 function FlyingSprite({ style }) {
-  const query = graphql`
-    query {
-      file(relativePath: { eq: "bulin.png" }) {
-        publicURL
-      }
-    }
-  `
-  const imgSrc = useStaticQuery(query).file.publicURL
+  // const query = graphql`
+  //   query {
+  //     file(relativePath: { eq: "bulin.png" }) {
+  //       publicURL
+  //     }
+  //   }
+  // `
+  // const imgSrc = useStaticQuery(query).file.publicURL
   const spriteDimension = { x: 130, y: 134 }
 
   // const context = useLayoutContext();
