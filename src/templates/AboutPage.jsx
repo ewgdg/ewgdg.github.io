@@ -9,7 +9,18 @@ import BubbleTank from "../components/bubbles/BubbleTank"
 import Footer from "../components/footer/Footer"
 import useResetScrollTop from "../contexts/useResetScrollTop"
 
-const AboutPageTemplate = ({ jumbotronProps, facts }) => {
+export const AboutPagePreview = ({ jumbotronProps }) => {
+  return (
+    <div>
+      <HeaderContainer
+        headerProps={{ color: "white", position: "absolute" }}
+        jumbotronProps={jumbotronProps}
+      />
+    </div>
+  )
+}
+
+export const AboutPageTemplate = ({ jumbotronProps, facts }) => {
   const tileData = []
   tileData.length = 20
   tileData.fill(1)
@@ -49,8 +60,8 @@ export default function AboutPage({ data }) {
   )
 }
 export const query = graphql`
-  query AboutPageTemplate {
-    markdownRemark(frontmatter: { templateKey: { eq: "AboutPage" }, isTemplate:{ ne: true } }) {
+  query AboutPageTempate {
+    markdownRemark(frontmatter: { templateKey: { eq: "AboutPage" } }) {
       frontmatter {
         jumbotronProps: jumbotron {
           headline

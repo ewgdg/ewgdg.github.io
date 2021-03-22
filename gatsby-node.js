@@ -91,7 +91,7 @@ exports.createPages = async ({ actions, graphql }) => {
       path.resolve(
         `src/templates/${String(node.frontmatter.templateKey)}.jsx`
       ) &&
-      !node.frontmatter.isTemplate // remove template for post
+      !node.frontmatter.isTemplate
     ) {
       createPage({
         path: node.fields.slug,
