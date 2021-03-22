@@ -52,7 +52,7 @@ function getScrollTop(elem) {
 
 /* detect scroll for elem might dynamically change pos 
 duration	
-The duration of the scene.
+The duration of the scene, in terms of scroll distance
 
 
 offset	
