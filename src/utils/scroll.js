@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
-import { TweenLite, Power2 } from "gsap"
+import { TweenLite, Power2 } from "gsap/TweenLite"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 // import { getController } from "../plugins/scrollmagic"
 import throttle from "./throttle"
