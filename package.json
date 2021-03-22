@@ -47,13 +47,14 @@
     "prop-types": "^15.7.2",
     "query-string": "^6.14.1",
     "react": "^16.14.0",
-    "react-async": "^8.0.0",
+    "react-async": "^10.0.1",
     "react-dom": "^16.14.0",
     "react-helmet": "^6.1.0",
     "react-paginate": "^7.1.0",
     "scrollmagic": "^2.0.8",
     "styled-jsx": "^3.4.4",
     "typeface-roboto": "^1.1.13",
+    "update": "^0.7.4",
     "uuid": "^3.4.0"
   },
   "devDependencies": {
