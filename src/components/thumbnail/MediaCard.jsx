@@ -29,20 +29,20 @@ const useStyles = makeStyles({
   action: {
     height: "10%",
   },
-},[])
+})
 
-function MediaCard({
+export default function MediaCard({
   onClick,
   image,
   style,
   title,
   description,
 }) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <Grid item xs={5} style={{ height: "450px", maxHeight: "100%", ...style }}>
       <Card className={classes.card}>
-        <CardActionArea onClick={onClick} className={classes.actionArea} >
+        <CardActionArea onClick={onClick} className={classes.actionArea}>
           {image ? (
             <CardMedia
               className={classes.media}
@@ -95,5 +95,3 @@ function MediaCard({
     </Grid>
   )
 }
-
-export default React.memo(MediaCard);

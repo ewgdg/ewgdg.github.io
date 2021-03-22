@@ -1,15 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
-import { gsap, TweenLite, Power2 } from "gsap"
+import { TweenLite, Power2 } from "gsap"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 // import { getController } from "../plugins/scrollmagic"
 import throttle from "./throttle"
 
 // prevent tree shaking
 // eslint-disable-next-line no-unused-vars
-// const plugins = [ScrollToPlugin]
-gsap.registerPlugin(ScrollToPlugin);
+const plugins = [ScrollToPlugin]
 
 const easeInOut2 = BezierEasing(0.65, 0.1, 0.35, 0.99)
 // const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
@@ -52,7 +51,7 @@ function getScrollTop(elem) {
 
 /* detect scroll for elem might dynamically change pos 
 duration	
-The duration of the scene, in terms of scroll distance
+The duration of the scene.
 
 
 offset	

@@ -12,8 +12,17 @@ import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import useFlattenMarkdownData from "../components/others/useFlattenMarkdownData"
 import { setComponentState } from "../contexts/useRestoreComponentState"
-// import "../queries/postsQueries"
+import "../queries/postsQueries"
 import ParallaxSection from "../components/sections/ParallaxSection"
+
+function BlogPagePreview({ jumbotronProps }) {
+  return (
+    <HeaderContainer
+      headerProps={{ color: "white", position: "absolute" }}
+      jumbotronProps={jumbotronProps}
+    />
+  )
+}
 
 function BlogPageTemplate({
   jumbotronProps,
@@ -67,6 +76,7 @@ function BlogPageTemplate({
     </div>
   )
 }
+export { BlogPageTemplate, BlogPagePreview }
 
 function BlogPage({ data, uri, location }) {
   const tableName = "blogTable"
@@ -98,7 +108,7 @@ export default BlogPage
 
 export const query = graphql`
   query BlogPageTemplate {
-    markdownRemark(frontmatter: { templateKey: { eq: "BlogPage" } , isTemplate:{ ne: true }  }) {
+    markdownRemark(frontmatter: { templateKey: { eq: "BlogPage" } }) {
       frontmatter {
         jumbotronProps: jumbotron {
           headline

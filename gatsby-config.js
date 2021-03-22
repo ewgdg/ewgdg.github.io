@@ -40,7 +40,7 @@ module.exports = {
           //     // name: "uploads",
           //   },
           // },//doesnt work anymore becasue the path uses \ instead of /, use gatsby-plugin-netlify-cms-paths instead
-
+       
           {
             resolve: `gatsby-plugin-netlify-cms-paths`,
             options: {
@@ -72,13 +72,8 @@ module.exports = {
         ],
       },
     },
-    // { //todo: add plugin?
-    //   resolve: `gatsby-remark-prismjs`,
-    //   options: {
-    //     classPrefix: 'language-',
-    //     noInlineHighlight: false,
-    //   },
-    // },
+    // "gatsby-plugin-sharp",
+    // "gatsby-transformer-sharp",
     {
       // keep as first gatsby-source-filesystem plugin for gatsby image support
       resolve: "gatsby-source-filesystem",
@@ -166,7 +161,7 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
         // tags: '[String!]!',
       }
     }),
-
+    
   ]
   createTypes(typeDefs)
 }
