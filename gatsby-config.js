@@ -102,41 +102,44 @@ module.exports = {
     "gatsby-plugin-netlify",
   ],
 }
-// define graphql createType
-// using Gatsby Type Builder API
-exports.createSchemaCustomization = ({ actions, schema }) => {
-  const { createTypes } = actions
-  const typeDefs = [
-    schema.buildObjectType({
-      name: 'MarkdownRemark',
-      fields: {
-        frontmatter: 'Frontmatter!'
-      },
-      interfaces: ['Node'],
-      extensions: {
-        infer: true,
-      },
-    }),
-    schema.buildObjectType({
-      name: 'Frontmatter',
-      fields: {
-        title: {
-          type: 'String!',
-          resolve(parent) {
-            return parent.title || '(Untitled)'
-          }
-        },
-        date: {
-          type: 'Date!',
-          extensions: {
-            dateformat: {},
-          },
-        },
-        featuredImage: 'File!',
-        // tags: '[String!]!',
-      }
-    }),
+
+
+//! static query failed
+// // define graphql createType
+// // using Gatsby Type Builder API 
+// exports.createSchemaCustomization = ({ actions, schema }) => {
+//   const { createTypes } = actions
+//   const typeDefs = [
+//     schema.buildObjectType({
+//       name: 'MarkdownRemark',
+//       fields: {
+//         frontmatter: 'Frontmatter!'
+//       },
+//       interfaces: ['Node'],
+//       extensions: {
+//         infer: true,
+//       },
+//     }),
+//     schema.buildObjectType({
+//       name: 'Frontmatter',
+//       fields: {
+//         title: {
+//           type: 'String!',
+//           resolve(parent) {
+//             return parent.title || '(Untitled)'
+//           }
+//         },
+//         date: {
+//           type: 'Date!',
+//           extensions: {
+//             dateformat: {},
+//           },
+//         },
+//         featuredImage: 'File!',
+//         // tags: '[String!]!',
+//       }
+//     }),
     
-  ]
-  createTypes(typeDefs)
-}
+//   ]
+//   createTypes(typeDefs)
+// }
