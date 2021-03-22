@@ -11,7 +11,7 @@ import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
 import SlideInSection from "../sections/SlideInSection"
-import "../../queries/postsQueries"
+// import "../../queries/postsQueries" //no need , gatsby export query to global
 
 function BlogPreview() {
   const { allMarkdownRemark } = useStaticQuery(graphql`
