@@ -3,7 +3,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable new-cap */
 import React, { useRef, useEffect, useContext } from "react"
-import { TimelineLite, Power3, Power1 } from "gsap/TweenMax"
+import { TimelineLite, Power3, Power1 } from "gsap"
 
 import { makeStyles } from "@material-ui/styles"
 import { Link } from "gatsby"

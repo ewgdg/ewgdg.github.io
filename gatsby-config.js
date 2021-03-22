@@ -34,19 +34,26 @@ module.exports = {
       resolve: "gatsby-transformer-remark",
       options: {
         plugins: [
+          // {
+          //   // NOTE: This was built for use with NetlifyCMS
+          //   // and should be considered a temporary solution until relative paths are supported.
+          //   resolve: "gatsby-remark-relative-images",
+          //   options: {
+          //     name: "uploads",
+          //   },
+          // },
           {
-            // NOTE: This was built for use with NetlifyCMS
-            // and should be considered a temporary solution until relative paths are supported.
-            resolve: "gatsby-remark-relative-images",
+            resolve: `gatsby-plugin-netlify-cms-paths`,
             options: {
-              name: "uploads",
-            },
+              // Path to your Netlify CMS config file
+              cmsConfig: `/static/admin/config.yml`
+            }
           },
           {
             resolve: "gatsby-remark-copy-linked-files",
-            options: {
-              destinationDir: "static",
-            },
+            // options: {
+            //   destinationDir: "static",
+            // },
           },
           {
             resolve: "gatsby-remark-images",

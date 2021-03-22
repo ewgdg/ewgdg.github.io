@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useEffect } from "react"
-import { TimelineLite, Power2 } from "gsap/TweenMax"
+import { gasp, TimelineLite, Power2 } from "gsap"
 import TextPlugin from "gsap/TextPlugin"
 import { ScrollDetector } from "../../utils/scroll"
 import LayoutContext from "../../contexts/LayoutContext"
 
 // eslint-disable-next-line no-unused-vars
-const plugins = [TextPlugin]
+// const plugins = [TextPlugin]
+gsap.registerPlugin(TextPlugin);
 
 function AnimatedTitle({ title }) {
   const context = useContext(LayoutContext)
