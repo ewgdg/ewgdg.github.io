@@ -61,7 +61,7 @@ export default function AboutPage({ data }) {
 }
 export const query = graphql`
   query AboutPageTempate {
-    markdownRemark(frontmatter: { templateKey: { eq: "AboutPage" } }) {
+    markdownRemark(frontmatter: { templateKey: { eq: "AboutPage" }, isTemplate:{ ne: true}  }) {
       frontmatter {
         jumbotronProps: jumbotron {
           headline

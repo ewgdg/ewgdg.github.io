@@ -7,6 +7,7 @@ featuredImage: /img/hp.jpg
 description: template for gatsby to build schema.
 isPortfolio: false
 isTemplate: true
+externalLink: about:blank
 tags:
   - template
   - test

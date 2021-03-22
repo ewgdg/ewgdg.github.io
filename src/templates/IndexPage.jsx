@@ -80,7 +80,7 @@ IndexPage.propTypes = {
 }
 export const query = graphql`
   query IndexPageTemplate {
-    markdownRemark(frontmatter: { templateKey: { eq: "IndexPage" } }) {
+    markdownRemark(frontmatter: { templateKey: { eq: "IndexPage" }, isTemplate:{ ne: true}  }) {
       frontmatter {
         jumbotronProps: jumbotron {
           headline
