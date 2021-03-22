@@ -9,7 +9,7 @@
 // You can delete this file if you're not using it
 const path = require("path")
 const { createFilePath } = require("gatsby-source-filesystem")
-const { fmImagesToRelative } = require("gatsby-remark-relative-images")
+// const { fmImagesToRelative } = require("gatsby-remark-relative-images")
 // add webpack config
 exports.onCreateWebpackConfig = ({
   stage,
@@ -113,7 +113,7 @@ exports.createPages = async ({ actions, graphql }) => {
 exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions
 
-  fmImagesToRelative(node) // convert image paths for gatsby images
+  // fmImagesToRelative(node) // convert image paths for gatsby images
   if (node.internal.type === `MarkdownRemark`) {
     // console.log(node)
   }

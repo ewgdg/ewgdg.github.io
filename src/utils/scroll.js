@@ -1,14 +1,15 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
-import { TweenLite, Power2 } from "gsap/TweenLite"
+import { gsap, TweenLite, Power2 } from "gsap"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 // import { getController } from "../plugins/scrollmagic"
 import throttle from "./throttle"
 
 // prevent tree shaking
 // eslint-disable-next-line no-unused-vars
-const plugins = [ScrollToPlugin]
+// const plugins = [ScrollToPlugin]
+gsap.registerPlugin(ScrollToPlugin)
 
 const easeInOut2 = BezierEasing(0.65, 0.1, 0.35, 0.99)
 // const easeInOut = BezierEasing(0.42, 0, 0.58, 1)
@@ -89,10 +90,10 @@ class ScrollDetector {
     this.eventListener =
       this.throttleLimit > 0
         ? throttle(
-            this.eventListenerFactory(callback),
-            this.throttleLimit,
-            true
-          )
+          this.eventListenerFactory(callback),
+          this.throttleLimit,
+          true
+        )
         : this.eventListenerFactory(callback)
     this.scrollLayer.addEventListener("scroll", this.eventListener)
     // immediately update
@@ -116,7 +117,7 @@ class ScrollDetector {
       const pos = // relative pos of cur elem to viewport top
         (this.triggerElement
           ? this.triggerElement.getBoundingClientRect().top -
-            this.scrollLayer.getBoundingClientRect().top // the scroll layer is the root container with scroll bar , most of time it is the viewport
+          this.scrollLayer.getBoundingClientRect().top // the scroll layer is the root container with scroll bar , most of time it is the viewport
           : -this.scrollLayer.scrollTop) + this.offset
 
       let progress = null

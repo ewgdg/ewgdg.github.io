@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { makeStyles } from "@material-ui/styles"
 // import from tweenmax since it auto import the plugins
-import { TweenLite, Elastic } from "gsap/TweenMax"
+import { TweenLite, Elastic } from "gsap"
 // import { CSSPlugin } from "gsap/TweenMax"
 // import { Elastic } from "gsap/EasePack"
 import Img from "gatsby-image"

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useLayoutEffect } from "react"
-import { TweenLite, Power2 } from "gsap/TweenMax"
+import { TweenLite, Power2 } from "gsap"
 import LayoutContext from "../../contexts/LayoutContext"
 import { ScrollDetector } from "../../utils/scroll"
 /* slide the child in when the child elem is inside viewport */
