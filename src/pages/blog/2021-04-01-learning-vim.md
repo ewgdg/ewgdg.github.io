@@ -11,11 +11,13 @@ Besides the mini keyboard, another important reason for me to learn Vim is socia
 
 
 
-Learning Vim as developer is analogous to learning horse riding as capitalist or learning wining as nobility. The high entry bar blocks people do not belong to the social circle. And Vim is the symbol of senior tech lead.
+Learning Vim as developer is analogous to learning horse riding as capitalist or learning wining as nobility. The high entry bar blocks people do not belong to the social circle. The fact is that as human beings, we rely on the ability to quickly estimate and identify characteristics of another to increase survival rate. As a result, we develop a heuristic system to assist for it. Micro-expression, etiquette, accent, hobby, all of them are part of the heuristic system. And Vim is the symbol of senior tech lead in this heuristic system. 
 
 
 
-Many senior programmers are actually believing in Vim as the best and most productive text editing tool. Vim can help to approach other developers. Knowing Vim might open a world for you to land a new job or to pass an interview or to make a new friend.
+Many senior programmers actually believe in Vim as the best and most productive text editing tool. Vim can help you to approach other developers. Knowing Vim might open a new world for you to land a new job or to pass an interview or to make a new friend.
+
+
 
 As a result, I decide to buy a 9-key auxiliary keyboard as a navigation keyboard side-way along with my Razer Mini keyboard. I just can't resist myself from using my Razer DeathAdder V2 mouse anyway.
 
