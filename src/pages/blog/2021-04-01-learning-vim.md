@@ -4,6 +4,8 @@ title: Learning Vim
 date: 2021-04-01T20:43:15.470Z
 description: In short, for socializing.
 featuredPost: false
+tags:
+  - casual
 ---
 Recently I bought a Razer huntsman mini keyboard with only 60 keys. I really enjoy the keyboard and like the lightweight design. However, it does not come with navigation keys and makes typing a little bit inconvenient. This invokes my ambition to learn Vim. I have tried to learn Vim for quite a couple of times. Unfortunately, I have not found any benefit from Vim surpassing its inconvenience so far.
 
@@ -11,7 +13,7 @@ Besides the mini keyboard, another important reason for me to learn Vim is socia
 
 
 
-Learning Vim as developer is analogous to learning horse riding as capitalist or learning wining as nobility. The high entry bar blocks people do not belong to the social circle. The fact is that as human beings, we rely on the ability to quickly estimate and identify characteristics of another to increase survival rate. As a result, we develop a heuristic system to assist for it. Micro-expression, etiquette, accent, hobby, all of them are part of the heuristic system. And Vim is the symbol of senior tech lead in this heuristic system. 
+Learning Vim as developer is analogous to learning horse riding as capitalist or learning wining as nobility. The high entry bar blocks people do not belong to the social circle. People develop a heuristic system to assist for evaluating others. Micro-expression, etiquette, accent, hobby, all of them are part of the heuristic system. And Vim is the symbol of senior tech lead in this heuristic system. 
 
 
 
