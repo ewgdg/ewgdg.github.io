@@ -88,6 +88,7 @@
     "serve": "gatsby serve",
     "test": "jest",
     "clean": "gatsby clean",
-    "updateSnap": "jest --updateSnapshot"
+    "updateSnap": "jest --updateSnapshot",
+    "dev": "npm run develop"
   }
 }

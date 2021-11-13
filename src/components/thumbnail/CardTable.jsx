@@ -16,8 +16,9 @@ import MediaCard from "./MediaCard"
 import Paginator from "../others/Paginator"
 import CardDivision from "./CardDivision"
 import useRestoreComponentState from "../../contexts/useRestoreComponentState"
-import SlideInSection from "../sections/SlideInSection"
+// import SlideInSection from "../sections/SlideInSection"
 import { debounce } from "../../utils/throttle"
+import FadeInSection from "../sections/FadeInSection"
 
 function CardTable({
   datalist = [],
@@ -185,9 +186,9 @@ function CardTable({
           marginTop: itemsPerPage > 2 ? "1%" : "0",
         }}
       >
-        <SlideInSection style={{ height: "100%" }}>
+        <FadeInSection style={{ height: "100%" }}>
           {displayedComponent}
-        </SlideInSection>
+        </FadeInSection>
       </Container>
       <Paginator
         style={{
