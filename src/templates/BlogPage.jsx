@@ -108,7 +108,9 @@ export default BlogPage
 
 export const query = graphql`
   query BlogPageTemplate {
-    markdownRemark(frontmatter: { templateKey: { eq: "BlogPage" }, isTemplate:{ ne: true}  }) {
+    markdownRemark(
+      frontmatter: { templateKey: { eq: "BlogPage" }, isTemplate: { ne: true } }
+    ) {
       frontmatter {
         jumbotronProps: jumbotron {
           headline

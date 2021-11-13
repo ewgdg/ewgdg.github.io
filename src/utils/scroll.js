@@ -90,10 +90,10 @@ class ScrollDetector {
     this.eventListener =
       this.throttleLimit > 0
         ? throttle(
-          this.eventListenerFactory(callback),
-          this.throttleLimit,
-          true
-        )
+            this.eventListenerFactory(callback),
+            this.throttleLimit,
+            true
+          )
         : this.eventListenerFactory(callback)
     this.scrollLayer.addEventListener("scroll", this.eventListener)
     // immediately update
@@ -117,7 +117,7 @@ class ScrollDetector {
       const pos = // relative pos of cur elem to viewport top
         (this.triggerElement
           ? this.triggerElement.getBoundingClientRect().top -
-          this.scrollLayer.getBoundingClientRect().top // the scroll layer is the root container with scroll bar , most of time it is the viewport
+            this.scrollLayer.getBoundingClientRect().top // the scroll layer is the root container with scroll bar , most of time it is the viewport
           : -this.scrollLayer.scrollTop) + this.offset
 
       let progress = null
@@ -294,4 +294,5 @@ export {
   easing,
   ScrollDetector,
   legacyScrollByAnimated,
+  sendScrollEvent,
 }

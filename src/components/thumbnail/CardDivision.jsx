@@ -1,6 +1,7 @@
 import React from "react"
 import Grid from "@material-ui/core/Grid"
 
+// eslint-disable-next-line react/prop-types
 function CardContainer({ children, style }) {
   return (
     // https://stackoverflow.com/questions/19718634/how-to-disable-margin-collapsing

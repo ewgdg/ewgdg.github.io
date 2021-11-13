@@ -20,7 +20,11 @@ function PortfolioPreview() {
         sort: { order: DESC, fields: [frontmatter___date] }
         limit: 2
         filter: {
-          frontmatter: { isPortfolio: { eq: true }, featuredPost: { eq: true }, isTemplate:{ ne: true}  }
+          frontmatter: {
+            isPortfolio: { eq: true }
+            featuredPost: { eq: true }
+            isTemplate: { ne: true }
+          }
         }
       ) {
         ...PostsFragment

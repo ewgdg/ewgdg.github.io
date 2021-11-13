@@ -1,17 +1,11 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useLayoutEffect } from "react"
-import { gsap, Power2 } from "gsap"
+import { gsap, Power3 } from "gsap"
 import LayoutContext from "../../contexts/LayoutContext"
 import { ScrollDetector } from "../../utils/scroll"
-/* slide the child in when the child elem is inside viewport */
-function SlideInSection({
-  triggerHook = 1,
-  duration = 1.1,
-  fromY = 50,
-  children,
-  style,
-}) {
+/* Fade the child in when the child elem is inside viewport */
+function FadeInSection({ triggerHook = 1, duration = 1.3, children, style }) {
   const containerRef = useRef(null)
   const context = useContext(LayoutContext)
   const { scrollLayer } = context
@@ -28,13 +22,11 @@ function SlideInSection({
     const animation = gsap.fromTo(
       containerRef.current,
       {
-        y: fromY,
-        autoAlpha: 0.03,
+        autoAlpha: 0.02,
       },
       {
-        y: 0,
         autoAlpha: 1,
-        ease: Power2.easeOut,
+        ease: Power3.easeInOut,
         paused: true,
         duration,
       }
@@ -61,10 +53,10 @@ function SlideInSection({
   }, [context, children, triggerHook])
 
   return (
-    <div ref={containerRef} style={style} className="slide-in">
+    <div ref={containerRef} style={style} className="fade-in">
       {children}
     </div>
   )
 }
 
-export default SlideInSection
+export default FadeInSection

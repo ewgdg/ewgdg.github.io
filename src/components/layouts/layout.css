@@ -4,7 +4,6 @@ html {
   -webkit-text-size-adjust: 100%;
   overflow: hidden !important;
   /* touch-action: none; */
-  
 }
 body {
   margin: 0;
@@ -14,10 +13,7 @@ body {
   box-sizing: border-box;
   /* touch-action: none; */
   touch-action: auto;
-  
 }
-
-
 
 article,
 aside,

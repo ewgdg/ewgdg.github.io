@@ -46,8 +46,8 @@ module.exports = {
             resolve: `gatsby-plugin-netlify-cms-paths`,
             options: {
               // Path to your Netlify CMS config file
-              cmsConfig: `/static/admin/config.yml`
-            }
+              cmsConfig: `/static/admin/config.yml`,
+            },
           },
           {
             resolve: "gatsby-remark-copy-linked-files",
@@ -73,7 +73,7 @@ module.exports = {
         ],
       },
     },
-    //todo: prism plugin?
+    // todo: prism plugin?
     {
       resolve: "gatsby-plugin-manifest",
       options: {
@@ -103,10 +103,9 @@ module.exports = {
   ],
 }
 
-
 //! static query failed
 // // define graphql createType
-// // using Gatsby Type Builder API 
+// // using Gatsby Type Builder API
 // exports.createSchemaCustomization = ({ actions, schema }) => {
 //   const { createTypes } = actions
 //   const typeDefs = [
@@ -139,7 +138,7 @@ module.exports = {
 //         // tags: '[String!]!',
 //       }
 //     }),
-    
+
 //   ]
 //   createTypes(typeDefs)
 // }

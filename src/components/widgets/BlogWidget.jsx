@@ -10,8 +10,8 @@ import CardDivision from "../thumbnail/CardDivision"
 import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
-import SlideInSection from "../sections/SlideInSection"
 // import "../../queries/postsQueries" //no need , gatsby export query to global
+import FadeInSection from "../sections/FadeInSection"
 
 function BlogPreview() {
   const { allMarkdownRemark } = useStaticQuery(graphql`
@@ -50,13 +50,14 @@ function BlogPreview() {
           </p>
         </div>
         <div style={{ height: "75%" }}>
-          <SlideInSection>
+          {/* use fade in instead of slide in bc text rendering stutters when animated */}
+          <FadeInSection>
             <CardDivision style={{ marginBottom: "25px" }}>
               {flatten.map((cardData, i) => (
                 <MediaCard {...cardData} key={i} />
               ))}
             </CardDivision>
-          </SlideInSection>
+          </FadeInSection>
         </div>
         <Grid
           container
