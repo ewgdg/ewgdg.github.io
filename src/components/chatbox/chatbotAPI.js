@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import _axios from "axios"
 
-const baseURL = "http://34.67.125.47"
+const baseURL = "https://qa-chatbot.xianzzz.com/"
 const axios = _axios.create({
   baseURL,
   timeout: 20000,
