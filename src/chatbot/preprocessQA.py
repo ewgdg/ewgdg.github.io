@@ -1,9 +1,8 @@
 # from farm.data_handler.processor import Processor
 # from farm.modeling.adaptive_model import AdaptiveModel
 import yaml
-# from haystack.utils import clean_wiki_text, convert_files_to_docs
+from haystack.utils import clean_wiki_text, convert_files_to_dicts
 
-# from haystack.preprocessor.utils import tika_convert_files_to_dicts
 from haystack.document_stores import SQLDocumentStore
 # from haystack.document_store.faiss import FAISSDocumentStore
 # from haystack.reader.transformers import TransformersReader
@@ -43,18 +42,18 @@ document_store = SQLDocumentStore(url=sqlUrl)
 # convert files to dicts containing documents that can be indexed to our datastore
 # You can optionally supply a cleaning function that is applied to each doc (e.g. to remove footers)
 # It must take a str as input, and return a str.
-# dicts = convert_files_to_docs(
-#     dir_path=doc_dir, clean_func=clean_wiki_text, split_paragraphs=True)
-docs = []
+docs = convert_files_to_dicts(
+    dir_path=doc_dir, clean_func=clean_wiki_text, split_paragraphs=True)
 
-for curDir, subdirList, fileList in os.walk(doc_dir):
-    print('Found directory: %s' % os.path.basename(curDir))
-    for fname in fileList:
-        print('\t%s' % fname)
-        fPath = os.path.join(curDir, fname)
-        if fname.endswith(".md"):
-            converted = converter.convert(file_path=fPath, meta={})
-            docs.extend(converted)
+# docs = []
+# for curDir, subdirList, fileList in os.walk(doc_dir):
+#     print('Found directory: %s' % os.path.basename(curDir))
+#     for fname in fileList:
+#         print('\t%s' % fname)
+#         fPath = os.path.join(curDir, fname)
+#         if fname.endswith(".md"):
+#             converted = converter.convert(file_path=fPath, meta={})
+#             docs.extend(converted)
 
 # dicts = tika_convert_files_to_dicts(dir_path=doc_dir,clean_func=clean_wiki_text, split_paragraphs=False)
 
