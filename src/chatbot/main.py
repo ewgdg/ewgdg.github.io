@@ -1,20 +1,17 @@
 from functools import singledispatch
 import numpy as np
-from haystack.document_store.sql import ORMBase, SQLDocumentStore
-from sqlalchemy.engine import create_engine
-from sqlalchemy.orm.session import sessionmaker
-from sqlalchemy.pool import SingletonThreadPool
+
+# from haystack.document_store.sql import ORMBase, SQLDocumentStore
+# from sqlalchemy.engine import create_engine
+# from sqlalchemy.orm.session import sessionmaker
+# from sqlalchemy.pool import SingletonThreadPool
 # import time
 import os
-# from elasticsearch import Elasticsearch
-# from subprocess import Popen, PIPE, STDOUT
-from haystack.document_store.elasticsearch import ElasticsearchDocumentStore
-from haystack.retriever.dense import EmbeddingRetriever
+
 import yaml
-from haystack import Finder
-from haystack.reader.farm import FARMReader
-from haystack.document_store.faiss import FAISSDocumentStore
-from haystack.retriever.sparse import TfidfRetriever
+# from haystack import Finder
+from haystack.document_stores import FAISSDocumentStore, SQLDocumentStore
+from haystack.nodes import TfidfRetriever, EmbeddingRetriever, FARMReader
 
 import uvicorn
 from fastapi import FastAPI
@@ -27,6 +24,8 @@ from fastapi.middleware.cors import CORSMiddleware
 #                   preexec_fn=lambda: os.setuid(1)  # as daemon
 #                   )
 
+from haystack.pipelines import FAQPipeline, ExtractiveQAPipeline
+from pathlib import Path
 
 app = FastAPI()
 origins = [
@@ -34,7 +33,6 @@ origins = [
     "http://localhost",
     "http://localhost:8080",
     "http://localhost:8000",
-    "http://localhost:8080"
 ]
 allow_origin_regex = '.*\.xianzhang\.dev'
 app.add_middleware(CORSMiddleware,
@@ -52,12 +50,10 @@ config = None
 with open(configFile) as file:
     config = yaml.safe_load(file)
 
-modelDir = config["modelDir"]
+# modelDir = config["modelDir"]
 sqlUrl = config["sqlUrl"]
 sqlUrlFAQ = config["sqlUrlFAQ"]
 
-# prediction = finder2.get_answers_via_similar_questions(
-#     question="How is the virus spreading?", top_k_retriever=1)
 
 # thread issue for sql :engine=create_engine('sqlite:///data.db', echo=True, connect_args={"check_same_thread": False})
 # or need to create new store instance each request
@@ -79,114 +75,143 @@ def ts_float32(val):
     return np.float64(val)
 
 
+# for curDir, subdirList, fileList in os.walk("."):
+#     print('Found directory: %s' % os.path.basename(curDir))
+#     for fname in fileList:
+#         print('\t%s' % fname)
+
+
 class Chatbot:
     def __init__(self):
-        self.document_store = None
-        self.retriever = None
-        self.reader = None
-        self.finder = None
+        self.qaStore = None
+        self.qaRetriever = None
+        self.qaReader = None
+        self.qaPipeline = None
 
-        self.document_store2 = None
-        self.retriever2 = None
-        self.finder2 = None
+        self.faqStore = None
+        self.faqRetriever = None
+        self.faqPipeline = None
 
-    def initSql(self, url, document_store):
-        document_store.session.close()
-        engine = create_engine(url,
-                               poolclass=SingletonThreadPool, connect_args={"check_same_thread": False})
-        ORMBase.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
-        document_store.session = Session()
+    # def initSql(self, url, document_store):
+    #     document_store.session.close()
+    #     engine = create_engine(url,
+    #                            poolclass=SingletonThreadPool, connect_args={"check_same_thread": False})
+    #     ORMBase.metadata.create_all(engine)
+    #     Session = sessionmaker(bind=engine)
+    #     document_store.session = Session()
 
     def load(self):
-        if(self.finder and self.finder2):
+        if(self.faqPipeline and self.qaPipeline):
             return
-        if(not self.document_store2):
-            self.document_store2 = FAISSDocumentStore.load(
-                sql_url=sqlUrlFAQ, faiss_file_path='faiss2')  # save before load in preprocess
-            self.initSql(url=sqlUrlFAQ, document_store=self.document_store2)
+
+        if(not self.faqStore):
+            self.faqStore = FAISSDocumentStore.load(
+                index_path="faq-faiss-index.faiss")
+            # self.initSql(url=sqlUrlFAQ, document_store=self.faqStore)
         # else:  # reset session
         #     # self.document_store2.session.close()
         #     super(
         #         FAISSDocumentStore, self.document_store2).__init__(url=sqlUrlFAQ)
-        if(not self.retriever2):
-            self.retriever2 = EmbeddingRetriever(document_store=self.document_store2,
-                                                 embedding_model="sentence_bert-saved", use_gpu=False)
-        if(not self.finder2):
-            self.finder2 = Finder(reader=None, retriever=self.retriever2)
+        if(not self.faqRetriever):
+            self.faqRetriever = EmbeddingRetriever(document_store=self.faqStore,
+                                                   embedding_model=Path(
+                                                       "./faq-model-saved"),
+                                                   model_format="sentence_transformers",
+                                                   use_gpu=False)
+        if(not self.faqPipeline):
+            self.faqPipeline = FAQPipeline(retriever=self.faqRetriever)
 
-        if(not self.document_store):
-            self.document_store = SQLDocumentStore(url=sqlUrl)  
+        if(not self.qaStore):
+            self.qaStore = SQLDocumentStore(url=sqlUrl)
             #FAISSDocumentStore.load(faiss_file_path='faiss1', sql_url=sqlUrl)
-                                                          
-            self.initSql(url=sqlUrl, document_store=self.document_store)
-        # else:  # reset session
-        #     # self.document_store.session.close()
-        #     super(
-        #         FAISSDocumentStore, self.document_store).__init__(url=sqlUrl)
-        # self.retriever = EmbeddingRetriever( #redice load by sharing the same retriever and set store on fly??
-        #     document_store=self.document_store, embedding_model="sentence_bert-saved", use_gpu=False) if not self.retriever else self.retriever
-        if(not self.retriever):
-            self.retriever = TfidfRetriever(document_store=self.document_store)
-        self.reader = FARMReader(model_name_or_path=modelDir,
-                                 use_gpu=False, no_ans_boost=0) if not self.reader else self.reader
-        # reader = TransformersReader(model_name_or_path="distilbert-base-uncased-distilled-squad", tokenizer="distilbert-base-uncased", use_gpu=-1)
-        self.finder = Finder(
-            self.reader, self.retriever) if not self.finder else self.finder
+            # self.initSql(url=sqlUrl, document_store=self.qaStore)
 
-    def getfinder1(self):
+        if(not self.qaRetriever):
+            self.qaRetriever = TfidfRetriever(document_store=self.qaStore)
+
+        if(not self.qaReader):
+            self.qaReader = FARMReader(
+                model_name_or_path="./qa-model-saved", use_gpu=False)
+            # self.reader = FARMReader(model_name_or_path=modelDir,
+            #                          use_gpu=False, no_ans_boost=0) if not self.reader else self.reader
+            # reader = TransformersReader(model_name_or_path="distilbert-base-uncased-distilled-squad", tokenizer="distilbert-base-uncased", use_gpu=-1)
+
+        # self.finder = Finder(
+        #     self.reader, self.qaRetriever) if not self.finder else self.finder
+        if(not self.qaPipeline):
+            self.qaPipeline = ExtractiveQAPipeline(
+                self.qaReader, self.qaRetriever)
+
+    def getQaPipeline(self):
         # self.retriever.document_store = self.document_store
-        return self.finder
+        return self.qaPipeline
 
-    def getfinder2(self):
+    def getFaqPipeline(self):
         # self.retriever2.document_store = self.document_store2
-        return self.finder2
+        return self.faqPipeline
 
     def endSessions(self):
-        self.document_store2.session.close()
-        self.document_store.session.close()
+        self.faqStore.session.close()
+        self.qaStore.session.close()
 
-    def get_answers_via_similar_questions(self, question, finder=None, top_k_retriever=1, filters=None, index=None):
-        if(not finder):
-            finder = self.finder2
+    def get_answers_via_similar_questions(self, question, pipe=None, top_k_retriever=1, filters=None, index=None):
+        if(not pipe):
+            pipe = self.faqPipeline
 
-        if finder.retriever is None:
-            raise AttributeError(
-                "Finder.get_answers_via_similar_questions requires self.retriever")
+        if(not question.endswith("?")):
+            question = question+"?"
 
         results = {"question": question, "answers": []}  # type: Dict[str, Any]
 
-        # 1) Apply retriever to match similar questions via cosine similarity of embeddings
-        documents = finder.retriever.retrieve(
-            question, top_k=top_k_retriever, filters=filters, index=index)
+        prediction = pipe.run(
+            query=question, params={"Retriever": {"top_k": top_k_retriever}})
 
         # 2) Format response
-        for doc in documents:
+        for answer in prediction["answers"]:
             # TODO proper calibratation of pseudo probabilities
             cur_answer = {
                 # "question": doc.text,
-                "answer": doc.meta["answer"],
+                "answer": answer.answer,
                 # "document_id": doc.id,
                 # "context": doc.text,
-                # "score": doc.score,
-                "probability": doc.probability/100,
-                # "offset_start": 0,
-                # "offset_end": len(doc.text),
+                "probability": answer.score,
                 # "meta": doc.meta
             }
 
             results["answers"].append(cur_answer)
+        # print(prediction)
+        return results
 
+    def get_answers_via_extractive_qa(self, question, pipe=None, top_k_retriever=2, top_k_reader=4):
+        if(not pipe):
+            pipe = self.qaPipeline
+
+        if(not (question.endswith("?") or question.endswith("."))):
+            question = question+"?"
+
+        results = {"question": question, "answers": []}
+
+        prediction = pipe.run(
+            query=question, params={"Retriever": {"top_k": top_k_retriever}, "Reader": {"top_k": top_k_reader}})
+
+        for answer in prediction["answers"]:
+            # TODO proper calibratation of pseudo probabilities
+            cur_answer = {
+                "answer": answer.answer,
+                "probability": answer.score,
+            }
+            results["answers"].append(cur_answer)
+        # print(prediction)
         return results
 
 
 chatbot = Chatbot()
+chatbot.load()
 
 
 @app.get("/hi")
 def hi():
     try:
-        chatbot.load()
         return {"status": "ok"}
     except:
         return {"status": "error"}
@@ -195,25 +220,18 @@ def hi():
 @app.get("/qa/{question}")
 def qa(question: str):
     # if not chatbot.finder:
-    chatbot.load()
     ret = [{"results": {"answers": []}}]
-    results2 = chatbot.get_answers_via_similar_questions(
-        question=question, finder=chatbot.getfinder2(), top_k_retriever=1)
-    if(len(results2["answers"]) > 0 and results2["answers"][0]["probability"] >= 0.8):
-        ret = {"results": results2}
-    else:
-        results = chatbot.getfinder1().get_answers(
-            question=question, top_k_retriever=2, top_k_reader=2)
+    faqResult = chatbot.get_answers_via_similar_questions(
+        question=question, pipe=chatbot.getFaqPipeline(), top_k_retriever=1)
+    if(len(faqResult["answers"]) > 0 and faqResult["answers"][0]["probability"] >= 0.8):
+        ret = {"results": faqResult}
+    elif chatbot.getQaPipeline() != None:
+        qaResults = chatbot.get_answers_via_extractive_qa(
+            question=question, pipe=chatbot.getQaPipeline(), top_k_retriever=2, top_k_reader=5)
         ret = {"results": {
-            "answers": results2["answers"]+results["answers"]}}
-        # ret = {"results": results}
-    # chatbot.endSessions()
-    # print(ret)
-    ans=[]
-    for item in ret["results"]["answers"]:
-        ans.append({"answer": item["answer"], "probability": item["probability"]})
-    # print(ans)
-    return {"results": {"answers": ans}}
+            "answers": faqResult["answers"]+qaResults["answers"]}}
+
+    return ret
 
 
 if __name__ == "__main__":
