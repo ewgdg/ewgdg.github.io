@@ -2,8 +2,8 @@ cd src/chatbot
 #prebuild
 #python prebuild.py
 pip install pyyaml
-# node prebuild_txt.js
-python prebuild_md.py
+node prebuild_txt.js
+# python prebuild_md.py
 
 #init
 gcloud projects list
@@ -13,7 +13,14 @@ gcloud config set project qa-chatbot-296302
 #cloud build
 gcloud builds submit --tag gcr.io/qa-chatbot-296302/chatbot
 
+#build locally
+docker build -t gcr.io/qa-chatbot-296302/chatbot .
+docker push gcr.io/qa-chatbot-296302/chatbot
 
-#deploy
-gcloud run deploy --image gcr.io/qa-chatbot-296302/chatbot --platform managed
-or use google cloud console
+
+#deploy to cloud run, deprecated
+# gcloud run deploy --image gcr.io/qa-chatbot-296302/chatbot --platform managed
+# or use google cloud console
+
+##update container on GCE
+gcloud compute instances update-container instance-1 --container-image gcr.io/qa-chatbot-296302/chatbot:latest
