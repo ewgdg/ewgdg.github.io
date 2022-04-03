@@ -47,34 +47,18 @@ async function requestReply(message) {
 
   let reply = null
   let maxProb = null
-  const answerSet = new Set()
+  // const answerSet = new Set()
 
   for (const answer of answers) {
-    if (!maxProb) {
+    if (
+      answer.probability >= 0.67 &&
+      (!maxProb || answer.probability > maxProb)
+    ) {
       maxProb = answer.probability
-    }
-    if (answer.probability > maxProb) {
-      maxProb = answer.probability
+      reply = answer.answer
     }
   }
-  // eslint-disable-next-line no-restricted-syntax
-  for (const answer of answers) {
-    // validate answer
-    if (answer.answer && answer.probability >= 0.67) {
-      // eslint-disable-next-line no-continue
-      if (answerSet.has(answer.answer)) continue
-      else answerSet.add(answer.answer)
-      if (reply === null) {
-        reply = answer.answer
-      } else if (maxProb - answer.probability <= 0.16) {
-        reply += `; ${answer.answer}`
-      }
-    }
 
-    if (answer.probability >= 0.9) {
-      break
-    }
-  }
   if (reply === null) {
     reply = "I don't know."
   }
