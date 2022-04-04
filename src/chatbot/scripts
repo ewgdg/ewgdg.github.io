@@ -23,4 +23,5 @@ docker push gcr.io/qa-chatbot-296302/chatbot
 # or use google cloud console
 
 ##update container on GCE
+gcloud compute ssh instance-1 --command 'docker system prune -f -a'
 gcloud compute instances update-container instance-1 --container-image gcr.io/qa-chatbot-296302/chatbot:latest
