@@ -308,7 +308,7 @@ function Container({ children }) {
 
   // verdict:
   // useState+callbackRef for ref which need to attach listener to be the safest way
-  // children refs, however, is for user interation so useRef+useEffect/useBeforeMountEffect should be enough
+  // children refs, however, is for user interaction so useRef+useEffect/useBeforeMountEffect should be enough
 
   const count = React.Children.count(children)
   const childrenRefs = useRef([])
