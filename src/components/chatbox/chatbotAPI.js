@@ -4,7 +4,7 @@ import _axios from "axios"
 const baseURL = "https://qa-chatbot.xianzzz.com/"
 const axios = _axios.create({
   baseURL,
-  timeout: 20000,
+  timeout: 2000,
   withCredentials: false,
 })
 
