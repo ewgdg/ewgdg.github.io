@@ -23,7 +23,7 @@ async function sayHi() {
   if (status === "ok") {
     reply = "Hi!"
   } else {
-    reply = "Error!"
+    reply = "Service not available."
   }
   return reply
 }
@@ -41,8 +41,10 @@ async function requestReply(message) {
     },
   } = resp
 
+  const noreply = "I don't understand."
+
   if (!answers || answers.length <= 0) {
-    return "I don't know."
+    return noreply
   }
 
   let reply = null
@@ -60,7 +62,7 @@ async function requestReply(message) {
   }
 
   if (reply === null) {
-    reply = "I don't know."
+    reply = noreply
   }
   return reply
 }
