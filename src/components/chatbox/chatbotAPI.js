@@ -4,14 +4,14 @@ import _axios from "axios"
 const baseURL = "https://qa-chatbot.xianzzz.com/"
 const axios = _axios.create({
   baseURL,
-  timeout: 2000,
+  timeout: 20000,
   withCredentials: false,
 })
 
 async function sayHi() {
   let resp
   try {
-    resp = await axios.get("/hi")
+    resp = await axios.get("/hi", { timeout: 1500 })
   } catch (e) {
     // console.error(e)
     resp = { data: { status: "error" } }
