@@ -52,6 +52,7 @@ function useInitCells(dataSize, cellsPerRow) {
     }
   }, [dataSize, cellsPerRow])
 
+  // expect to have 1.5 bubbles per row
   const prob = 1.5 / cellsPerRow
   const cells = useRef(null)
   if (willMount.current) {
