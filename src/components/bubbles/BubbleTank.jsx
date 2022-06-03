@@ -77,19 +77,21 @@ function random(min, max, isInteger = true) {
 
 function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
   const [isMounted, setIsMounted] = useState(false)
+  const [shouldInit, setShouldInit] = useState(false)
 
   // useEffect is called after component is mounted
   useEffect(() => {
-    // willMount.current = false
     setIsMounted(true)
     return () => {
-      // willMount.current = true
       setIsMounted(false)
     }
-  }, [dataSize, cellsPerRow, isMounted])
+  }, [dataSize, cellsPerRow])
 
   const bubbles = useRef(null)
-  if (!isMounted) {
+  if (!isMounted || shouldInit) {
+    if (shouldInit) {
+      setShouldInit(false)
+    }
     const colors = [
       "Violet",
       "Aqua",
@@ -149,7 +151,7 @@ function useInitBubbles(dataSize, cellHeight, cellsPerRow) {
       })
     }
   }
-  return [bubbles.current, setIsMounted]
+  return [bubbles.current, setShouldInit]
 }
 
 export default function BubbleTank({
@@ -162,7 +164,7 @@ export default function BubbleTank({
   const tileClasses = useTileStyles()
 
   const dataSize = data.length
-  const [bubbles, setIsMounted] = useInitBubbles(
+  const [bubbles, setShouldInitBubbles] = useInitBubbles(
     dataSize,
     cellHeight,
     cellsPerRow
@@ -173,7 +175,7 @@ export default function BubbleTank({
     function onresize() {
       // willMountBubble.current = true
       // need to re-mount bubbles to adjust size
-      setIsMounted(false)
+      setShouldInitBubbles(true)
       // setUpdate({})
     }
     const debounced = debounce(onresize, 100)
@@ -181,7 +183,7 @@ export default function BubbleTank({
     return () => {
       window.removeEventListener("resize", debounced)
     }
-  }, [setIsMounted])
+  }, [setShouldInitBubbles])
 
   const viewportHeight = window.innerHeight
   const unorderedData = useMemo(() => {
