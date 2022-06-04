@@ -256,7 +256,7 @@ function clearAnimationQueue() {
   animationQueue.splice(0)
 }
 
-function scrollIntoView(elem, scrollLayer, duration = 700) {
+function scrollIntoView(elem, scrollLayer, duration = 700, offsetY = 0) {
   if (!scrollLayer) return Promise.reject()
   /*
    * alternative way using legacy scrollByAnimated
@@ -267,10 +267,14 @@ function scrollIntoView(elem, scrollLayer, duration = 700) {
    * return legacyScrollByAnimated(scrollLayer, change, duration)
    */
   // const controller = getController(scrollLayer)
+
   return new Promise(resolve => {
     // sendScrollEvent(scrollLayer)
     TweenLite.to(scrollLayer, duration / 1000, {
-      scrollTo: elem,
+      scrollTo: {
+        y: elem,
+        offsetY,
+      },
       onComplete: resolve,
       ease: Power2.easeInOut,
     }).eventCallback("onUpdate", () => {
