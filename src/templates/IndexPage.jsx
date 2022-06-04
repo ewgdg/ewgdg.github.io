@@ -53,7 +53,7 @@ export const IndexPageTemplate = ({ jumbotronProps }) => {
           <BlogWidget />
         </ParallaxSection>
       </Section>
-      <Section style={{ height: "auto" }}>
+      <Section height="auto">
         <Footer />
       </Section>
     </PageContainer>

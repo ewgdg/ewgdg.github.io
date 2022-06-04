@@ -3,8 +3,10 @@ import PropTypes from "prop-types"
 import { makeStyles } from "@material-ui/styles"
 import {
   isAnyInViewport,
-  isAboveViewportBottom,
-  isBelowViewportTop,
+  // isAboveViewportBottom,
+  // isBelowViewportTop,
+  isBottomInViewport,
+  isTopInViewport,
 } from "../../utils/isInViewport"
 import {
   scrollIntoView,
@@ -19,7 +21,14 @@ const useStyles = makeStyles({
     borderRadius: 3,
   },
 })
-const getHandlers = (ref, childrenRefs, context) => {
+
+const SectionTypes = {
+  ShortSection: "SHORT",
+  LongSection: "LONG",
+}
+
+// The scroll event cannot be canceled or interrupted, so use mouse, touch and button events instead.
+const getHandlers = (ref, childrenRefs, context, sectionType) => {
   // create dom event handler, same as useCallback( function factory(param)(args) ) //no need useMemo if it is inside useEffect
   return (() => {
     let isScrolling = false
@@ -33,7 +42,7 @@ const getHandlers = (ref, childrenRefs, context) => {
       if (e.cancelable || !e.isCustomEvent) {
         // e.preventDefault()
         // stop propagate to scroll layer so that custom handler can take control of scrolling
-        // do not use preventDefault so that broswer can support other default behaviour like click
+        // do not use preventDefault so that browser can support other default behaviour like click
         e.stopPropagation()
       }
     }
@@ -46,30 +55,55 @@ const getHandlers = (ref, childrenRefs, context) => {
 
       let useFallback = false
       let activeSecRef = null
+      let isInViewPortTest
+      let scrollOffsetY = 0
+      const marginForViewPortTest = Math.max(
+        Math.min(
+          (window.innerHeight || document.documentElement.clientWidth) * 0.01,
+          5
+        ),
+        1
+      )
+      if (sectionType === SectionTypes.LongSection) {
+        if (direction === "up") {
+          isInViewPortTest = elem =>
+            isTopInViewport(elem, -marginForViewPortTest, marginForViewPortTest)
+        } else {
+          isInViewPortTest = elem =>
+            isBottomInViewport(
+              elem,
+              marginForViewPortTest,
+              -marginForViewPortTest
+            )
+        }
+      } else {
+        isInViewPortTest = elem => isAnyInViewport(elem, marginForViewPortTest)
+      }
 
       // ignore the scroll event if the container is not in viewport
       if (!ref.current || !isAnyInViewport(ref.current)) {
         useFallback = true
       } else {
-        // find current active section that is in viewport
+        // find the first active section that is in viewport
         const size = childrenRefs.length
         let i0
         let step
         if (direction === "up") {
-          i0 = 0
-          step = 1
-        } else if (direction === "down") {
           i0 = size - 1
           step = -1
+        } else if (direction === "down") {
+          i0 = 0
+          step = 1
         }
         for (let i = i0; i < size && i >= 0; i += step) {
           const childRef = childrenRefs[i]
           const elem = childRef.current
 
-          if (isAnyInViewport(elem, 5)) {
+          if (isInViewPortTest(elem)) {
             activeSecRef = childRef
             break
           }
+          // todo: early termination check or binary search
         }
         if (!activeSecRef || !activeSecRef.current) {
           useFallback = true
@@ -80,22 +114,27 @@ const getHandlers = (ref, childrenRefs, context) => {
 
       if (direction === "up") {
         // scrolling up
-
         if (!useFallback) {
-          if (isAboveViewportBottom(activeSecRef.current)) {
-            target = activeSecRef
-          } else {
+          if (activeSecRef.prev && activeSecRef.prev.current) {
             target = activeSecRef.prev
+            if (sectionType === SectionTypes.LongSection) {
+              // scroll to the bottom of prev section
+              scrollOffsetY = -(
+                target.current.offsetHeight -
+                (window.innerHeight || document.documentElement.clientWidth)
+              )
+            }
+          } else {
+            target = activeSecRef
           }
         }
       } else if (direction === "down") {
         // scrolling down
-
         if (!useFallback) {
-          if (isBelowViewportTop(activeSecRef.current)) {
-            target = activeSecRef
-          } else {
+          if (activeSecRef.next && activeSecRef.next.current) {
             target = activeSecRef.next
+          } else {
+            target = activeSecRef
           }
         }
       } else {
@@ -111,14 +150,13 @@ const getHandlers = (ref, childrenRefs, context) => {
 
         preventDefault(event)
         event.preventDefault()
-        const promise = scrollIntoView(target, scrollLayer, 777)
+        const promise = scrollIntoView(target, scrollLayer, 777, scrollOffsetY)
         promise.then(() => {
           isScrolling = false
         })
       }
     }
 
-    // return a function as memo
     const wheelHandler = e => {
       if (isZooming) {
         return
@@ -293,18 +331,18 @@ const getHandlers = (ref, childrenRefs, context) => {
 }
 
 // a container component whose children should be of type Section
-function Container({ children }) {
+function Container({ children, sectionType = SectionTypes.ShortSection }) {
   const classes = useStyles()
 
   // get or create references for child nodes
   // my first try is to useMemo + createRef but perf is unstable, might be slow
   // 1st alternative way is useState+useEffect(set refs to match count), since useEffect exec func after layout and paint, it will render this comp twice, the second render is triggered by setState within useEffect and
-  // 2nd another way is to introduce side effect outside useEffect + useRef([]), but might be a bad practice from stackoverlow. use if statement to check if we should update the side effect.
+  // 2nd another way is to introduce side effect outside useEffect + useRef([]), but might be a bad practice from stackoverflow. use if statement to check if we should update the side effect.
   // if( change/size mismatch ) { update refs = Array(len).fill().map((_,i)=>{ refs[i]||createRef()  }) }, might not be a bad manner, this is effectively the beforeMount hook.
-  // third way is to use weakMap/array within useRef + calbackRef , <Item ref={(elem)=>map.set(item or index ,elem)}> , notice js array is a set of key-value paris and auto expand itself
+  // third way is to use weakMap/array within useRef + callbackRef , <Item ref={(elem)=>map.set(item or index ,elem)}> , notice js array is a set of key-value paris and auto expand itself
   // downside is not able to shrink size if nodes are deleted
   // 4th combine 2nd and 3rd method: ////equivalent to 2nd method seems to me
-  // useRef([]) + calbackRefs + useEffect to shrink
+  // useRef([]) + callbackRef + useEffect to shrink
 
   // verdict:
   // useState+callbackRef for ref which need to attach listener to be the safest way
@@ -389,7 +427,9 @@ function Container({ children }) {
   }, [children, childrenRefs.current])
 
   // create ref for container
-  const [ref, setRef] = useState({ current: null })
+  const [ref, setRef] = useState({
+    current: null,
+  })
 
   const setRefCallback = useRef(null)
   if (setRefCallback.current === null) {
@@ -413,7 +453,7 @@ function Container({ children }) {
       pointerMoveHandler,
       pointerUpHandler,
       pointerCancelHandler,
-    ] = getHandlers(ref, childrenRefs.current, context)
+    ] = getHandlers(ref, childrenRefs.current, context, sectionType)
     const { scrollLayer } = context
     ref.current.addEventListener("wheel", wheelHandler, { passive: false })
     // console.log(ref.current.getEventListener("wheel"))
@@ -458,6 +498,11 @@ function Container({ children }) {
 
 Container.propTypes = {
   children: PropTypes.node.isRequired,
+  sectionType: PropTypes.string,
+}
+Container.defaultProps = {
+  sectionType: SectionTypes.ShortSection,
 }
 
 export default React.memo(Container)
+export { SectionTypes }

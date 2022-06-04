@@ -69,7 +69,7 @@ function BlogPageTemplate({
             />
           </ParallaxSection>
         </Section>
-        <Section style={{ height: "auto" }}>
+        <Section height="auto">
           <Footer />
         </Section>
       </PageContainer>

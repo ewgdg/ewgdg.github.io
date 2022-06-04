@@ -8,6 +8,8 @@ import HeaderContainer from "../components/header/HeaderContainer"
 import BubbleTank from "../components/bubbles/BubbleTank"
 import Footer from "../components/footer/Footer"
 import useResetScrollTop from "../contexts/useResetScrollTop"
+import PageContainer, { SectionTypes } from "../components/pageScroll/Container"
+import Section from "../components/pageScroll/Section"
 
 export const AboutPagePreview = ({ jumbotronProps }) => {
   return (
@@ -29,17 +31,25 @@ export const AboutPageTemplate = ({ jumbotronProps, facts }) => {
 
   return (
     <div>
-      <HeaderContainer
-        headerProps={{ color: "white", position: "absolute" }}
-        jumbotronProps={jumbotronProps}
-      />
-      <BubbleTank
-        data={facts}
-        cellHeight={cellHeight}
-        cellsPerRow={cellsPerRow}
-        header="Some fun facts about me"
-      />
-      <Footer />
+      <PageContainer sectionType={SectionTypes.LongSection}>
+        <Section>
+          <HeaderContainer
+            headerProps={{ color: "white", position: "absolute" }}
+            jumbotronProps={jumbotronProps}
+          />
+        </Section>
+        <Section height="auto">
+          <BubbleTank
+            data={facts}
+            cellHeight={cellHeight}
+            cellsPerRow={cellsPerRow}
+            header="Some fun facts about me"
+          />
+        </Section>
+        <Section height="auto">
+          <Footer />
+        </Section>
+      </PageContainer>
     </div>
   )
 }
