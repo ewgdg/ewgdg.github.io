@@ -51,7 +51,7 @@ private void Execute()
   for ( int i = 0; i < runningQueue.Count; i++ )
   {
     var work = runningQueue[i];
-    work.Invoke();
+    work.Invoke(); // need to catch and handle exceptions threw by work
   }
 }
 ```
