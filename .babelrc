@@ -9,7 +9,9 @@
           "markup",
           "clike",
           "c",
-          "java"
+          "java",
+          "csharp",
+          "cpp"
         ],
         "plugins": [
           "line-numbers"
