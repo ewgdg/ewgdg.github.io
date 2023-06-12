@@ -132,6 +132,7 @@ export function BlogPostTemplate({
                   className="markdown-body line-numbers"
                   // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={{ __html: content }}
+                  ref={articleRef}
                 />
               ))}
           </div>
