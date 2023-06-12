@@ -14,14 +14,17 @@ function HeaderContainer({ jumbotronProps, headerProps }) {
       }}
     >
       <Header {...headerProps} />
-      {jumbotronProps.image && (
-        <Jumbotron {...jumbotronProps} imageAttachedAsBackground={false} />
-      )}
+      {jumbotronProps.image && <Jumbotron {...jumbotronProps} />}
     </div>
   )
 }
 HeaderContainer.propTypes = {
-  jumbotronProps: PropTypes.shape({ image: PropTypes.any }),
+  jumbotronProps: PropTypes.shape({
+    image: PropTypes.shape({
+      // eslint-disable-next-line react/forbid-prop-types
+      childImageSharp: PropTypes.any,
+    }),
+  }),
   headerProps: PropTypes.shape({
     color: PropTypes.string,
     display: PropTypes.string,

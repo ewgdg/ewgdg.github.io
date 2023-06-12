@@ -54,7 +54,7 @@ export default function MediaCard({
           ) : (
             <Grid
               container
-              justify="center"
+              justifyContent="center"
               alignItems="center"
               className={classes.media}
               title={title}

@@ -13,17 +13,11 @@
           "csharp",
           "cpp"
         ],
-        "plugins": [
-          "line-numbers"
-        ],
+        "plugins": ["line-numbers"],
         "theme": "default", //another theme is tomorrow
         "css": true
       }
     ]
   ],
-  "presets": [
-    [
-      "babel-preset-gatsby"
-    ]
-  ]
+  "presets": [["babel-preset-gatsby"]]
 }
