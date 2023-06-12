@@ -12,22 +12,31 @@ import Fab from "@material-ui/core/Fab"
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
 
 import { navigate } from "gatsby"
+import { makeStyles } from "@material-ui/core/styles"
 import Chat from "../chatbox/Chat"
 
 // import LayoutContext from "../../contexts/LayoutContext"
 import BackToTop from "./BackToTop"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
-import _JSXStyle from "styled-jsx/style"
+
+const useStyles = makeStyles({
+  navbar: {
+    backgroundColor: "transparent",
+    color: ({ color }) => color,
+    userSelect: "none",
+  },
+})
 
 const Header = ({ position, color, style, chatbox }) => {
   const context = useLayoutContext()
+  const styles = useStyles({ color })
   return (
     <div>
       <AppBar
         position={position}
         id="navbar-top"
-        className="navbar"
+        className={styles.navbar}
         style={style}
       >
         <Toolbar style={{ justifyContent: "space-around" }} variant="dense">
@@ -83,15 +92,6 @@ const Header = ({ position, color, style, chatbox }) => {
         </BackToTop>
         {chatbox && <Chat />}
       </AppBar>
-      <style jsx global>
-        {`
-          .navbar {
-            background-color: transparent;
-            color: ${color};
-            user-select: none;
-          }
-        `}
-      </style>
     </div>
   )
 }

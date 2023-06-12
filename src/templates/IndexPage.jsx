@@ -6,60 +6,10 @@ import { graphql } from "gatsby"
 
 import PropTypes from "prop-types"
 
-import ParallaxSection from "../components/sections/ParallaxSection"
-import PageContainer from "../components/pageScroll/Container"
-import Section from "../components/pageScroll/Section"
-import HeaderContainer from "../components/header/HeaderContainer"
-
 import SEO from "../components/header/SEO"
 
-import PortfolioWidget from "../components/widgets/PortfolioWidget"
-import AboutWidget from "../components/widgets/AboutWidget"
-import BlogWidget from "../components/widgets/BlogWidget"
-import Footer from "../components/footer/Footer"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
-
-export const IndexPagePreview = ({ jumbotronProps }) => {
-  return (
-    <div>
-      <HeaderContainer
-        headerProps={{ color: "white", position: "absolute" }}
-        jumbotronProps={jumbotronProps}
-      />
-    </div>
-  )
-}
-export const IndexPageTemplate = ({ jumbotronProps }) => {
-  return (
-    <PageContainer>
-      <Section>
-        <HeaderContainer
-          headerProps={{ color: "white", position: "absolute", chatbox: true }}
-          jumbotronProps={jumbotronProps}
-        />
-      </Section>
-      <Section>
-        <ParallaxSection>
-          <AboutWidget />
-        </ParallaxSection>
-      </Section>
-      <Section>
-        <ParallaxSection>
-          <PortfolioWidget />
-        </ParallaxSection>
-      </Section>
-      <Section>
-        <ParallaxSection>
-          <BlogWidget />
-        </ParallaxSection>
-      </Section>
-      <Section height="auto">
-        <Footer />
-      </Section>
-    </PageContainer>
-  )
-}
-IndexPageTemplate.propTypes = {}
+import { IndexPageTemplate } from "./IndexPageTemplate"
 
 const IndexPage = ({ data, uri }) => {
   const { frontmatter } = data.markdownRemark

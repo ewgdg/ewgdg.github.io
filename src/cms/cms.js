@@ -4,10 +4,10 @@ import CMS from "netlify-cms-app"
 // import cloudinary from "netlify-cms-media-library-cloudinary"
 
 import BlogPostPreview from "./preview-templates/BlogPostPreview"
-import BlogPagePreview from "./preview-templates/BlogPagePreview"
-import IndexPagePreview from "./preview-templates/IndexPagePreview"
+// import BlogPagePreview from "./preview-templates/BlogPagePreview"
+// import IndexPagePreview from "./preview-templates/IndexPagePreview"
 
-import AboutPagePreview from "./preview-templates/AboutPagePreview"
+// import AboutPagePreview from "./preview-templates/AboutPagePreview"
 // CMS.registerMediaLibrary(uploadcare)
 // CMS.registerMediaLibrary(cloudinary)
 

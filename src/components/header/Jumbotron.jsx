@@ -2,33 +2,15 @@
 import React from "react"
 import PropTypes from "prop-types"
 import BackgroundImage from "gatsby-background-image"
-import _JSXStyle from "styled-jsx/style"
-const Jumbotron = ({
-  image,
-  headline,
-  subtitle,
-  darkFilter,
-  imageAttachedAsBackground,
-}) => {
-  const imgFluid = image
 
-  let figureStyle = {}
-  if (imageAttachedAsBackground) {
-    figureStyle = {
-      backgroundAttachment: "fixed",
-      backgroundImage: `url(${
-        imgFluid.childImageSharp ? imgFluid.childImageSharp.fluid.src : imgFluid
-      })`,
-      backgroundSize: "cover",
-      backgroundPosition: "center center",
-    }
-  }
+const Jumbotron = ({ image, headline, subtitle, darkFilter }) => {
+  const imgFluid = image
 
   const lines = headline.split("\n")
   const [firstLine, ...restLines] = lines
   return (
-    <figure style={figureStyle}>
-      {!imageAttachedAsBackground && (
+    <figure>
+      {
         // <ParallaxSection maxProgressValue={100}>
         //   <Img
         //     fluid={imgFluid.childImageSharp.fluid}
@@ -51,7 +33,7 @@ const Jumbotron = ({
             backgroundPosition: "center center",
           }}
         />
-      )}
+      }
 
       <div className="headlineContainer">
         <div style={{ margin: 0, padding: 0 }}>
@@ -120,13 +102,11 @@ Jumbotron.propTypes = {
   ]),
   headline: PropTypes.string,
   darkFilter: PropTypes.number,
-  imageAttachedAsBackground: PropTypes.bool,
 }
 Jumbotron.defaultProps = {
   image: null,
   headline: "",
   darkFilter: 0.3,
-  imageAttachedAsBackground: false,
 }
 
 export default Jumbotron
