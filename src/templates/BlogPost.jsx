@@ -6,7 +6,7 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-indent-props */
-import React, { useMemo, useLayoutEffect } from "react"
+import React, { useMemo, useLayoutEffect, useRef } from "react"
 import PropTypes from "prop-types"
 // import { kebabCase } from "lodash"
 import Helmet from "react-helmet"
@@ -102,10 +102,13 @@ export const BlogPostTemplate = ({
     return result
   }, [featuredImage])
 
+  const articleRef = useRef(null)
   useLayoutEffect(() => {
     // highlight code block syntax
-    Prism.highlightAll()
-  }, [content])
+    if (articleRef.current) {
+      Prism.highlightAllUnder(articleRef.current)
+    }
+  }, [content, articleRef])
 
   return (
     <section className="section">
@@ -138,7 +141,7 @@ export const BlogPostTemplate = ({
             <hr />
 
             {(ContentElem && (
-              <article className="markdown-body line-numbers">
+              <article className="markdown-body line-numbers" ref={articleRef}>
                 {ContentElem}
               </article>
             )) ||
