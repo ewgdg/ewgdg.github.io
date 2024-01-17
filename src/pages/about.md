@@ -3,12 +3,15 @@ templateKey: AboutPage
 title: about
 jumbotron:
   image: /img/about-jumbotron.jpg
-  headline: "Keyboard =\nMy weapon"
-  subtitle: 键来
+  headline: |-
+    Programming =
+    Problem Solving
+  subtitle: Self-critical
 facts:
   - title: Drink
-    description: |
+    description: >
       My favourite drink is coke.
+
       However coke is not good for my stomach, so I actually enjoy having sport drink for the reason that thinking is quite energy consuming.
     image: /img/drink.jpg
   - title: Fruit
@@ -16,56 +19,65 @@ facts:
       My favourite fruit is guava and durian. 
       Yes, I like tropical fruits.
     image: /img/guava.jpg
-  - title: Old games 
-    description: |
-      Some old games are quite impressive to me including 'Baldur's gate' and 'Nox'.
+  - title: Old games
+    description: >
+      Some old games are quite impressive to me including 'Baldur's gate' and
+      'Nox'.
     image: /img/nox.jpg
-  - title: Substitution 
-    description: |
+  - title: Substitution
+    description: >
       I am quite good at substitution or empathizing. 
+
       The most frequent question I was thinking about as a student is that if I was the professor, what questions would I give at next exam.
     image: /img/substitution.png
-  - title: Gaming 
-    description: |
-      I enjoy gaming very much. My favourite game catogory is strategy or card game. 
+  - title: Gaming
+    description: >
+      I enjoy gaming very much. My favourite game catogory is strategy or card
+      game. 
+
       I like to 'gamify' my task so that I am more motivated.
-  - title: Reading 
-    description: |
+  - title: Reading
+    description: >
       My another hobby is reading. 
+
       I train myself to read multiple lines at once because I am so thirsty for the new line when I read, espically if I found a good story, like the story of Sherlock Holmes. 
+
       I spent most of my teenage hanging around book mall. Of course, for the free air conditioning.
     image: /img/bookmall.png
-  - title: Anime 
+  - title: Anime
     description: |
       I am also a big fan of anime. 
       My favourite one is called 'Code Geass'.
     image: /img/code-geass.jpg
-  - title: Highschool 
+  - title: Highschool
     description: |
       My graduated highschool is Rockridge Secondary School in west Vancouver.
     image: /img/highschool.jpg
-  - title: University 
+  - title: University
     description: |
       I graduated from University of Toronto in 2018.
-  - title: Name 
+  - title: Name
     description: |
       My name is Xian.
       If you are curious about how to pronounce it, I wrote a post {here}.
     links:
       - /blog/2019-10-22-how-to-pronounce-my-name
-  - title: Music 
+  - title: Music
     description: |
       Free Loop by Daniel Powter is one of my favourite english songs.
       Flower Dance is the melody I frequently listen.
     image: /img/freeloop.jpg
-  - title: Art 
-    description: |
-      Sometimes I enjoy drawing, just for the feeling of creation, I am not good at it though.
+  - title: Art
+    description: >
+      Sometimes I enjoy drawing, just for the feeling of creation, I am not good
+      at it though.
     image: /img/casual-drawing.png
-  - title: Haircut 
-    description: |
+  - title: Haircut
+    description: >
       Sometimes I do my haricut myself, and I like to challenge myself.
+
       However I am not able to handle my backside well, I need a photo to assist me.
+
       If you ever saw myself wearing a hat, that is probably another failure on my way becoming a legendary barber.
     image: /img/hair-cutting.jpg
   - title: Alias
@@ -74,11 +86,11 @@ facts:
       I simply created this word by faceroll.
       If it has to have some meanings, it means 'creation'.
     image: /img/ewgdg.png
-  - title: Color 
+  - title: Color
     description: |
       I like red. It stands for life, or HP(Hit Point) in games.
     image: /img/hp.jpg
-  - title: Number 
+  - title: Number
     description: |
       Number 9 is my lucky number, because it takes 9 strokes to write my name.
     image: /img/name.png
