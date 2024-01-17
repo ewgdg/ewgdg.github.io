@@ -67,7 +67,7 @@ facts:
       Free Loop by Daniel Powter is one of my favourite english songs.
       Flower Dance is the melody I frequently listen.
     image: /img/freeloop.jpg
-  - title: Art
+  - title: Creation
     description: >
       Sometimes I enjoy drawing, just for the feeling of creation, I am not good
       at it though.
