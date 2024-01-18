@@ -3,10 +3,10 @@ templateKey: AboutPage
 title: about
 jumbotron:
   image: /img/about-jumbotron.jpg
-  headline: |
+  headline: |-
     Programming =
     Problem Solving
-  subtitle: Self-critical
+  subtitle: Structured
 facts:
   - title: Drink
     description: |

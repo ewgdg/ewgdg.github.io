@@ -6,5 +6,5 @@ jumbotron:
   headline: |-
     Thoughts &
     Ideas
-  subtitle: Improving
+  subtitle: Self-critical
 ---
