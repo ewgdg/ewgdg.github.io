@@ -2,7 +2,11 @@
 templateKey: BlogPost
 title: 2024 LeetCode Contest Goal
 date: 2024-01-17T07:52:39.799Z
+description: Let's Go!
 featuredPost: false
+tags:
+  - leetcode
+  - coding
 ---
 In 2024, I resolved to improve my LeetCode contest score, aiming to reach 2000 from a starting point of approximately 1600.
 
