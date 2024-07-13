@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react"
 import { makeStyles } from "@material-ui/styles"
 // import from tweenmax since it auto import the plugins
-import { TweenLite, Elastic } from "gsap"
+import { gsap, Elastic } from "gsap"
 // import { CSSPlugin } from "gsap/TweenMax"
 // import { Elastic } from "gsap/EasePack"
 import Img from "gatsby-image"
@@ -103,7 +103,8 @@ function Bubble({
     let isHover = false
     function onmouseenter() {
       isHover = true
-      TweenLite.to(ref.current, 2, {
+      gsap.to(ref.current, {
+        duration: 2,
         scale: 1.2,
         ease: Elastic.easeOut.config(1, 0.2),
       })
@@ -113,7 +114,8 @@ function Bubble({
     function onmouseleave() {
       if (!isHover) return
       isHover = false
-      TweenLite.to(ref.current, 2, {
+      gsap.to(ref.current, {
+        duration: 2,
         scale: 1,
         ease: Elastic.easeOut.config(1, 0.2),
       })
