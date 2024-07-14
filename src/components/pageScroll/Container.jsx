@@ -335,96 +335,44 @@ function Container({ children, sectionType = SectionTypes.ShortSection }) {
   const classes = useStyles()
 
   // get or create references for child nodes
-  // my first try is to useMemo + createRef but perf is unstable, might be slow
-  // 1st alternative way is useState+useEffect(set refs to match count), since useEffect exec func after layout and paint, it will render this comp twice, the second render is triggered by setState within useEffect and
-  // 2nd another way is to introduce side effect outside useEffect + useRef([]), but might be a bad practice from stackoverflow. use if statement to check if we should update the side effect.
-  // if( change/size mismatch ) { update refs = Array(len).fill().map((_,i)=>{ refs[i]||createRef()  }) }, might not be a bad manner, this is effectively the beforeMount hook.
-  // third way is to use weakMap/array within useRef + callbackRef , <Item ref={(elem)=>map.set(item or index ,elem)}> , notice js array is a set of key-value paris and auto expand itself
-  // downside is not able to shrink size if nodes are deleted
-  // 4th combine 2nd and 3rd method: ////equivalent to 2nd method seems to me
-  // useRef([]) + callbackRef + useEffect to shrink
-
-  // verdict:
-  // useState+callbackRef for ref which need to attach listener to be the safest way
-  // children refs, however, is for user interaction so useRef+useEffect/useBeforeMountEffect should be enough
-
-  const count = React.Children.count(children)
   const childrenRefs = useRef([])
-
-  useEffect(() => {
-    if (childrenRefs.current.length !== count) {
-      // shrink size
-      childrenRefs.current = childrenRefs.current.slice(0, count)
-    }
-    const list = childrenRefs.current
-    // link nodes
-    for (let i = 0; i < list.length; i += 1) {
-      const currentChildRef = list[i]
-      if (i < count - 1) {
-        currentChildRef.next = list[i + 1]
-      } else {
-        currentChildRef.next = null
-      }
-      if (i > 0) {
-        currentChildRef.prev = list[i - 1]
-      } else {
-        currentChildRef.prev = null
-      }
-    }
-    // return () => {}
-  }, [count])
-
-  // const childrenRefs = useMemo(() => {
-  //   // createRef return an obj that is not extensible, so I need to copy it
-  //   const list = React.Children.map(children, () => ({
-  //     ...React.createRef(null),
-  //   }))
-  //   const n = list.length
-  //   // build a linked list
-  //   for (let i = 0; i < n; i += 1) {
-  //     if (i < n - 1) {
-  //       list[i].next = list[i + 1]
-  //     } else {
-  //       list[i].next = null
-  //     }
-  //     if (i > 0) {
-  //       list[i].prev = list[i - 1]
-  //     } else {
-  //       list[i].prev = null
-  //     }
-  //   }
-  //   return list
-  // }, [React.Children.count(children)])
 
   // clone children to add props
   const clonedChildren = useMemo(() => {
-    // const res = []
-    // const childrenArray = React.Children.toArray(children)
-    // for (let i = 0; i < childrenArray.length; i += 1) {
-    //   res.push(
-    //     React.cloneElement(childrenArray[i], {
-    //       // another way is to use forwardRef HOC(child) + ref
-    //       forwardedRef: elem => {
-    //         childrenRefs[i] = elem
-    //       },
-    //     })
-    //   )
-    // }
+    const refList = []
     const res = React.Children.map(children, (child, index) => {
+      refList[index] = {
+        // createRef return an obj that is not extensible, so I need to copy it
+        ...React.createRef(),
+      }
       return React.cloneElement(child, {
         forwardedRef: elem => {
-          childrenRefs.current[index] = childrenRefs.current[index] || {
-            // createRef return an obj that is not extensible, so I need to copy it
-            ...React.createRef(),
-          }
-
-          childrenRefs.current[index].current = elem
+          refList[index].current = elem
         },
       })
     })
 
+    const count = refList.length
+
+    // link nodes
+    for (let i = 0; i < count; i += 1) {
+      const currentChildRef = refList[i]
+      if (i < count - 1) {
+        currentChildRef.next = refList[i + 1]
+      } else {
+        currentChildRef.next = null
+      }
+      if (i > 0) {
+        currentChildRef.prev = refList[i - 1]
+      } else {
+        currentChildRef.prev = null
+      }
+    }
+
+    childrenRefs.current = refList
+
     return res
-  }, [children, childrenRefs.current])
+  }, [children])
 
   // create ref for container
   const [ref, setRef] = useState({
@@ -483,7 +431,7 @@ function Container({ children, sectionType = SectionTypes.ShortSection }) {
       scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
       return null
     }
-  }, [ref.current, context, children, childrenRefs.current])
+  }, [ref.current, context, childrenRefs.current])
 
   return (
     <div
