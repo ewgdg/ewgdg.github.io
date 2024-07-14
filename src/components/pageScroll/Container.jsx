@@ -333,13 +333,17 @@ const getHandlers = (ref, childrenRefs, context, sectionType) => {
 // a container component whose children should be of type Section
 function Container({ children, sectionType = SectionTypes.ShortSection }) {
   const classes = useStyles()
-
+  // create ref for container
+  const [ref, setRef] = useState({
+    current: null,
+  })
   // get or create references for child nodes
   const childrenRefs = useRef([])
 
   // clone children to add props
-  const clonedChildren = useMemo(() => {
+  function CloneChildren() {
     const refList = []
+
     const res = React.Children.map(children, (child, index) => {
       refList[index] = {
         // createRef return an obj that is not extensible, so I need to copy it
@@ -372,12 +376,9 @@ function Container({ children, sectionType = SectionTypes.ShortSection }) {
     childrenRefs.current = refList
 
     return res
-  }, [children])
+  }
 
-  // create ref for container
-  const [ref, setRef] = useState({
-    current: null,
-  })
+  const clonedChildren = useMemo(() => CloneChildren(), [children])
 
   const setRefCallback = useRef(null)
   if (setRefCallback.current === null) {
