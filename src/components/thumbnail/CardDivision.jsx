@@ -17,7 +17,7 @@ function CardContainer({ children, style }) {
       <Grid
         container
         spacing={3}
-        justify="space-around"
+        justifyContent="space-around"
         style={{ height: "100%", ...style }}
       >
         {children}
