@@ -18,6 +18,7 @@ function ParallaxSection({
   progressUnit = "%",
   fade = 0,
   innerDivStyle,
+  className,
 }) {
   const containerRef = useRef(null)
   const contentRef = useRef(null)
@@ -55,7 +56,7 @@ function ParallaxSection({
 
   return (
     <div
-      className="parallax-section"
+      className={`parallax-section ${className || ""}`}
       ref={containerRef}
       style={{
         overflow: "hidden",
