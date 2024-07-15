@@ -26,21 +26,19 @@ export function AboutPageTemplate({ jumbotronProps, facts }) {
 
   return (
     <div>
-      <PageContainer sectionType={SectionTypes.LongSection}>
+      <PageContainer sectionType={SectionTypes.Flexible}>
         <Section>
           <HeaderContainer
             headerProps={{ color: "white", position: "absolute" }}
             jumbotronProps={jumbotronProps}
           />
         </Section>
-        <Section height="auto">
-          <BubbleTank
-            data={facts}
-            cellHeight={cellHeight}
-            cellsPerRow={cellsPerRow}
-            header="Some fun facts about me"
-          />
-        </Section>
+        <BubbleTank
+          data={facts}
+          cellHeight={cellHeight}
+          cellsPerRow={cellsPerRow}
+          header="Some fun facts about me"
+        />
         <Section height="auto">
           <Footer />
         </Section>

@@ -25,6 +25,7 @@ const useStyles = makeStyles({
     fontSize: ({ radius }) => `${radius * 0.33}px`,
     pointerEvents: "auto",
     userSelect: "none",
+    WebkitUserSelect: "none",
     "&:focus": {
       outline: "none",
     },
@@ -42,18 +43,18 @@ function Bubble({
   children,
   className,
   radius,
-  boundings,
+  bounds,
   title,
   description,
   links,
   image,
 }) {
-  const [pos, setPos] = useState({ x: style.left, y: style.top })
   const ref = useRef(null)
+  const [pos, setPos] = useState({ x: style.left, y: style.top })
   const { top, left, ...otherStyle } = style
   useEffect(() => {
-    let y = parseFloat(style.top.replace("px", ""))
-    let x = parseFloat(style.left.replace("px", ""))
+    let x = pos.x
+    let y = pos.y
 
     let targetY = y
     let targetX = x
@@ -62,9 +63,11 @@ function Bubble({
     let targetCosTheta = 0
     let targetSinTheta = 0
 
+    const currentRef = ref.current  // Use currentRef to ensure the same reference
+
     function setNextTarget() {
-      targetX = random(boundings.minX, boundings.maxX, false)
-      targetY = random(boundings.minY, boundings.maxY, false)
+      targetX = random(bounds.minX, bounds.maxX, false)
+      targetY = random(bounds.minY, bounds.maxY, false)
       const hypotenuse = Math.sqrt(
         (targetX - x) * (targetX - x) + (targetY - y) * (targetY - y)
       )
@@ -87,7 +90,7 @@ function Bubble({
       y += progress * targetSinTheta
       y = targetSinTheta > 0 ? Math.min(y, targetY) : Math.max(y, targetY)
 
-      setPos({ x: `${x}px`, y: `${y}px` })
+      setPos({ x: x, y: y })
       lastTimestamp = timestamp
       rafId = requestAnimationFrame(animationStep)
     }
@@ -103,7 +106,7 @@ function Bubble({
     let isHover = false
     function onmouseenter() {
       isHover = true
-      gsap.to(ref.current, {
+      gsap.to(currentRef, {
         duration: 2,
         scale: 1.2,
         ease: Elastic.easeOut.config(1, 0.2),
@@ -114,7 +117,7 @@ function Bubble({
     function onmouseleave() {
       if (!isHover) return
       isHover = false
-      gsap.to(ref.current, {
+      gsap.to(currentRef, {
         duration: 2,
         scale: 1,
         ease: Elastic.easeOut.config(1, 0.2),
@@ -122,15 +125,16 @@ function Bubble({
       // animation.reverse()
       startAnimation()
     }
-    ref.current.addEventListener("mouseenter", onmouseenter)
-    ref.current.addEventListener("mouseleave", onmouseleave)
+
+    currentRef.addEventListener("mouseenter", onmouseenter)
+    currentRef.addEventListener("mouseleave", onmouseleave)
 
     return () => {
       cancelAnimationFrame(rafId)
-      ref.current.removeEventListener("mouseenter", onmouseenter)
-      ref.current.removeEventListener("mouseleave", onmouseleave)
+      currentRef.removeEventListener("mouseenter", onmouseenter)
+      currentRef.removeEventListener("mouseleave", onmouseleave)
     }
-  }, [boundings.x, boundings.y, radius, ref.current])
+  }, [bounds, radius, ref.current])
 
   const classes = useStyles({ radius })
   const [
@@ -149,7 +153,7 @@ function Bubble({
     <>
       <div
         style={{ ...otherStyle, left: pos.x, top: pos.y }}
-        className={`${classes.circle} ${className}`}
+        className={`${classes.circle} ${className || ""}`}
         ref={ref}
         role="button"
         onClick={() => {
@@ -157,8 +161,8 @@ function Bubble({
           const event = new Event("mouseleave")
           ref.current.dispatchEvent(event)
         }}
-        onKeyPress={modalHandleOpen}
-        tabIndex="0"
+        clickable="true"
+      // tabIndex="0"
       >
         <FlexContainer style={{ margin: 0, height: "100%" }}>
           {children}
