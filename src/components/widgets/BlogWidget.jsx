@@ -61,7 +61,7 @@ function BlogPreview() {
         </div>
         <Grid
           container
-          justify="center"
+          justifyContent="center"
           alignItems="flex-end"
           style={{ maxHeight: "10%" }}
         >

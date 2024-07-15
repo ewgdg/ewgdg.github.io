@@ -19,6 +19,9 @@ const useStyles = makeStyles({
     padding: "16px 32px",
     maxWidth: "75%",
     width: "700px",
+    "&:focus": {
+      outline: "none",
+    },
   },
 })
 
