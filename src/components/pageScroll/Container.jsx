@@ -1,5 +1,4 @@
-import React, { useMemo, useRef, useEffect, useContext, useState } from "react"
-import PropTypes from "prop-types"
+import React, { useMemo, useRef, useEffect, useContext, useState, useLayoutEffect } from "react"
 import { makeStyles } from "@material-ui/styles"
 import {
   isAnyInViewport,
@@ -19,16 +18,17 @@ const useStyles = makeStyles({
   root: {
     border: 0,
     borderRadius: 3,
+    overflow: "hidden",
   },
 })
 
 const SectionTypes = {
-  ShortSection: "SHORT",
-  LongSection: "LONG",
+  FullView: "FullView",
+  Flexible: "Flexible",
 }
 
 // The scroll event cannot be canceled or interrupted, so use mouse, touch and button events instead.
-const getHandlers = (ref, childrenRefs, context, sectionType) => {
+const getHandlers = (container, context, sectionType) => {
   // create dom event handler, same as useCallback( function factory(param)(args) ) //no need useMemo if it is inside useEffect
   return (() => {
     let isScrolling = false
@@ -54,17 +54,18 @@ const getHandlers = (ref, childrenRefs, context, sectionType) => {
       }
 
       let useFallback = false
-      let activeSecRef = null
+      let activeSection = null
+      let activeSectionI = 0
       let isInViewPortTest
       let scrollOffsetY = 0
       const marginForViewPortTest = Math.max(
         Math.min(
-          (window.innerHeight || document.documentElement.clientWidth) * 0.01,
+          (window.innerHeight || document.documentElement.clientHeight) * 0.01,
           5
         ),
         1
       )
-      if (sectionType === SectionTypes.LongSection) {
+      if (sectionType === SectionTypes.Flexible) {
         if (direction === "up") {
           isInViewPortTest = elem =>
             isTopInViewport(elem, -marginForViewPortTest, marginForViewPortTest)
@@ -81,70 +82,71 @@ const getHandlers = (ref, childrenRefs, context, sectionType) => {
       }
 
       // ignore the scroll event if the container is not in viewport
-      if (!ref.current || !isAnyInViewport(ref.current)) {
-        useFallback = true
-      } else {
-        // find the first active section that is in viewport
-        const size = childrenRefs.length
-        let i0
-        let step
-        if (direction === "up") {
-          i0 = size - 1
-          step = -1
-        } else if (direction === "down") {
-          i0 = 0
-          step = 1
-        }
-        for (let i = i0; i < size && i >= 0; i += step) {
-          const childRef = childrenRefs[i]
-          const elem = childRef.current
+      if (!container || !isAnyInViewport(container)) {
+        // useFallback = true
+        // fall back to default behavior
+        return
+      }
+      // have to query every time cause the child sections may change
+      // todo: implement composite reference container to avoid query, manually forward a sub reference container to each children, so children will update it dynamically
+      const childSections = container.querySelectorAll(':scope section');
+      // find the first active section that is in viewport
+      const size = childSections.length
+      let i0
+      let step
+      if (direction === "up") {
+        i0 = size - 1
+        step = -1
+      } else if (direction === "down") {
+        i0 = 0
+        step = 1
+      }
+      for (let i = i0; i < size && i >= 0; i += step) {
+        const elem = childSections[i]
 
-          if (isInViewPortTest(elem)) {
-            activeSecRef = childRef
-            break
-          }
-          // todo: early termination check or binary search
+        if (isInViewPortTest(elem)) {
+          activeSection = elem
+          activeSectionI = i
+          break
         }
-        if (!activeSecRef || !activeSecRef.current) {
-          useFallback = true
-        }
+        // todo: early termination check or binary search
+      }
+      if (!activeSection) {
+        // useFallback = true
+        return
       }
 
       let target = null
 
       if (direction === "up") {
         // scrolling up
-        if (!useFallback) {
-          if (activeSecRef.prev && activeSecRef.prev.current) {
-            target = activeSecRef.prev
-            if (sectionType === SectionTypes.LongSection) {
-              // scroll to the bottom of prev section
-              scrollOffsetY = -(
-                target.current.offsetHeight -
-                (window.innerHeight || document.documentElement.clientWidth)
-              )
-            }
-          } else {
-            target = activeSecRef
+        const prevI = activeSectionI - 1
+        if (prevI >= 0 && childSections[prevI]) {
+          target = childSections[prevI]
+          if (sectionType === SectionTypes.Flexible) {
+            // scroll to the bottom of prev section
+            scrollOffsetY = -(
+              target.offsetHeight -
+              (window.innerHeight || document.documentElement.clientHeight)
+            )
           }
+        } else {
+          target = activeSection
         }
       } else if (direction === "down") {
         // scrolling down
-        if (!useFallback) {
-          if (activeSecRef.next && activeSecRef.next.current) {
-            target = activeSecRef.next
-          } else {
-            target = activeSecRef
-          }
+        const nextI = activeSectionI + 1
+        if (nextI < childSections.length && childSections[nextI]) {
+          target = childSections[nextI]
+        } else {
+          target = activeSection
         }
       } else {
         return
       }
 
-      if (!useFallback && target) {
+      if (target) {
         if (!isScrolling) clearAnimationQueue()
-
-        target = target.current
 
         isScrolling = true
 
@@ -331,68 +333,17 @@ const getHandlers = (ref, childrenRefs, context, sectionType) => {
 }
 
 // a container component whose children should be of type Section
-function Container({ children, sectionType = SectionTypes.ShortSection }) {
+function Container({ children, sectionType = SectionTypes.FullView }) {
   const classes = useStyles()
   // create ref for container
-  const [ref, setRef] = useState({
-    current: null,
-  })
-  // get or create references for child nodes
-  const childrenRefs = useRef([])
-
-  // clone children to add props
-  function CloneChildren() {
-    const refList = []
-
-    const res = React.Children.map(children, (child, index) => {
-      refList[index] = {
-        // createRef return an obj that is not extensible, so I need to copy it
-        ...React.createRef(),
-      }
-      return React.cloneElement(child, {
-        forwardedRef: elem => {
-          refList[index].current = elem
-        },
-      })
-    })
-
-    const count = refList.length
-
-    // link nodes
-    for (let i = 0; i < count; i += 1) {
-      const currentChildRef = refList[i]
-      if (i < count - 1) {
-        currentChildRef.next = refList[i + 1]
-      } else {
-        currentChildRef.next = null
-      }
-      if (i > 0) {
-        currentChildRef.prev = refList[i - 1]
-      } else {
-        currentChildRef.prev = null
-      }
-    }
-
-    childrenRefs.current = refList
-
-    return res
-  }
-
-  const clonedChildren = useMemo(() => CloneChildren(), [children])
-
-  const setRefCallback = useRef(null)
-  if (setRefCallback.current === null) {
-    // need bounded callback to prevent trigger setRef every render
-    setRefCallback.current = elem => {
-      if (elem !== ref.current) setRef({ current: elem })
-    }
-  }
-
+  const containerRef = useRef(null)
   const context = useContext(LayoutContext)
 
   // add dom event listener
-  useEffect(() => {
-    if (!ref.current) return () => {}
+  useLayoutEffect(() => {
+    if (!containerRef.current) return () => { }
+
+    const container = containerRef.current
 
     const [
       wheelHandler,
@@ -402,14 +353,16 @@ function Container({ children, sectionType = SectionTypes.ShortSection }) {
       pointerMoveHandler,
       pointerUpHandler,
       pointerCancelHandler,
-    ] = getHandlers(ref, childrenRefs.current, context, sectionType)
+    ] = getHandlers(container, context, sectionType)
     const { scrollLayer } = context
-    ref.current.addEventListener("wheel", wheelHandler, { passive: false })
+
+
+    container.addEventListener("wheel", wheelHandler, { passive: false })
     // console.log(ref.current.getEventListener("wheel"))
     scrollLayer.addEventListener("keydown", keyDownHandler)
     scrollLayer.addEventListener("keyup", keyUpHandler)
 
-    ref.current.addEventListener("pointerdown", pointerDownHandler, {
+    container.addEventListener("pointerdown", pointerDownHandler, {
       passive: false,
     })
     scrollLayer.addEventListener("pointermove", pointerMoveHandler, {
@@ -423,34 +376,26 @@ function Container({ children, sectionType = SectionTypes.ShortSection }) {
     })
 
     return () => {
-      ref.current.removeEventListener("wheel", wheelHandler)
+      container.removeEventListener("wheel", wheelHandler)
       scrollLayer.removeEventListener("keydown", keyDownHandler)
       scrollLayer.removeEventListener("keyup", keyUpHandler)
-      ref.current.removeEventListener("pointerdown", pointerDownHandler)
+      container.removeEventListener("pointerdown", pointerDownHandler)
       scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
       scrollLayer.removeEventListener("pointerup", pointerUpHandler)
       scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
       return null
     }
-  }, [ref.current, context, childrenRefs.current])
+  }, [containerRef.current, context, sectionType])
 
   return (
     <div
       className={classes.root}
-      ref={setRefCallback.current}
+      ref={containerRef}
       id="pageContainer"
     >
-      {clonedChildren}
+      {children}
     </div>
   )
-}
-
-Container.propTypes = {
-  children: PropTypes.node.isRequired,
-  sectionType: PropTypes.string,
-}
-Container.defaultProps = {
-  sectionType: SectionTypes.ShortSection,
 }
 
 export default React.memo(Container)
