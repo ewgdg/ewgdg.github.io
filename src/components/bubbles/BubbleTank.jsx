@@ -147,7 +147,7 @@ function initBubbles(dataSize, cellHeight, cellsPerRow) {
       col = 0
     }
   }
-  return grids
+  return { grids, cellWidth, cellHeight }
 }
 
 export default function BubbleTank({
@@ -161,7 +161,8 @@ export default function BubbleTank({
 
   const dataSize = data.length
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight })
-  const grids = useMemo(() => initBubbles(dataSize, cellHeight, cellsPerRow), [data, dataSize, cellHeight, cellsPerRow, windowSize])
+  const { grids, cellWidth, cellHeight: newCellHeight } = useMemo(() => initBubbles(dataSize, cellHeight, cellsPerRow), [data, dataSize, cellHeight, cellsPerRow, windowSize])
+  cellHeight = newCellHeight
 
   useEffect(() => {
     function onresize() {
@@ -183,12 +184,19 @@ export default function BubbleTank({
   }, [data])
 
   const sections = grids.map((grid, i) => {
+    let gridHeight = grid.height
+    if (i == grids.length - 1) {
+      if (gridHeight < windowSize.height) {
+        //add some padding for the last section
+        gridHeight = Math.min(windowSize.height, gridHeight + cellHeight)
+      }
+    }
     return (
       <Section
         key={`section-${i}`}
         height="auto"
       >
-        <div style={{ position: "relative", height: `${grid.height}px` }} >
+        <div style={{ position: "relative", height: `${gridHeight}px` }} >
           {grid.bubbles.map((bubbleProps, j) => {
             const bubbleData = unorderedData[j]
             return (
