@@ -6,9 +6,9 @@ module.exports = {
     "jest/globals": true,
   },
   extends: [
-    "prettier",
+    // "prettier",
     "airbnb",
-    "plugin:prettier/recommended",
+    // "plugin:prettier/recommended",
     "plugin:jest/recommended",
     "plugin:jest/style",
   ],
@@ -23,9 +23,10 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: "module",
   },
-  plugins: ["prettier", "react", "prettier", "jest"],
+  plugins: ["react", "jest"], //"prettier"
   rules: {
-    "prettier/prettier": "error",
+    // "prettier/prettier": "error",
+    "eslint/semi": "never",
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",
     "jest/no-identical-title": "error",
