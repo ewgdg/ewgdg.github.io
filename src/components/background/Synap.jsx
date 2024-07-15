@@ -62,8 +62,8 @@ function Synap({ style }) {
           graphicNode.beginFill(color, opacity)
           graphicNode.lineStyle(2, 0xffffff, 1, 1)
           graphicNode.drawCircle(0, 0, circleRadius)
-          graphicNode.endFill()
-          ;[graphicNode.x, graphicNode.y] = e
+          graphicNode.endFill();
+          [graphicNode.x, graphicNode.y] = e;
 
           dotContainer.addChild(graphicNode)
         })
@@ -84,8 +84,8 @@ function Synap({ style }) {
 
             const movingDistance = speed * deltaTime
             graph.updateNode(i, movingDistance)
-            const node = graph.nodes[i]
-            ;[graphicNode.x, graphicNode.y] = node
+            const node = graph.nodes[i];
+            [graphicNode.x, graphicNode.y] = node;
           }
 
           for (let i = 0; i < graphicEdges.length; i += 1) {
@@ -140,6 +140,7 @@ function Synap({ style }) {
         left: 0,
         pointerEvents: "none",
         userSelect: "none",
+        WebkitUserSelect: "none",
         ...style,
       }}
     />

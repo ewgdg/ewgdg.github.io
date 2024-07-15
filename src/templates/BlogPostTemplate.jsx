@@ -102,7 +102,7 @@ export function BlogPostTemplate({
             style={{
               margin: "0 10%",
               padding: "45px",
-              "padding-bottom": "150px",
+              paddingBottom: "150px",
             }}
           >
             <div style={{ textAlign: "center" }}>

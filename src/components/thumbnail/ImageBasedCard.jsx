@@ -61,7 +61,7 @@ export default function ImageCard({
           ) : (
             <Grid
               container
-              justify="center"
+              justifyContent="center"
               alignItems="center"
               className={classes.media}
               title={title}
@@ -78,7 +78,7 @@ export default function ImageCard({
           <Grid
             container
             alignItems="center"
-            justify="center"
+            justifyContent="center"
             className={classes.content}
           >
             <CardContent>
