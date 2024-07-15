@@ -9,6 +9,7 @@ const useStyles = makeStyles(height => ({
     height,
     width: "100%",
     userSelect: "none",
+    WebkitUserSelect: "none",
     // position: "relative",
     // border: "red solid 2px",
     // pointerEvents: "none",
@@ -16,31 +17,28 @@ const useStyles = makeStyles(height => ({
 }))
 
 // Section component whose parent should be type of Container
-function Section({ children, forwardedRef, style, id, height = "100vh" }) {
+const Section = React.forwardRef(({ children, style, className, id, height = "100vh" }, ref) => {
   const classes = useStyles(height)
 
   return (
     <section
-      ref={forwardedRef}
-      className={`${classes.root} section`}
-      style={{ boxSizing: "border-box", userSelect: "none", ...style }}
+      ref={ref}
+      className={`${classes.root} section ${className || ""}`}
+      style={{ boxSizing: "border-box", userSelect: "none", WebkitUserSelect: "none", ...style }}
       {...(id ? { id } : {})}
     >
       {children}
     </section>
   )
-}
+})
 
 Section.propTypes = {
   children: PropTypes.node,
-  // forwardedRef: PropTypes.shape({
-  //   current: PropTypes.any,
-  // }),
-  forwardedRef: PropTypes.func,
+  ref: PropTypes.func,
 }
 Section.defaultProps = {
   children: undefined,
-  forwardedRef: undefined,
+  ref: undefined,
 }
 
 export default Section
