@@ -90,16 +90,27 @@ const getHandlers = (container, context, sectionType) => {
       // have to query every time cause the child sections may change
       // todo: implement composite reference container to avoid query, manually forward a sub reference container to each children, so children will update it dynamically
       const childSections = container.querySelectorAll(':scope section');
-      // find the first active section that is in viewport
+      // find the first/last active section that is in viewport
       const size = childSections.length
       let i0
       let step
-      if (direction === "up") {
-        i0 = size - 1
-        step = -1
-      } else if (direction === "down") {
-        i0 = 0
-        step = 1
+      if (sectionType === SectionTypes.FullView) {
+        if (direction === "up") {
+          i0 = size - 1
+          step = -1
+        } else if (direction === "down") {
+          i0 = 0
+          step = 1
+        }
+      }
+      else {
+        if (direction === "down") {
+          i0 = size - 1
+          step = -1
+        } else if (direction === "up") {
+          i0 = 0
+          step = 1
+        }
       }
       for (let i = i0; i < size && i >= 0; i += step) {
         const elem = childSections[i]
