@@ -11,9 +11,9 @@ function isInViewport(elem) {
     distance.top >= 0 &&
     distance.left >= 0 &&
     distance.bottom <=
-      (window.innerHeight || document.documentElement.clientHeight) &&
+    (window.innerHeight || document.documentElement.clientHeight) &&
     distance.right <=
-      (window.innerWidth || document.documentElement.clientWidth)
+    (window.innerWidth || document.documentElement.clientWidth)
   )
 }
 
@@ -23,9 +23,9 @@ function isBottomInViewport(elem, outerMargin = 0, innerMargin = 0) {
   return (
     distance.bottom - outerMargin > 0 &&
     distance.bottom + innerMargin <=
-      (window.innerHeight || document.documentElement.clientHeight) &&
+    (window.innerHeight || document.documentElement.clientHeight) &&
     distance.left <=
-      (window.innerWidth || document.documentElement.clientWidth) &&
+    (window.innerWidth || document.documentElement.clientWidth) &&
     distance.right >= 0
   )
 }
@@ -36,9 +36,9 @@ function isTopInViewport(elem, outerMargin = 0, innerMargin = 0) {
   return (
     distance.top - outerMargin >= 0 &&
     distance.top + innerMargin <
-      (window.innerHeight || document.documentElement.clientHeight) &&
+    (window.innerHeight || document.documentElement.clientHeight) &&
     distance.left <=
-      (window.innerWidth || document.documentElement.clientWidth) &&
+    (window.innerWidth || document.documentElement.clientWidth) &&
     distance.right >= 0
   )
 }
@@ -65,9 +65,9 @@ function isAnyInViewport(elem, innerMargin = 0) {
   return (
     // not the case of top fall below the bottom bounding
     distance.top + innerMargin <=
-      (window.innerHeight || document.documentElement.clientHeight) &&
+    (window.innerHeight || document.documentElement.clientHeight) &&
     distance.left <=
-      (window.innerWidth || document.documentElement.clientWidth) &&
+    (window.innerWidth || document.documentElement.clientWidth) &&
     distance.bottom - innerMargin >= 0 &&
     distance.right >= 0
   )
