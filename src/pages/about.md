@@ -64,9 +64,7 @@ facts:
     image: /img/freeloop.jpg
   - title: Creation
     description: >
-      Sometimes I enjoy drawing, just for the feeling of creation, I am not good
-      at it though.
-    # image: /img/casual-drawing.png
+      Sometimes I enjoy drawing, just for the feeling of creation.
   - title: Haircut
     description: |
       Sometimes I do my haircut myself, and I like to challenge myself.
