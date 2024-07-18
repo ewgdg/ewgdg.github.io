@@ -66,7 +66,7 @@ facts:
     description: >
       Sometimes I enjoy drawing, just for the feeling of creation, I am not good
       at it though.
-    image: /img/casual-drawing.png
+    # image: /img/casual-drawing.png
   - title: Haircut
     description: |
       Sometimes I do my haircut myself, and I like to challenge myself.
