@@ -127,5 +127,5 @@ players. Anyway, this is just a demo game and I
 haven’t touched it for a while. Maybe someday when I am a better
 developer, I will come back to complete developing the game. Here is the
 demo(Windows 10 only) download
-[link](https://1drv.ms/u/s!AjhADX36RxGfiYsQbxDvgWqe8Nxwdg)
+<a href="https://1drv.ms/u/s!AjhADX36RxGfiYsQbxDvgWqe8Nxwdg" target="_blank">link</a>
 for whom is interested.</span>
