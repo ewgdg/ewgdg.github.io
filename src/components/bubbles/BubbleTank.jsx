@@ -166,22 +166,22 @@ export default function BubbleTank({
 
   useEffect(() => {
     function onresize() {
-      if (windowSize.width != window.innerWidth || windowSize.height != window.innerHeight) {
-        setWindowSize({ width: window.innerWidth, height: window.innerHeight })
-      }
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight })
     }
     const debounced = debounce(onresize, 100)
     window.addEventListener("resize", debounced)
     return () => {
       window.removeEventListener("resize", debounced)
     }
-  }, [setWindowSize])
+  }, [])
 
   const unorderedData = useMemo(() => {
     const copy = [...data]
     shuffle(copy)
     return copy
-  }, [data])
+  }, [data, grids])
+
+  let dataIndex = 0
 
   const sections = grids.map((grid, i) => {
     let gridHeight = grid.height
@@ -198,7 +198,7 @@ export default function BubbleTank({
       >
         <div style={{ position: "relative", height: `${gridHeight}px` }} >
           {grid.bubbles.map((bubbleProps, j) => {
-            const bubbleData = unorderedData[j]
+            const bubbleData = unorderedData[dataIndex++]
             return (
               <ParallaxSection
                 style={{
