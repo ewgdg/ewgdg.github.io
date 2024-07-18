@@ -97,6 +97,11 @@ function initBubbles(dataSize, cellHeight, cellsPerRow) {
     const bubblePosInCell = [random(pivotX, maxX, false), random(pivotY, maxY, false)]
     const boundingOffset = radius
 
+    let scrollEffectMaxProgress = random(0, 0.8, false);
+    // only half of the bubbles have scroll effect
+    if (scrollEffectMaxProgress < 0.4) {
+      scrollEffectMaxProgress = 0;
+    }
     return {
       color: bubbleColor,
       pos: bubblePosInCell,
@@ -110,7 +115,7 @@ function initBubbles(dataSize, cellHeight, cellsPerRow) {
         minY: pivotY - boundingOffset,
       },
       fade: random(0.3, 0.8, false),
-      maxProgress: random(0, 0.8, false),
+      maxProgress: scrollEffectMaxProgress,
     }
   }
 
