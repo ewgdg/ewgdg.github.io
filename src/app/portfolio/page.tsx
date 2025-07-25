@@ -1,9 +1,9 @@
 import { getAllPortfolioItems, getMarkdownData } from '@/lib/localstorage'
 import BlogPage from '@/templates/BlogPage'
 
-function getPortfolioPageData() {
-  const portfolioData = getMarkdownData('portfolio.md')
-  const portfolioItems = getAllPortfolioItems()
+async function getPortfolioPageData() {
+  const portfolioData = await getMarkdownData('portfolio.md')
+  const portfolioItems = await getAllPortfolioItems()
 
   // Simplified data structure without GraphQL nesting
   const data = {
@@ -20,8 +20,8 @@ function getPortfolioPageData() {
   return data
 }
 
-export default function PortfolioPageWrapper() {
-  const data = getPortfolioPageData()
+export default async function PortfolioPageWrapper() {
+  const data = await getPortfolioPageData()
 
   return (
     <BlogPage

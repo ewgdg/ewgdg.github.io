@@ -1,8 +1,8 @@
 import { getMarkdownData } from '@/lib/localstorage'
 import AboutPage from '@/templates/AboutPage'
 
-function getAboutPageData() {
-  const aboutData = getMarkdownData('about.md')
+async function getAboutPageData() {
+  const aboutData = await getMarkdownData('about.md')
 
   return {
     markdownRemark: {
@@ -18,8 +18,8 @@ function getAboutPageData() {
   }
 }
 
-export default function AboutPageWrapper() {
-  const data = getAboutPageData()
+export default async function AboutPageWrapper() {
+  const data = await getAboutPageData()
 
   return <AboutPage data={data} />
 }

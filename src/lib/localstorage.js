@@ -1,10 +1,11 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
+import processMarkdown from './markdown'
 
 const contentDirectory = path.join(process.cwd(), 'content')
 
-export function getMarkdownData(filename, options = {}) {
+export async function getMarkdownData(filename, options = {}) {
   const { includeContent = true } = options
 
   try {
@@ -19,6 +20,7 @@ export function getMarkdownData(filename, options = {}) {
 
     if (includeContent) {
       result.content = content
+      result.processedContent = await processMarkdown(content)
     }
 
     return result
@@ -28,14 +30,14 @@ export function getMarkdownData(filename, options = {}) {
   }
 }
 
-function* generateContentItems(contentType) {
+async function* generateContentItems(contentType) {
   const typeDirectory = path.join(contentDirectory, contentType)
   const filenames = fs.readdirSync(typeDirectory)
 
   for (const filename of filenames) {
     if (!filename.endsWith('.md')) continue
 
-    const markdownData = getMarkdownData(`${contentType}/${filename}`, {
+    const markdownData = await getMarkdownData(`${contentType}/${filename}`, {
       includeContent: false,
     })
 
@@ -54,9 +56,12 @@ function* generateContentItems(contentType) {
   }
 }
 
-function getAllContentItems(contentType, sortByDate = true) {
+async function getAllContentItems(contentType, sortByDate = true) {
   try {
-    const items = Array.from(generateContentItems(contentType))
+    const items = []
+    for await (const item of generateContentItems(contentType)) {
+      items.push(item)
+    }
 
     if (sortByDate) {
       return items.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))

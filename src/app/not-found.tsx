@@ -23,7 +23,7 @@ export default function NotFound() {
         <Typography variant="body1" color="text.secondary" paragraph>
           Sorry, the page you're looking for doesn't exist.
         </Typography>
-        <Link href="/" passHref>
+        <Link href="/">
           <Button variant="contained" color="primary">
             Go Home
           </Button>

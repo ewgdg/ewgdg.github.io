@@ -8,7 +8,7 @@ import { ROUTER_EVENTS, routerEventSource } from '@/lib/useRouter'
  * Custom Link component that emits BEFORE_NAVIGATION events
  * to maintain consistency with router.push behavior
  */
-const Link = ({ href, replace = false, onClick, children, ...props }) => {
+const Link = ({ href, replace = false, onClick = null, children, ...props }) => {
     const pathname = usePathname()
 
     const handleClick = useCallback((event) => {

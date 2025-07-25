@@ -12,29 +12,16 @@ import React from "react"
 import { Helmet } from "react-helmet-async"
 
 import "github-markdown-css/github-markdown-light.css"
-
-import Prism from "prismjs"
 import "prismjs/themes/prism.css"
 import "prismjs/plugins/line-numbers/prism-line-numbers.css"
-import "prismjs/components/prism-javascript"
-import "prismjs/components/prism-css"
-import "prismjs/components/prism-markup"
-import "prismjs/components/prism-python"
-import "prismjs/components/prism-clike"
-import "prismjs/components/prism-c"
-import "prismjs/components/prism-java"
-import "prismjs/components/prism-csharp"
-import "prismjs/components/prism-cpp"
-import "prismjs/plugins/line-numbers/prism-line-numbers"
-import { marked } from 'marked'
+
+import processMarkdown from '../lib/markdown'
 
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
 
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import { BlogPostTemplate, useStyles } from "./BlogPostTemplate"
-
-Prism.manual = true
 
 const BlogPost = ({ data, uri }) => {
   const post = data
@@ -50,7 +37,7 @@ const BlogPost = ({ data, uri }) => {
         }}
       />
       <BlogPostTemplate
-        content={marked(post.content)}
+        content={post.processedContent}
         description={post.frontmatter.description}
         publicationDate={post.frontmatter.date}
         // helmet={

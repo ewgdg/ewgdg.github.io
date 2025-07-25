@@ -1,9 +1,9 @@
 import { getAllBlogPosts, getMarkdownData } from '@/lib/localstorage'
 import BlogPage from '@/templates/BlogPage'
 
-function getBlogPageData() {
-  const blogData = getMarkdownData('blog.md')
-  const blogPosts = getAllBlogPosts()
+async function getBlogPageData() {
+  const blogData = await getMarkdownData('blog.md')
+  const blogPosts = await getAllBlogPosts()
 
   // Simplified data structure without GraphQL nesting
   const data = {
@@ -20,8 +20,8 @@ function getBlogPageData() {
   return data
 }
 
-export default function BlogPageWrapper() {
-  const data = getBlogPageData()
+export default async function BlogPageWrapper() {
+  const data = await getBlogPageData()
 
   return (
     <BlogPage

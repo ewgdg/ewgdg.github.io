@@ -1,11 +1,10 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
 'use client'
-import React, { useMemo, useLayoutEffect, useRef } from "react"
+import React, { useMemo } from "react"
 import Link from "../components/navigation/Link"
 import Paper from "@mui/material/Paper"
 import Container from "@mui/material/Container"
-import Prism from "prismjs"
 import Image from "next/image"
 import { makeStyles } from "@mui/styles"
 
@@ -92,13 +91,6 @@ export function BlogPostTemplate({
     return result
   }, [featuredImage])
 
-  const articleRef = useRef(null)
-  useLayoutEffect(() => {
-    // highlight code block syntax
-    if (articleRef.current) {
-      Prism.highlightAllUnder(articleRef.current)
-    }
-  }, [content, articleRef])
 
   return (
     <section className="section">
@@ -131,7 +123,7 @@ export function BlogPostTemplate({
             <hr />
 
             {(ContentElem && (
-              <article className="markdown-body line-numbers" ref={articleRef}>
+              <article className="markdown-body line-numbers">
                 {ContentElem}
               </article>
             )) ||
@@ -140,7 +132,6 @@ export function BlogPostTemplate({
                   className="markdown-body line-numbers"
                   // eslint-disable-next-line react/no-danger
                   dangerouslySetInnerHTML={{ __html: content }}
-                  ref={articleRef}
                 />
               ))}
           </div>

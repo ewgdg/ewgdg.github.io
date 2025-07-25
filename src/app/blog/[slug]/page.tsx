@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import { getAllBlogPosts, getMarkdownData } from '@/lib/localstorage'
 import BlogPost from '@/templates/BlogPost'
 
-export function generateStaticParams() {
-  const posts = getAllBlogPosts()
+export async function generateStaticParams() {
+  const posts = await getAllBlogPosts()
 
   return posts.map(post => ({
     slug: post.slug
@@ -15,7 +15,7 @@ type Props = {
 }
 
 async function getBlogPost(slug: string) {
-  const post = getMarkdownData(`blog/${slug}.md`)
+  const post = await getMarkdownData(`blog/${slug}.md`)
 
   if (!post) {
     return null

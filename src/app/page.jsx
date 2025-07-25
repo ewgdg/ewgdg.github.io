@@ -1,10 +1,10 @@
 import { getMarkdownData, getAllBlogPosts, getAllPortfolioItems } from '@/lib/localstorage'
 import IndexPage from '@/templates/IndexPage'
 
-function getHomePageData() {
-  const indexData = getMarkdownData('index.md')
-  const allBlogPosts = getAllBlogPosts()
-  const allPortfolioItems = getAllPortfolioItems()
+async function getHomePageData() {
+  const indexData = await getMarkdownData('index.md')
+  const allBlogPosts = await getAllBlogPosts()
+  const allPortfolioItems = await getAllPortfolioItems()
 
   // Get featured blog posts
   const featuredBlogPosts = allBlogPosts
@@ -27,8 +27,8 @@ function getHomePageData() {
   }
 }
 
-export default function HomePage() {
-  const data = getHomePageData()
+export default async function HomePage() {
+  const data = await getHomePageData()
   const { jumbotronProps, blogPosts, portfolioItems } = data
 
   return (
