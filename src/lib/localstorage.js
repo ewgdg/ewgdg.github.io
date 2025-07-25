@@ -1,80 +1,78 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { marked } from 'marked'
 
 const contentDirectory = path.join(process.cwd(), 'content')
 
-export function getMarkdownData(filename) {
+export function getMarkdownData(filename, options = {}) {
+  const { includeContent = true } = options
+
   try {
     const fullPath = path.join(contentDirectory, filename)
     const fileContents = fs.readFileSync(fullPath, 'utf8')
-    const { data, content } = matter(fileContents)
+    const { data, content, excerpt } = matter(fileContents, { excerpt: true })
 
-    return {
+    const result = {
       frontmatter: data,
-      content,
-      html: marked(content)
+      excerpt,
     }
+
+    if (includeContent) {
+      result.content = content
+    }
+
+    return result
   } catch (error) {
     console.error(`Error reading markdown file ${filename}:`, error)
     return null
   }
 }
 
-export function getAllBlogPosts() {
+function* generateContentItems(contentType) {
+  const typeDirectory = path.join(contentDirectory, contentType)
+  const filenames = fs.readdirSync(typeDirectory)
+
+  for (const filename of filenames) {
+    if (!filename.endsWith('.md')) continue
+
+    const markdownData = getMarkdownData(`${contentType}/${filename}`, {
+      includeContent: false,
+    })
+
+    if (!markdownData || markdownData.frontmatter?.isTemplate) continue
+
+    const { frontmatter, excerpt } = markdownData
+    const slug = filename.replace(/\.md$/, '')
+
+    yield {
+      uri: `/${contentType}/${slug}`,
+      slug,
+      frontmatter,
+      excerpt,
+      filename
+    }
+  }
+}
+
+function getAllContentItems(contentType, sortByDate = true) {
   try {
-    const blogDirectory = path.join(contentDirectory, 'blog')
-    const filenames = fs.readdirSync(blogDirectory)
+    const items = Array.from(generateContentItems(contentType))
 
-    const posts = filenames
-      .filter(name => name.endsWith('.md'))
-      .map(filename => {
-        const { frontmatter, content } = getMarkdownData(`blog/${filename}`)
-        const slug = filename.replace(/\.md$/, '')
+    if (sortByDate) {
+      return items.sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
+    }
 
-        return {
-          uri: `/blog/${slug}`,
-          slug,
-          frontmatter,
-          content,
-          filename
-        }
-      })
-      .filter(item => !item.frontmatter.isTemplate)
-      .sort((a, b) => new Date(b.frontmatter.date) - new Date(a.frontmatter.date))
-
-    return posts
+    return items
   } catch (error) {
-    console.error('Error getting blog posts:', error)
+    console.error(`Error getting ${contentType} items:`, error)
     return []
   }
 }
 
+export function getAllBlogPosts() {
+  return getAllContentItems('blog')
+}
+
 export function getAllPortfolioItems() {
-  try {
-    const portfolioDirectory = path.join(contentDirectory, 'portfolio')
-    const filenames = fs.readdirSync(portfolioDirectory)
-
-    const items = filenames
-      .filter(name => name.endsWith('.md'))
-      .map(filename => {
-        const { frontmatter, content } = getMarkdownData(`portfolio/${filename}`)
-        const slug = filename.replace(/\.md$/, '')
-
-        return {
-          uri: `/portfolio/${slug}`,
-          slug,
-          frontmatter,
-          content,
-          filename
-        }
-      })
-      .filter(item => !item.frontmatter.isTemplate)
-
-    return items
-  } catch (error) {
-    console.error('Error getting portfolio items:', error)
-    return []
-  }
+  return getAllContentItems('portfolio')
 }

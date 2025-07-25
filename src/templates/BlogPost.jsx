@@ -26,6 +26,7 @@ import "prismjs/components/prism-java"
 import "prismjs/components/prism-csharp"
 import "prismjs/components/prism-cpp"
 import "prismjs/plugins/line-numbers/prism-line-numbers"
+import { marked } from 'marked'
 
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
@@ -49,7 +50,7 @@ const BlogPost = ({ data, uri }) => {
         }}
       />
       <BlogPostTemplate
-        content={post.html}
+        content={marked(post.content)}
         description={post.frontmatter.description}
         publicationDate={post.frontmatter.date}
         // helmet={

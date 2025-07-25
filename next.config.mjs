@@ -17,12 +17,6 @@ const nextConfig = {
       };
     }
 
-    // Handle markdown files
-    config.module.rules.push({
-      test: /\.md$/,
-      use: 'asset/source',
-    });
-
     return config;
   },
 }

@@ -20,7 +20,7 @@ export default function useBlogPostCards(posts) {
           ? post.frontmatter.featuredImage
           : post.frontmatter.featuredImage.src)
         : null
-      const description = post.frontmatter.description || post.excerpt || post.content.substring(0, 200) + '...'
+      const description = post.frontmatter.description || post.excerpt || (post.content?.substring(0, 200) ?? '') + '...'
       const { tags } = post.frontmatter
       const publicationDate = post.frontmatter.date
       const onClick = (() => {
