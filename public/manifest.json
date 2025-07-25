@@ -1,0 +1,9 @@
+{
+  "name": "Xian's Page",
+  "short_name": "Xian",
+  "start_url": "/",
+  "background_color": "white",
+  "theme_color": "#cc1f41",
+  "display": "minimal-ui",
+  "icon": "/img/icon.png"
+}
