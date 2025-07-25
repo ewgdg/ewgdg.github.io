@@ -2,30 +2,12 @@
 
 /* eslint-disable react/prop-types */
 import React, { useCallback } from "react"
-import { makeStyles } from "@mui/styles"
 import Modal from "@mui/material/Modal"
 import Backdrop from "@mui/material/Backdrop"
 import Fade from "@mui/material/Fade"
+import Box from "@mui/material/Box"
 import TextLink from "../others/TextLink"
 
-const useStyles = makeStyles({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  paper: {
-    backgroundColor: "white",
-    border: "2px solid #000",
-    // boxShadow: theme.shadows[5],
-    padding: "16px 32px",
-    maxWidth: "75%",
-    width: "700px",
-    "&:focus": {
-      outline: "none",
-    },
-  },
-})
 
 function TransitionsModal({
   open,
@@ -35,36 +17,58 @@ function TransitionsModal({
   links,
   children,
 }) {
-  const classes = useStyles()
-
   return (
-    <div>
-      {/* <button type="button" onClick={handleOpen}>
-        react-transition-group
-      </button> */}
-      <Modal
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
+    <Modal
+      open={open}
+      onClose={handleClose}
+      closeAfterTransition
+      slots={{
+        backdrop: Backdrop,
+      }}
+      slotProps={{
+        backdrop: {
           timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            {title && <h2 id="transition-modal-title">{title}</h2>}
-            {description && (
-              <pre style={{ whiteSpace: "pre-wrap" }}>
+        },
+      }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+      aria-labelledby={title ? "modal-title" : undefined}
+      aria-describedby={description ? "modal-description" : undefined}
+    >
+      <Fade in={open}>
+        <Box
+          sx={{
+            backgroundColor: 'white',
+            border: '2px solid #000',
+            boxShadow: 24,
+            padding: '16px 32px',
+            maxWidth: '75%',
+            width: '700px',
+            position: 'relative',
+            '&:focus': {
+              outline: 'none',
+            },
+          }}
+        >
+          {title && (
+            <h2 id="modal-title" style={{ marginTop: 0 }}>
+              {title}
+            </h2>
+          )}
+          {description && (
+            <div id="modal-description">
+              <pre style={{ whiteSpace: "pre-wrap", fontFamily: 'inherit' }}>
                 <TextLink text={description} links={links} />
               </pre>
-            )}
-            {children}
-          </div>
-        </Fade>
-      </Modal>
-    </div>
+            </div>
+          )}
+          {children}
+        </Box>
+      </Fade>
+    </Modal>
   )
 }
 
@@ -72,11 +76,11 @@ export const useModalController = () => {
   const [open, setOpen] = React.useState(false)
   const handleOpen = useCallback(() => {
     setOpen(true)
-  }, [setOpen])
+  }, [])
 
   const handleClose = useCallback(() => {
     setOpen(false)
-  }, [setOpen])
+  }, [])
 
   return [open, handleOpen, handleClose]
 }
