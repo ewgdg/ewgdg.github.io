@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-param-reassign */
 import BezierEasing from "bezier-easing"
-import { gsap, TweenLite, Power2 } from "gsap"
+import { gsap, Power2 } from "gsap"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 // import { getController } from "../plugins/scrollmagic"
 import throttle from "./throttle"
@@ -220,7 +220,8 @@ function scrollByAnimated(elem, change, duration = 1000) {
   // const controller = getController(elem)
   const promise = new Promise(resolve => {
     // sendScrollEvent(elem)
-    tween = TweenLite.to(elem, duration / 1000, {
+    tween = gsap.to(elem, {
+      duration: duration / 1000,
       scrollTo: { y: `+=${change}` },
       onComplete: resolve,
       ease: Power2.easeInOut,
@@ -270,7 +271,8 @@ function scrollIntoView(elem, scrollLayer, duration = 700, offsetY = 0) {
 
   return new Promise(resolve => {
     // sendScrollEvent(scrollLayer)
-    TweenLite.to(scrollLayer, duration / 1000, {
+    gsap.to(scrollLayer, {
+      duration: duration / 1000,
       scrollTo: {
         y: elem,
         offsetY,

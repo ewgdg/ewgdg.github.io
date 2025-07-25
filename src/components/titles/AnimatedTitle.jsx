@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useRef, useContext, useEffect } from "react"
-import { gsap, TimelineLite, Power2 } from "gsap"
+import { gsap, Power2 } from "gsap"
 import TextPlugin from "gsap/TextPlugin"
 import { ScrollDetector } from "../../utils/scroll"
 import LayoutContext from "../../contexts/LayoutContext"
@@ -13,9 +13,10 @@ function AnimatedTitle({ title }) {
   const context = useContext(LayoutContext)
   const headlineRef = useRef(null)
   useEffect(() => {
-    const animation = new TimelineLite()
+    const animation = gsap.timeline()
     animation
-      .to(headlineRef.current, 0.7, {
+      .to(headlineRef.current, {
+        duration: 0.7,
         text: `-------  ${title}  -------`,
         ease: Power2.easeInOut,
       })

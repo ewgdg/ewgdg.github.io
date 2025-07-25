@@ -5,7 +5,7 @@
 /* eslint-disable import/no-unresolved */
 /* eslint-disable new-cap */
 import React, { useRef, useEffect, useContext } from "react"
-import { TimelineLite, Power3, Power1 } from "gsap"
+import { gsap, Power3, Power1 } from "gsap"
 
 import { makeStyles } from "@mui/styles"
 import Link from "../navigation/Link"
@@ -70,55 +70,42 @@ function About() {
   const classes = useStyles()
   // add scroll animation controll
   useEffect(() => {
-    const animation = new TimelineLite()
+    const animation = gsap.timeline()
     // animate ribbon
     animation
       .add("startAnimation")
-      .from(ribbonRef.current, 0.7, {
+      .from(ribbonRef.current, {
+        duration: 0.7,
         scaleX: 0,
         transformOrigin: "right",
         ease: Power3.easeInOut,
       })
       .add("ribbonFinished")
-      .from(charSequenceBackgroundRef.current, 0.7, {
+      .from(charSequenceBackgroundRef.current, {
+        duration: 0.7,
         scaleX: 0,
         transformOrigin: "left",
         ease: Power3.easeInOut,
       })
 
     animation
-      .staggerTo(
-        charRefs.current,
-        0.15,
-        {
-          fontSize: "2em",
-          stagger: 0.1,
-          ease: Power1.easeInOut,
-        },
-        undefined,
-        "startAnimation+=0.2"
-      )
-      .staggerTo(
-        charRefs.current,
-        0.15,
-        {
-          fontSize: "1em",
-          stagger: 0.1,
-          ease: Power1.easeInOut,
-        },
-        undefined,
-        "startAnimation+=0.35"
-      )
-      .staggerFrom(
-        ".animatedline",
-        0.1,
-        {
-          opacity: 0,
-          stagger: 0.05,
-        },
-        undefined,
-        "ribbonFinished"
-      )
+      .to(charRefs.current, {
+        duration: 0.15,
+        fontSize: "2em",
+        stagger: 0.1,
+        ease: Power1.easeInOut,
+      }, "startAnimation+=0.2")
+      .to(charRefs.current, {
+        duration: 0.15,
+        fontSize: "1em",
+        stagger: 0.1,
+        ease: Power1.easeInOut,
+      }, "startAnimation+=0.35")
+      .from(".animatedline", {
+        duration: 0.1,
+        opacity: 0,
+        stagger: 0.05,
+      }, "ribbonFinished")
       .add("endAnimation")
 
     animation.pause()

@@ -5,7 +5,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { makeStyles } from "@mui/styles"
 // import from tweenmax since it auto import the plugins
 import { gsap, Elastic } from "gsap"
-// import { CSSPlugin } from "gsap/TweenMax"
 // import { Elastic } from "gsap/EasePack"
 import Image from "next/image"
 import FlexContainer from "../sections/FlexContainer"
