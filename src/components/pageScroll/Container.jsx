@@ -371,36 +371,74 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
 
     container.addEventListener("wheel", wheelHandler, { passive: false })
     
+    // Add keyboard listeners to document since scrollLayer is no longer focusable
+    document.addEventListener("keydown", keyDownHandler)
+    document.addEventListener("keyup", keyUpHandler)
+    
     // Only add scrollLayer event listeners if scrollLayer exists (not during SSR)
     if (scrollLayer) {
-      scrollLayer.addEventListener("keydown", keyDownHandler)
-      scrollLayer.addEventListener("keyup", keyUpHandler)
-      scrollLayer.addEventListener("pointermove", pointerMoveHandler, {
-        passive: false,
-      })
-      scrollLayer.addEventListener("pointerup", pointerUpHandler, {
-        passive: false,
-      })
-      scrollLayer.addEventListener("pointerleave", pointerCancelHandler, {
-        passive: false,
-      })
+      // Check if browser supports Pointer Events API
+      const hasPointerEvents = 'PointerEvent' in window
+      
+      if (hasPointerEvents) {
+        // Use modern Pointer Events API
+        scrollLayer.addEventListener("pointerdown", pointerDownHandler, {
+          passive: false,
+        })
+        scrollLayer.addEventListener("pointermove", pointerMoveHandler, {
+          passive: false,
+        })
+        scrollLayer.addEventListener("pointerup", pointerUpHandler, {
+          passive: false,
+        })
+        scrollLayer.addEventListener("pointercancel", pointerCancelHandler, {
+          passive: false,
+        })
+        scrollLayer.addEventListener("pointerleave", pointerCancelHandler, {
+          passive: false,
+        })
+      } else {
+        // Fallback to touch events for older browsers
+        scrollLayer.addEventListener("touchstart", pointerDownHandler, {
+          passive: false,
+        })
+        scrollLayer.addEventListener("touchmove", pointerMoveHandler, {
+          passive: false,
+        })
+        scrollLayer.addEventListener("touchend", pointerUpHandler, {
+          passive: false,
+        })
+        scrollLayer.addEventListener("touchcancel", pointerCancelHandler, {
+          passive: false,
+        })
+      }
     }
-
-    container.addEventListener("pointerdown", pointerDownHandler, {
-      passive: false,
-    })
 
     return () => {
       container.removeEventListener("wheel", wheelHandler)
-      container.removeEventListener("pointerdown", pointerDownHandler)
+      
+      // Remove keyboard listeners from document
+      document.removeEventListener("keydown", keyDownHandler)
+      document.removeEventListener("keyup", keyUpHandler)
       
       // Only remove scrollLayer event listeners if scrollLayer exists
       if (scrollLayer) {
-        scrollLayer.removeEventListener("keydown", keyDownHandler)
-        scrollLayer.removeEventListener("keyup", keyUpHandler)
-        scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
-        scrollLayer.removeEventListener("pointerup", pointerUpHandler)
-        scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
+        const hasPointerEvents = 'PointerEvent' in window
+        
+        if (hasPointerEvents) {
+          // Remove pointer events
+          scrollLayer.removeEventListener("pointerdown", pointerDownHandler)
+          scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
+          scrollLayer.removeEventListener("pointerup", pointerUpHandler)
+          scrollLayer.removeEventListener("pointercancel", pointerCancelHandler)
+          scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
+        } else {
+          // Remove touch events
+          scrollLayer.removeEventListener("touchstart", pointerDownHandler)
+          scrollLayer.removeEventListener("touchmove", pointerMoveHandler)
+          scrollLayer.removeEventListener("touchend", pointerUpHandler)
+          scrollLayer.removeEventListener("touchcancel", pointerCancelHandler)
+        }
       }
       return null
     }

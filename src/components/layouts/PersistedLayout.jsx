@@ -26,7 +26,8 @@ const Layout = ({ children }) => {
       }
 
       setResolved(!!e)
-      if (e) e.focus()
+      // Remove automatic focus to prevent aria-hidden conflicts with modals
+      // if (e) e.focus()
     },
     [contextValueRef]
   )
@@ -75,7 +76,8 @@ const Layout = ({ children }) => {
         <Synap style={{ opacity: 0.3, width: "100vw", height: "100vh" }} />
         <div
           id="scrollDiv"
-          tabIndex="0"
+          // the tabIndex is to make the div focusable and so that it can receive keyboard events
+          // tabIndex="0"
           className="scrollDiv"
           ref={setContextCallBack}
           style={{
