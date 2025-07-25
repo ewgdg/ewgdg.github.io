@@ -44,23 +44,23 @@ npm run updateSnap
 ## Architecture & Structure
 
 ### Core Architecture
-- **Next.js 15**: React framework with SSG configuration
-- **Material-UI v6**: Component library with Emotion styling
-- **TypeScript**: Type safety with path aliases (@/ mapping)
-- **Static Export**: Configured for static site hosting
-- **Persisted Layout**: Custom layout wrapper that maintains state across page transitions
-- **Context-based State**: Uses React Context for shared state management
+- **Next.js 15 App Router**: React framework with SSG configuration using `output: 'export'`
+- **Material-UI v6**: Component library with Emotion styling system
+- **TypeScript**: Type safety with path aliases (`@/` maps to `./src/`)
+- **Static Export**: Configured for GitHub Pages hosting with trailing slashes
+- **Persisted Layout**: Custom layout wrapper (`PersistedLayout.jsx`) that maintains state across transitions
+- **Context-based State**: Uses React Context via `LayoutContext` for shared state management
 
-### Key Components Structure
-- **Pages**: Next.js pages in `pages/` directory with dynamic routing
-- **Templates**: Page-level components in `src/templates/` (IndexPageTemplate, BlogPageTemplate, etc.)
-- **Widgets**: Main content sections (AboutWidget, BlogWidget, PortfolioWidget)
-- **Layout System**: Persisted layout with scroll management and state preservation
-- **Interactive Elements**: 
-  - Chatbot functionality with API integration
-  - Bubble tank animations using PIXI.js
-  - Parallax sections with scroll triggers
-  - Flying sprite animations
+### App Router Structure
+- **App Directory**: Uses Next.js 13+ App Router in `src/app/`
+  - `layout.tsx`: Root layout with metadata and global providers
+  - `page.jsx`: Home page
+  - `about/page.tsx`: About page
+  - `blog/page.tsx` & `blog/[slug]/page.tsx`: Blog listing and individual posts
+  - `portfolio/page.tsx` & `portfolio/[slug]/page.tsx`: Portfolio listing and items
+- **Templates**: Page-level components in `src/templates/` that handle data fetching and rendering
+- **Widgets**: Main content sections (AboutWidget, BlogWidget, PortfolioWidget) 
+- **Client Providers**: `client-providers.tsx` wraps Material-UI theme and other client-side providers
 
 ### Page Scroll System
 Uses a custom scroll system with:
@@ -76,42 +76,50 @@ Uses a custom scroll system with:
 - **Content Processing**: Custom markdown processing with `gray-matter` and `marked`
 
 ### Testing Setup
-- Jest with Next.js configuration
+- Jest with jsdom environment for React component testing
 - React Testing Library for component testing
-- Component snapshot testing
-- Test files in `__tests__/` directory
-- Mock files in `__mocks__/` for static assets
+- Component snapshot testing with `npm run updateSnap`
+- Test files located throughout the codebase in `__tests__/` directories
 
 ### Development Configuration
-- **TypeScript**: Full TypeScript support with path aliases
-- **ESLint**: Next.js ESLint configuration
-- **Babel**: Next.js babel configuration
-- **Webpack**: Custom webpack config for PIXI.js and raw markdown loading
+- **TypeScript**: Configured with `@/` path alias mapping to `./src/`
+- **ESLint**: Next.js ESLint configuration with `eslint-config-next`
+- **Webpack Custom Config**: 
+  - PIXI.js fallbacks for client-side rendering (`fs: false, path: false`)
+  - Raw markdown loader using `asset/source` for `.md` files
+  - Handles static export requirements
 
 ## Important Implementation Details
 
-### Layout Persistence
-The site uses a custom layout system (`PersistedLayout.jsx`) that maintains:
-- Scroll position across page transitions
-- Component state preservation
-- History state management
-- Z-index management for overlays
+### Layout Persistence System
+The `PersistedLayout.jsx` component provides a sophisticated state management system:
+- **Context Resolution**: Uses `LayoutContext` with `contextValueRef` for cross-component state sharing
+- **Scroll Management**: Maintains scroll position via `scrollLayer` reference and debounced resize handlers
+- **State Persistence**: Preserves component state across page transitions using React Context
+- **Fallback Handling**: 1-second timeout prevents infinite loading states
+- **Z-index Management**: Handles overlay stacking for modals and interactive elements
 
-### Chatbot Integration
-- API endpoints for chatbot functionality
-- Docker setup for chatbot backend in `src/chatbot/`
-- FAQ and Q&A preprocessing scripts
-- Real-time chat interface components
+### Client-Side Rendering Strategy
+- **Dual Rendering**: Components marked with `'use client'` for interactivity
+- **Static Export**: Pages pre-rendered at build time with `next build`
+- **Hydration**: Client-side JavaScript adds interactivity to static HTML
+- **Context Providers**: Material-UI theme and custom contexts wrapped in `ClientProviders`
 
-### Animation Systems
-- GSAP for complex animations
-- PIXI.js for WebGL-based graphics (bubble tank)
-- ScrollMagic for scroll-triggered animations
-- Custom throttling and viewport detection utilities
+### Animation & Graphics Systems
+- **GSAP**: Complex timeline animations and scroll-triggered effects
+- **PIXI.js**: WebGL-based graphics engine for bubble tank animations
+- **Custom Utilities**: Throttling, debouncing, and viewport detection in `src/utils/`
+- **Intersection Observer**: Used for performance-optimized scroll triggers
 
-### Content Types
-- **Blog Posts**: Markdown files with frontmatter in `content/blog/`
-- **Portfolio Items**: Individual markdown files in `content/portfolio/`
-- **Page Templates**: Reusable templates for different page types
-- **Static Pages**: Main pages (index, about, blog) in `content/` directory
-- **Legacy CMS Integration**: Netlify CMS configuration in `static/admin/config.yml`
+### Content Architecture
+- **Markdown Processing**: Uses `gray-matter` for frontmatter parsing and `marked` for HTML conversion
+- **Content Location**: All content moved from `src/pages/` to `content/` directory structure
+- **Dynamic Routing**: `[slug].tsx` pages dynamically generate routes from markdown files
+- **Static Generation**: Content processed at build time for optimal performance
+- **Template System**: Page templates (`src/templates/`) separate data fetching from presentation
+
+### Key Differences from Gatsby
+- **No GraphQL**: Direct file system operations replace Gatsby's GraphQL layer
+- **Manual Content Processing**: Custom utilities handle markdown parsing vs. Gatsby plugins  
+- **Client-Side State**: React Context replaces Gatsby's build-time data layer
+- **Custom Router Integration**: Uses `src/lib/useRouter.js` for navigation state management
