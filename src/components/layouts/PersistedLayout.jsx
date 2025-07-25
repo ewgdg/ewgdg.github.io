@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-one-expression-per-line */
+'use client'
 import React, { useState, useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
 // import { useStaticQuery, graphql } from "gatsby"
 
-import "./layout.css"
-import "typeface-roboto"
+// Moved global CSS imports to layout.js
 // import ScrollMagic from "scrollmagic-with-ssr"
 
 import FlyingSprite from "../sprite/FlyingSprite"
@@ -30,6 +30,18 @@ const Layout = ({ children }) => {
     },
     [contextValueRef]
   )
+
+  // Add timeout fallback to prevent infinite loading
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        console.warn('PersistedLayout: Forcing render after timeout')
+        setResolved(true)
+      }
+    }, 1000) // 1 second fallback
+
+    return () => clearTimeout(timeout)
+  }, [resolved])
 
   useEffect(() => {
     const { scrollLayer } = contextValueRef.current

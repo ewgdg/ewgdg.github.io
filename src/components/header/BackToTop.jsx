@@ -1,13 +1,24 @@
+'use client'
+
 import React from "react"
 import PropTypes from "prop-types"
-import Zoom from "@material-ui/core/Zoom"
+import Zoom from "@mui/material/Zoom"
+import { makeStyles } from "@mui/styles"
 import { scrollIntoView } from "../../utils/scroll"
 import useLayoutContext from "../../contexts/useLayoutContext"
 import useScrollTrigger from "../pageScroll/useScrollTrigger"
 
+const useStyles = makeStyles({
+  scrollButton: {
+    position: "fixed",
+    bottom: "2rem",
+    right: "2rem",
+  },
+})
+
 function BackToTop(props) {
   const { children, anchorId } = props
-  // const classes = useStyles();
+  const classes = useStyles()
   const { scrollLayer } = useLayoutContext()
   // trigger on whole page scroll instead of on a single elem
   const trigger = useScrollTrigger({
@@ -27,17 +38,8 @@ function BackToTop(props) {
 
   return (
     <Zoom in={trigger}>
-      <div onClick={handleClick} role="presentation" className="scroll-button">
+      <div onClick={handleClick} role="presentation" className={classes.scrollButton}>
         {children}
-        <style jsx>
-          {`
-            .scroll-button {
-              position: fixed;
-              bottom: 2rem;
-              right: 2rem;
-            }
-          `}
-        </style>
       </div>
     </Zoom>
   )

@@ -1,12 +1,13 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prop-types */
+'use client'
 import React, { useMemo, useLayoutEffect, useRef } from "react"
-import { Link } from "@reach/router"
-import Paper from "@material-ui/core/Paper"
-import Container from "@material-ui/core/Container"
+import Link from "../components/navigation/Link"
+import Paper from "@mui/material/Paper"
+import Container from "@mui/material/Container"
 import Prism from "prismjs"
-import Img from "gatsby-image"
-import { makeStyles } from "@material-ui/core/styles"
+import Image from "next/image"
+import { makeStyles } from "@mui/styles"
 
 export const useStyles = makeStyles({
   taglist: {
@@ -40,11 +41,11 @@ export function BackToList() {
   return (
     <div style={{ textAlign: "right" }}>
       <Link
+        href="/blog"
         style={{
           display: "inline-block",
           marginRight: "5px",
         }}
-        to="/blog"
       >
         Back To List
       </Link>
@@ -70,15 +71,22 @@ export function BlogPostTemplate({
     if (featuredImage) {
       const imageStyle = {
         width: "100%",
+        height: "auto",
         maxHeight: "350px",
         objectFit: "cover",
       }
-      if (featuredImage.childImageSharp) {
+      const imageSrc = typeof featuredImage === 'string' ? featuredImage : featuredImage.src || featuredImage.childImageSharp?.fluid?.src || ''
+      if (imageSrc) {
         result = (
-          <Img fluid={featuredImage.childImageSharp.fluid} style={imageStyle} />
+          <Image
+            src={imageSrc}
+            alt="featured"
+            width={0}
+            height={0}
+            style={imageStyle}
+            priority
+          />
         )
-      } else {
-        result = <img src={featuredImage} alt="featured" style={imageStyle} />
       }
     }
     return result
@@ -110,7 +118,7 @@ export function BlogPostTemplate({
               {description && <p>{description}</p>}
               {publicationDate && (
                 <span>
-                  <small>Publication date:{publicationDate}</small>
+                  <small>Publication date:{publicationDate.toString()}</small>
                 </span>
               )}
             </div>
@@ -144,7 +152,7 @@ export function BlogPostTemplate({
             <ul className={classes.taglist}>
               {tags.map(tag => (
                 <li key={`${tag}tag`} className={classes.tag}>
-                  <Link to={`/blog?tags=${tag}#search`}>{tag}</Link>
+                  <Link href={`/blog?tags=${tag}#search`}>{tag}</Link>
                 </li>
               ))}
             </ul>
@@ -154,3 +162,5 @@ export function BlogPostTemplate({
     </section>
   )
 }
+
+export default BlogPostTemplate

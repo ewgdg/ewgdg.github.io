@@ -6,15 +6,26 @@
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable react/jsx-indent */
 /* eslint-disable react/jsx-indent-props */
+'use client'
 import React from "react"
-import PropTypes from "prop-types"
 // import { kebabCase } from "lodash"
-import Helmet from "react-helmet"
-import { graphql } from "gatsby"
+import { Helmet } from "react-helmet-async"
 
-import "github-markdown-css"
+import "github-markdown-css/github-markdown-light.css"
 
 import Prism from "prismjs"
+import "prismjs/themes/prism.css"
+import "prismjs/plugins/line-numbers/prism-line-numbers.css"
+import "prismjs/components/prism-javascript"
+import "prismjs/components/prism-css"
+import "prismjs/components/prism-markup"
+import "prismjs/components/prism-python"
+import "prismjs/components/prism-clike"
+import "prismjs/components/prism-c"
+import "prismjs/components/prism-java"
+import "prismjs/components/prism-csharp"
+import "prismjs/components/prism-cpp"
+import "prismjs/plugins/line-numbers/prism-line-numbers"
 
 import Footer from "../components/footer/Footer"
 import HeaderContainer from "../components/header/HeaderContainer"
@@ -25,7 +36,7 @@ import { BlogPostTemplate, useStyles } from "./BlogPostTemplate"
 Prism.manual = true
 
 const BlogPost = ({ data, uri }) => {
-  const { markdownRemark: post } = data
+  const post = data
   useRestoreScrollTop([uri])
   const classes = useStyles()
   return (
@@ -41,15 +52,15 @@ const BlogPost = ({ data, uri }) => {
         content={post.html}
         description={post.frontmatter.description}
         publicationDate={post.frontmatter.date}
-        helmet={
-          <Helmet titleTemplate="%s | Blog">
-            <title>{`${post.frontmatter.title}`}</title>
-            <meta
-              name="description"
-              content={`${post.frontmatter.description}`}
-            />
-          </Helmet>
-        }
+        // helmet={
+        //   <Helmet titleTemplate="%s | Blog">
+        //     <title>{`${post.frontmatter.title}`}</title>
+        //     <meta
+        //       name="description"
+        //       content={`${post.frontmatter.description}`}
+        //     />
+        //   </Helmet>
+        // }
         tags={post.frontmatter.tags}
         title={post.frontmatter.title}
         includeBackButton={!post.frontmatter.isPortfolio}
@@ -60,33 +71,27 @@ const BlogPost = ({ data, uri }) => {
   )
 }
 
-BlogPost.propTypes = {
-  data: PropTypes.shape({
-    markdownRemark: PropTypes.object,
-  }),
-}
-
 export default BlogPost
 
-export const pageQuery = graphql`
-  query BlogPostByID($id: String!) {
-    markdownRemark(id: { eq: $id }) {
-      id
-      html
-      frontmatter {
-        isPortfolio
-        date(formatString: "MMMM DD, YYYY")
-        title
-        description
-        tags
-        featuredImage {
-          childImageSharp {
-            fluid(maxWidth: 2048, quality: 50) {
-              ...GatsbyImageSharpFluid
-            }
-          }
-        }
-      }
-    }
-  }
-`
+// export const pageQuery = graphql`
+//   query BlogPostByID($id: String!) {
+//     markdownRemark(id: { eq: $id }) {
+//       id
+//       html
+//       frontmatter {
+//         isPortfolio
+//         date(formatString: "MMMM DD, YYYY")
+//         title
+//         description
+//         tags
+//         featuredImage {
+//           childImageSharp {
+//             fluid(maxWidth: 2048, quality: 50) {
+//               ...GatsbyImageSharpFluid
+//             }
+//           }
+//         }
+//       }
+//     }
+//   }
+// `

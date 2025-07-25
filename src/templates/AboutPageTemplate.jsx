@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
+'use client'
 import React from "react"
 import HeaderContainer from "../components/header/HeaderContainer"
-import BubbleTank from "../components/bubbles/BubbleTank"
 import Footer from "../components/footer/Footer"
 import PageContainer, { SectionTypes } from "../components/pageScroll/Container"
 import Section from "../components/pageScroll/Section"
+import BubbleTank from "../components/bubbles/BubbleTank"
 
 export function AboutPagePreview({ jumbotronProps }) {
   return (
@@ -46,3 +47,5 @@ export function AboutPageTemplate({ jumbotronProps, facts }) {
     </div>
   )
 }
+
+export default AboutPageTemplate

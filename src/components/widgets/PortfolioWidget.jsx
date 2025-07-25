@@ -1,37 +1,22 @@
+'use client'
+
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
-import Container from "@material-ui/core/Container"
+// GraphQL queries will be replaced with static data or API calls
+import Container from "@mui/material/Container"
 
 import ImageBasedCard from "../thumbnail/ImageBasedCard"
 import CardDivision from "../thumbnail/CardDivision"
 import AnimatedTitle from "../titles/AnimatedTitle"
 
 import FlexContainer from "../sections/FlexContainer"
-import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
+import useBlogPostCards from "../others/useBlogPostCards"
 import SlideInSection from "../sections/SlideInSection"
-import "../../queries/postsQueries"
+// import "../../queries/postsQueries" // Removed Gatsby query
 
-function PortfolioPreview() {
-  const { allMarkdownRemark } = useStaticQuery(graphql`
-    query {
-      allMarkdownRemark(
-        sort: { order: DESC, fields: [frontmatter___date] }
-        limit: 2
-        filter: {
-          frontmatter: {
-            isPortfolio: { eq: true }
-            featuredPost: { eq: true }
-            isTemplate: { ne: true }
-          }
-        }
-      ) {
-        ...PostsFragment
-      }
-    }
-  `)
-  const flatten = useFlattenMarkdownData(allMarkdownRemark)
+function PortfolioPreview({ portfolioItems = [] }) {
+  const flatten = useBlogPostCards(portfolioItems)
 
   return (
     <FlexContainer>

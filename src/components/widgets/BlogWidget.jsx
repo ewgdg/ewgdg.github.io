@@ -1,38 +1,22 @@
+'use client'
+
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react"
-import Container from "@material-ui/core/Container"
-import Grid from "@material-ui/core/Grid"
-import Button from "@material-ui/core/Button"
-import { graphql, useStaticQuery, navigate } from "gatsby"
+import Container from "@mui/material/Container"
+import Grid from "@mui/material/Grid"
+import Button from "@mui/material/Button"
+// GraphQL queries will be replaced with static data or API calls
 import MediaCard from "../thumbnail/MediaCard"
 import CardDivision from "../thumbnail/CardDivision"
 import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
-import useFlattenMarkdownData from "../others/useFlattenMarkdownData"
+import useBlogPostCards from "../others/useBlogPostCards"
 // import "../../queries/postsQueries" //no need , gatsby export query to global
 import FadeInSection from "../sections/FadeInSection"
 
-function BlogPreview() {
-  const { allMarkdownRemark } = useStaticQuery(graphql`
-    query {
-      allMarkdownRemark(
-        sort: { order: DESC, fields: [frontmatter___date] }
-        limit: 2
-        filter: {
-          frontmatter: {
-            templateKey: { eq: "BlogPost" }
-            featuredPost: { eq: true }
-            isPortfolio: { ne: true }
-            isTemplate: { ne: true }
-          }
-        }
-      ) {
-        ...PostsFragment
-      }
-    }
-  `)
-  const flatten = useFlattenMarkdownData(allMarkdownRemark)
+function BlogPreview({ blogPosts = [] }) {
+  const flatten = useBlogPostCards(blogPosts)
   return (
     <FlexContainer>
       <Container style={{ maxHeight: "100%", height: "600px" }}>
@@ -69,7 +53,7 @@ function BlogPreview() {
             variant="outlined"
             color="secondary"
             onClick={() => {
-              navigate("/blog")
+              window.location.href = "/blog"
             }}
           >
             View more

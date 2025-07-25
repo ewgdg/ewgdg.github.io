@@ -1,8 +1,13 @@
+'use client'
+
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from "react"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@mui/styles"
 
 const useStyles = makeStyles({
+  container: {
+    textAlign: "center",
+  },
   heading: {
     position: "relative",
     display: "inline-block",
@@ -30,10 +35,12 @@ const useStyles = makeStyles({
     },
   },
 })
+
 function StyledTitle({ title, style }) {
   const classes = useStyles()
+  
   return (
-    <div style={{ textAlign: "center", ...style }}>
+    <div className={classes.container} style={style}>
       <h2 className={classes.heading}>
         <strong> {title} </strong>
       </h2>

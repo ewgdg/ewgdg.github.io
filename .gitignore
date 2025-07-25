@@ -2,6 +2,8 @@
 .vscode/
 
 .netlify/
+.next/
+out/
 
 # Logs
 logs

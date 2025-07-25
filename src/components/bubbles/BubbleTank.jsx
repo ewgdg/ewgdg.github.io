@@ -1,16 +1,18 @@
+'use client'
+
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/prop-types */
 import React, { useEffect, useRef, useMemo, useState } from "react"
-import GridList from "@material-ui/core/GridList"
-import GridListTile from "@material-ui/core/GridListTile"
-import { makeStyles } from "@material-ui/styles"
-import ListSubheader from "@material-ui/core/ListSubheader"
+import ImageList from "@mui/material/ImageList"
+import ImageListItem from "@mui/material/ImageListItem"
+import { makeStyles } from "@mui/styles"
+import ListSubheader from "@mui/material/ListSubheader"
 import { debounce } from "../../utils/throttle"
 import Bubble from "./Bubble"
 import ParallaxSection from "../sections/ParallaxSection"
 import Section from "../pageScroll/Section"
-import { Create } from "@material-ui/icons"
+import { Create } from "@mui/icons-material"
 import PageContainer, { SectionTypes } from "../pageScroll/Container"
 
 const useStyles = makeStyles({
@@ -166,7 +168,7 @@ export default function BubbleTank({
 
   const dataSize = data.length
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight })
-  const { grids, cellWidth, cellHeight: newCellHeight } = useMemo(() => initBubbles(dataSize, cellHeight, cellsPerRow), [data, dataSize, cellHeight, cellsPerRow, windowSize])
+  const { grids, cellWidth, cellHeight: newCellHeight } = useMemo(() => initBubbles(dataSize, cellHeight, cellsPerRow), [dataSize, cellHeight, cellsPerRow])
   cellHeight = newCellHeight
 
   useEffect(() => {
@@ -184,7 +186,7 @@ export default function BubbleTank({
     const copy = [...data]
     shuffle(copy)
     return copy
-  }, [data, grids])
+  }, [data])
 
   let dataIndex = 0
 
@@ -202,7 +204,7 @@ export default function BubbleTank({
         height="auto"
       >
         <div style={{ position: "relative", height: `${gridHeight}px` }} >
-          {grid.bubbles.map((bubbleProps, j) => {
+          {grid.bubbles.map((bubbleProps) => {
             const bubbleData = unorderedData[dataIndex++]
             return (
               <ParallaxSection

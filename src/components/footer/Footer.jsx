@@ -1,10 +1,12 @@
+'use client'
+
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useCallback } from "react"
-import EmailRoundedIcon from "@material-ui/icons/EmailRounded"
-import LinkedInIcon from "@material-ui/icons/LinkedIn"
-import IconButton from "@material-ui/core/IconButton"
-import SvgIcon from "@material-ui/core/SvgIcon"
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
+import LinkedInIcon from "@mui/icons-material/LinkedIn"
+import IconButton from "@mui/material/IconButton"
+import SvgIcon from "@mui/material/SvgIcon"
 
 const generateOnClickForLink = link => {
   return () => {
@@ -31,15 +33,7 @@ function Footer({ className }) {
       </p>
       <p style={{ opacity: 0.6, color: "white" }}>
         <small>
-          © {new Date().getFullYear()} Xian Zhang, Built with{" "}
-          <a
-            href="https://www.gatsbyjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "white" }}
-          >
-            Gatsby
-          </a>
+          © {new Date().getFullYear()} Xian Zhang
         </small>
       </p>
       <div>

@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+'use client'
 import React, { useEffect, useState } from "react"
 import { debounce } from "../utils/throttle"
 import CardTable from "../components/thumbnail/CardTable"
@@ -71,3 +72,4 @@ function BlogPageTemplate({
 }
 
 export { BlogPageTemplate, BlogPagePreview }
+export default BlogPageTemplate

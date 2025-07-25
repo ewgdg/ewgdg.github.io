@@ -1,8 +1,10 @@
+'use client'
+
 import React, { useRef, useLayoutEffect, useEffect } from "react"
 import PropTypes from "prop-types"
-import Box from "@material-ui/core/Box"
-import { makeStyles } from "@material-ui/styles"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import Box from "@mui/material/Box"
+import { makeStyles } from "@mui/styles"
+import CircularProgress from "@mui/material/CircularProgress"
 import Message from "./Message"
 
 const useStyles = makeStyles({

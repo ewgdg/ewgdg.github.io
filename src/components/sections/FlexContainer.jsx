@@ -1,5 +1,7 @@
+'use client'
+
 /* eslint-disable react/prop-types */
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@mui/styles"
 
 import React from "react"
 

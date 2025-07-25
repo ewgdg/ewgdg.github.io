@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+'use client'
 import React from "react"
 import ParallaxSection from "../components/sections/ParallaxSection"
 import PageContainer from "../components/pageScroll/Container"
@@ -20,7 +21,7 @@ export function IndexPagePreview({ jumbotronProps }) {
   )
 }
 
-export function IndexPageTemplate({ jumbotronProps }) {
+export function IndexPageTemplate({ jumbotronProps, blogPosts, portfolioItems }) {
   return (
     <PageContainer>
       <Section>
@@ -36,12 +37,12 @@ export function IndexPageTemplate({ jumbotronProps }) {
       </Section>
       <Section>
         <ParallaxSection>
-          <PortfolioWidget />
+          <PortfolioWidget portfolioItems={portfolioItems} />
         </ParallaxSection>
       </Section>
       <Section>
         <ParallaxSection>
-          <BlogWidget />
+          <BlogWidget blogPosts={blogPosts} />
         </ParallaxSection>
       </Section>
       <Section height="auto">

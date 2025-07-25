@@ -1,9 +1,11 @@
+'use client'
+
 /* eslint-disable react/prop-types */
 import React, { useCallback } from "react"
-import { makeStyles } from "@material-ui/core/styles"
-import Modal from "@material-ui/core/Modal"
-import Backdrop from "@material-ui/core/Backdrop"
-import Fade from "@material-ui/core/Fade"
+import { makeStyles } from "@mui/styles"
+import Modal from "@mui/material/Modal"
+import Backdrop from "@mui/material/Backdrop"
+import Fade from "@mui/material/Fade"
 import TextLink from "../others/TextLink"
 
 const useStyles = makeStyles({

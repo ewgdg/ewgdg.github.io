@@ -1,3 +1,5 @@
+'use client'
+
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable import/no-unresolved */
@@ -5,8 +7,8 @@
 import React, { useRef, useEffect, useContext } from "react"
 import { TimelineLite, Power3, Power1 } from "gsap"
 
-import { makeStyles } from "@material-ui/styles"
-import { Link } from "gatsby"
+import { makeStyles } from "@mui/styles"
+import Link from "../navigation/Link"
 import LayoutContext from "../../contexts/LayoutContext"
 
 import CharSequence from "../sections/CharSequence"
@@ -173,7 +175,7 @@ function About() {
               <div>
                 <div className="animatedline">
                   And that is{" "}
-                  <Link to="/blog/2019-10-30-why-i-created-this-page">why</Link>{" "}
+                  <Link href="/blog/2019-10-30-why-i-created-this-page">why</Link>{" "}
                   I made this page.
                 </div>
                 <div className="animatedline">
@@ -181,7 +183,7 @@ function About() {
                 </div>
                 <div className="animatedline" style={{ opacity: 0.8 }}>
                   If you want to learn more about me, keep{" "}
-                  <Link to="/about">reading</Link>.
+                  <Link href="/about">reading</Link>.
                 </div>
                 <div className="animatedline" style={{ opacity: 0.6 }}>
                   Or send me an{" "}

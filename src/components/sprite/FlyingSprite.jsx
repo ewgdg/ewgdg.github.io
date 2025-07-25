@@ -1,34 +1,10 @@
+'use client'
+
 /* eslint-disable react/prop-types */
 import React, { useMemo, useState, useEffect } from "react"
-import { makeStyles } from "@material-ui/styles"
-import { graphql, useStaticQuery } from "gatsby"
+import { Box } from "@mui/material"
 // import { useContext } from "react"
 // import useLayoutContext from "../../contexts/useLayoutContext"
-
-const useStyles = makeStyles({
-  bulin: {
-    position: "fixed",
-    left: "0",
-    top: "0",
-    "z-index": ({ bulinZindex }) => bulinZindex,
-    width: ({ dimension: { x } }) => `${x}px`,
-    height: ({ dimension: { y } }) => `${y}px`,
-    "background-image": ({ backgroundImage }) => `url(${backgroundImage})`,
-    "background-repeat": "no-repeat",
-    "animation-name": "$bulinFly",
-    "animation-duration": "0.5s",
-    "animation-fill-mode": "forwards",
-    "animation-iteration-count": "infinite",
-    "animation-timing-function": "steps(7)",
-    transform: "rotateY(180deg)",
-    // "pointer-events": "none",
-  },
-  "@keyframes bulinFly": {
-    "100%": {
-      "background-position-x": "-910px",
-    },
-  },
-})
 function getViewPortDimension() {
   const w = Math.max(
     document.documentElement.clientWidth,
@@ -179,14 +155,7 @@ function startAnimationFlyingSprite(
 }
 
 function FlyingSprite({ style }) {
-  const query = graphql`
-    query {
-      file(relativePath: { eq: "bulin.png" }) {
-        publicURL
-      }
-    }
-  `
-  const imgSrc = useStaticQuery(query).file.publicURL
+  const imgSrc = "/img/bulin.png" // Static asset path
   const spriteDimension = { x: 130, y: 134 }
 
   // const context = useLayoutContext();
@@ -206,8 +175,6 @@ function FlyingSprite({ style }) {
     rotateY: 0,
   })
 
-  const classes = useStyles(styleProps)
-
   useEffect(() => {
     const cancelAnimation = startAnimationFlyingSprite(
       setSpriteState,
@@ -218,11 +185,29 @@ function FlyingSprite({ style }) {
   }, [setSpriteState])
 
   return (
-    <div
-      className={classes.bulin}
-      style={{
+    <Box
+      sx={{
+        position: "fixed",
+        left: 0,
+        top: 0,
+        zIndex: styleProps.bulinZindex,
+        width: `${styleProps.dimension.x}px`,
+        height: `${styleProps.dimension.y}px`,
+        backgroundImage: `url(${styleProps.backgroundImage})`,
+        backgroundRepeat: "no-repeat",
+        '@keyframes bulinFly': {
+          '100%': {
+            backgroundPositionX: '-910px',
+          },
+        },
+        animationName: 'bulinFly',
+        animationDuration: '0.5s',
+        animationFillMode: 'forwards',
+        animationIterationCount: 'infinite',
+        animationTimingFunction: 'steps(7)',
         transform: `translate3d(${spriteState.x}px,${spriteState.y}px, 0) rotateY(${spriteState.rotateY}deg)`,
         display: spriteState.display ? "block" : "none",
+        // pointerEvents: "none",
         ...style,
       }}
     />

@@ -1,0 +1,23 @@
+module.exports = {
+  presets: ['next/babel'],
+  plugins: [
+    [
+      'prismjs',
+      {
+        languages: [
+          'javascript',
+          'css',
+          'markup',
+          'clike',
+          'c',
+          'java',
+          'csharp',
+          'cpp'
+        ],
+        plugins: ['line-numbers'],
+        theme: 'default',
+        css: true
+      }
+    ]
+  ]
+}

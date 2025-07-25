@@ -1,15 +1,17 @@
+'use client'
+
 import React, { useState, useCallback, useRef } from "react"
-import ChatIcon from "@material-ui/icons/Chat"
-import Popover from "@material-ui/core/Popover"
-import { makeStyles } from "@material-ui/core/styles"
-import Zoom from "@material-ui/core/Zoom"
+import ChatIcon from "@mui/icons-material/Chat"
+import Popover from "@mui/material/Popover"
+import { makeStyles } from "@mui/styles"
+import Zoom from "@mui/material/Zoom"
 import {
   usePopupState,
   bindTrigger,
   bindPopover,
 } from "material-ui-popup-state/hooks"
-import Box from "@material-ui/core/Box"
-import Button from "@material-ui/core/Button"
+import Box from "@mui/material/Box"
+import Button from "@mui/material/Button"
 import useScrollTrigger from "../pageScroll/useScrollTrigger"
 import MessageList from "./MessageList"
 import * as chatbot from "./chatbotAPI"

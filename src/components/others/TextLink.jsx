@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from "react"
-import { Link } from "gatsby"
+import Link from "../navigation/Link"
 // to parse the about.md text
 // text in format : string {link text} string
 function TextLink({ text, links, isInternal = true }) {
@@ -14,18 +14,17 @@ function TextLink({ text, links, isInternal = true }) {
   const splited = text.split(regEx)
 
   const res = []
-  const LinkCom = isInternal ? Link : "a"
   for (let i = 0; i < splited.length; i += 2) {
     res.push(splited[i])
     res.push(
       isInternal ? (
-        <LinkCom to={links[i / 2]} key={i / 2}>
+        <Link href={links[i / 2]} key={i / 2}>
           {matched[i / 2].replace(/({|})/g, "")}
-        </LinkCom>
+        </Link>
       ) : (
-        <LinkCom href={links[i / 2]} key={i / 2}>
+        <a href={links[i / 2]} key={i / 2}>
           {matched[i / 2].replace(/({|})/g, "")}
-        </LinkCom>
+        </a>
       )
     )
     res.push(splited[i + 1])

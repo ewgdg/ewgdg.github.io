@@ -1,7 +1,9 @@
+'use client'
+
 /* eslint-disable react/prop-types */
 import React from "react"
 import ReactPaginate from "react-paginate"
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles } from "@mui/styles"
 
 const useStyles = makeStyles({
   pagination: {
@@ -81,7 +83,7 @@ function Paginator({ pageCount = 0, handlePageClick, currentPage, style }) {
         previousLabel="prev"
         nextLabel="next"
         breakLabel="..."
-        pageCount={pageCount}
+        pageCount={Math.ceil(pageCount)}
         marginPagesDisplayed={2}
         pageRangeDisplayed={5}
         onPageChange={handlePageClick}

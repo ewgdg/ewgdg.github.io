@@ -1,11 +1,13 @@
+'use client'
+
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useState } from "react"
-import { makeStyles } from "@material-ui/styles"
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import { makeStyles } from "@mui/styles"
 // import from tweenmax since it auto import the plugins
 import { gsap, Elastic } from "gsap"
 // import { CSSPlugin } from "gsap/TweenMax"
 // import { Elastic } from "gsap/EasePack"
-import Img from "gatsby-image"
+import Image from "next/image"
 import FlexContainer from "../sections/FlexContainer"
 import TransitionsModal, {
   useModalController,
@@ -52,9 +54,9 @@ function Bubble({
   const ref = useRef(null)
   const [pos, setPos] = useState({ x: style.left, y: style.top })
   const { top, left, ...otherStyle } = style
-  useEffect(() => {
-    let x = pos.x
-    let y = pos.y
+  useLayoutEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    let { x, y } = pos
 
     let targetY = y
     let targetX = x
@@ -134,7 +136,7 @@ function Bubble({
       currentRef.removeEventListener("mouseenter", onmouseenter)
       currentRef.removeEventListener("mouseleave", onmouseleave)
     }
-  }, [bounds, radius, ref.current])
+  }, [bounds, radius])
 
   const classes = useStyles({ radius })
   const [
@@ -176,16 +178,7 @@ function Bubble({
         description={description}
       >
         {image &&
-          (image.childImageSharp ? (
-            <Img
-              fluid={image.childImageSharp.fluid}
-              imgStyle={imageStyle}
-              objectFit="contain"
-              style={imageStyle}
-            />
-          ) : (
-            <img src={image} alt={title} style={imageStyle} />
-          ))}
+          <Image src={image} alt={title} width={0} height={0} style={imageStyle} sizes="(max-width: 768px) 100vw, 50vw" />}
       </TransitionsModal>
     </>
   )

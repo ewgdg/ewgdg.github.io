@@ -9,13 +9,13 @@ import React, {
   useLayoutEffect,
   useEffect,
 } from "react"
-import Container from "@material-ui/core/Container"
-import TextField from "@material-ui/core/TextField"
+import Container from "@mui/material/Container"
+import TextField from "@mui/material/TextField"
 
 import MediaCard from "./MediaCard"
 import Paginator from "../others/Paginator"
 import CardDivision from "./CardDivision"
-import useRestoreComponentState from "../../contexts/useRestoreComponentState"
+import useRestoreComponentStateToBeforeUnmounting from "../../contexts/useRestoreComponentState"
 // import SlideInSection from "../sections/SlideInSection"
 import { debounce } from "../../utils/throttle"
 import FadeInSection from "../sections/FadeInSection"
@@ -149,11 +149,16 @@ function CardTable({
     }
   }, [])
 
-  const historyState = useRestoreComponentState([uri, name], getCurrentState)
+  const historyState = useRestoreComponentStateToBeforeUnmounting([uri, name], getCurrentState)
 
   useLayoutEffect(() => {
     if (historyState) {
+      // Restore state from history
       const keywords = historyState.keywords || ""
+      stateContainer.current = {
+        currentPage: historyState.currentPage || 0,
+        keywords,
+      }
       setKeywords(keywords)
       filter(keywords, datalist)
       setPage(historyState.currentPage || 0)

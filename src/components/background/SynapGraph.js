@@ -40,7 +40,7 @@ class SynapGraph {
   }
 
   setTarget(nodeIndex) {
-    const col = nodeIndex / this.ceilsPerRow
+    const col = Math.floor(nodeIndex / this.ceilsPerRow)
     const row = nodeIndex % this.ceilsPerRow
 
     const target = this.generateNode(col, row)

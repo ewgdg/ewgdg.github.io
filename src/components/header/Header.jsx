@@ -1,18 +1,19 @@
+'use client'
+
 /* eslint-disable react/destructuring-assignment */
 
 import PropTypes from "prop-types"
 import React from "react"
-import AppBar from "@material-ui/core/AppBar"
-import Toolbar from "@material-ui/core/Toolbar"
-import IconButton from "@material-ui/core/IconButton"
-import Typography from "@material-ui/core/Typography"
-import Box from "@material-ui/core/Box"
+import AppBar from "@mui/material/AppBar"
+import Toolbar from "@mui/material/Toolbar"
+import IconButton from "@mui/material/IconButton"
+import Typography from "@mui/material/Typography"
+import Box from "@mui/material/Box"
 
-import Fab from "@material-ui/core/Fab"
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp"
+import Fab from "@mui/material/Fab"
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp"
 
-import { navigate } from "gatsby"
-import { makeStyles } from "@material-ui/core/styles"
+import { useRouter } from "@/lib/useRouter"
 import Chat from "../chatbox/Chat"
 
 // import LayoutContext from "../../contexts/LayoutContext"
@@ -20,24 +21,22 @@ import BackToTop from "./BackToTop"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
 
-const useStyles = makeStyles({
-  navbar: {
-    backgroundColor: "transparent",
-    color: ({ color }) => color,
-    userSelect: "none",
-  },
-})
 
 const Header = ({ position, color, style, chatbox }) => {
   const context = useLayoutContext()
-  const styles = useStyles({ color })
+  const router = useRouter()
+
   return (
     <div>
       <AppBar
         position={position}
         id="navbar-top"
-        className={styles.navbar}
-        style={style}
+        sx={{
+          backgroundColor: "transparent",
+          color: color,
+          userSelect: "none",
+          ...style,
+        }}
       >
         <Toolbar style={{ justifyContent: "space-around" }} variant="dense">
           <IconButton
@@ -46,7 +45,7 @@ const Header = ({ position, color, style, chatbox }) => {
             aria-label="menu"
             onClick={() => {
               clearHistoryState(["/"], context)
-              navigate("/")
+              router.push("/")
             }}
           >
             {/* <MenuIcon /> */}
@@ -60,7 +59,8 @@ const Header = ({ position, color, style, chatbox }) => {
             color="inherit"
             aria-label="menu"
             onClick={() => {
-              navigate("/about")
+              clearHistoryState(["/about"], context)
+              router.push("/about")
             }}
           >
             <Box display="flex" flexDirection="row">
@@ -76,7 +76,7 @@ const Header = ({ position, color, style, chatbox }) => {
             aria-label="menu"
             onClick={() => {
               clearHistoryState(["/blog"], context)
-              navigate("/blog")
+              router.push("/blog")
             }}
           >
             <Typography variant="h6" className="title">

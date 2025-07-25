@@ -1,5 +1,7 @@
+'use client'
+
 import React, { useMemo, useRef, useEffect, useContext, useState, useLayoutEffect } from "react"
-import { makeStyles } from "@material-ui/styles"
+import { makeStyles } from "@mui/styles"
 import {
   isAnyInViewport,
   // isAboveViewportBottom,
@@ -367,33 +369,39 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
     ] = getHandlers(container, context, sectionType)
     const { scrollLayer } = context
 
-
     container.addEventListener("wheel", wheelHandler, { passive: false })
-    // console.log(ref.current.getEventListener("wheel"))
-    scrollLayer.addEventListener("keydown", keyDownHandler)
-    scrollLayer.addEventListener("keyup", keyUpHandler)
+    
+    // Only add scrollLayer event listeners if scrollLayer exists (not during SSR)
+    if (scrollLayer) {
+      scrollLayer.addEventListener("keydown", keyDownHandler)
+      scrollLayer.addEventListener("keyup", keyUpHandler)
+      scrollLayer.addEventListener("pointermove", pointerMoveHandler, {
+        passive: false,
+      })
+      scrollLayer.addEventListener("pointerup", pointerUpHandler, {
+        passive: false,
+      })
+      scrollLayer.addEventListener("pointerleave", pointerCancelHandler, {
+        passive: false,
+      })
+    }
 
     container.addEventListener("pointerdown", pointerDownHandler, {
-      passive: false,
-    })
-    scrollLayer.addEventListener("pointermove", pointerMoveHandler, {
-      passive: false,
-    })
-    scrollLayer.addEventListener("pointerup", pointerUpHandler, {
-      passive: false,
-    })
-    scrollLayer.addEventListener("pointerleave", pointerCancelHandler, {
       passive: false,
     })
 
     return () => {
       container.removeEventListener("wheel", wheelHandler)
-      scrollLayer.removeEventListener("keydown", keyDownHandler)
-      scrollLayer.removeEventListener("keyup", keyUpHandler)
       container.removeEventListener("pointerdown", pointerDownHandler)
-      scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
-      scrollLayer.removeEventListener("pointerup", pointerUpHandler)
-      scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
+      
+      // Only remove scrollLayer event listeners if scrollLayer exists
+      if (scrollLayer) {
+        scrollLayer.removeEventListener("keydown", keyDownHandler)
+        scrollLayer.removeEventListener("keyup", keyUpHandler)
+        scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
+        scrollLayer.removeEventListener("pointerup", pointerUpHandler)
+        scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
+      }
       return null
     }
   }, [containerRef.current, context, sectionType])

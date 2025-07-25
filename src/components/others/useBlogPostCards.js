@@ -1,22 +1,26 @@
 import { useMemo } from "react"
-import { navigate } from "gatsby"
+import { useRouter } from "@/lib/useRouter"
 import { clearHistoryState } from "../../contexts/useRestoreComponentState"
 import useLayoutContext from "../../contexts/useLayoutContext"
 
-export default function(rawData) {
-  if (!(rawData && rawData.edges)) {
-    return []
-  }
+export default function useBlogPostCards(posts) {
   const context = useLayoutContext()
+  const router = useRouter()
+
   return useMemo(() => {
+    if (!Array.isArray(posts)) {
+      return []
+    }
     const res = []
-    rawData.edges.forEach(postData => {
-      const { post } = postData
+    posts.forEach(post => {
       const { title } = post.frontmatter
+      // Handle both string paths and object format
       const image = post.frontmatter.featuredImage
-        ? post.frontmatter.featuredImage.childImageSharp.fluid.src
+        ? (typeof post.frontmatter.featuredImage === 'string'
+          ? post.frontmatter.featuredImage
+          : post.frontmatter.featuredImage.src)
         : null
-      const description = post.frontmatter.description || post.excerpt
+      const description = post.frontmatter.description || post.excerpt || post.content.substring(0, 200) + '...'
       const { tags } = post.frontmatter
       const publicationDate = post.frontmatter.date
       const onClick = (() => {
@@ -28,13 +32,8 @@ export default function(rawData) {
           }
         }
         return () => {
-          // trim the last slash
-          let { slug } = post.fields
-          if (post.fields.slug.charAt(slug) === "/") {
-            slug = slug.slice(0, -1)
-          }
-          clearHistoryState([slug], context)
-          navigate(slug)
+          clearHistoryState([post.uri], context)
+          router.push(post.uri)
         }
       })()
       res.push({
@@ -47,5 +46,5 @@ export default function(rawData) {
       })
     })
     return res
-  }, [rawData.edges])
+  }, [posts, router, context])
 }
