@@ -13,7 +13,7 @@ import TransitionsModal, {
   useModalController,
 } from "../modals/TransitionsModal"
 
-// prevent plugins from being dropped by treeshaking, not neccessary for tweenmax
+// prevent plugins from being dropped by treeshaking, not necessary for tweenmax
 // const plugins = [CSSPlugin]
 
 const useStyles = makeStyles({
@@ -39,7 +39,6 @@ function random(min, max, isInteger = true) {
   return res + min
 }
 
-// compoenent
 function Bubble({
   style,
   children,
