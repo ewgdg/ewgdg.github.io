@@ -5,6 +5,8 @@
 .next/
 out/
 
+.claude/tasks/
+
 # Logs
 logs
 *.log
