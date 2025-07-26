@@ -14,6 +14,18 @@ const generateOnClickForLink = link => {
     else window.location.href = link
   }
 }
+
+// Pre-process obfuscated URLs outside component
+const githubLink = "h#t&t#p&s:/&/g&$i$#t#$h#u#b.$c$o$m&/#e#w#gdg/my-p#$a$#ge"
+  .replace(/\^/g, "@")
+  .replace(/[#&$]/g, "")
+
+const linkedinLink = "h$t##t###ps:/$/$$w$w$w.li#$nk&e&d&in.&co&m/&in&/x#i#an-#zh#a$$#ng-6#773$$30##90/"
+  .replace(/\^/g, "@")
+  .replace(/[#&$]/g, "")
+
+const githubClickHandler = generateOnClickForLink(githubLink)
+const linkedinClickHandler = generateOnClickForLink(linkedinLink)
 function Footer({ className }) {
   return (
     <footer
@@ -50,14 +62,7 @@ function Footer({ className }) {
 
         <IconButton
           color="primary"
-          onClick={useCallback(
-            generateOnClickForLink(
-              "h#t&t#p&s:/&/g&$i$#t#$h#u#b.$c$o$m&/#e#w#gdg/my-p#$a$#ge"
-                .replace(/\^/g, "@")
-                .replace(/[#&$]/g, "")
-            ),
-            []
-          )}
+          onClick={githubClickHandler}
         >
           {/* github icon */}
           <SvgIcon htmlColor="white">
@@ -66,14 +71,7 @@ function Footer({ className }) {
         </IconButton>
         <IconButton
           color="primary"
-          onClick={useCallback(
-            generateOnClickForLink(
-              "h$t##t###ps:/$/$$w$w$w.li#$nk&e&d&in.&co&m/&in&/x#i#an-#zh#a$$#ng-6#773$$30##90/"
-                .replace(/\^/g, "@")
-                .replace(/[#&$]/g, "")
-            ),
-            []
-          )}
+          onClick={linkedinClickHandler}
         >
           <LinkedInIcon htmlColor="white" />
         </IconButton>
