@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useMemo, useRef, useEffect, useContext, useState, useLayoutEffect } from "react"
+import React, { useMemo, useRef, useEffect, useContext, useState, useCallback } from "react"
 import { makeStyles } from "@mui/styles"
 import {
   isAnyInViewport,
@@ -348,16 +348,23 @@ const getHandlers = (container, context, sectionType) => {
 // a container component whose children should be of type Section
 function Container({ children, sectionType = SectionTypes.FullView }) {
   const classes = useStyles()
-  // create ref for container
-  const containerRef = useRef(null)
   const context = useContext(LayoutContext)
 
-  // add dom event listener
-  useLayoutEffect(() => {
-    if (!containerRef.current) return () => { }
+  // Store cleanup function to be called when ref changes
+  const cleanupRef = useRef(null)
 
-    const container = containerRef.current
+  // Ref callback to handle container element changes
+  const containerRefCallback = useCallback((container) => {
+    // Clean up previous listeners if they exist
+    if (cleanupRef.current) {
+      cleanupRef.current()
+      cleanupRef.current = null
+    }
 
+    // If container is null (unmounting), just return
+    if (!container) return
+
+    // Set up event listeners for the new container
     const [
       wheelHandler,
       keyUpHandler,
@@ -370,16 +377,16 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
     const { scrollLayer } = context
 
     container.addEventListener("wheel", wheelHandler, { passive: false })
-    
+
     // Add keyboard listeners to document since scrollLayer is no longer focusable
     document.addEventListener("keydown", keyDownHandler)
     document.addEventListener("keyup", keyUpHandler)
-    
+
     // Only add scrollLayer event listeners if scrollLayer exists (not during SSR)
     if (scrollLayer) {
       // Check if browser supports Pointer Events API
       const hasPointerEvents = 'PointerEvent' in window
-      
+
       if (hasPointerEvents) {
         // Use modern Pointer Events API
         scrollLayer.addEventListener("pointerdown", pointerDownHandler, {
@@ -414,17 +421,18 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
       }
     }
 
-    return () => {
+    // Store cleanup function
+    cleanupRef.current = () => {
       container.removeEventListener("wheel", wheelHandler)
-      
+
       // Remove keyboard listeners from document
       document.removeEventListener("keydown", keyDownHandler)
       document.removeEventListener("keyup", keyUpHandler)
-      
+
       // Only remove scrollLayer event listeners if scrollLayer exists
       if (scrollLayer) {
         const hasPointerEvents = 'PointerEvent' in window
-        
+
         if (hasPointerEvents) {
           // Remove pointer events
           scrollLayer.removeEventListener("pointerdown", pointerDownHandler)
@@ -440,14 +448,23 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
           scrollLayer.removeEventListener("touchcancel", pointerCancelHandler)
         }
       }
-      return null
     }
-  }, [containerRef.current, context, sectionType])
+  }, [context, sectionType])
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (cleanupRef.current) {
+        cleanupRef.current()
+        cleanupRef.current = null
+      }
+    }
+  }, [])
 
   return (
     <div
       className={classes.root}
-      ref={containerRef}
+      ref={containerRefCallback}
       id="pageContainer"
     >
       {children}
