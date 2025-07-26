@@ -10,9 +10,9 @@ const theme = createTheme({
   cssVariables: true,
   palette: {
     mode: 'light',
-    primary: {
-      main: '#cc1f41',
-    },
+    // primary: {
+    //   main: '#cc1f41',
+    // },
     background: {
       default: '#ffffff',
       paper: '#ffffff',
