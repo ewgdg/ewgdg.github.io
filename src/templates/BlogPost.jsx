@@ -9,7 +9,6 @@
 'use client'
 import React from "react"
 // import { kebabCase } from "lodash"
-import { Helmet } from "react-helmet-async"
 
 import "github-markdown-css/github-markdown-light.css"
 import "prismjs/themes/prism.css"

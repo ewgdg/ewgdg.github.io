@@ -1,10 +1,8 @@
 'use client'
 
-import { useEffect } from 'react'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import { HelmetProvider } from 'react-helmet-async'
 import PersistedLayout from '@/components/layouts/PersistedLayout'
 
 // Create MUI theme
@@ -32,14 +30,12 @@ export default function ClientProviders({
 }) {
   return (
     <AppRouterCacheProvider>
-      <HelmetProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <PersistedLayout>
-            {children}
-          </PersistedLayout>
-        </ThemeProvider>
-      </HelmetProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <PersistedLayout>
+          {children}
+        </PersistedLayout>
+      </ThemeProvider>
     </AppRouterCacheProvider>
   )
 }
