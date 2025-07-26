@@ -147,7 +147,7 @@ function CardTable({
 
   const historyState = useRestoreComponentStateToBeforeUnmounting([uri, name], getCurrentState)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (historyState) {
       // Restore state from history
       const keywords = historyState.keywords || ""
