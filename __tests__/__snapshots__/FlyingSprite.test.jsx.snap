@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Flying sprite renders properly 1`] = `
-<div
-  class="makeStyles-bulin-1 makeStyles-bulin-3"
-  style="transform: translate3d(0px,0px, 0) rotateY(0deg); display: none;"
-/>
-`;
