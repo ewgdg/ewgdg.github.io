@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useRef } from "react"
 import ChatIcon from "@mui/icons-material/Chat"
+import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover"
 import { makeStyles } from "@mui/styles"
 import Zoom from "@mui/material/Zoom"
@@ -16,18 +17,21 @@ import useScrollTrigger from "../pageScroll/useScrollTrigger"
 import MessageList from "./MessageList"
 import * as chatbot from "./chatbotAPI"
 
-const useStyles = makeStyles({
-  icon: {
+const useStyles = makeStyles((theme) => ({
+  iconButton: {
     position: ({ icon }) => icon.position || "fixed",
     bottom: ({ icon }) => icon.bottom || "50%",
     left: ({ icon }) => icon.left || "55%",
-    fontSize: "3.5rem",
+    color: ({ icon }) => icon.color || theme.palette.common.white,
     "&:hover": {
       color: "#93f145",
     },
   },
+  chatIcon: {
+    fontSize: "3.5rem",
+  },
   box: {},
-})
+}))
 
 // eslint-disable-next-line react/prop-types
 function Chat({ iconStyle }) {
@@ -120,11 +124,13 @@ function Chat({ iconStyle }) {
   return (
     <div>
       <Zoom in={!trigger}>
-        <ChatIcon
-          className={classes.icon}
+        <IconButton
+          className={classes.iconButton}
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...chatIconProps}
-        />
+        >
+          <ChatIcon className={classes.chatIcon} />
+        </IconButton>
       </Zoom>
       <Popover
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -137,6 +143,7 @@ function Chat({ iconStyle }) {
           vertical: "center",
           horizontal: "right",
         }}
+        role="dialog"
       >
         <Box>
           <Box className={classes.box}>
