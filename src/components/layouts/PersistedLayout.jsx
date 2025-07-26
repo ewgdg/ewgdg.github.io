@@ -18,51 +18,56 @@ const Layout = ({ children }) => {
   // if the context is not resolved then the children will not be mounted
   const [resolved, setResolved] = useState(false)
 
-  const setContextCallBack = useCallback(
+  const setScrollLayerRefCallBack = useCallback(
     e => {
+      // Clean up previous resize listener if it exists
+      if (contextValueRef.current.resizeCleanup) {
+        contextValueRef.current.resizeCleanup()
+        contextValueRef.current.resizeCleanup = null
+      }
+
       contextValueRef.current = {
         ...contextValueRef.current,
         scrollLayer: e,
+      }
+
+      if (e) {
+        // get init scrollHeight
+        contextValueRef.current.scrollHeight = e.scrollHeight
+
+        const onResize = debounce(() => {
+          // reset scrollTop when resize
+          e.scrollTop = Math.round(
+            (e.scrollTop / contextValueRef.current.scrollHeight) *
+            e.scrollHeight
+          )
+          contextValueRef.current.scrollHeight = e.scrollHeight
+        }, 100)
+
+        window.addEventListener("resize", onResize)
+
+        // Store cleanup function
+        contextValueRef.current.resizeCleanup = () => {
+          window.removeEventListener("resize", onResize)
+        }
       }
 
       setResolved(!!e)
       // Remove automatic focus to prevent aria-hidden conflicts with modals
       // if (e) e.focus()
     },
-    [contextValueRef]
+    []
   )
 
-  // Add timeout fallback to prevent infinite loading
+  // Cleanup resize listener on component unmount
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (!resolved) {
-        console.warn('PersistedLayout: Forcing render after timeout')
-        setResolved(true)
-      }
-    }, 1000) // 1 second fallback
-
-    return () => clearTimeout(timeout)
-  }, [resolved])
-
-  useEffect(() => {
-    const { scrollLayer } = contextValueRef.current
-    // get init scrollHeight
-    contextValueRef.current.scrollHeight = scrollLayer.scrollHeight
-    const onResize = debounce(() => {
-      // reset scrollTop when resize
-
-      scrollLayer.scrollTop = Math.round(
-        (scrollLayer.scrollTop / contextValueRef.current.scrollHeight) *
-          scrollLayer.scrollHeight
-      )
-      contextValueRef.current.scrollHeight = scrollLayer.scrollHeight
-    }, 100)
-    window.addEventListener("resize", onResize)
-
     return () => {
-      window.removeEventListener("resize", onResize)
+      if (contextValueRef.current.resizeCleanup) {
+        contextValueRef.current.resizeCleanup()
+        contextValueRef.current.resizeCleanup = null
+      }
     }
-  }, [contextValueRef.current.scrollLayer])
+  }, [])
   return (
     <LayoutContext.Provider value={contextValueRef.current}>
       <div
@@ -79,7 +84,7 @@ const Layout = ({ children }) => {
           // the tabIndex is to make the div focusable and so that it can receive keyboard events
           // tabIndex="0"
           className="scrollDiv"
-          ref={setContextCallBack}
+          ref={setScrollLayerRefCallBack}
           style={{
             overflowY: "scroll !important",
             overflowX: "hidden",
