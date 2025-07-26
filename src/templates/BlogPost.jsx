@@ -60,25 +60,3 @@ const BlogPost = ({ data, uri }) => {
 
 export default BlogPost
 
-// export const pageQuery = graphql`
-//   query BlogPostByID($id: String!) {
-//     markdownRemark(id: { eq: $id }) {
-//       id
-//       html
-//       frontmatter {
-//         isPortfolio
-//         date(formatString: "MMMM DD, YYYY")
-//         title
-//         description
-//         tags
-//         featuredImage {
-//           childImageSharp {
-//             fluid(maxWidth: 2048, quality: 50) {
-//               ...GatsbyImageSharpFluid
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `

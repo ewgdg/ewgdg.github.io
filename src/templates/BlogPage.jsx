@@ -1,14 +1,12 @@
 /* eslint-disable react/prop-types */
 'use client'
 import React from "react"
-// import { graphql } from "gatsby"
 import { useSearchParams } from 'next/navigation'
 import SEO from "../components/header/SEO"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import useBlogPostCards from "../components/others/useBlogPostCards"
 import { setComponentState } from "../contexts/useRestoreComponentState"
 import useLayoutContext from "../contexts/useLayoutContext"
-// import "../queries/postsQueries"
 import { BlogPageTemplate } from "./BlogPageTemplate"
 
 function BlogPage({ data, uri }) {
@@ -42,36 +40,3 @@ function BlogPage({ data, uri }) {
 
 export default BlogPage
 
-// export const query = graphql`
-//   query BlogPageTemplate {
-//     markdownRemark(
-//       frontmatter: { templateKey: { eq: "BlogPage" }, isTemplate: { ne: true } }
-//     ) {
-//       frontmatter {
-//         jumbotronProps: jumbotron {
-//           headline
-//           subtitle
-//           image {
-//             childImageSharp {
-//               fluid(maxWidth: 2048, quality: 80) {
-//                 ...GatsbyImageSharpFluid
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//     allMarkdownRemark(
-//       sort: { order: DESC, fields: [frontmatter___date] }
-//       filter: {
-//         frontmatter: {
-//           templateKey: { eq: "BlogPost" }
-//           isPortfolio: { ne: true }
-//           isTemplate: { ne: true }
-//         }
-//       }
-//     ) {
-//       ...PostsFragment
-//     }
-//   }
-// `

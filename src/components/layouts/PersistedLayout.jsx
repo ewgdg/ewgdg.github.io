@@ -4,7 +4,6 @@
 'use client'
 import React, { useState, useCallback, useEffect } from "react"
 import PropTypes from "prop-types"
-// import { useStaticQuery, graphql } from "gatsby"
 
 // Moved global CSS imports to layout.js
 // import ScrollMagic from "scrollmagic-with-ssr"

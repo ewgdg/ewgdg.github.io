@@ -21,29 +21,5 @@ const IndexPage = ({ jumbotronProps, blogPosts, portfolioItems, uri }) => {
     </>
   )
 }
-// export const query = graphql`
-//   query IndexPageTemplate {
-//     markdownRemark(
-//       frontmatter: {
-//         templateKey: { eq: "IndexPage" }
-//         isTemplate: { ne: true }
-//       }
-//     ) {
-//       frontmatter {
-//         jumbotronProps: jumbotron {
-//           headline
-//           subtitle
-//           image {
-//             childImageSharp {
-//               fluid(maxWidth: 2048, quality: 80) {
-//                 ...GatsbyImageSharpFluid
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
-//   }
-// `
 
 export default IndexPage

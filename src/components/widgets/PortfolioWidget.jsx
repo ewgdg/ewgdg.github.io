@@ -13,7 +13,6 @@ import AnimatedTitle from "../titles/AnimatedTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useBlogPostCards from "../others/useBlogPostCards"
 import SlideInSection from "../sections/SlideInSection"
-// import "../../queries/postsQueries" // Removed Gatsby query
 
 function PortfolioPreview({ portfolioItems = [] }) {
   const flatten = useBlogPostCards(portfolioItems)

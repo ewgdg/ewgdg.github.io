@@ -22,39 +22,3 @@ export default function AboutPage({ data }) {
     </>
   )
 }
-// export const query = graphql`
-//   query AboutPageTemplate {
-//     markdownRemark(
-//       frontmatter: {
-//         templateKey: { eq: "AboutPage" }
-//         isTemplate: { ne: true }
-//       }
-//     ) {
-//       frontmatter {
-//         jumbotronProps: jumbotron {
-//           headline
-//           subtitle
-//           image {
-//             childImageSharp {
-//               fluid(maxWidth: 2048, quality: 80) {
-//                 ...GatsbyImageSharpFluid
-//               }
-//             }
-//           }
-//         }
-//         facts {
-//           title
-//           description
-//           image {
-//             childImageSharp {
-//               fluid(maxWidth: 700, quality: 60) {
-//                 ...GatsbyImageSharpFluid
-//               }
-//             }
-//           }
-//           links
-//         }
-//       }
-//     }
-//   }
-// `

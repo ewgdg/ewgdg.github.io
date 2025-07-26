@@ -12,7 +12,6 @@ import CardDivision from "../thumbnail/CardDivision"
 import StyledTitle from "../titles/StyledTitle"
 import FlexContainer from "../sections/FlexContainer"
 import useBlogPostCards from "../others/useBlogPostCards"
-// import "../../queries/postsQueries" //no need , gatsby export query to global
 import FadeInSection from "../sections/FadeInSection"
 
 function BlogPreview({ blogPosts = [] }) {
