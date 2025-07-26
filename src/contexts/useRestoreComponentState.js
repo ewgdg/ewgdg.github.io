@@ -40,8 +40,14 @@ function clearHistoryState(path, context) {
   deleteValue(context.historyState, path)
 }
 function useHistoryState(path, givenContext) {
-  const context = givenContext || useLayoutContext()
+  const defaultContext = useLayoutContext()
+  const context = givenContext || defaultContext
   const { historyState } = context
+
+  if (!path) {
+    return null
+  }
+
   return getValue(historyState, path)
 }
 
@@ -49,12 +55,12 @@ function useHistoryState(path, givenContext) {
   custom hook to record page state between route change
 */
 function useRestoreComponentStateToBeforeUnmounting(path, getCurrentState) {
-  if (!path) {
-    return null
-  }
   const context = useLayoutContext()
   const oldPath = useRef([])
+
   useEffect(() => {
+    if (!path) return
+
     // on component unmount
     return () => {
       const { historyState } = context
@@ -67,16 +73,21 @@ function useRestoreComponentStateToBeforeUnmounting(path, getCurrentState) {
   }, [getCurrentState, path, context])
 
   const res = useHistoryState(path, context)
+
+  if (!path) {
+    return null
+  }
+
   return res
 }
 
 function useRestoreComponentStateToBeforeRouting(path, getCurrentState) {
-  if (!path) {
-    return null
-  }
   const context = useLayoutContext()
   const oldPath = useRef([])
+
   const saveState = useCallback(() => {
+    if (!path) return
+
     const { historyState } = context
     // clear old history
     deleteValue(historyState, oldPath.current)
@@ -88,14 +99,19 @@ function useRestoreComponentStateToBeforeRouting(path, getCurrentState) {
   useRouterEvents(ROUTER_EVENTS.BEFORE_NAVIGATION, saveState)
 
   const res = useHistoryState(path, context)
-  return res
-}
 
-function setComponentState(path, state) {
   if (!path) {
     return null
   }
-  const context = useLayoutContext()
+
+  return res
+}
+
+// This function should not use hooks since it's not a React component or custom hook
+function setComponentState(path, state, context) {
+  if (!path || !context) {
+    return null
+  }
   setValue(context.historyState, path, state)
 }
 

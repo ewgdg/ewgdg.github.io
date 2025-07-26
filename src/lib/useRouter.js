@@ -108,18 +108,18 @@ export function useRouter() {
     }
 
     // Emit after navigation event when pathname changes (skip initial load)
-    const [isInitialLoad, setIsInitialLoad] = useState(true)
+    const isInitialLoadRef = useRef(true)
 
     useEffect(() => {
-        if (isInitialLoad) {
-            setIsInitialLoad(false)
+        if (isInitialLoadRef.current) {
+            isInitialLoadRef.current = false
             return
         }
 
         routerEventSource.emit(ROUTER_EVENTS.AFTER_NAVIGATION, {
             pathname
         })
-    }, [])
+    }, [pathname])
 
     // Return enhanced router with original Next.js methods plus custom ones
     return {

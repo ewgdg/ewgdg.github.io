@@ -39,6 +39,8 @@ const Section = React.forwardRef(({ children, style, className, id, height = "10
   )
 })
 
+Section.displayName = 'Section'
+
 Section.propTypes = {
   children: PropTypes.node,
   ref: PropTypes.func,

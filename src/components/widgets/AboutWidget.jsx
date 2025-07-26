@@ -66,10 +66,11 @@ function About() {
   const charSequenceBackgroundRef = useRef(null)
   const charRefs = useRef([])
   const context = useContext(LayoutContext)
-  if (!context.scrollLayer) return null
   const classes = useStyles()
+
   // add scroll animation controll
   useEffect(() => {
+    if (!context.scrollLayer) return
     const animation = gsap.timeline()
     // animate ribbon
     animation
@@ -133,6 +134,8 @@ function About() {
       scrollDetector.destroy()
     }
   }, [context])
+
+  if (!context.scrollLayer) return null
 
   return (
     <FlexContainer>

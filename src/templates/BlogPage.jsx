@@ -7,6 +7,7 @@ import SEO from "../components/header/SEO"
 import useRestoreScrollTop from "../contexts/useRestoreScrollTop"
 import useBlogPostCards from "../components/others/useBlogPostCards"
 import { setComponentState } from "../contexts/useRestoreComponentState"
+import useLayoutContext from "../contexts/useLayoutContext"
 // import "../queries/postsQueries"
 import { BlogPageTemplate } from "./BlogPageTemplate"
 
@@ -16,8 +17,9 @@ function BlogPage({ data, uri }) {
   const searchParams = useSearchParams()
   const tags = searchParams.get('tags')  // will be null if not present
 
+  const context = useLayoutContext()
   if (tags) {
-    setComponentState([uri, tableName, "keywords"], tags)
+    setComponentState([uri, tableName, "keywords"], tags, context)
   }
   const { frontmatter } = data
   const location_hash = typeof window !== 'undefined' ? window.location.hash : null

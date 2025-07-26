@@ -2,18 +2,19 @@ import { useCallback, useLayoutEffect } from "react"
 import { useRestoreComponentStateToBeforeRouting } from "./useRestoreComponentState"
 import useLayoutContext from "./useLayoutContext"
 
-export default function(path, hash) {
-  path = [...path, "scroll"]
+function useRestoreScrollTop(path, hash) {
+  const scrollPath = [...path, "scroll"]
   const context = useLayoutContext()
+  const { scrollLayer } = context
   const getCurrentState = useCallback(() => {
     return {
       scroll_percent:
-        context.scrollLayer.scrollTop / context.scrollLayer.scrollHeight,
+        scrollLayer.scrollTop / scrollLayer.scrollHeight,
     }
-  }, [])
+  }, [scrollLayer])
 
   // use before-routing instead of unmounting to avoid reading scroll position of 0 during unmounting
-  const historyState = useRestoreComponentStateToBeforeRouting(path, getCurrentState)
+  const historyState = useRestoreComponentStateToBeforeRouting(scrollPath, getCurrentState)
   // restore to history state
   useLayoutEffect(() => {
     let scrollTop = 0
@@ -23,8 +24,10 @@ export default function(path, hash) {
     if (target) {
       scrollTop = target.offsetTop
     } else if (historyState) {
-      scrollTop = historyState.scroll_percent * context.scrollLayer.scrollHeight
+      scrollTop = historyState.scroll_percent * scrollLayer.scrollHeight
     }
-    context.scrollLayer.scrollTop = scrollTop
-  }, [path, hash])
+    scrollLayer.scrollTop = scrollTop
+  }, [])
 }
+
+export default useRestoreScrollTop

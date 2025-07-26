@@ -27,8 +27,10 @@ function ParallaxSection({
   const [y, setY] = useState(0)
   const [opacity, setOpacity] = useState(1)
   const context = useContext(LayoutContext)
-  if (!context.scrollLayer) return null
+
   useEffect(() => {
+    if (!context.scrollLayer) return
+
     const scene = new ScrollDetector({
       scrollLayer: context.scrollLayer,
       triggerElement: containerRef.current,
@@ -54,7 +56,9 @@ function ParallaxSection({
       setY(0)
       window.removeEventListener("resize", onResize)
     }
-  }, [context, maxProgressValue, children, triggerHook, progressUnit])
+  }, [context, maxProgressValue, children, triggerHook, progressUnit, fade])
+
+  if (!context.scrollLayer) return null
 
   return (
     <div

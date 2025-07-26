@@ -9,8 +9,10 @@ function FadeInSection({ triggerHook = 1, duration = 1.3, children, style }) {
   const containerRef = useRef(null)
   const context = useContext(LayoutContext)
   const { scrollLayer } = context
-  if (!scrollLayer) return null
+
   useLayoutEffect(() => {
+    if (!scrollLayer) return
+
     const scene = new ScrollDetector({
       scrollLayer: context.scrollLayer,
       triggerElement: containerRef.current,
@@ -50,7 +52,9 @@ function FadeInSection({ triggerHook = 1, duration = 1.3, children, style }) {
       animation.kill()
       scene.destroy()
     }
-  }, [context, children, triggerHook])
+  }, [context, children, triggerHook, duration, scrollLayer])
+
+  if (!scrollLayer) return null
 
   return (
     <div ref={containerRef} style={style} className="fade-in">

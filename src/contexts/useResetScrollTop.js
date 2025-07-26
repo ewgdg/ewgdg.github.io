@@ -1,9 +1,13 @@
 import { useLayoutEffect } from "react"
 import useLayoutContext from "./useLayoutContext"
 
-export default function() {
-  const context = useLayoutContext()
+function useResetScrollTop() {
+  const { scrollLayer } = useLayoutContext()
   useLayoutEffect(() => {
-    context.scrollLayer.scrollTop = 0
-  }, [])
+    if (scrollLayer) {
+      scrollLayer.scrollTop = 0
+    }
+  }, [scrollLayer])
 }
+
+export default useResetScrollTop

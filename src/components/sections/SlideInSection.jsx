@@ -15,8 +15,10 @@ function SlideInSection({
   const containerRef = useRef(null)
   const context = useContext(LayoutContext)
   const { scrollLayer } = context
-  if (!scrollLayer) return null
+
   useLayoutEffect(() => {
+    if (!scrollLayer) return
+
     const scene = new ScrollDetector({
       scrollLayer: context.scrollLayer,
       triggerElement: containerRef.current,
@@ -58,7 +60,9 @@ function SlideInSection({
       animation.kill()
       scene.destroy()
     }
-  }, [context, children, triggerHook])
+  }, [context, children, triggerHook, duration, fromY, scrollLayer])
+
+  if (!scrollLayer) return null
 
   return (
     <div ref={containerRef} style={style} className="slide-in">
