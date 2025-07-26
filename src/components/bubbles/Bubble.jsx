@@ -1,7 +1,7 @@
 'use client'
 
 /* eslint-disable react/prop-types */
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react"
+import React, { useEffect, useLayoutEffect, useRef } from "react"
 import { makeStyles } from "@mui/styles"
 // import from tweenmax since it auto import the plugins
 import { gsap, Elastic } from "gsap"
@@ -50,20 +50,24 @@ function Bubble({
   image,
 }) {
   const ref = useRef(null)
-  const [pos, setPos] = useState({ x: style.left, y: style.top })
   const { top, left, ...otherStyle } = style
   useLayoutEffect(() => {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    let { x, y } = pos
+    // Initialize position from style props
+    let x = left || 0
+    let y = top || 0
 
     let targetY = y
     let targetX = x
-    let rafId
+    let ticker
 
     let targetCosTheta = 0
     let targetSinTheta = 0
 
     const currentRef = ref.current  // Use currentRef to ensure the same reference
+    if (!currentRef) return
+
+    // Set initial position
+    gsap.set(currentRef, { x, y })
 
     function setNextTarget() {
       targetX = random(bounds.minX, bounds.maxX, false)
@@ -74,15 +78,22 @@ function Bubble({
       targetCosTheta = hypotenuse > 0 ? (targetX - x) / hypotenuse : 0
       targetSinTheta = hypotenuse > 0 ? (targetY - y) / hypotenuse : 0
     }
-    let lastTimestamp
+
+    let lastTimestamp = performance.now()
     const speed = 0.03
-    function animationStep(timestamp) {
+
+    function animationStep() {
+      if (!currentRef) return
+
+      const timestamp = performance.now()
+
       if (
         (x === targetX || targetCosTheta === 0) &&
         (y === targetY || targetSinTheta === 0)
       ) {
         setNextTarget()
       }
+
       const elapsed = timestamp - lastTimestamp
       const progress = elapsed * speed
       x += progress * targetCosTheta
@@ -90,16 +101,18 @@ function Bubble({
       y += progress * targetSinTheta
       y = targetSinTheta > 0 ? Math.min(y, targetY) : Math.max(y, targetY)
 
-      setPos({ x: x, y: y })
+      // Direct DOM manipulation with GSAP - no React re-render, GPU accelerated
+      gsap.set(currentRef, { x, y })
+
       lastTimestamp = timestamp
-      rafId = requestAnimationFrame(animationStep)
     }
+
     function startAnimation() {
-      rafId = requestAnimationFrame(timestamp => {
-        lastTimestamp = timestamp
-        animationStep(timestamp)
-      })
+      lastTimestamp = performance.now()
+      ticker = gsap.ticker.add(animationStep)
     }
+
+    // Initialize first target and start animation
     startAnimation()
 
     // on mouseover
@@ -112,7 +125,10 @@ function Bubble({
         ease: Elastic.easeOut.config(1, 0.2),
       })
 
-      cancelAnimationFrame(rafId)
+      if (ticker) {
+        gsap.ticker.remove(ticker)
+        ticker = null
+      }
     }
     function onmouseleave() {
       if (!isHover) return
@@ -122,7 +138,6 @@ function Bubble({
         scale: 1,
         ease: Elastic.easeOut.config(1, 0.2),
       })
-      // animation.reverse()
       startAnimation()
     }
 
@@ -130,11 +145,14 @@ function Bubble({
     currentRef.addEventListener("mouseleave", onmouseleave)
 
     return () => {
-      cancelAnimationFrame(rafId)
-      currentRef.removeEventListener("mouseenter", onmouseenter)
-      currentRef.removeEventListener("mouseleave", onmouseleave)
+      if (ticker) {
+        gsap.ticker.remove(ticker)
+        ticker = null
+      }
+      currentRef?.removeEventListener("mouseenter", onmouseenter)
+      currentRef?.removeEventListener("mouseleave", onmouseleave)
     }
-  }, [bounds, radius])
+  }, [bounds, radius, left, top])
 
   const classes = useStyles({ radius })
   const [
@@ -152,7 +170,7 @@ function Bubble({
   return (
     <>
       <div
-        style={{ ...otherStyle, left: pos.x, top: pos.y }}
+        style={{ ...otherStyle, left: { left }, top: { top } }}
         className={`${classes.circle} ${className || ""}`}
         ref={ref}
         role="button"
