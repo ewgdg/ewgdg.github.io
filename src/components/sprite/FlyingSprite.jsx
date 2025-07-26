@@ -140,9 +140,13 @@ function startAnimationFlyingSprite(
     const timeStamp = performance.now()
     const pos = flyingSpriteObject.getSpritePosition(timeStamp)
     
-    // Direct DOM manipulation - no React re-render
-    elementRef.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) rotateY(${pos.rotateY}deg)`
-    elementRef.current.style.display = 'block'
+    // Direct DOM manipulation with GSAP - no React re-render, GPU accelerated
+    gsap.set(elementRef.current, { 
+      x: pos.x, 
+      y: pos.y, 
+      rotationY: pos.rotateY,
+      display: 'block'
+    })
   }
 
   // Initialize the sprite object
