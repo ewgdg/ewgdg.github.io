@@ -154,18 +154,20 @@ function startAnimationFlyingSprite(
   }
 }
 
+// Constants
+const SPRITE_DIMENSION = { x: 130, y: 134 }
+
 function FlyingSprite({ style }) {
   const imgSrc = "/img/bulin.png" // Static asset path
-  const spriteDimension = { x: 130, y: 134 }
 
   // const context = useLayoutContext();
   const styleProps = useMemo(
     () => ({
       backgroundImage: imgSrc,
-      dimension: spriteDimension,
+      dimension: SPRITE_DIMENSION,
       bulinZindex: 3,
     }),
-    [imgSrc, spriteDimension]
+    [imgSrc]
   )
 
   const [spriteState, setSpriteState] = useState({
@@ -179,7 +181,7 @@ function FlyingSprite({ style }) {
     const cancelAnimation = startAnimationFlyingSprite(
       setSpriteState,
       0.3,
-      spriteDimension
+      SPRITE_DIMENSION
     )
     return cancelAnimation
   }, [setSpriteState])
