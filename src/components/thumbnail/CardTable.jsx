@@ -162,7 +162,7 @@ function CardTable({
       }
       setPage(historyState.currentPage || 0)
     }
-  }, [])
+  }, [historyState])
 
   return (
     <div

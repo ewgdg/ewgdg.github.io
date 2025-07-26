@@ -1,4 +1,4 @@
-import { useCallback, useLayoutEffect } from "react"
+import { useCallback, useLayoutEffect, useRef } from "react"
 import { useRestoreComponentStateToBeforeRouting } from "./useRestoreComponentState"
 import useLayoutContext from "./useLayoutContext"
 
@@ -27,7 +27,7 @@ function useRestoreScrollTop(path, hash) {
       scrollTop = historyState.scroll_percent * scrollLayer.scrollHeight
     }
     scrollLayer.scrollTop = scrollTop
-  }, [])
+  }, [hash, historyState, scrollLayer])
 }
 
 export default useRestoreScrollTop
