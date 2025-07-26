@@ -45,7 +45,7 @@ function AnimatedTitle({ title }) {
       scrollDetector.destroy()
     }
     // eslint-disable-next-line react/destructuring-assignment
-  }, [context.scrollLayer])
+  }, [context.scrollLayer, title])
   return (
     <h2 ref={headlineRef} style={{ textAlign: "center" }}>
       <strong>{title}</strong>
