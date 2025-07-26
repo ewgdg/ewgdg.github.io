@@ -2,7 +2,8 @@
 
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
-import React, { useRef, useContext, useEffect, useState } from "react"
+import React, { useRef, useContext, useEffect } from "react"
+import { gsap } from "gsap"
 import LayoutContext from "../../contexts/LayoutContext"
 import { debounce } from "../../utils/throttle"
 import { ScrollDetector } from "../../utils/scroll"
@@ -24,8 +25,6 @@ function ParallaxSection({
 }) {
   const containerRef = useRef(null)
   const contentRef = useRef(null)
-  const [y, setY] = useState(0)
-  const [opacity, setOpacity] = useState(1)
   const context = useContext(LayoutContext)
 
   useEffect(() => {
@@ -39,10 +38,16 @@ function ParallaxSection({
       throttleLimit: 0,
     })
     scene.setEventListener(progress => {
-      const newY = `${progress * maxProgressValue}${progressUnit}`
+      if (!contentRef.current) return
+      
+      const yValue = progress * maxProgressValue
       const newOpacity = 1 - progress * fade
-      setY(newY)
-      setOpacity(newOpacity)
+      
+      // Direct GSAP manipulation - no React re-render, GPU accelerated
+      gsap.set(contentRef.current, {
+        y: progressUnit === 'px' ? yValue : `${yValue}${progressUnit}`,
+        opacity: newOpacity
+      })
     })
 
     const onResize = debounce(() => {
@@ -53,7 +58,10 @@ function ParallaxSection({
 
     return () => {
       scene.destroy()
-      setY(0)
+      // Reset to initial position with GSAP
+      if (contentRef.current) {
+        gsap.set(contentRef.current, { y: 0, opacity: 1 })
+      }
       window.removeEventListener("resize", onResize)
     }
   }, [context, maxProgressValue, children, triggerHook, progressUnit, fade])
@@ -75,9 +83,9 @@ function ParallaxSection({
         ref={contentRef}
         style={{
           position: "relative",
-          transform: `translate3d(0,${y},0)`,
+          transform: "translate3d(0,0,0)", // Initial transform, will be updated by GSAP
           backfaceVisibility: "hidden",
-          opacity: `${opacity}`,
+          opacity: 1, // Initial opacity, will be updated by GSAP
           ...innerDivStyle,
         }}
       >
