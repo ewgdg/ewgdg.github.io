@@ -1,7 +1,8 @@
 'use client'
 
 /* eslint-disable react/prop-types */
-import React, { useMemo, useState, useEffect } from "react"
+import React, { useMemo, useRef, useEffect } from "react"
+import { gsap } from "gsap"
 import { Box } from "@mui/material"
 // import { useContext } from "react"
 // import useLayoutContext from "../../contexts/useLayoutContext"
@@ -126,31 +127,39 @@ class FlyingSpriteObject {
 }
 
 function startAnimationFlyingSprite(
-  setDomElemState,
+  elementRef,
   speed = 1,
   spriteDimension
 ) {
   let flyingSpriteObject
-  let rafId
-  function animationStep(timeStamp) {
-    rafId = requestAnimationFrame(animationStep)
+  let ticker
+  
+  function animationStep() {
+    if (!elementRef.current) return
+    
+    const timeStamp = performance.now()
     const pos = flyingSpriteObject.getSpritePosition(timeStamp)
-    setDomElemState({ ...pos, display: true })
+    
+    // Direct DOM manipulation - no React re-render
+    elementRef.current.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) rotateY(${pos.rotateY}deg)`
+    elementRef.current.style.display = 'block'
   }
 
-  rafId = requestAnimationFrame(timeStamp => {
-    // init pos
-    flyingSpriteObject = new FlyingSpriteObject(
-      timeStamp,
-      speed,
-      spriteDimension
-    )
-    // step
-    animationStep(timeStamp)
-  })
+  // Initialize the sprite object
+  const initTimeStamp = performance.now()
+  flyingSpriteObject = new FlyingSpriteObject(
+    initTimeStamp,
+    speed,
+    spriteDimension
+  )
+  
+  // Use GSAP ticker for smooth 60fps updates
+  ticker = gsap.ticker.add(animationStep)
 
   return () => {
-    cancelAnimationFrame(rafId)
+    if (ticker) {
+      gsap.ticker.remove(ticker)
+    }
   }
 }
 
@@ -159,6 +168,7 @@ const SPRITE_DIMENSION = { x: 130, y: 134 }
 
 function FlyingSprite({ style }) {
   const imgSrc = "/img/bulin.png" // Static asset path
+  const spriteRef = useRef(null)
 
   // const context = useLayoutContext();
   const styleProps = useMemo(
@@ -170,24 +180,18 @@ function FlyingSprite({ style }) {
     [imgSrc]
   )
 
-  const [spriteState, setSpriteState] = useState({
-    display: false,
-    x: 0,
-    y: 0,
-    rotateY: 0,
-  })
-
   useEffect(() => {
     const cancelAnimation = startAnimationFlyingSprite(
-      setSpriteState,
+      spriteRef,
       0.3,
       SPRITE_DIMENSION
     )
     return cancelAnimation
-  }, [setSpriteState])
+  }, [])
 
   return (
     <Box
+      ref={spriteRef}
       sx={{
         position: "fixed",
         left: 0,
@@ -207,8 +211,8 @@ function FlyingSprite({ style }) {
         animationFillMode: 'forwards',
         animationIterationCount: 'infinite',
         animationTimingFunction: 'steps(7)',
-        transform: `translate3d(${spriteState.x}px,${spriteState.y}px, 0) rotateY(${spriteState.rotateY}deg)`,
-        display: spriteState.display ? "block" : "none",
+        transform: 'translate3d(0px, 0px, 0) rotateY(0deg)', // Initial transform, will be updated by GSAP
+        display: "none", // Initially hidden, will be shown by animation
         // pointerEvents: "none",
         ...style,
       }}
