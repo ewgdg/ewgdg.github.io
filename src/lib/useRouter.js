@@ -1,5 +1,5 @@
 import { useRouter as useNextRouter, usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 // Custom event names for navigation lifecycle
 export const ROUTER_EVENTS = {
