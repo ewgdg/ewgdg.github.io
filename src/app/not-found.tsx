@@ -1,5 +1,5 @@
 import { Container, Typography, Box, Button } from '@mui/material'
-import Link from '../components/navigation/Link'
+import Link from '../components/navigation/link'
 
 export default function NotFound() {
   return (

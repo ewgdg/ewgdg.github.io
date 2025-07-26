@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
-import { getAllBlogPosts, getMarkdownData } from '@/lib/localstorage'
-import BlogPost from '@/templates/BlogPost'
+import { getAllBlogPosts, getMarkdownData } from '@/lib/content/content'
+import BlogPost from '@/templates/blog-post'
 
 export async function generateStaticParams() {
   const posts = await getAllBlogPosts()

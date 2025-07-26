@@ -3,7 +3,7 @@
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-import PersistedLayout from '@/components/layouts/PersistedLayout'
+import PersistedLayout from '@/components/layouts/persisted-layout'
 
 // Create MUI theme
 const theme = createTheme({

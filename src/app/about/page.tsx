@@ -1,5 +1,5 @@
-import { getMarkdownData } from '@/lib/localstorage'
-import AboutPage from '@/templates/AboutPage'
+import { getMarkdownData } from '@/lib/content/content'
+import AboutPage from '@/templates/about-page'
 
 async function getAboutPageData() {
   const aboutData = await getMarkdownData('about.md')

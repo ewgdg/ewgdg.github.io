@@ -1,5 +1,5 @@
-import { getMarkdownData, getAllBlogPosts, getAllPortfolioItems } from '@/lib/localstorage'
-import IndexPage from '@/templates/IndexPage'
+import { getMarkdownData, getAllBlogPosts, getAllPortfolioItems } from '@/lib/content/content'
+import IndexPage from '@/templates/index-page'
 
 async function getHomePageData() {
   const indexData = await getMarkdownData('index.md')

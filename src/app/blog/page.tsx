@@ -1,5 +1,5 @@
-import { getAllBlogPosts, getMarkdownData } from '@/lib/localstorage'
-import BlogPage from '@/templates/BlogPage'
+import { getAllBlogPosts, getMarkdownData } from '@/lib/content/content'
+import BlogPage from '@/templates/blog-page'
 
 async function getBlogPageData() {
   const blogData = await getMarkdownData('blog.md')
