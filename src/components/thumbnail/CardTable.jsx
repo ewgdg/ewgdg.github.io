@@ -30,8 +30,12 @@ function CardTable({
   const [currentPage, setPage] = useState(0)
   const [keywords, setKeywords] = useState("")
   const [filtered, setFiltered] = useState(datalist)
-  const filter = useCallback(
-    (keywordsCopy, prevFiltered) => {
+  const debouncedFilterRef = useRef()
+  const filterRef = useRef()
+
+  // Create debounced filter function
+  useEffect(() => {
+    filterRef.current = (keywordsCopy) => {
       let newFiltered
       if (keywordsCopy) {
         const regex = new RegExp(
@@ -40,8 +44,7 @@ function CardTable({
             .split(/[.!?,&^%$#@()+-]/g)
             .reduce(
               (accum, current, idx, arr) =>
-                `${accum}\\b${current.trim()}${
-                  idx < arr.length - 1 ? "|" : ""
+                `${accum}\\b${current.trim()}${idx < arr.length - 1 ? "|" : ""
                 }`,
               ""
             )})`,
@@ -67,28 +70,21 @@ function CardTable({
         newFiltered = datalist
       }
 
-      let changed = false
-      if (newFiltered.length !== prevFiltered.length) {
-        changed = true
-      } else {
-        for (let i = 0; i < newFiltered.length; i += 1) {
-          if (newFiltered[i] !== prevFiltered[i]) {
-            changed = true
-            break
-          }
-        }
-      }
+      setPage(0)
+      setFiltered(newFiltered)
+    }
+    debouncedFilterRef.current = debounce(filterRef.current, 300)
+    return () => {
+      debouncedFilterRef.current = null
+      filterRef.current = null
+    }
+  }, [datalist])
 
-      if (changed) {
-        setPage(0)
-        setFiltered(newFiltered)
-      }
-    },
-    [datalist]
-  )
-  const debouncedFilter = useCallback(debounce(filter, 300), [filter])
+  // Apply filter when keywords change
   useEffect(() => {
-    debouncedFilter(keywords, filtered)
+    if (debouncedFilterRef.current) {
+      debouncedFilterRef.current(keywords)
+    }
   }, [keywords])
   const prevsItemsPerPage = useRef(itemsPerPage)
   const pageData = useMemo(() => {
@@ -121,7 +117,7 @@ function CardTable({
   const [displayedComponent, setDisplayedComponent] = useState(null)
   useLayoutEffect(() => {
     setDisplayedComponent(calculateDisplayedComponent(pageData, itemsPerPage))
-  }, [currentPage, filtered, itemsPerPage])
+  }, [currentPage, filtered, itemsPerPage, calculateDisplayedComponent, pageData])
 
   const pageCount = useMemo(() => {
     return filtered.length / itemsPerPage
@@ -160,10 +156,13 @@ function CardTable({
         keywords,
       }
       setKeywords(keywords)
-      filter(keywords, datalist)
+      // immediately filter with the restored keywords
+      if (filterRef.current) {
+        filterRef.current(keywords)
+      }
       setPage(historyState.currentPage || 0)
     }
-  }, [datalist])
+  }, [])
 
   return (
     <div
