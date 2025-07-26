@@ -83,7 +83,7 @@ function Chat({ iconStyle }) {
       await waitForResponse(question)
       unblock()
     }
-  }, [setMessages, textRef, setControllable, controllableRef])
+  }, [setMessages, textRef, controllableRef, waitForResponse])
 
   const onTextChange = useCallback(
     e => {
@@ -115,7 +115,7 @@ function Chat({ iconStyle }) {
     }
     res.onClick = onClickIcon
     return res
-  }, [popupState, controllableRef, setControllable])
+  }, [popupState, controllableRef])
 
   return (
     <div>
