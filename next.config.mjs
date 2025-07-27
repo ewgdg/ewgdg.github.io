@@ -1,7 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+const baseConfig = {
   reactStrictMode: true,
-  output: 'export', // Enable static site generation
   trailingSlash: true, // Add trailing slashes for static hosting
   images: {
     unoptimized: true, // Disable image optimization for static export
@@ -19,6 +18,25 @@ const nextConfig = {
 
     return config;
   },
-}
+};
+
+const nextConfig = process.env.NODE_ENV === 'development' 
+  ? {
+      ...baseConfig,
+      async rewrites() {
+        return {
+          beforeFiles: [
+            {
+              source: '/admin/',
+              destination: '/admin/index.html',
+            },
+          ],
+        };
+      },
+    }
+  : {
+      ...baseConfig,
+      output: 'export', // Enable static site generation only for production
+    };
 
 export default nextConfig;
