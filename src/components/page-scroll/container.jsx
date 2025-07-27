@@ -21,12 +21,44 @@ const useStyles = makeStyles({
     border: 0,
     borderRadius: 3,
     overflow: "hidden",
+    // Block all touch actions for full control
+    touchAction: "none", // safari does not support "pan-x" well
+    // Disable momentum scrolling since we're controlling it
+    WebkitOverflowScrolling: "auto",
   },
 })
 
 const SectionTypes = {
   FullView: "FullView",
   Flexible: "Flexible",
+}
+
+// Mobile detection utilities (moved to component level)
+const isMobile = () => {
+  if (typeof window === 'undefined') return false
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent) ||
+    ('ontouchstart' in window) ||
+    (navigator.maxTouchPoints > 0) ||
+    (navigator.msMaxTouchPoints > 0)
+}
+
+const isIOS = () => {
+  if (typeof window === 'undefined') return false
+  // Prefer userAgentData if available, fallback to userAgent and deprecated platform
+  const ua = navigator.userAgent || '';
+  const isAppleDevice = /iPad|iPhone|iPod/.test(ua);
+  return isAppleDevice;
+}
+
+const isSafari = () => {
+  if (typeof window === 'undefined') return false
+  const ua = navigator.userAgent.toLowerCase()
+  return (
+    ua.includes('safari') &&
+    !ua.includes('chrome') &&
+    !ua.includes('android') &&
+    'safari' in window
+  )
 }
 
 // The scroll event cannot be canceled or interrupted, so use mouse, touch and button events instead.
@@ -60,11 +92,18 @@ const getHandlers = (container, context, sectionType) => {
       let activeSectionI = 0
       let isInViewPortTest
       let scrollOffsetY = 0
+
+      // Enhanced viewport calculation for mobile
+      const getViewportHeight = () => {
+        // Use visual viewport on mobile if available (better for mobile browsers)
+        // if (window.visualViewport && isMobile()) {
+        //   return window.visualViewport.height
+        // }
+        return window.innerHeight || document.documentElement.clientHeight
+      }
+
       const marginForViewPortTest = Math.max(
-        Math.min(
-          (window.innerHeight || document.documentElement.clientHeight) * 0.01,
-          5
-        ),
+        Math.min(getViewportHeight() * 0.01, 5),
         1
       )
       if (sectionType === SectionTypes.Flexible) {
@@ -139,8 +178,7 @@ const getHandlers = (container, context, sectionType) => {
           if (sectionType === SectionTypes.Flexible) {
             // scroll to the bottom of prev section
             scrollOffsetY = -(
-              target.offsetHeight -
-              (window.innerHeight || document.documentElement.clientHeight)
+              target.offsetHeight - getViewportHeight()
             )
           }
         } else {
@@ -164,9 +202,13 @@ const getHandlers = (container, context, sectionType) => {
         isScrolling = true
 
         preventDefault(event)
-        event.preventDefault()
-        const promise = scrollIntoView(target, scrollLayer, 777, scrollOffsetY)
+
+        const scrollDuration = 777
+        const promise = scrollIntoView(target, scrollLayer, scrollDuration, scrollOffsetY)
         promise.then(() => {
+          isScrolling = false
+        }).catch((error) => {
+          console.warn('Scroll animation failed:', error)
           isScrolling = false
         })
       }
@@ -182,7 +224,6 @@ const getHandlers = (container, context, sectionType) => {
       }
       if (delta < 0) {
         // scrolling up
-
         scrollPage("up", e)
       } else if (delta > 0) {
         // scrolling down
@@ -245,9 +286,8 @@ const getHandlers = (container, context, sectionType) => {
       }
 
       preventDefault(e)
-      // e.preventDefault()
-      const touchPoint = e
 
+      const touchPoint = e
       let verticalMove = 0
       if (touchPointYList.length > 0) {
         verticalMove =
@@ -262,7 +302,8 @@ const getHandlers = (container, context, sectionType) => {
       }
 
       if (Math.abs(verticalMove) > 0) {
-        scrollByAnimated(context.scrollLayer, -verticalMove, 1)
+        const scrollDuration = 1
+        scrollByAnimated(context.scrollLayer, -verticalMove, scrollDuration)
       }
     }
     function pointerUpHandler(e) {
@@ -274,8 +315,6 @@ const getHandlers = (container, context, sectionType) => {
         e.preventDefault()
         return
       }
-
-      preventDefault(e)
 
       if (touchPointYList.length <= 0) {
         return
@@ -296,10 +335,14 @@ const getHandlers = (container, context, sectionType) => {
       }
 
       let ready = true
+      // Unified gesture detection for all devices
+      const gestureThreshold = isMobile() ? 5 : 2    // Slightly higher threshold on mobile for touch precision
+      const timeThreshold = isMobile() ? 500 : 500     // Slightly longer time on mobile
       // discard subtle motion
-      if (idlingTime > 500 || Math.abs(verticalMove) <= 2) {
+      if (idlingTime > timeThreshold || Math.abs(verticalMove) <= gestureThreshold) {
         ready = false
       }
+
       if (ready && verticalMove > 0) {
         scrollPage("up", e)
       } else if (ready && verticalMove < 0) {
@@ -382,71 +425,31 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
     document.addEventListener("keydown", keyDownHandler)
     document.addEventListener("keyup", keyUpHandler)
 
-    // Only add scrollLayer event listeners if scrollLayer exists (not during SSR)
-    if (scrollLayer) {
-      // Check if browser supports Pointer Events API
-      const hasPointerEvents = 'PointerEvent' in window
-
-      if (hasPointerEvents) {
-        // Use modern Pointer Events API
-        scrollLayer.addEventListener("pointerdown", pointerDownHandler, {
-          passive: false,
-        })
-        scrollLayer.addEventListener("pointermove", pointerMoveHandler, {
-          passive: false,
-        })
-        scrollLayer.addEventListener("pointerup", pointerUpHandler, {
-          passive: false,
-        })
-        scrollLayer.addEventListener("pointercancel", pointerCancelHandler, {
-          passive: false,
-        })
-        scrollLayer.addEventListener("pointerleave", pointerCancelHandler, {
-          passive: false,
-        })
-      } else {
-        // Fallback to touch events for older browsers
-        scrollLayer.addEventListener("touchstart", pointerDownHandler, {
-          passive: false,
-        })
-        scrollLayer.addEventListener("touchmove", pointerMoveHandler, {
-          passive: false,
-        })
-        scrollLayer.addEventListener("touchend", pointerUpHandler, {
-          passive: false,
-        })
-        scrollLayer.addEventListener("touchcancel", pointerCancelHandler, {
-          passive: false,
-        })
-      }
+    const hasPointerEvents = 'PointerEvent' in window
+    if (scrollLayer && hasPointerEvents) {
+      // Use modern Pointer Events API - non-passive for full control on all devices
+      scrollLayer.addEventListener("pointerdown", pointerDownHandler, { passive: false })
+      scrollLayer.addEventListener("pointermove", pointerMoveHandler, { passive: false })
+      scrollLayer.addEventListener("pointerup", pointerUpHandler, { passive: false })
+      scrollLayer.addEventListener("pointercancel", pointerCancelHandler, { passive: false })
+      scrollLayer.addEventListener("pointerleave", pointerCancelHandler, { passive: false })
     }
 
     // Store cleanup function
     cleanupRef.current = () => {
       container.removeEventListener("wheel", wheelHandler)
 
-      // Remove keyboard listeners from document
       document.removeEventListener("keydown", keyDownHandler)
       document.removeEventListener("keyup", keyUpHandler)
 
-      // Only remove scrollLayer event listeners if scrollLayer exists
-      if (scrollLayer) {
-        const hasPointerEvents = 'PointerEvent' in window
-
-        if (hasPointerEvents) {
-          // Remove pointer events
-          scrollLayer.removeEventListener("pointerdown", pointerDownHandler)
-          scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
-          scrollLayer.removeEventListener("pointerup", pointerUpHandler)
-          scrollLayer.removeEventListener("pointercancel", pointerCancelHandler)
-          scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
-        } else {
-          // Remove touch events
-          scrollLayer.removeEventListener("touchstart", pointerDownHandler)
-          scrollLayer.removeEventListener("touchmove", pointerMoveHandler)
-          scrollLayer.removeEventListener("touchend", pointerUpHandler)
-          scrollLayer.removeEventListener("touchcancel", pointerCancelHandler)
-        }
+      // Remove scrollLayer event listeners 
+      if (scrollLayer && hasPointerEvents) {
+        // Remove pointer events
+        scrollLayer.removeEventListener("pointerdown", pointerDownHandler)
+        scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
+        scrollLayer.removeEventListener("pointerup", pointerUpHandler)
+        scrollLayer.removeEventListener("pointercancel", pointerCancelHandler)
+        scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
       }
     }
   }, [context, sectionType])
