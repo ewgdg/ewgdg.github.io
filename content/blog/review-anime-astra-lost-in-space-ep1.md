@@ -6,8 +6,8 @@ description: 'Lesson learnt: an obvious solution might not be an optimal solutio
 featuredPost: false
 featuredImage: /img/review-on-astra-lost-in-space-image4.png
 ---
-*Astra Lost in Space (彼方のアストラ Kanata no Asutora)* is an anime tv
-series released sept 2019. I am very impressed by this
+*Astra Lost in Space (彼方のアストラ Kanata no Asutora)* is an anime TV
+series released September 2019. I am very impressed by this
 series.
 
 

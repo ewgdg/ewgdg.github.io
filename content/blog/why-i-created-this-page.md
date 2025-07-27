@@ -55,16 +55,16 @@ step of solving the problem.</span>
 <span dir="ltr"></span>
 
 <span dir="ltr">Moving to the right location is important as it reduces
-the geometry obstruction to its minimum but it barely increase my
+the geometric obstruction to its minimum but it barely increased my
 chances of getting interviews. There must be another factor that
-explains why I got very little interviews. I was reminded that once I
+explains why I got very few interviews. I was reminded that once I
 was told that they would rather give me the position of quality
 assurance instead, although I was applying for the position of software
 developer because I was more interested in being a developer. Looking
 into my resume, I realized that I do not have any experience related to
 my applied position and that could be a fatal cause. To solve this
 concern, I need to make a decision on what specific role I prefer the
-most before I manage to gain experience on that role.</span>
+most before I manage to gain experience in that role.</span>
 
 <span dir="ltr"></span>
 
