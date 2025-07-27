@@ -96,7 +96,8 @@ const Layout = ({ children }) => {
             boxSizing: "border-box",
             /* position:relative; */
             /* touch-action: none; */
-            touchAction: "pan-x pinch-zoom",
+            // we will use page-scroll/container to control the touch action
+            // touchAction: "pan-x pinch-zoom",
           }}
         >
           <FlyingSprite style={{ position: "fixed" }} />
