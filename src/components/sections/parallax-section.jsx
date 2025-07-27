@@ -30,6 +30,8 @@ function ParallaxSection({
   useEffect(() => {
     if (!context.scrollLayer) return
 
+    const contentElement = contentRef.current
+
     const scene = new ScrollDetector({
       scrollLayer: context.scrollLayer,
       triggerElement: containerRef.current,
@@ -59,8 +61,8 @@ function ParallaxSection({
     return () => {
       scene.destroy()
       // Reset to initial position with GSAP
-      if (contentRef.current) {
-        gsap.set(contentRef.current, { y: 0, opacity: 1 })
+      if (contentElement) {
+        gsap.set(contentElement, { y: 0, opacity: 1 })
       }
       window.removeEventListener("resize", onResize)
     }
