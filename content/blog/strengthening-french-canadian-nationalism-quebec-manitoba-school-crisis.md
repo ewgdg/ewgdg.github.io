@@ -18,10 +18,10 @@ tags:
 
 The Manitoba school question should not only be considered as a
 religious issue but should be regarded as one involving the relation of
-French-speaking and English-speaking Canadian; the relation between
+French-speaking and English-speaking Canadians; the relation between
 French Canadian and English-speaking Canadian was the key to the Quebec
 nationalism. Quebec was a province with the most French-Canadian in
-Canada, while Manitoba was another province with huge amount of
+Canada, while Manitoba was another province with a huge number of
 French-Canadian. Both the Manitoba and Quebec were the main provinces
 gathering French Canadians. In 1890, the Manitoba schools act began to
 cut money for Catholic schools in the province. The short-lived
@@ -29,7 +29,7 @@ resolution was a major defeat for French language outside the province
 of Quebec. The end result of the question was that French was no longer
 supported as an official language in most western Canadian provinces
 which in turn led to a strengthening of French Canadian nationalism in
-Quebec. Although Manitoba was another province that seemed like had not
+Quebec. Although Manitoba was another province that seemed like it had no
 connections with Quebec, the Manitoba school acts did strengthen the
 French Canadian nationalism in Quebec through the bond of the
 French-speaking minority between the two provinces because of the
@@ -39,7 +39,7 @@ brotherhood with Manitoba, and Wilfred Laurier's compromise.
 
 The main reason that Quebec nationalism was strengthened is that
 Manitoba school crisis in 1890 broke the interests of French Canadians
-and thus raise the discontent of French Canadians. The discontent of
+and thus raised the discontent of French Canadians. The discontent of
 French Canadians led to the strengthening of the French-Canadian
 nationalism in Quebec later. "The dangers were undoubtedly present --
 dangers of poverty, crime, license, and above all, perhaps,
@@ -47,26 +47,26 @@ secularization and Anglicization,"[^1] Said by Ramsay Cook. Beginning
 with the abolition of separate schools in Manitoba in 1890, the rights
 of French speaking minorities were gradually reduced and
 disappeared.[^2]In nineties in Manitoba, the privileges of the French
-and catholic minority were no longer existed due to those political
+and catholic minority no longer existed due to those political
 acts. The act of Manitoba school in 1890 provided that "the public
 schools should be non-sectarian" and declared that "any school not
 conducted in accordance with the provisions of the act or the
 regulations of the advisory board should not be deemed a public school
-within the meaning of the law."[^3] Those schools were ban to
-participate in the legislative grant. What happened in Manitoba, 1890
+within the meaning of the law."[^3] Those schools were banned from
+participating in the legislative grant. What happened in Manitoba, 1890
 was that under the pressure from English-speaking Canadian majority, the
 government of Manitoba in 1890 established public "nondenominational
 school system", which led to the abolition of French as an official
 language. French Canadians believed that if they exercised control over
 their language, they will gain a free religion and will exist as a group
-with their own qualities and identities. But it was obvious that existed
-as a group with free religion became difficult by economic and social
-change of the Manitoba school crisis. Furthermore, this act insulted the
+with their own qualities and identities. But it was obvious that existing
+as a group with free religion became difficult due to the economic and social
+changes from the Manitoba school crisis. Furthermore, this act insulted the
 French Canadians by refusing to provide government grant to the French
 Catholic schools. Remedial action for the interfered rights of minority
 remained inexistent. Under these conditions of insulting and taking off
 their interests, French Canadians realized that a new way of survival
-were necessary. Strengthening of the Quebec nationalism started.
+was necessary. Strengthening of the Quebec nationalism started.
 
 Religion factor is another reason to the strengthening of nationalism in
 Quebec. The Catholic religion was attacked in the Manitoba school
@@ -76,7 +76,7 @@ Real Belanger explained, "The debate \[of Manitoba school question\] was
 concerned with the catholic religion, one of the fundamental
 characteristics of the French Canadian nation. To attack Catholicism was
 an affront to the French Canadian nationality itself."[^4] French was
-deeply related to the catholic religion; most French are Roman Catholic.
+deeply related to the catholic religion; most French Canadians are Roman Catholic.
 French Canadians thought that they had the obligation of educating their
 children according to their faith and the religious principles they
 profess, so they wanted the right of establishing their separate schools
