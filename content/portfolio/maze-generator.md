@@ -7,12 +7,12 @@ description: Survive inside a randomly generated maze.
 featuredPost: true
 featuredImage: /img/maze-splash.png
 ---
-<span dir="ltr">This inspiration of game came from 3+ years ago by the
-algorithm Depth First Search and is developed by then. Being lost in a
+<span dir="ltr">The inspiration for this game came from 3+ years ago with the
+algorithm Depth First Search and was developed back then. Being lost in a
 maze, what is the best strategy to survive and find the exit? Depth
-First Search might be the rescue. However, not everyone has the good
-memory to memorize the visited path. Therefore, there is an ink pen in
-game for each player to mark visited path, and that is the initial
+First Search might be the rescue. However, not everyone has good
+memory to memorize the visited path. Therefore, there is an ink pen in the
+game for each player to mark the visited path, and that is the initial
 design of the game.</span>
 
 <span dir="ltr"></span>
@@ -25,7 +25,7 @@ only one can survive by reaching the exit first.</span>
 
 <span dir="ltr"></span>
 
-<span dir="ltr">Sam is one of the few get summoned. He is smart and goes
+<span dir="ltr">Sam is one of the few who got summoned. He is smart and goes
 for the tutorial before the game starts.</span>
 
 ![](/img/maze-generator-image15.png)<span dir="ltr"></span>
@@ -73,12 +73,12 @@ learns to sprint.</span>
 
 <span dir="ltr"></span>
 
-<span dir="ltr">he found a car and is able to drive it for faster
-straight line moving.</span>
+<span dir="ltr">He found a car and is able to drive it for faster
+straight-line movement.</span>
 
 ![](/img/maze-generator-image3.png)<span dir="ltr"></span>
 
-<span dir="ltr">He quickly learnt how to paint on the wall but he has
+<span dir="ltr">He quickly learned how to paint on the wall but he has a
 limited amount of ink so he must use it wisely.</span>
 
 ![](/img/maze-generator-image4.png)<span dir="ltr"></span>
@@ -128,4 +128,4 @@ haven’t touched it for a while. Maybe someday when I am a better
 developer, I will come back to complete developing the game. Here is the
 demo(Windows 10 only) download
 <a href="https://1drv.ms/u/s!AjhADX36RxGfiYsQbxDvgWqe8Nxwdg" target="_blank">link</a>
-for whom is interested.</span>
+for those who are interested.</span>
