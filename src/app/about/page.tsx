@@ -7,12 +7,12 @@ async function getAboutPageData() {
   return {
     markdownRemark: {
       frontmatter: {
-        jumbotronProps: aboutData?.frontmatter?.jumbotron || {
+        jumbotronProps: (aboutData?.frontmatter as any)?.jumbotron || {
           headline: "About",
           subtitle: "Get to know me",
           image: "/img/about-jumbotron.jpg"
         },
-        facts: aboutData?.frontmatter?.facts || []
+        facts: (aboutData?.frontmatter as any)?.facts || []
       }
     }
   }

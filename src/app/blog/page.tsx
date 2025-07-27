@@ -8,7 +8,7 @@ async function getBlogPageData() {
   // Simplified data structure without GraphQL nesting
   const data = {
     frontmatter: {
-      jumbotronProps: blogData?.frontmatter?.jumbotron || {
+      jumbotronProps: (blogData?.frontmatter as any)?.jumbotron || {
         headline: "Blog",
         subtitle: "Thoughts and ideas",
         image: "/img/blog-jumbotron.jpg"
