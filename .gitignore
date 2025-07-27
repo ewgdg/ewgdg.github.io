@@ -1,6 +1,8 @@
 #code editor
 .vscode/
 
+.DS_Store
+
 .netlify/
 .next/
 out/
@@ -44,6 +46,7 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+/npm-debug.log
 
 # Typescript v1 declaration files
 typings/
@@ -86,3 +89,7 @@ yarn-error.log
 **/chatbot/doc_dir/
 **/.cache/
 .idea
+
+
+# typescript
+*.tsbuildinfo
