@@ -165,7 +165,7 @@ function About() {
               <div>
                 <div className="animatedline">
                   And that is{" "}
-                  <Link href="/blog/2019-10-30-why-i-created-this-page">why</Link>{" "}
+                  <Link href="/blog/why-i-created-this-page">why</Link>{" "}
                   I made this page.
                 </div>
                 <div className="animatedline">
@@ -188,7 +188,7 @@ function About() {
                     }}
                     type="button"
                     onClick={() => {
-                      window.location.href = "m&a&i#l#&t#o:$x#&i$a$n&#$.$z$#5$1#&$2$#^$#g$m#a$i&$l#$.$c#o&#m$"
+                      window.location.href = "m&a&i#l#&t#o:$x#&i$a$n&#$$z$#z$z#&$$#^$#o$u#t$l&$o#$o$k#.&c#o$m"
                         .replace(/\^/g, "@")
                         .replace(/[#&$]/g, "")
                     }}
