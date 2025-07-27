@@ -23,7 +23,7 @@ interface HeaderContainerProps {
 }
 
 function HeaderContainer({ 
-  jumbotronProps = { image: null }, 
+  jumbotronProps = { image: undefined }, 
   headerProps = { position: "absolute", color: "white" } 
 }: HeaderContainerProps) {
   return (
