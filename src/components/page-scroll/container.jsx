@@ -222,6 +222,8 @@ const getHandlers = (container, context, sectionType) => {
       if (Math.abs(delta) <= 2) {
         return
       }
+      preventDefault(e)
+      e.preventDefault()
       if (delta < 0) {
         // scrolling up
         scrollPage("up", e)
