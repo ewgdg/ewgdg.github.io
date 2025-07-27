@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 8080",
-    "build": "next build",
+    "dev": "next dev -p 8080 -H 0.0.0.0",
+    "build": "next build && npm run clean:admin",
+    "clean:admin": "rm -rf out/admin",
     "start": "next start",
     "lint": "next lint",
     "export": "next build",
-    "serve": "next start",
+    "serve": "serve out -p 3000",
     "clean": "rm -rf .next out",
     "test": "jest",
     "updateSnap": "jest --updateSnapshot",
@@ -61,13 +62,14 @@
     "@types/react-dom": "^19.1.6",
     "concurrently": "^9.2.0",
     "decap-server": "^3.3.0",
+    "esbuild": "^0.25.8",
     "eslint": "^9.32.0",
     "eslint-config-next": "^15.4.4",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "raw-loader": "^4.0.2",
-    "typescript": "^5.8.3",
-    "esbuild": "^0.25.8"
+    "serve": "^14.2.4",
+    "typescript": "^5.8.3"
   },
   "keywords": [
     "nextjs",
