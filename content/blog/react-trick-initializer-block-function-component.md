@@ -21,12 +21,11 @@ const [state, setState] = useState(() => {
 
 ```
 
-##
-React function components come with many advantages compared to its class components and become suggested since the new release of React hooks. The React hooks allow the function components to be stateful, but it is less obvious on how to initialize states inside a function component and today I am going to solve the question.
+React function components come with many advantages compared to its class components and became suggested since the new release of React hooks. The React hooks allow the function components to be stateful, but it is less obvious on how to initialize states inside a function component and today I am going to solve the question.
 
-Before diving into the details, I want to mention that there are actually two ways of persisting states in function components, `useRef` and `useState`. `useRef` is for internal states and modifying this type of states will not trigger re-rendering, while `useState` allows you to trigger re-rendering of the component. For the concern of simplicity, I will focus on `useRef` here but the idea is very similar for `useState`.
+Before diving into the details, I want to mention that there are actually two ways of persisting states in function components, `useRef` and `useState`. `useRef` is for internal states and modifying this type of states will not trigger re-rendering, while `useState` allows you to trigger re-rendering of the component. For simplicity, I will focus on `useRef` here but the idea is very similar for `useState`.
 
-There are actually many ways to initialize the states in function components, the challenging part here is what is the most elegant way to do so. Let us start from the very basic method from React official document.
+There are actually many ways to initialize the states in function components, the challenging part here is what is the most elegant way to do so. Let us start from the very basic method from the React official documentation.
 
 ![](/img/react-trick-how-to-create-an-initializer-block-for-a-function-component-image1.png)
 
