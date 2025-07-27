@@ -84,12 +84,14 @@ yarn-error.log
 # Local Netlify folder
 .netlify
 
-
 #
 **/chatbot/doc_dir/
 **/.cache/
 .idea
 
-
 # typescript
 *.tsbuildinfo
+
+# Decap CMS
+public/admin/cms.bundle.js
+public/admin/cms.bundle.js.map

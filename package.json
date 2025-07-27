@@ -13,7 +13,10 @@
     "test": "jest",
     "updateSnap": "jest --updateSnapshot",
     "cms": "decap-server",
-    "dev:cms": "concurrently \"npm run dev\" \"npm run cms\""
+    "dev:cms": "concurrently -k \"npm run watch:cms\" \"npm run dev\" \"npm run cms\"",
+    "build:cms": "node scripts/build-cms.mjs",
+    "build:all": "npm run build && npm run build:cms",
+    "watch:cms": "node scripts/build-cms.mjs --watch"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -63,7 +66,8 @@
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "raw-loader": "^4.0.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "esbuild": "^0.25.8"
   },
   "keywords": [
     "nextjs",

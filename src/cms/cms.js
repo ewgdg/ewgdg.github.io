@@ -1,5 +1,5 @@
 /* eslint-disable no-useless-escape */
-import CMS from "netlify-cms-app"
+import CMS from "decap-cms-app"
 // import uploadcare from "netlify-cms-media-library-uploadcare"
 // import cloudinary from "netlify-cms-media-library-cloudinary"
 
@@ -8,6 +8,9 @@ import BlogPostPreview from "./preview-templates/blog-post-preview"
 // import IndexPagePreview from "./preview-templates/IndexPagePreview"
 
 // import AboutPagePreview from "./preview-templates/AboutPagePreview"
+
+CMS.init()
+
 // CMS.registerMediaLibrary(uploadcare)
 // CMS.registerMediaLibrary(cloudinary)
 
