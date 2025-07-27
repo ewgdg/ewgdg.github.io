@@ -17,7 +17,7 @@ export default function MediaCard({
   description,
 }) {
   return (
-    <Grid item xs={5} style={{ height: "450px", maxHeight: "100%", ...style }}>
+    <Grid size={5} style={{ height: "450px", maxHeight: "100%", ...style }}>
       <Card sx={{ maxWidth: "100%", backgroundColor: "transparent", height: "100%" }}>
         <CardActionArea onClick={onClick} sx={{ height: "90%" }}>
           {image ? (

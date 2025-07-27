@@ -49,7 +49,7 @@ export default function ImageCard({
   const classes = useStyles()
 
   return (
-    <Grid item xs={5} style={{ height: "400px", ...style }}>
+    <Grid size={5} style={{ height: "400px", ...style }}>
       <Card className={classes.card}>
         <CardActionArea className={classes.action} onClick={onClick}>
           {image ? (

@@ -4,7 +4,6 @@ import React, { useState, useCallback, useRef } from "react"
 import ChatIcon from "@mui/icons-material/Chat"
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover"
-import { makeStyles } from "@mui/styles"
 import Zoom from "@mui/material/Zoom"
 import {
   usePopupState,
@@ -17,29 +16,13 @@ import useScrollTrigger from "../page-scroll/use-scroll-trigger"
 import MessageList from "./message-list"
 import * as chatbot from "./chatbot-api"
 
-const useStyles = makeStyles((theme) => ({
-  iconButton: {
-    position: ({ icon }) => icon.position || "fixed",
-    bottom: ({ icon }) => icon.bottom || "50%",
-    left: ({ icon }) => icon.left || "55%",
-    color: ({ icon }) => icon.color || theme.palette.common.white,
-    "&:hover": {
-      color: "#93f145",
-    },
-  },
-  chatIcon: {
-    fontSize: "3.5rem",
-  },
-  box: {},
-}))
 
 // eslint-disable-next-line react/prop-types
-function Chat({ iconStyle }) {
+function Chat({ iconStyle = {} }) {
   const popupState = usePopupState({
     variant: "popover",
     popupId: "chatPopover",
   })
-  const classes = useStyles({ icon: iconStyle || {} })
   // useRef wont notify the change , but it is ok bc the ref is asked when user call it after ref is settled
   // const iconRef = useRef()
   const trigger = useScrollTrigger({
@@ -125,11 +108,19 @@ function Chat({ iconStyle }) {
     <div>
       <Zoom in={!trigger}>
         <IconButton
-          className={classes.iconButton}
+          sx={{
+            position: iconStyle.position || "fixed",
+            bottom: iconStyle.bottom || "50%",
+            left: iconStyle.left || "55%",
+            color: iconStyle.color || "common.white",
+            "&:hover": {
+              color: "#93f145",
+            },
+          }}
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...chatIconProps}
         >
-          <ChatIcon className={classes.chatIcon} />
+          <ChatIcon sx={{ fontSize: "3.5rem" }} />
         </IconButton>
       </Zoom>
       <Popover
@@ -146,7 +137,7 @@ function Chat({ iconStyle }) {
         role="dialog"
       >
         <Box>
-          <Box className={classes.box}>
+          <Box>
             <MessageList messages={messages} />
           </Box>
           <Box display="flex" flexDirection="column">

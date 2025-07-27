@@ -14,8 +14,6 @@ import "github-markdown-css/github-markdown-light.css"
 import "prismjs/themes/prism.css"
 import "prismjs/plugins/line-numbers/prism-line-numbers.css"
 
-import processMarkdown from '../lib/content/markdown'
-
 import Footer from "../components/footer/footer"
 import HeaderContainer from "../components/header/header-container"
 
