@@ -9,4 +9,4 @@ tags:
   - testing
   - boring
 ---
-This is a post I decide to write because I don't know what else to write.
+This is a post I decided to write because I don't know what else to write.

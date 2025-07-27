@@ -14,11 +14,11 @@ My first name is Xian,  and today I want to do research on how to pronounce it.
 Xiǎn is the pinyin of a Chinese character 显, this character in Chinese means ‘to display’.
 It doesn’t make much sense as a name unless it is combined with my brother’s name 赫(He).
 
-To be able to read the character, it is necessary to realize that Xian consists of 2 parts, xi- and -ian, and it is thus read as see-yen or she-yen by many English speakers. While the she-yen/see-yen is very close to the actual sound, it is not an exact match. The sh sound is a little bit different from how x sounds in pinyin. 
+To be able to read the character, it is necessary to realize that Xian consists of 2 parts, xi- and -ian, and it is thus read as see-yen or she-yen by many English speakers. While the she-yen/see-yen is very close to the actual sound, it is not an exact match. The "sh" sound is slightly different from how "x" sounds in pinyin. 
 
 By doing some research, I found that the x sound is called voiceless alveolo-palatal fricative and it does not occur in major English dialects. As a result, the only way to learn the pronunciations is to listen to it. The simplest way is to copy 显 into ‘Google translate’ and you will hear the sound.
 
-You might think this is the end of the story, but it is not. Since learning the pronunciation is hard, I come up with 2 options for people who are unable to pronounce it.
+You might think this is the end of the story, but it is not. Since learning the pronunciation is hard, I came up with 2 options for people who are unable to pronounce it.
 
 The first option is to read it the English way, i.e. she-yen/see-yen/shen, whatever you like. Let us represent the action of calling a person’s name as a part of a two-way communication model. 
 
