@@ -58,12 +58,18 @@ export function BlogPostTemplate({
   tags,
   title,
   publicationDate,
+  lastModified,
   helmet,
   featuredImage = null,
   includeBackButton = true,
 }) {
   const ContentElem = typeof content === "object" ? content : null
   const classes = useStyles()
+
+  const shouldShowLastModified = useMemo(() => {
+    if (!lastModified || !publicationDate) return false
+    return new Date(lastModified).getTime() !== new Date(publicationDate).getTime()
+  }, [lastModified, publicationDate])
 
   const imageComponent = useMemo(() => {
     let result = null
@@ -110,7 +116,13 @@ export function BlogPostTemplate({
               {description && <p>{description}</p>}
               {publicationDate && (
                 <span>
-                  <small>Publication date:{publicationDate.toString()}</small>
+                  <small>Publication date: {new Date(publicationDate).toLocaleString()}</small>
+                </span>
+              )}
+              {shouldShowLastModified && (
+                <span>
+                  <br />
+                  <small>Last modified: {new Date(lastModified).toLocaleString()}</small>
                 </span>
               )}
             </div>

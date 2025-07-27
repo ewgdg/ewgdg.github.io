@@ -37,6 +37,7 @@ const BlogPost = ({ data, uri }) => {
         content={post.processedContent}
         description={post.frontmatter.description}
         publicationDate={post.frontmatter.date}
+        lastModified={post.frontmatter.lastModified}
         // helmet={
         //   <Helmet titleTemplate="%s | Blog">
         //     <title>{`${post.frontmatter.title}`}</title>
