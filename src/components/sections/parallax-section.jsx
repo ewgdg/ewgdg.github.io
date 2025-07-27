@@ -2,7 +2,7 @@
 
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
-import React, { useRef, useContext, useEffect } from "react"
+import React, { useRef, useContext, useEffect, useCallback } from "react"
 import { gsap } from "gsap"
 import LayoutContext from "../../lib/contexts/layout-context"
 import { debounce } from "../../lib/performance/throttle"
@@ -27,6 +27,20 @@ function ParallaxSection({
   const contentRef = useRef(null)
   const context = useContext(LayoutContext)
 
+  // Stable callback reference to prevent effect recreation
+  const scrollCallback = useCallback((progress) => {
+    if (!contentRef.current) return
+
+    const yValue = progress * maxProgressValue
+    const newOpacity = 1 - progress * fade
+
+    // Direct GSAP manipulation - no React re-render, GPU accelerated
+    gsap.set(contentRef.current, {
+      y: progressUnit === 'px' ? yValue : `${yValue}${progressUnit}`,
+      opacity: newOpacity
+    })
+  }, [maxProgressValue, fade, progressUnit])
+
   useEffect(() => {
     if (!context.scrollLayer) return
 
@@ -39,18 +53,7 @@ function ParallaxSection({
       duration: context.scrollLayer.clientHeight,
       throttleLimit: 0,
     })
-    scene.setEventListener(progress => {
-      if (!contentRef.current) return
-
-      const yValue = progress * maxProgressValue
-      const newOpacity = 1 - progress * fade
-
-      // Direct GSAP manipulation - no React re-render, GPU accelerated
-      gsap.set(contentRef.current, {
-        y: progressUnit === 'px' ? yValue : `${yValue}${progressUnit}`,
-        opacity: newOpacity
-      })
-    })
+    scene.setEventListener(scrollCallback)
 
     const onResize = debounce(() => {
       scene.updateDuration(context.scrollLayer.clientHeight)
@@ -66,7 +69,7 @@ function ParallaxSection({
       }
       window.removeEventListener("resize", onResize)
     }
-  }, [context, maxProgressValue, children, triggerHook, progressUnit, fade])
+  }, [context, triggerHook, scrollCallback])
 
   if (!context.scrollLayer) return null
 
