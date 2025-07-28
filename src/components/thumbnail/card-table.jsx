@@ -104,7 +104,7 @@ function CardTable({
         {pageData.map(data => (
           <CardComp
             key={data.title}
-            style={{ height: itemsPerPage > 2 ? "45%" : "95%" }}
+            style={{ height: itemsPerPage > 2 ? "45%" : "90%" }}
             title={data.title}
             description={data.description}
             image={data.image}
@@ -186,7 +186,7 @@ function CardTable({
 
       <Container
         style={{
-          height: itemsPerPage > 2 ? "90%" : "85%",
+          height: itemsPerPage > 2 ? "85%" : "80%",
           marginTop: itemsPerPage > 2 ? "1%" : "0",
         }}
       >
