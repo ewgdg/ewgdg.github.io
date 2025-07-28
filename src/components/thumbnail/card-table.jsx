@@ -15,7 +15,7 @@ import TextField from "@mui/material/TextField"
 import MediaCard from "./media-card"
 import Paginator from "../others/paginator"
 import CardDivision from "./card-division"
-import useRestoreComponentStateToBeforeUnmounting from "../../lib/contexts/use-restore-component-state"
+import { useRestoreComponentStateToBeforeRouting } from "../../lib/contexts/use-restore-component-state"
 // import SlideInSection from "../sections/SlideInSection"
 import { debounce } from "../../lib/performance/throttle"
 import FadeInSection from "../sections/fade-in-section"
@@ -35,7 +35,11 @@ function CardTable({
 
   // Create debounced filter function
   useEffect(() => {
+    let prevKeywords = ""
     filterRef.current = (keywordsCopy) => {
+      if (keywordsCopy === prevKeywords) return
+      // If the keywords are the same as the previous
+      prevKeywords = keywordsCopy
       let newFiltered
       if (keywordsCopy) {
         const regex = new RegExp(
@@ -70,8 +74,8 @@ function CardTable({
         newFiltered = datalist
       }
 
-      setPage(0)
       setFiltered(newFiltered)
+      setPage(0) // Reset to first page on filter change
     }
     debouncedFilterRef.current = debounce(filterRef.current, 300)
     return () => {
@@ -87,18 +91,22 @@ function CardTable({
     }
   }, [keywords])
   const prevsItemsPerPage = useRef(itemsPerPage)
-  const pageData = useMemo(() => {
+
+  useEffect(() => {
     if (prevsItemsPerPage.current !== itemsPerPage) {
-      setPage((currentPage * prevsItemsPerPage.current) / itemsPerPage)
+      setPage(Math.floor((currentPage * prevsItemsPerPage.current) / itemsPerPage))
       prevsItemsPerPage.current = itemsPerPage
     }
+  }, [itemsPerPage, currentPage])
+
+  const pageData = useMemo(() => {
     const startIdx = currentPage * itemsPerPage
     const endIdx = startIdx + itemsPerPage
     return filtered.slice(startIdx, endIdx)
   }, [currentPage, filtered, itemsPerPage])
 
   // mem the component to prevent refresh the animation
-  const calculateDisplayedComponent = useCallback((pageData, itemsPerPage) => {
+  const displayedComponent = useMemo(() => {
     return (
       <CardDivision>
         {pageData.map(data => (
@@ -113,11 +121,7 @@ function CardTable({
         ))}
       </CardDivision>
     )
-  }, [])
-  const [displayedComponent, setDisplayedComponent] = useState(null)
-  useLayoutEffect(() => {
-    setDisplayedComponent(calculateDisplayedComponent(pageData, itemsPerPage))
-  }, [currentPage, filtered, itemsPerPage, calculateDisplayedComponent, pageData])
+  }, [pageData, itemsPerPage, CardComp])
 
   const pageCount = useMemo(() => {
     return filtered.length / itemsPerPage
@@ -145,23 +149,23 @@ function CardTable({
     }
   }, [])
 
-  const historyState = useRestoreComponentStateToBeforeUnmounting([uri, name], getCurrentState)
+  const historyState = useRestoreComponentStateToBeforeRouting([uri, name], getCurrentState)
+  const isRestoredRef = useRef(false) 
 
   useEffect(() => {
-    if (historyState) {
-      // Restore state from history
-      const keywords = historyState.keywords || ""
-      stateContainer.current = {
-        currentPage: historyState.currentPage || 0,
-        keywords,
-      }
-      setKeywords(keywords)
-      // immediately filter with the restored keywords
-      if (filterRef.current) {
-        filterRef.current(keywords)
-      }
-      setPage(historyState.currentPage || 0)
-    }
+    if (isRestoredRef.current) return
+    isRestoredRef.current = true
+    if (!historyState) return
+
+    // Restore state from history only if different
+    const restoredKeywords = historyState.keywords || ""
+    const restoredPage = historyState.currentPage || 0
+
+    setKeywords(restoredKeywords)
+    stateContainer.current.keywords = restoredKeywords
+    setPage(restoredPage)
+    stateContainer.current.currentPage = restoredPage
+
   }, [historyState])
 
   return (
