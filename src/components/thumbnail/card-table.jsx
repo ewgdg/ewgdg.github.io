@@ -124,7 +124,7 @@ function CardTable({
   }, [pageData, itemsPerPage, CardComp])
 
   const pageCount = useMemo(() => {
-    return filtered.length / itemsPerPage
+    return Math.ceil(filtered.length / itemsPerPage)
   }, [filtered, itemsPerPage])
 
   const handlePageClick = useCallback(page => {
