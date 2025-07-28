@@ -1,15 +1,10 @@
 'use client'
 
-import React, { useState, useCallback, useRef } from "react"
+import React, { useState, useCallback, useRef, useEffect } from "react"
 import ChatIcon from "@mui/icons-material/Chat"
 import IconButton from "@mui/material/IconButton";
 import Popover from "@mui/material/Popover"
 import Zoom from "@mui/material/Zoom"
-import {
-  usePopupState,
-  bindTrigger,
-  bindPopover,
-} from "material-ui-popup-state/hooks"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import useScrollTrigger from "../page-scroll/use-scroll-trigger"
@@ -19,19 +14,13 @@ import * as chatbot from "./chatbot-api"
 
 // eslint-disable-next-line react/prop-types
 function Chat({ iconStyle = {} }) {
-  const popupState = usePopupState({
-    variant: "popover",
-    popupId: "chatPopover",
-  })
-  // useRef wont notify the change , but it is ok bc the ref is asked when user call it after ref is settled
-  // const iconRef = useRef()
+  const [isOpen, setIsOpen] = useState(false)
+  const iconRef = useRef(null)
   const trigger = useScrollTrigger({
     threshold: 100,
   })
 
   const [messages, setMessages] = useState([])
-
-  // we can replace this with update setUpdate = useState simply for rerender when we have textRef
   const [text, setText] = useState("")
   const textRef = useRef(text)
 
@@ -50,6 +39,19 @@ function Chat({ iconStyle = {} }) {
     [setMessages]
   )
   const [controllable, setControllable] = useState(true)
+  const [anchorPosition, setAnchorPosition] = useState(null)
+
+  // Calculate and set anchor position when popover opens - center in viewport
+  useEffect(() => {
+    if (isOpen) {
+      setAnchorPosition({
+        top: window.innerHeight / 2,
+        left: window.innerWidth / 2,
+      })
+    } else {
+      setAnchorPosition(null)
+    }
+  }, [isOpen])
   const controllableRef = useRef(controllable)
   const unblock = () => {
     setControllable(true)
@@ -81,33 +83,44 @@ function Chat({ iconStyle = {} }) {
     [setText]
   )
 
-  const chatIconProps = React.useMemo(() => {
-    const res = bindTrigger(popupState)
-    const superOnClick = res.onClick
-    const onClickIcon = async e => {
-      superOnClick.call(res, e)
+  const handleIconClick = useCallback(async () => {
+    setIsOpen(true)
 
-      if (!controllableRef.current) return
-      // loading
-      const messageObj = {
-        loading: true,
+    if (!controllableRef.current) return
+    // loading
+    const messageObj = {
+      loading: true,
+    }
+    let lastMessage = null;
+    setMessages(prev => {
+      if (prev.length > 0) {
+        lastMessage = prev[prev.length - 1];
       }
-      setMessages(prev => [...prev, messageObj])
-      block()
-      const reply = await chatbot.sayHi()
-      messageObj.data = reply
-      messageObj.loading = false
-      unblock()
+      return [...prev, messageObj]
+    })
+    block()
+    const reply = await chatbot.sayHi()
+    messageObj.data = reply
+    messageObj.loading = false
+    unblock()
+    // If the last message is the same as the reply, do not add it again
+    if (lastMessage && !lastMessage.fromClient && reply === lastMessage.data) {
+      setMessages(prev => [...prev.slice(0, -1)])
+    }
+    else {
       setMessages(prev => [...prev])
     }
-    res.onClick = onClickIcon
-    return res
-  }, [popupState, controllableRef])
+  }, [controllableRef])
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false)
+  }, [])
 
   return (
     <div>
       <Zoom in={!trigger}>
         <IconButton
+          ref={iconRef}
           sx={{
             position: iconStyle.position || "fixed",
             bottom: iconStyle.bottom || "50%",
@@ -117,26 +130,23 @@ function Chat({ iconStyle = {} }) {
               color: "#93f145",
             },
           }}
-          // eslint-disable-next-line react/jsx-props-no-spreading
-          {...chatIconProps}
+          onClick={handleIconClick}
         >
           <ChatIcon sx={{ fontSize: "3.5rem" }} />
         </IconButton>
       </Zoom>
       <Popover
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        {...bindPopover(popupState)}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
+        open={isOpen}
+        onClose={handleClose}
+        anchorReference="anchorPosition"
+        anchorPosition={anchorPosition}
         transformOrigin={{
           vertical: "center",
-          horizontal: "right",
+          horizontal: "center",
         }}
         role="dialog"
       >
-        <Box>
+        <Box sx={{ width: { xs: '75svw', sm: '400px' } }}>
           <Box>
             <MessageList messages={messages} />
           </Box>
@@ -146,7 +156,14 @@ function Chat({ iconStyle = {} }) {
               required
               onChange={onTextChange}
               value={text}
-              style={{ margin: "2px" }}
+              style={{
+                margin: "2px",
+                width: "100%",
+                boxSizing: "border-box",
+                resize: "vertical",
+                fontSize: "16px",
+                minHeight: "40px"
+              }}
             />
             <Box display="flex" flexDirection="row" justifyContent="flex-end">
               <Button
@@ -167,4 +184,4 @@ function Chat({ iconStyle = {} }) {
   )
 }
 
-export default React.memo(Chat)
+export default Chat

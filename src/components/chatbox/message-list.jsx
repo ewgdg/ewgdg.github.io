@@ -10,7 +10,7 @@ import Message from "./message"
 const useStyles = makeStyles({
   box: {
     height: "15vh",
-    width: "15vw",
+    width: "100%",
     overflow: "auto scroll",
   },
 })

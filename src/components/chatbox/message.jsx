@@ -13,7 +13,8 @@ const Message = ({ children, color }) => {
         padding: "1px 0.5rem",
         margin: "1px",
         maxWidth: "80%",
-
+        wordBreak: "break-word",
+        overflowWrap: "break-word",
         justifyContent: "center",
         alignItems: "center",
       }}
