@@ -12,6 +12,7 @@ import FlyingSprite from "../sprite/flying-sprite"
 import LayoutContext, { contextValueRef } from "../../lib/contexts/layout-context"
 import Synap from "../background/synap"
 import { debounce } from "../../lib/performance/throttle"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
 
 const Layout = ({ children }) => {
   // if the context is not resolved then the children will not be mounted
@@ -73,11 +74,11 @@ const Layout = ({ children }) => {
         id="layoutBody"
         style={{
           position: "relative",
-          maxHeight: "100vh",
-          maxWidth: "100vw",
+          maxHeight: calcViewportHeight(100),
+          maxWidth: calcViewportWidth(100),
         }}
       >
-        <Synap style={{ opacity: 0.3, width: "100vw", height: "100vh" }} />
+        <Synap style={{ opacity: 0.3, width: calcViewportWidth(100), height: calcViewportHeight(100) }} />
         <div
           id="scrollDiv"
           // the tabIndex is to make the div focusable and so that it can receive keyboard events
@@ -88,7 +89,7 @@ const Layout = ({ children }) => {
             overflowY: "scroll !important",
             overflowX: "hidden",
 
-            height: "100vh",
+            height: calcViewportHeight(100),
             width: "auto",
             margin: 0,
             padding: 0,

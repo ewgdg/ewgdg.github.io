@@ -7,6 +7,7 @@ import Paper from "@mui/material/Paper"
 import Container from "@mui/material/Container"
 import Image from "next/image"
 import { makeStyles } from "@mui/styles"
+import { calcViewportHeight } from "../lib/dom/viewport-utils"
 
 export const useStyles = makeStyles({
   taglist: {
@@ -22,7 +23,7 @@ export const useStyles = makeStyles({
   },
   pageContainer: {
     position: "relative",
-    minHeight: "100vh",
+    minHeight: calcViewportHeight(100),
     "&::after": {
       content: "''",
       // reserve a space for footer

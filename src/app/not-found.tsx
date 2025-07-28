@@ -1,5 +1,6 @@
 import { Container, Typography, Box, Button } from '@mui/material'
 import Link from '../components/navigation/link'
+import { calcViewportHeight } from '../lib/dom/viewport-utils'
 
 export default function NotFound() {
   return (
@@ -10,7 +11,7 @@ export default function NotFound() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          minHeight: '100vh',
+          minHeight: calcViewportHeight(100),
           textAlign: 'center'
         }}
       >

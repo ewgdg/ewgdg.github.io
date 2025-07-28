@@ -2,6 +2,7 @@
 
 /* eslint-disable react/prop-types */
 import { makeStyles } from "@mui/styles"
+import { calcViewportHeight } from "../../lib/dom/viewport-utils"
 
 import React from "react"
 
@@ -11,7 +12,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
-    height: "100vh",
+    height: calcViewportHeight(100),
   },
 })
 

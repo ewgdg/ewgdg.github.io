@@ -3,12 +3,13 @@
 import React from "react"
 import { makeStyles } from "@mui/styles"
 import ParallaxSection from "../sections/parallax-section"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
 
 const useStyles = makeStyles({
   figure: {
     overflow: "hidden",
     width: "100%",
-    height: "100vh",
+    height: calcViewportHeight(100),
     pointerEvents: "none",
     userSelect: "none",
     position: "relative",
@@ -27,7 +28,7 @@ const useStyles = makeStyles({
   },
   backgroundDiv: {
     width: "100%",
-    height: "100vh",
+    height: calcViewportHeight(100),
     // this is commented out due to limited browser support on mobile devices, use ParallaxSection instead
     // backgroundAttachment: "fixed",
     margin: 0,
@@ -49,7 +50,7 @@ const useStyles = makeStyles({
   },
   headline: {
     fontFamily: "roboto, monotone",
-    fontSize: "7vw",
+    fontSize: calcViewportWidth(7),
     fontWeight: 600,
     lineHeight: "1em",
     margin: 0,

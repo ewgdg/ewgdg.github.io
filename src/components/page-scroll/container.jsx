@@ -100,7 +100,8 @@ const getHandlers = (container, context, sectionType) => {
         // if (window.visualViewport && isMobile()) {
         //   return window.visualViewport.height
         // }
-        return window.innerHeight || document.documentElement.clientHeight
+        // return window.innerHeight || document.documentElement.clientHeight
+        return scrollLayer.clientHeight
       }
 
       const marginForViewPortTest = Math.max(

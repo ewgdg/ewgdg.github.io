@@ -3,6 +3,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from "react"
 import { makeStyles } from "@mui/styles"
+import { calcViewportWidth } from "../../lib/dom/viewport-utils"
 
 const useStyles = makeStyles({
   container: {
@@ -14,7 +15,7 @@ const useStyles = makeStyles({
     "&:before": {
       display: "inline-block",
       content: '""',
-      width: "7vw",
+      width: calcViewportWidth(7),
       backgroundColor: "black",
       height: "2px",
       margin: "0 10px",
@@ -25,7 +26,7 @@ const useStyles = makeStyles({
     "&:after": {
       display: "inline-block",
       content: '""',
-      width: "7vw",
+      width: calcViewportWidth(7),
       backgroundColor: "black",
       height: "2px",
       margin: "0 10px",

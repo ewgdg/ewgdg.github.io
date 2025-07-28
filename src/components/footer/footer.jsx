@@ -7,6 +7,7 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
 import LinkedInIcon from "@mui/icons-material/LinkedIn"
 import IconButton from "@mui/material/IconButton"
 import SvgIcon from "@mui/material/SvgIcon"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
 
 const generateOnClickForLink = link => {
   return () => {
@@ -32,7 +33,7 @@ function Footer({ className }) {
       style={{
         textAlign: "center",
         backgroundColor: "#1a1a1a",
-        padding: "10vh 6vw",
+        padding: `${calcViewportHeight(10)} ${calcViewportWidth(6)}`,
         margin: "0",
         display: "block",
         width: "100%",

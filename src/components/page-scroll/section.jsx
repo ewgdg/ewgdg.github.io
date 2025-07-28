@@ -5,6 +5,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { makeStyles } from "@mui/styles"
+import { calcViewportHeight } from "../../lib/dom/viewport-utils"
 
 const useStyles = makeStyles({
   root: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
 })
 
 // Section component whose parent should be type of Container
-const Section = React.forwardRef(({ children, style, className, id, height = "100vh" }, ref) => {
+const Section = React.forwardRef(({ children, style, className, id, height = calcViewportHeight(100) }, ref) => {
   const classes = useStyles()
 
   return (

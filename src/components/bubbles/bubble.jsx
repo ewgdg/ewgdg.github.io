@@ -11,6 +11,7 @@ import FlexContainer from "../sections/flex-container"
 import TransitionsModal, {
   useModalController,
 } from "../modals/transitions-modal"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
 
 // prevent plugins from being dropped by treeshaking, not necessary for tweenmax
 // const plugins = [CSSPlugin]
@@ -164,7 +165,7 @@ function Bubble({
   const imageStyle = {
     width: "100%",
     height: "300px",
-    maxHeight: "55vh",
+    maxHeight: calcViewportHeight(55),
     objectFit: "contain",
   }
   return (
@@ -194,7 +195,7 @@ function Bubble({
         description={description}
       >
         {image &&
-          <Image src={image} alt={title} width={0} height={0} style={imageStyle} sizes="(max-width: 768px) 100vw, 50vw" />}
+          <Image src={image} alt={title} width={0} height={0} style={imageStyle} sizes={`(max-width: 768px) ${calcViewportWidth(100)}, ${calcViewportWidth(50)}`} />}
       </TransitionsModal>
     </>
   )
