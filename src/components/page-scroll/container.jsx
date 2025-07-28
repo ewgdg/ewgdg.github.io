@@ -249,17 +249,17 @@ const getHandlers = (container, context, sectionType) => {
     function pointerDownHandler(e) {
       // check event path, if found clickable, ignore this pointer move
 
-      let elem = e.target || e.srcElement
-      let test = false
-      while (elem) {
-        test = isClickable(elem)
-        if (test) break
-        elem = elem.parentElement
-      }
+      // let elem = e.target || e.srcElement
+      // let test = false
+      // while (elem) {
+      //   test = isClickable(elem)
+      //   if (test) break
+      //   elem = elem.parentElement
+      // }
 
-      if (test) {
-        return
-      }
+      // if (test) {
+      //   return
+      // }
       isPointerDown = true
 
       touchPointYList.splice(0)
