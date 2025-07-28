@@ -7,6 +7,7 @@ import Paper from "@mui/material/Paper"
 import Container from "@mui/material/Container"
 import Image from "next/image"
 import { makeStyles } from "@mui/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 import { calcViewportHeight } from "../lib/dom/viewport-utils"
 
 export const useStyles = makeStyles({
@@ -66,6 +67,7 @@ export function BlogPostTemplate({
 }) {
   const ContentElem = typeof content === "object" ? content : null
   const classes = useStyles()
+  const isMobile = useMediaQuery("(max-width:600px)")
 
   const shouldShowLastModified = useMemo(() => {
     if (!lastModified || !publicationDate) return false
@@ -107,9 +109,9 @@ export function BlogPostTemplate({
         <Paper style={{ zIndex: 4, position: "relative" }}>
           <div
             style={{
-              margin: "0 10%",
-              padding: "45px",
-              paddingBottom: "150px",
+              margin: isMobile ? "0 2%" : "0 10%",
+              padding: isMobile ? "16px" : "45px",
+              paddingBottom: isMobile ? "80px" : "150px",
             }}
           >
             <div style={{ textAlign: "center" }}>
