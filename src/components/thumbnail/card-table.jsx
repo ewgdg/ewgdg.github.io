@@ -79,6 +79,9 @@ function CardTable({
     }
     debouncedFilterRef.current = debounce(filterRef.current, 300)
     return () => {
+      if (debouncedFilterRef.current?.cancel) {
+        debouncedFilterRef.current.cancel()
+      }
       debouncedFilterRef.current = null
       filterRef.current = null
     }
