@@ -26,11 +26,18 @@ export default function throttle(fn, limit, recordLastCall = false) {
 
 export function debounce(fn, delay = 30) {
   let timeout
-  return (...args) => {
+  const debounced = (...args) => {
     if (timeout) clearTimeout(timeout)
     timeout = setTimeout(() => {
       fn(...args)
       timeout = null
     }, delay)
   }
+  debounced.cancel = () => {
+    if (timeout) {
+      clearTimeout(timeout)
+      timeout = null
+    }
+  }
+  return debounced
 }
