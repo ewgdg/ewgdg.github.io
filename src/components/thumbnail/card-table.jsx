@@ -30,6 +30,7 @@ function CardTable({
   const [currentPage, setPage] = useState(0)
   const [keywords, setKeywords] = useState("")
   const [filtered, setFiltered] = useState(datalist)
+  const filteredRef = useRef(filtered)
   const debouncedFilterRef = useRef()
   const filterRef = useRef()
 
@@ -74,6 +75,13 @@ function CardTable({
         newFiltered = datalist
       }
 
+      // Early return if filtered content hasn't changed
+      if (newFiltered.length === filteredRef.current.length &&
+        newFiltered.every((item, index) => item === filteredRef.current[index])) {
+        return
+      }
+
+      filteredRef.current = newFiltered
       setFiltered(newFiltered)
       setPage(0) // Reset to first page on filter change
     }
@@ -181,21 +189,7 @@ function CardTable({
   }, [historyState])
 
   if (!isReadyToRender) {
-    return (
-      <div
-        style={{
-          position: "relative",
-          height: "100%",
-          width: "100%",
-          textAlign: "center",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        Loading...
-      </div>
-    )
+    return null
   }
 
   return (
