@@ -153,23 +153,50 @@ function CardTable({
   }, [])
 
   const historyState = useRestoreComponentStateToBeforeRouting([uri, name], getCurrentState)
-  const isRestoredRef = useRef(false) 
+  const isRestoredRef = useRef(false)
+  const [isReadyToRender, setIsReadyToRender] = useState(false)
 
   useEffect(() => {
     if (isRestoredRef.current) return
     isRestoredRef.current = true
-    if (!historyState) return
 
-    // Restore state from history only if different
-    const restoredKeywords = historyState.keywords || ""
-    const restoredPage = historyState.currentPage || 0
+    if (historyState) {
+      // Restore state from history
+      const restoredKeywords = historyState.keywords || ""
+      const restoredPage = historyState.currentPage || 0
 
-    setKeywords(restoredKeywords)
-    stateContainer.current.keywords = restoredKeywords
-    setPage(restoredPage)
-    stateContainer.current.currentPage = restoredPage
+      setKeywords(restoredKeywords)
+      stateContainer.current.keywords = restoredKeywords
+      setPage(restoredPage)
+      stateContainer.current.currentPage = restoredPage
 
+      // Apply filter immediately without debounce when restoring from history
+      if (filterRef.current) {
+        filterRef.current(restoredKeywords)
+      }
+    }
+
+    // Always set ready to render after history restoration attempt
+    setIsReadyToRender(true)
   }, [historyState])
+
+  if (!isReadyToRender) {
+    return (
+      <div
+        style={{
+          position: "relative",
+          height: "100%",
+          width: "100%",
+          textAlign: "center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        Loading...
+      </div>
+    )
+  }
 
   return (
     <div

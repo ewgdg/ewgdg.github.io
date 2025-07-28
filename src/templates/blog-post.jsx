@@ -17,12 +17,12 @@ import "prismjs/plugins/line-numbers/prism-line-numbers.css"
 import Footer from "../components/footer/footer"
 import HeaderContainer from "../components/header/header-container"
 
-import useRestoreScrollTop from "../lib/contexts/use-restore-scroll-top"
+// import useRestoreScrollTop from "../lib/contexts/use-restore-scroll-top"
 import { BlogPostTemplate, useStyles } from "./blog-post-template"
 
 const BlogPost = ({ data, uri }) => {
   const post = data
-  useRestoreScrollTop([uri])
+  // useRestoreScrollTop([uri])
   const classes = useStyles()
   return (
     <div className={classes.pageContainer}>

@@ -1,5 +1,5 @@
 import { useRouter as useNextRouter, usePathname } from 'next/navigation'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo, useCallback } from 'react'
 
 // Custom event names for navigation lifecycle
 export const ROUTER_EVENTS = {
@@ -66,47 +66,6 @@ export function useRouter() {
     const nextRouter = useNextRouter()
     const pathname = usePathname()
 
-    // Wrapped navigation functions that emit beforeNavigation events
-    const push = (href, options = {}) => {
-        routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
-            type: 'push',
-            href,
-            from: pathname,
-            options
-        })
-
-        return nextRouter.push(href, options)
-    }
-
-    const replace = (href, options = {}) => {
-        routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
-            type: 'replace',
-            href,
-            from: pathname,
-            options
-        })
-
-        return nextRouter.replace(href, options)
-    }
-
-    const back = () => {
-        routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
-            type: 'back',
-            from: pathname
-        })
-
-        return nextRouter.back()
-    }
-
-    const forward = () => {
-        routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
-            type: 'forward',
-            from: pathname
-        })
-
-        return nextRouter.forward()
-    }
-
     // Emit after navigation event when pathname changes (skip initial load)
     const isInitialLoadRef = useRef(true)
 
@@ -122,14 +81,56 @@ export function useRouter() {
     }, [pathname])
 
     // Return enhanced router with original Next.js methods plus custom ones
-    return {
-        ...nextRouter,
-        push,
-        replace,
-        back,
-        forward,
-        pathname
-    }
+    return useMemo(() => {
+        const push = (href, options = {}) => {
+            routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
+                type: 'push',
+                href,
+                from: pathname,
+                options
+            })
+
+            return nextRouter.push(href, options)
+        }
+
+        const replace = (href, options = {}) => {
+            routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
+                type: 'replace',
+                href,
+                from: pathname,
+                options
+            })
+
+            return nextRouter.replace(href, options)
+        }
+
+        const back = () => {
+            routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
+                type: 'back',
+                from: pathname
+            })
+
+            return nextRouter.back()
+        }
+
+        const forward = () => {
+            routerEventSource.emit(ROUTER_EVENTS.BEFORE_NAVIGATION, {
+                type: 'forward',
+                from: pathname
+            })
+
+            return nextRouter.forward()
+        }
+
+        return {
+            ...nextRouter,
+            push,
+            replace,
+            back,
+            forward,
+            pathname
+        }
+    }, [nextRouter, pathname])
 }
 
 // Hook for handling router events and popstate
