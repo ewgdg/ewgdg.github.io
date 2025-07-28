@@ -32,16 +32,14 @@ function BlogPreview({ blogPosts = [] }) {
             Know what I am thinking:
           </p>
         </div>
-        <div style={{ height: "75%" }}>
-          {/* use fade in instead of slide in bc text rendering stutters when animated */}
-          <FadeInSection>
-            <CardDivision style={{ marginBottom: "25px" }}>
-              {flatten.map((cardData, i) => (
-                <MediaCard {...cardData} key={i} />
-              ))}
-            </CardDivision>
-          </FadeInSection>
-        </div>
+        {/* use fade in instead of slide in bc text rendering stutters when animated */}
+        <FadeInSection>
+          <CardDivision style={{ marginBottom: "25px" }}>
+            {flatten.map((cardData, i) => (
+              <MediaCard {...cardData} key={i} />
+            ))}
+          </CardDivision>
+        </FadeInSection>
         <Grid
           container
           justifyContent="center"
