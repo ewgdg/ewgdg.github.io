@@ -15,13 +15,13 @@ import { ScrollDetector } from "../../lib/dom/scroll"
 */
 function ParallaxSection({
   children,
-  style,
+  style = {},
   triggerHook = 0,
   maxProgressValue = 50,
   progressUnit = "%",
   fade = 0,
-  innerDivStyle,
-  className,
+  innerDivStyle = {},
+  className = "",
 }) {
   const containerRef = useRef(null)
   const contentRef = useRef(null)
