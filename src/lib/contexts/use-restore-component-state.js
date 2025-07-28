@@ -116,4 +116,3 @@ function setComponentState(path, state, context) {
 }
 
 export { useHistoryState, clearHistoryState, setComponentState, useRestoreComponentStateToBeforeUnmounting, useRestoreComponentStateToBeforeRouting }
-export default useRestoreComponentStateToBeforeUnmounting
