@@ -2,6 +2,7 @@
 
 import React from "react"
 import { makeStyles } from "@mui/styles"
+import ParallaxSection from "../sections/parallax-section"
 
 const useStyles = makeStyles({
   figure: {
@@ -26,7 +27,6 @@ const useStyles = makeStyles({
   backgroundDiv: {
     width: "100%",
     height: "100vh",
-    backgroundAttachment: "fixed",
     margin: 0,
     backgroundSize: "cover",
     backgroundPosition: "center center",
@@ -73,12 +73,14 @@ const Jumbotron: React.FC<JumbotronProps> = ({ image, headline = "", subtitle = 
         className={classes.figureOverlay}
         style={{ opacity: darkFilter }}
       />
-      <div
-        className={classes.backgroundDiv}
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-        }}
-      />
+      <ParallaxSection maxProgressValue={100}>
+        <div
+          className={classes.backgroundDiv}
+          style={{
+            backgroundImage: `url(${backgroundImage})`,
+          }}
+        />
+      </ParallaxSection>
 
       <div className={classes.headlineContainer}>
         <div style={{ margin: 0, padding: 0 }}>
