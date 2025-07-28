@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     borderRadius: 3,
     overflow: "hidden",
     // Block all touch actions for full control
-    touchAction: "pinch-zoom", // safari does not support "pan-x" well
+    touchAction: "none", // safari does not support "pan-x" well
     // Disable momentum scrolling since we're controlling it
     WebkitOverflowScrolling: "auto",
   },
