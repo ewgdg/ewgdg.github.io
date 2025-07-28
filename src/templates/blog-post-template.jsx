@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper"
 import Container from "@mui/material/Container"
 import Image from "next/image"
 import { makeStyles } from "@mui/styles"
-import useMediaQuery from "@mui/material/useMediaQuery"
+import { useTheme, useMediaQuery } from "@mui/material"
 import { calcViewportHeight } from "../lib/dom/viewport-utils"
 
 export const useStyles = makeStyles({
@@ -66,8 +66,9 @@ export function BlogPostTemplate({
   includeBackButton = true,
 }) {
   const ContentElem = typeof content === "object" ? content : null
+  const theme = useTheme()
   const classes = useStyles()
-  const isMobile = useMediaQuery("(max-width:600px)")
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const shouldShowLastModified = useMemo(() => {
     if (!lastModified || !publicationDate) return false
