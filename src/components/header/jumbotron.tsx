@@ -27,6 +27,8 @@ const useStyles = makeStyles({
   backgroundDiv: {
     width: "100%",
     height: "100vh",
+    // this is commented out due to limited browser support on mobile devices, use ParallaxSection instead
+    // backgroundAttachment: "fixed",
     margin: 0,
     backgroundSize: "cover",
     backgroundPosition: "center center",
