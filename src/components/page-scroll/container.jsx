@@ -13,6 +13,7 @@ import {
   scrollIntoView,
   scrollByAnimated,
   clearAnimationQueue,
+  ScrollDetector,
 } from "../../lib/dom/scroll"
 import LayoutContext from "../../lib/contexts/layout-context"
 
@@ -304,8 +305,9 @@ const getHandlers = (container, context, sectionType) => {
       }
 
       if (Math.abs(verticalMove) > 0) {
-        const scrollDuration = 1
-        scrollByAnimated(context.scrollLayer, -verticalMove, scrollDuration)
+        // scrollByAnimated(context.scrollLayer, -verticalMove, 1)
+        context.scrollLayer.scrollTop -= verticalMove
+        ScrollDetector.updateAll()
       }
     }
     function pointerUpHandler(e) {
