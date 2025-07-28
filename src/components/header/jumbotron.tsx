@@ -23,6 +23,7 @@ const useStyles = makeStyles({
     top: 0,
     left: 0,
     margin: 0,
+    zIndex: 1,
   },
   backgroundDiv: {
     width: "100%",
@@ -43,7 +44,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     height: "100%",
     width: "45%",
-    zIndex: 1,
+    zIndex: 2,
     paddingTop: "6.5%",
   },
   headline: {
