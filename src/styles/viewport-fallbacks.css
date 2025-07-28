@@ -1,0 +1,54 @@
+/* CSS fallbacks for dynamic viewport units */
+/* These styles provide vh/vw fallbacks for browsers that don't support dvh/dvw */
+
+/* Global fallback approach using CSS custom properties */
+:root {
+  /* Set fallback values first */
+  --vh-fallback: 1vh;
+  --vw-fallback: 1vw;
+}
+
+/* Override with dynamic units when supported */
+@supports (height: 1dvh) {
+  :root {
+    --vh-fallback: 1dvh;
+  }
+}
+
+@supports (width: 1dvw) {
+  :root {
+    --vw-fallback: 1dvw;
+  }
+}
+
+/* Alternative approach: Direct CSS fallbacks */
+/* Any element using these classes will get automatic fallbacks */
+
+.viewport-height-100 {
+  height: 100vh;
+  /* Fallback */
+  height: 100dvh;
+  /* Modern browsers */
+}
+
+.viewport-width-100 {
+  width: 100vw;
+  /* Fallback */
+  width: 100dvw;
+  /* Modern browsers */
+}
+
+/* For inline styles that use dvh/dvw directly, provide global fallbacks */
+/* This ensures any dvh/dvw values fall back to vh/vw automatically */
+
+/* Specific common patterns used in the app */
+/* [style*="height: 100vh"] {
+  height: 100vh !important;
+  height: 100dvh !important;
+} */
+
+
+/* [style*="width: 100dvw"] {
+  width: 100vw !important;
+  width: 100dvw !important;
+} */

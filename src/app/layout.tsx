@@ -3,6 +3,7 @@ import ClientProviders from './client-providers'
 
 // Import global styles
 import '@/components/layouts/layout.css'
+import '@/styles/viewport-fallbacks.css'
 import 'typeface-roboto'
 
 export const metadata: Metadata = {
