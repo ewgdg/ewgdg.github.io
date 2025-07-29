@@ -18,7 +18,7 @@
     "build:cms": "node scripts/build-cms.mjs",
     "build:all": "npm run build && npm run build:cms",
     "watch:cms": "node scripts/build-cms.mjs --watch",
-    "predeploy": "npm run build",
+    "predeploy": "echo 'Use GitHub Actions workflow for deployment instead.' && exit 1 && npm run build",
     "deploy": "gh-pages --no-history --dist out --nojekyll --cname xianzzz.com"
   },
   "dependencies": {
