@@ -14,7 +14,7 @@
     "test": "jest",
     "updateSnap": "jest --updateSnapshot",
     "cms": "decap-server",
-    "dev:cms": "concurrently -k \"npm run watch:cms\" \"npm run dev\" \"npm run cms\"",
+    "dev:cms": "concurrently -k \"npm run cms\" \"npm run dev\"",
     "build:cms": "node scripts/build-cms.mjs",
     "build:all": "npm run build && npm run build:cms",
     "watch:cms": "node scripts/build-cms.mjs --watch"
