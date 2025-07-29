@@ -132,7 +132,7 @@ function CardTable({
         ))}
       </CardDivision>
     )
-  }, [pageData, itemsPerPage, CardComp])
+  }, [pageData, itemsPerPage])
 
   const pageCount = useMemo(() => {
     return Math.ceil(filtered.length / itemsPerPage)
