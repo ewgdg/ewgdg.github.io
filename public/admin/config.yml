@@ -43,7 +43,7 @@ collections:
   - name: "pages"
     label: "Pages"
     files:
-      - file: "src/pages/index.md"
+      - file: "content/index.md"
         label: "Landing Page"
         name: "indexPage"
         fields:
@@ -51,14 +51,14 @@ collections:
           - {label: Title, name: title, widget: string} 
           - {label: Jumbotron, name: jumbotron, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Headline, name: headline, widget: text}, {label: Subtitle, name: subtitle, widget: string}]}
         
-      - file: "src/pages/blog.md"
+      - file: "content/blog.md"
         label: "Blog List Page"
         name: "blogListPage"
         fields:
           - {label: "Template Key", name: "templateKey", widget: "hidden", default: "BlogPage"}
           - {label: "Title", name: "title", widget: "string"}
           - {label: Jumbotron, name: jumbotron, widget: object, fields: [{label: Image, name: image, widget: image}, {label: Headline, name: headline, widget: text}, {label: Subtitle, name: subtitle, widget: string}]}
-      - file: "src/pages/about.md"
+      - file: "content/about.md"
         label: "About Page"
         name: "aboutPage"
         fields:
