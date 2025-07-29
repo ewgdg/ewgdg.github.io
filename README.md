@@ -59,9 +59,6 @@ npm run updateSnap   # Update test snapshots
 
 # Utilities
 npm run clean        # Clean build cache
-
-# Deployment
-npm run deploy       # Build and deploy to GitHub Pages
 ```
 
 ## Project Structure
@@ -97,18 +94,4 @@ npm run deploy       # Build and deploy to GitHub Pages
 
 ### GitHub Pages
 
-The project is configured for easy deployment to GitHub Pages:
-
-```bash
-npm run deploy
-```
-
-This command will:
-
-1. Build the static site (`npm run build`)
-2. Deploy to GitHub Pages using `gh-pages`
-
-
-```bash
-npm run export
-```
+The project is configured for easy deployment to GitHub Pages using github actions.

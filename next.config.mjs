@@ -1,19 +1,12 @@
 /** @type {import('next').NextConfig} */
-const baseConfig = {
+const nextConfig = {
   reactStrictMode: true,
   trailingSlash: true, // Add trailing slashes for static hosting
+  output: 'export', // Enable static site generation for GitHub Pages
   images: {
     unoptimized: true, // Disable image optimization for static export
   },
+  allowedDevOrigins: ['192.168.1.*'], // Only affects development, ignored in production
 };
-
-const nextConfig = process.env.NODE_ENV === 'development'
-  ? {
-    ...baseConfig,
-    allowedDevOrigins: ['192.168.1.*'],
-  } : {
-    ...baseConfig,
-    output: 'export', // Enable static site generation only for production
-  };
 
 export default nextConfig;
