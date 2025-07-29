@@ -1,6 +1,6 @@
 # My Personal Portfolio Website
 
-A modern personal portfolio website built with Next.js, featuring a content management system powered by Decap CMS.
+A personal portfolio website built with Next.js.
 
 ## Features
 
