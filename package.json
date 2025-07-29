@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 8080 -H 0.0.0.0",
-    "build": "next build && npm run clean:admin",
+    "build": "next build",
     "clean:admin": "rm -rf out/admin",
     "start": "next start",
     "lint": "next lint",
@@ -17,7 +17,9 @@
     "dev:cms": "concurrently -k \"npm run cms\" \"npm run dev\"",
     "build:cms": "node scripts/build-cms.mjs",
     "build:all": "npm run build && npm run build:cms",
-    "watch:cms": "node scripts/build-cms.mjs --watch"
+    "watch:cms": "node scripts/build-cms.mjs --watch",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages --dist out --nojekyll"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -64,6 +66,7 @@
     "esbuild": "^0.25.8",
     "eslint": "^9.32.0",
     "eslint-config-next": "^15.4.4",
+    "gh-pages": "^6.3.0",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "raw-loader": "^4.0.2",
