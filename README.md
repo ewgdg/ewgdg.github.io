@@ -67,7 +67,7 @@ npm run deploy       # Build and deploy to GitHub Pages
 ## Project Structure
 
 ```shell
-├── content/           # Markdown content files
+├── content/          # Markdown content files
 │   ├── blog/         # Blog posts
 │   └── portfolio/    # Portfolio items
 ├── public/           # Static assets
