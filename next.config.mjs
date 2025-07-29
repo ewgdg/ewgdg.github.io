@@ -10,6 +10,7 @@ const baseConfig = {
 const nextConfig = process.env.NODE_ENV === 'development' 
   ? {
       ...baseConfig,
+      allowedDevOrigins: ['192.168.1.*'],
       async rewrites() {
         return {
           beforeFiles: [
