@@ -19,7 +19,7 @@
     "build:all": "npm run build && npm run build:cms",
     "watch:cms": "node scripts/build-cms.mjs --watch",
     "predeploy": "npm run build",
-    "deploy": "gh-pages --dist out --nojekyll --cname xianzzz.com"
+    "deploy": "gh-pages --no-history --dist out --nojekyll --cname xianzzz.com"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
