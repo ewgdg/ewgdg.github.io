@@ -28,6 +28,7 @@ function TransitionsModal({
       slotProps={{
         backdrop: {
           timeout: 500,
+          clickable: "true" // custom attribute for identifying clickable components
         },
       }}
       sx={{
@@ -78,7 +79,10 @@ export const useModalController = () => {
     setOpen(true)
   }, [])
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback((event) => {
+    if (event) {
+      event.stopPropagation() // Prevent event from bubbling up
+    }
     setOpen(false)
   }, [])
 
