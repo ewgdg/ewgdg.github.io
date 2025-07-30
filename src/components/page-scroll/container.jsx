@@ -69,6 +69,7 @@ const getHandlers = (container, context, sectionType) => {
     let isScrolling = false
     let isZooming = false
     let isTargetClickable = false
+    let touchStartY = null
 
     const touchPointYList = []
     const touchPointTimeStamp = []
@@ -260,10 +261,10 @@ const getHandlers = (container, context, sectionType) => {
         }
         elem = elem.parentElement
       }
-
-      // if (isTargetClickable) {
-      //   return
-      // }
+      // mobile can distinguish between drag and click
+      if (isTargetClickable && !isMobile()) {
+        return
+      }
       isPointerDown = true
 
       touchPointYList.length = 0
@@ -278,6 +279,7 @@ const getHandlers = (container, context, sectionType) => {
       clearAnimationQueue()
       const touchPoint = e
 
+      touchStartY = touchPoint.clientY
       touchPointYList.push(touchPoint.clientY)
       touchPointTimeStamp.push(performance.now())
     }
@@ -303,7 +305,7 @@ const getHandlers = (container, context, sectionType) => {
       touchPointYList.push(touchPoint.clientY)
       touchPointTimeStamp.push(performance.now())
 
-      while (touchPointYList.length > 5) {
+      while (touchPointYList.length > 10) {
         touchPointYList.shift()
         touchPointTimeStamp.shift()
       }
@@ -332,7 +334,32 @@ const getHandlers = (container, context, sectionType) => {
 
       const touchEndY = touchPoint.clientY
 
-      const verticalMove = touchEndY - touchPointYList[0]
+      let ready = true
+      // Unified gesture detection for all devices
+      const gestureThreshold = isMobile() ? 5 : 2    // Slightly higher threshold on mobile for touch precision
+      const timeThreshold = isMobile() ? 500 : 500     // Slightly longer time on mobile
+
+      let recentVerticalMove = 0
+      let recentVerticalMovePassThreshold = false
+      for (let i = touchPointYList.length - 1; i >= 0; i -= 1) {
+
+        if (i == touchPointYList.length - 1) {
+          recentVerticalMove += touchEndY - touchPointYList[i]
+        }
+        else {
+          recentVerticalMove += touchPointYList[i + 1] - touchPointYList[i]
+        }
+
+        if (Math.abs(recentVerticalMove) > gestureThreshold) {
+          recentVerticalMovePassThreshold = true
+          break
+        }
+      }
+      // discard subtle motion
+      if (!recentVerticalMovePassThreshold) {
+        ready = false
+      }
+
       let idlingTime = performance.now()
 
       for (let i = touchPointYList.length - 1; i >= 0; i -= 1) {
@@ -342,30 +369,13 @@ const getHandlers = (container, context, sectionType) => {
         }
       }
 
-      let ready = true
-      // Unified gesture detection for all devices
-      const gestureThreshold = isMobile() || isTargetClickable ? 6 : 3    // Slightly higher threshold on mobile for touch precision
-      const timeThreshold = isMobile() ? 500 : 500     // Slightly longer time on mobile
-      // discard subtle motion
-      if (Math.abs(verticalMove) <= gestureThreshold) {
-        ready = false
-        // scroll back to target
-        isScrolling = true
-        const promise = scrollByAnimated(context.scrollLayer, verticalMove, 50)
-        promise.then(() => {
-          isScrolling = false
-        }).catch((error) => {
-          console.warn('Scroll animation failed:', error)
-          isScrolling = false
-        })
-      }
-      else if (idlingTime > timeThreshold) {
+      if (idlingTime > timeThreshold) {
         ready = false
       }
 
-      if (ready && verticalMove > 0) {
+      if (ready && recentVerticalMove > 0) {
         scrollPage("up", e)
-      } else if (ready && verticalMove < 0) {
+      } else if (ready && recentVerticalMove < 0) {
         scrollPage("down", e)
       }
     }
@@ -373,8 +383,8 @@ const getHandlers = (container, context, sectionType) => {
     function pointerCancelHandler(e) {
       if (!isPointerDown) return
 
-      touchPointYList.splice(0)
-      touchPointTimeStamp.splice(0)
+      touchPointYList.length = 0
+      touchPointTimeStamp.length = 0
       isPointerDown = false
 
       preventDefault(e)
