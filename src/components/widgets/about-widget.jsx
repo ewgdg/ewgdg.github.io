@@ -16,6 +16,11 @@ import { ScrollDetector } from "../../lib/dom/scroll"
 import FlexContainer from "../sections/flex-container"
 
 const useStyles = makeStyles({
+  antiFlicker: {
+    WebkitFontSmoothing: "antialiased",
+    isolation: "isolate",
+    contain: "layout style"
+  },
   charSequenceContainer: {
     height: "4rem",
     width: "100%",
@@ -42,6 +47,8 @@ const useStyles = makeStyles({
     height: "350px",
     backgroundColor: "rgb(255, 32, 126)",
     opacity: 0.6,
+    willChange: "transform",
+    backfaceVisibility: "hidden",
   },
   skewed: {
     transform: "skewY(-15deg)",
@@ -139,7 +146,7 @@ function About() {
 
   return (
     <FlexContainer>
-      <div style={{ width: "100%", height: "auto" }}>
+      <div style={{ width: "100%", height: "auto" }} className={classes.antiFlicker}>
         <div style={{ display: "inline-block" }}>
           <div className={classes.charSequenceContainer}>
             <CharSequence string="About" charRefs={charRefs} />
