@@ -163,7 +163,7 @@ export default function BubbleTank({
   cellsPerRow = 5,
   data,
   header = null,
-  enableWaterEffect = true,
+  enableWaterEffect = false,
   waterIntensity = 1.0,
   enableCaustics = true,
   enableInteraction = true,
@@ -263,11 +263,12 @@ export default function BubbleTank({
 
   if (enableWaterEffect) {
     return (
+      // too slow on safari
       <SVGWaterDistortion
         intensity={waterIntensity}
         enableCaustics={enableCaustics}
         enableInteraction={enableInteraction}
-        style={{ width: '100%', height: '100%' }}
+        style={{ width: '100%', height: '100%', overflow: "visible" }}
       >
         {content}
       </SVGWaterDistortion>

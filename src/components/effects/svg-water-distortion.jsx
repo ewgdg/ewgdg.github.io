@@ -210,7 +210,7 @@ export default function SVGWaterDistortion({
               baseFrequency="0.008 0.006"
               numOctaves="3"
               seed="1"
-              stitchTiles="noStitch"
+              stitchTiles="stitch"
               type="fractalNoise"
               result="noise1"
             />
@@ -221,7 +221,7 @@ export default function SVGWaterDistortion({
               baseFrequency="0.024 0.012"
               numOctaves="2"
               seed="73"
-              stitchTiles="noStitch"
+              stitchTiles="stitch"
               type="fractalNoise"
               result="noise2"
             />
