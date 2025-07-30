@@ -227,12 +227,10 @@ export default function SVGWaterDistortion({
             />
 
             {/* Blend patterns smoothly */}
-            <feComposite
+            <feBlend
               in="noise1"
               in2="noise2"
-              operator="screen"
-              k1="0.7"
-              k2="0.3"
+              mode="lighten"
               result="combinedNoise"
             />
 
