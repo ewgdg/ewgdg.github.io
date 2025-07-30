@@ -14,6 +14,7 @@ import ParallaxSection from "../sections/parallax-section"
 import Section from "../page-scroll/section"
 import { Create } from "@mui/icons-material"
 import PageContainer, { SectionTypes } from "../page-scroll/container"
+import SVGWaterDistortion from "../effects/svg-water-distortion"
 
 const useStyles = makeStyles({
   gridList: {
@@ -21,7 +22,7 @@ const useStyles = makeStyles({
     // transform: "translateZ(0)",
     pointerEvents: "none",
     overflow: "visible",
-    backgroundColor: "rgba(12, 164, 255, 0.3)",
+    backgroundColor: "rgba(20, 140, 200, 0.15)",
   },
 })
 
@@ -162,6 +163,9 @@ export default function BubbleTank({
   cellsPerRow = 5,
   data,
   header = null,
+  enableWaterEffect = true,
+  waterIntensity = 1.0,
+  enableCaustics = true,
 }) {
   const classes = useStyles()
   const tileClasses = useTileStyles()
@@ -250,9 +254,23 @@ export default function BubbleTank({
     )
   })
 
-  return (
+  const content = (
     <div className={classes.gridList}>
       {sections}
     </div>
   )
+
+  if (enableWaterEffect) {
+    return (
+      <SVGWaterDistortion
+        intensity={waterIntensity}
+        enableCaustics={enableCaustics}
+        style={{ width: '100%', height: '100%' }}
+      >
+        {content}
+      </SVGWaterDistortion>
+    )
+  }
+
+  return content
 }
