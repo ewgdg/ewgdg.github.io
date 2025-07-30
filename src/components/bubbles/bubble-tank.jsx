@@ -166,6 +166,7 @@ export default function BubbleTank({
   enableWaterEffect = true,
   waterIntensity = 1.0,
   enableCaustics = true,
+  enableInteraction = true,
 }) {
   const classes = useStyles()
   const tileClasses = useTileStyles()
@@ -265,6 +266,7 @@ export default function BubbleTank({
       <SVGWaterDistortion
         intensity={waterIntensity}
         enableCaustics={enableCaustics}
+        enableInteraction={enableInteraction}
         style={{ width: '100%', height: '100%' }}
       >
         {content}

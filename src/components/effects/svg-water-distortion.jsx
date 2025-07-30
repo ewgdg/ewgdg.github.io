@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { makeStyles } from '@mui/styles'
 
 const useStyles = makeStyles({
@@ -112,11 +112,41 @@ export default function SVGWaterDistortion({
   intensity = 0.8,
   turbulenceScale = 50,
   enableCaustics = true,
+  enableInteraction = true,
   ...props
 }) {
   const classes = useStyles()
   const turbulenceRef = useRef(null)
   const animationRef = useRef(null)
+  const containerRef = useRef(null)
+
+  // Interactive states
+  const [isClicked, setIsClicked] = useState(false)
+  const [clickIntensity, setClickIntensity] = useState(1)
+
+  // Mouse click handler
+  const handleClick = useCallback((event) => {
+    // Only respond to clicks that haven't been handled already and don't have pointer-events enabled elements
+    if (enableInteraction &&
+      !event.defaultPrevented &&
+      !event.target.closest('[clickable="true"], button, a, [role="button"]')) {
+      setIsClicked(true)
+      setClickIntensity(2.5) // Strong initial burst
+
+      // Start intensity reduction
+      const interval = setInterval(() => {
+        setClickIntensity(prev => {
+          const newIntensity = prev * 0.95 // Exponential decay
+          if (newIntensity <= 1.05) {
+            setIsClicked(false)
+            clearInterval(interval)
+            return 1
+          }
+          return newIntensity
+        })
+      }, 50) // Update every 50ms for smooth transition
+    }
+  }, [enableInteraction])
 
   useEffect(() => {
     const turbulence = turbulenceRef.current
@@ -132,8 +162,16 @@ export default function SVGWaterDistortion({
       const noise2 = Math.cos(elapsed * 0.43) * Math.sin(elapsed * 0.67)
       const noise3 = Math.sin(elapsed * 0.91) * Math.cos(elapsed * 0.31)
 
-      const baseFrequency1 = 0.008 + noise1 * 0.012 + noise3 * 0.004
-      const baseFrequency2 = 0.006 + noise2 * 0.009 + noise1 * 0.003
+      // Base frequencies with click intensity modification
+      let baseFrequency1 = 0.008 + noise1 * 0.012 + noise3 * 0.004
+      let baseFrequency2 = 0.006 + noise2 * 0.009 + noise1 * 0.003
+
+      // Apply click-based intensity enhancement
+      if (isClicked) {
+        const clickMultiplier = clickIntensity + Math.sin(elapsed * 4) * 0.2
+        baseFrequency1 *= clickMultiplier
+        baseFrequency2 *= clickMultiplier
+      }
 
       // Add irregular seed changes for more organic variation
       const seedVariation = Math.floor(elapsed * 3.7 + noise2 * 50) % 1000
@@ -151,11 +189,13 @@ export default function SVGWaterDistortion({
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [])
+  }, [isClicked, clickIntensity])
 
   return (
     <div
+      ref={containerRef}
       className={classes.waterContainer}
+      onClick={handleClick}
       style={style}
       {...props}
     >
@@ -200,7 +240,7 @@ export default function SVGWaterDistortion({
             <feDisplacementMap
               in="SourceGraphic"
               in2="combinedNoise"
-              scale={intensity * 9}
+              scale={intensity * 9 * (isClicked ? clickIntensity : 1)}
               xChannelSelector="R"
               yChannelSelector="B"
               result="displacement"
