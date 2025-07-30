@@ -68,6 +68,7 @@ const getHandlers = (container, context, sectionType) => {
   return (() => {
     let isScrolling = false
     let isZooming = false
+    let isTargetClickable = false
 
     const touchPointYList = []
     const touchPointTimeStamp = []
@@ -250,21 +251,23 @@ const getHandlers = (container, context, sectionType) => {
     function pointerDownHandler(e) {
       // check event path, if found clickable, ignore this pointer move
 
-      // let elem = e.target || e.srcElement
-      // let test = false
-      // while (elem) {
-      //   test = isClickable(elem)
-      //   if (test) break
-      //   elem = elem.parentElement
-      // }
+      let elem = e.target || e.srcElement
+      isTargetClickable = false
+      while (elem) {
+        if (isClickable(elem)) {
+          isTargetClickable = true
+          break
+        }
+        elem = elem.parentElement
+      }
 
-      // if (test) {
+      // if (isTargetClickable) {
       //   return
       // }
       isPointerDown = true
 
-      touchPointYList.splice(0)
-      touchPointTimeStamp.splice(0)
+      touchPointYList.length = 0
+      touchPointTimeStamp.length = 0
 
       if (isScrolling) {
         preventDefault(e)
@@ -341,10 +344,22 @@ const getHandlers = (container, context, sectionType) => {
 
       let ready = true
       // Unified gesture detection for all devices
-      const gestureThreshold = isMobile() ? 5 : 2    // Slightly higher threshold on mobile for touch precision
+      const gestureThreshold = isMobile() || isTargetClickable ? 6 : 3    // Slightly higher threshold on mobile for touch precision
       const timeThreshold = isMobile() ? 500 : 500     // Slightly longer time on mobile
       // discard subtle motion
-      if (idlingTime > timeThreshold || Math.abs(verticalMove) <= gestureThreshold) {
+      if (Math.abs(verticalMove) <= gestureThreshold) {
+        ready = false
+        // scroll back to target
+        isScrolling = true
+        const promise = scrollByAnimated(context.scrollLayer, verticalMove, 50)
+        promise.then(() => {
+          isScrolling = false
+        }).catch((error) => {
+          console.warn('Scroll animation failed:', error)
+          isScrolling = false
+        })
+      }
+      else if (idlingTime > timeThreshold) {
         ready = false
       }
 
