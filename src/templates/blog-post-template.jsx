@@ -8,7 +8,7 @@ import Container from "@mui/material/Container"
 import Image from "next/image"
 import { makeStyles } from "@mui/styles"
 import { useTheme, useMediaQuery } from "@mui/material"
-import { calcViewportHeight } from "../lib/dom/viewport-utils"
+import { calcViewportHeight } from "../lib/dom/viewport"
 
 export const useStyles = makeStyles({
   taglist: {

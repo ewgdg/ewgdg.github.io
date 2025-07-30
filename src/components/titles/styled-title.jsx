@@ -3,7 +3,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from "react"
 import { makeStyles } from "@mui/styles"
-import { calcViewportWidth } from "../../lib/dom/viewport-utils"
+import { calcViewportWidth } from "../../lib/dom/viewport"
 
 const useStyles = makeStyles({
   container: {

@@ -8,7 +8,7 @@ import Section from "../components/page-scroll/section"
 import HeaderContainer from "../components/header/header-container"
 import Footer from "../components/footer/footer"
 import ParallaxSection from "../components/sections/parallax-section"
-import { calcViewportHeight } from "../lib/dom/viewport-utils"
+import { calcViewportHeight } from "../lib/dom/viewport"
 
 function BlogPagePreview({ jumbotronProps }) {
   return (

@@ -2,7 +2,7 @@
 
 /* eslint-disable react/prop-types */
 import { makeStyles } from "@mui/styles"
-import { calcViewportHeight } from "../../lib/dom/viewport-utils"
+import { calcViewportHeight } from "../../lib/dom/viewport"
 
 import React from "react"
 

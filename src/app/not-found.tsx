@@ -1,6 +1,6 @@
 import { Container, Typography, Box, Button } from '@mui/material'
 import Link from '../components/navigation/link'
-import { calcViewportHeight } from '../lib/dom/viewport-utils'
+import { calcViewportHeight } from '../lib/dom/viewport'
 
 export default function NotFound() {
   return (

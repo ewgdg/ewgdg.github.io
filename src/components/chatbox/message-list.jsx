@@ -6,7 +6,7 @@ import Box from "@mui/material/Box"
 import { makeStyles } from "@mui/styles"
 import CircularProgress from "@mui/material/CircularProgress"
 import Message from "./message"
-import { calcViewportHeight } from "../../lib/dom/viewport-utils"
+import { calcViewportHeight } from "../../lib/dom/viewport"
 
 const useStyles = makeStyles({
   box: {

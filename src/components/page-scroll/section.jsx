@@ -5,7 +5,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { makeStyles } from "@mui/styles"
-import { calcViewportHeight } from "../../lib/dom/viewport-utils"
+import { calcViewportHeight } from "../../lib/dom/viewport"
 
 const useStyles = makeStyles({
   root: {

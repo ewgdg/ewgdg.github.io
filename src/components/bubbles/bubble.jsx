@@ -11,7 +11,7 @@ import FlexContainer from "../sections/flex-container"
 import TransitionsModal, {
   useModalController,
 } from "../modals/transitions-modal"
-import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport"
 
 // prevent plugins from being dropped by treeshaking, not necessary for tweenmax
 // const plugins = [CSSPlugin]

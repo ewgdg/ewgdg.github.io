@@ -1,4 +1,4 @@
-import { calcViewportHeight } from '../../lib/dom/viewport-utils'
+import { calcViewportHeight } from '../../lib/dom/viewport'
 
 export default function Loading() {
   return (

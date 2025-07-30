@@ -72,6 +72,17 @@ function isAnyInViewport(elem, innerMargin = 0) {
     distance.right >= 0
   )
 }
+// Utility functions for viewport unit fallbacks
+// Modern browsers will upgrade to dvh/dvw via CSS fallback mechanism
+
+function calcViewportHeight(percentage = 100) {
+  return `calc(var(--vh-fallback)*${percentage})`;
+}
+
+function calcViewportWidth(percentage = 100) {
+  return `calc(var(--vw-fallback)*${percentage})`;
+}
+
 export {
   isInViewport,
   isAnyInViewport,
@@ -79,4 +90,6 @@ export {
   isBelowViewportTop,
   isBottomInViewport,
   isTopInViewport,
+  calcViewportHeight,
+  calcViewportWidth,
 }

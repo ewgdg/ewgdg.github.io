@@ -12,7 +12,7 @@ import FlyingSprite from "../sprite/flying-sprite"
 import LayoutContext, { contextValueRef } from "../../lib/contexts/layout-context"
 import Synap from "../background/synap"
 import { debounce } from "../../lib/performance/throttle"
-import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport"
 
 const Layout = ({ children }) => {
   // if the context is not resolved then the children will not be mounted

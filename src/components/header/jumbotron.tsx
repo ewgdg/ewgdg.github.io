@@ -3,7 +3,7 @@
 import React from "react"
 import { makeStyles } from "@mui/styles"
 import ParallaxSection from "../sections/parallax-section"
-import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport"
 
 const useStyles = makeStyles({
   figure: {

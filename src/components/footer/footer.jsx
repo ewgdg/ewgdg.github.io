@@ -7,7 +7,7 @@ import EmailRoundedIcon from "@mui/icons-material/EmailRounded"
 import LinkedInIcon from "@mui/icons-material/LinkedIn"
 import IconButton from "@mui/material/IconButton"
 import SvgIcon from "@mui/material/SvgIcon"
-import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport-utils"
+import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport"
 
 const generateOnClickForLink = link => {
   return () => {
