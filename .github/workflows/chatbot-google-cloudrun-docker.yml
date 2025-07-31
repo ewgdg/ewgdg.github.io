@@ -32,7 +32,7 @@ name: 'Build and Deploy Chatbot to Cloud Run'
 on:
   push:
     branches:
-      - '"main"'
+      - "main"
     paths:
       - 'chatbot/**'
       - '.github/workflows/chatbot-google-cloudrun-docker.yml'
