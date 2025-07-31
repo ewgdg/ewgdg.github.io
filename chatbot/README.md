@@ -31,8 +31,8 @@ in github secrets and variables, add vars according to the workflow file.
 create google Workload Identity Federation
 <https://github.com/google-github-actions>
 
-in google console IAM page, create service account with cloud-run developer and artifact-registry administrator roles.
-grant access of impersonating the service account to your workload identity federation principle with a service account user role.
+in google console IAM/service accounts page, create service account with cloud-run developer and artifact-registry administrator roles.
+grant access for impersonating the service account to your workload identity federation principle with a workloadIdentityUser role.
 or directly grant assign the cloud-run and artifact-registry roles to your identity federation.
 the principle set looks like:
 
