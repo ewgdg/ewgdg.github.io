@@ -29,12 +29,38 @@ function Chat({ iconStyle = {} }) {
       const replyObj = {
         loading: true,
       }
-      setMessages(prev => [...prev, replyObj])
-      const reply = await chatbot.requestReply(req)
+      setMessages(prev => {
+        const newMessages = [...prev, replyObj]
 
-      replyObj.loading = false
-      replyObj.data = reply
-      setMessages(prev => [...prev])
+        // Get last 3 messages, filtering out error messages using type field
+        const validMessages = prev.filter(msg =>
+          msg.data &&
+          msg.type !== "error" &&
+          !msg.loading
+        ).slice(-3)
+
+        // Build messages array with roles for API
+        const messagesForAPI = [
+          ...validMessages.map(msg => ({
+            role: msg.type === 'user' ? 'user' : 'assistant',
+            content: typeof msg.data === 'string' ? msg.data : msg.data.response || msg.data
+          })),
+          {
+            role: 'user',
+            content: req
+          }
+        ]
+
+        // Make the API call with message context
+        chatbot.requestReply(messagesForAPI).then(reply => {
+          replyObj.loading = false
+          replyObj.data = reply.response
+          replyObj.type = reply.type
+          setMessages(current => [...current])
+        })
+
+        return newMessages
+      })
     },
     [setMessages]
   )
@@ -66,7 +92,7 @@ function Chat({ iconStyle = {} }) {
     if (textRef.current && controllableRef.current) {
       const question = textRef.current
       textRef.current = ""
-      setMessages(oldmsgs => [...oldmsgs, { data: question, fromClient: true }])
+      setMessages(oldmsgs => [...oldmsgs, { data: question, type: "user" }])
       setText("")
       block()
       await waitForResponse(question)
@@ -103,8 +129,21 @@ function Chat({ iconStyle = {} }) {
     messageObj.data = reply
     messageObj.loading = false
     unblock()
+
+    if (!reply) {
+      setMessages(prev => {
+        // if first message, greet
+        if (prev.length == 1) {
+          messageObj.data = "Hi!"
+          return [...prev]
+        }
+        else {
+          return [...prev.slice(0, -1)]
+        }
+      })
+    }
     // If the last message is the same as the reply, do not add it again
-    if (lastMessage && !lastMessage.fromClient && reply === lastMessage.data) {
+    else if (lastMessage && lastMessage.type !== "user" && reply === lastMessage.data) {
       setMessages(prev => [...prev.slice(0, -1)])
     }
     else {

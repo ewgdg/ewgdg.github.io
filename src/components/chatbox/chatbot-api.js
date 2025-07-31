@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 import _axios from "axios"
 
-const baseURL = "https://qa-chatbot.xianzzz.com/"
+const baseURL = process.env.NEXT_PUBLIC_CHATBOT_URL
 const axios = _axios.create({
   baseURL,
   timeout: 20000,
@@ -11,60 +11,41 @@ const axios = _axios.create({
 async function sayHi() {
   let resp
   try {
-    resp = await axios.get("/hi", { timeout: 1500 })
+    resp = await axios.get("/health", { timeout: 1500 })
   } catch (e) {
     // console.error(e)
     resp = { data: { status: "error" } }
   }
-  let reply
+  let reply = ""
   const {
     data: { status },
   } = resp
   if (status === "ok") {
-    reply = "Hi!"
+    // reply = "Hi!"
   } else {
     reply = "Service not available."
   }
   return reply
 }
 
-async function requestReply(message) {
+async function requestReply(messages) {
   let resp
   try {
-    resp = await axios.get(`/qa/${encodeURIComponent(message)}`)
+    resp = await axios.post("/chat", {
+      messages: messages,
+      conversation_id: null
+    })
   } catch (e) {
-    return "Error!"
-  }
-  const {
-    data: {
-      results: { answers },
-    },
-  } = resp
-
-  const noreply = "I don't understand."
-
-  if (!answers || answers.length <= 0) {
-    return noreply
+    return { response: "Error!", type: "error" }
   }
 
-  let reply = null
-  let maxProb = null
-  // const answerSet = new Set()
+  const { data } = resp
 
-  for (const answer of answers) {
-    if (
-      answer.probability >= 0.67 &&
-      (!maxProb || answer.probability > maxProb)
-    ) {
-      maxProb = answer.probability
-      reply = answer.answer
-    }
+  if (!data || !data.response) {
+    return { response: "I don't understand.", type: "error" }
   }
 
-  if (reply === null) {
-    reply = noreply
-  }
-  return reply
+  return { response: data.response, type: data.type || "agent" }
 }
 
 export { sayHi, requestReply }

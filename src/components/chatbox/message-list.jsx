@@ -16,6 +16,7 @@ const useStyles = makeStyles({
   },
 })
 
+
 const MessageList = ({ messages }) => {
   const classes = useStyles()
   const outerRef = useRef({})
@@ -31,13 +32,13 @@ const MessageList = ({ messages }) => {
         return (
           <Box
             display="flex"
-            flexDirection={message.fromClient ? "row-reverse" : "row"}
+            flexDirection={message.type === "user" ? "row-reverse" : "row"}
             flexWrap="wrap"
             style={{ margin: "0.3rem 0" }}
             // eslint-disable-next-line react/no-array-index-key
             key={i}
           >
-            <Message color={message.fromClient ? "#25b7fa" : "#b3bcbc"}>
+            <Message color={message.type === "user" ? "#25b7fa" : "#b3bcbc"}>
               {message.loading ? (
                 <CircularProgress
                   size="1rem"
