@@ -8,6 +8,15 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+    paths:
+      - 'src/**'
+      - 'content/**'
+      - 'public/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'next.config.mjs'
+      - 'tsconfig.json'
+      - '.github/workflows/nextjs.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
