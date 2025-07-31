@@ -27,7 +27,7 @@
 #
 # 3. Change the values in the "env" block to match your values.
 
-name: 'Build and Deploy to Cloud Run'
+name: 'Build and Deploy Chatbot to Cloud Run'
 
 on:
   push:
@@ -35,6 +35,10 @@ on:
       - '"main"'
     paths:
       - 'chatbot/**'
+      - '.github/workflows/chatbot-google-cloudrun-docker.yml'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 env:
   PROJECT_ID: 'qa-chatbot-296302' # TODO: update to your Google Cloud project ID
