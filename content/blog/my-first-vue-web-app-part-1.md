@@ -158,5 +158,5 @@ the purpose of SSR for my web project.</span>
 
 <span dir="ltr">To be continued.</span>
 
-Check [Part 2](https://xianzzzz.com/blog/2019-11-07-my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-2)xianzzzz.com
- and [Part 3](https://xianzhang.dev/blog/2019-11-08-my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-3).
+Check [Part 2](/blog/my-first-vue-web-app-part-2/)
+ and [Part 3](/blog/my-first-vue-web-app-part-3/).

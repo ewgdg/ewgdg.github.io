@@ -28,4 +28,4 @@ All of the states/properties in the Vuex store will be modified by Vue to be abl
 
 To be continued.
 
-Check [Part 3](https://xianzzzz.com/blog/2019-11-08-my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-3).
+Check [Part 3](/blog/my-first-vue-web-app-part-3/).
