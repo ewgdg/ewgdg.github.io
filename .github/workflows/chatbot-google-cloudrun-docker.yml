@@ -68,6 +68,12 @@ jobs:
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ secrets.SERVICE_ACCOUNT_EMAIL }}'
 
+      # Debug: Test authentication
+      - name: 'Test Authentication'
+        run: |
+          gcloud auth list
+          gcloud projects get-iam-policy ${{ env.PROJECT_ID }} --flatten="bindings[].members" --filter="bindings.members:serviceAccount:${{ secrets.SERVICE_ACCOUNT_EMAIL }}"
+
       # BEGIN - Docker auth and build
       #
       # If you already have a container image, you can omit these steps.
