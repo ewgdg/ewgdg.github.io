@@ -14,7 +14,7 @@ on:
       - 'public/**'
       - 'package.json'
       - 'package-lock.json'
-      - 'next.config.mjs'
+      - 'next.config.*'
       - 'tsconfig.json'
       - '.github/workflows/nextjs.yml'
 
