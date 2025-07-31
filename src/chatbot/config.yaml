@@ -1,8 +1,0 @@
----
-# distilbert-base-uncased-distilled-squad
-# deepset/roberta-base-squad2
-# model: distilbert-base-uncased-distilled-squad
-# modelDir: distilbert-base-uncased-distilled-squad-saved
-sqlUrl: sqlite:///qa.db
-docDir: doc_dir
-sqlUrlFAQ: sqlite:///qafaq.db
