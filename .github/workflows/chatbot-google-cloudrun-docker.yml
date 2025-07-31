@@ -41,10 +41,9 @@ on:
   workflow_dispatch:
 
 env:
-  PROJECT_ID: 'qa-chatbot-296302' # TODO: update to your Google Cloud project ID
-  REGION: 'us-central1' # TODO: update to your region
-  SERVICE: 'qa-chatbot' # TODO: update to your service name
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/959202654886/locations/global/workloadIdentityPools/github/providers/my-repo' # TODO: update to your workload identity provider
+  PROJECT_ID: '${{ vars.PROJECT_ID }}'
+  REGION: '${{ vars.REGION }}'
+  SERVICE: '${{ vars.SERVICE }}'
 
 jobs:
   deploy:
@@ -66,11 +65,15 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v2'
         with:
-          workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
+          workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
+          service_account: '${{ secrets.SERVICE_ACCOUNT_EMAIL }}'
 
       # BEGIN - Docker auth and build
       #
       # If you already have a container image, you can omit these steps.
+      - name: 'Set up Docker Buildx'
+        uses: 'docker/setup-buildx-action@v3'
+
       - name: 'Docker Auth'
         uses: 'docker/login-action@v3'
         with:
@@ -79,11 +82,13 @@ jobs:
           registry: '${{ env.REGION }}-docker.pkg.dev'
 
       - name: 'Build and Push Container'
-        working-directory: ./chatbot
-        run: |-
-          DOCKER_TAG="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}"
-          docker build --tag "${DOCKER_TAG}" .
-          docker push "${DOCKER_TAG}"
+        uses: 'docker/build-push-action@v5'
+        with:
+          context: ./chatbot
+          push: true
+          tags: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{ github.sha }}'
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       # END - Docker auth and build
 
@@ -100,6 +105,5 @@ jobs:
             OPENAI_API_KEY=openai-qa-chatbot-secret:latest
       # If required, use the Cloud Run URL output in later steps
       - name: 'Show output'
-        run: |2-
-
-          echo ${{ steps.deploy.outputs.url }}
+        run: |
+          echo "Deployed to: ${{ steps.deploy.outputs.url }}"

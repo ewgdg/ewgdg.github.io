@@ -18,11 +18,11 @@ gcloud services enable containerregistry.googleapis.com
 
 ### 2. Create OpenAI API Secret
 
-on google cloud console secret manager, add openai-qa-chatbot-secret
+in google cloud console secret manager, add openai-qa-chatbot-secret.
 
 ### 3. Set Project Variables
 
-on github actions.
+in github secrets and variables, add vars according to the workflow file.
 
 ## Deployment Options
 
@@ -31,8 +31,9 @@ on github actions.
 create google Workload Identity Federation
 <https://github.com/google-github-actions>
 
-in google console IAM page, create service account with cloud run developer and artifact registry administrator roles.
-grant access of this service account to your workload identity federation principle with a service account user role.
+in google console IAM page, create service account with cloud-run developer and artifact-registry administrator roles.
+grant access of impersonating the service account to your workload identity federation principle with a service account user role.
+or directly grant assign the cloud-run and artifact-registry roles to your identity federation.
 the principle set looks like:
 
 ```
