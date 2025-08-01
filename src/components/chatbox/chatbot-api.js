@@ -8,24 +8,17 @@ const axios = _axios.create({
   withCredentials: false,
 })
 
-async function sayHi() {
+async function checkHealth() {
   let resp
   try {
     resp = await axios.get("/health", { timeout: 1500 })
   } catch (e) {
-    // console.error(e)
-    resp = { data: { status: "error" } }
+    return false
   }
-  let reply = ""
   const {
     data: { status },
   } = resp
-  if (status === "ok") {
-    // reply = "Hi!"
-  } else {
-    reply = "Service not available."
-  }
-  return reply
+  return status === "ok"
 }
 
 async function requestReply(messages) {
@@ -48,4 +41,4 @@ async function requestReply(messages) {
   return { response: data.response, type: data.type || "agent" }
 }
 
-export { sayHi, requestReply }
+export { checkHealth, requestReply }

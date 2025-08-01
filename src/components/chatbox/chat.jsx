@@ -125,29 +125,32 @@ function Chat({ iconStyle = {} }) {
       return [...prev, messageObj]
     })
     block()
-    const reply = await chatbot.sayHi()
-    messageObj.data = reply
+    const isHealthy = await chatbot.checkHealth()
     messageObj.loading = false
     unblock()
 
-    if (!reply) {
+    if (!isHealthy) {
+      messageObj.data = "Service not available."
+      messageObj.type = "error"
+      setMessages(prev => {
+        // If the last message is the same as the reply, do not add it again
+        if (lastMessage && lastMessage.type !== "user" && lastMessage.data === messageObj.data) {
+          return [...prev.slice(0, -1)]
+        }
+        return [...prev]
+      })
+    } else {
       setMessages(prev => {
         // if first message, greet
-        if (prev.length == 1) {
+        if (prev.length === 1) {
           messageObj.data = "Hi!"
+          messageObj.type = "agent"
           return [...prev]
-        }
-        else {
+        } else {
+          // Remove the loading message if service is healthy but no greeting needed
           return [...prev.slice(0, -1)]
         }
       })
-    }
-    // If the last message is the same as the reply, do not add it again
-    else if (lastMessage && lastMessage.type !== "user" && reply === lastMessage.data) {
-      setMessages(prev => [...prev.slice(0, -1)])
-    }
-    else {
-      setMessages(prev => [...prev])
     }
   }, [controllableRef])
 
