@@ -98,7 +98,7 @@ jobs:
         with:
           context: ./chatbot
           push: true
-          tags: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}'
+          tags: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:latest'
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -111,9 +111,9 @@ jobs:
           service: '${{ env.SERVICE }}'
           region: '${{ env.REGION }}'
           # NOTE: If using a pre-built image, update the image name below:
-          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}'
+          image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:latest'
           env_vars: '${{ steps.env-vars.outputs.ENV_VARS }}'
-          flags: '--max-instances=1 --min-instances=0 --port=8080 --startup-probe httpGet.path=/health,httpGet.port=8080 --cpu-boost --cpu=1 --memory=512Mi'
+          flags: '--max-instances=1 --min-instances=0 --port=8080 --cpu-boost --cpu=1 --memory=512Mi'
           secrets: |
             OPENAI_API_KEY=openai-qa-chatbot-secret:latest
       # If required, use the Cloud Run URL output in later steps
