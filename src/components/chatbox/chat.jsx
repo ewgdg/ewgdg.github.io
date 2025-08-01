@@ -135,7 +135,7 @@ function Chat({ iconStyle = {} }) {
       setMessages(prev => {
         // If the last message is the same as the reply, do not add it again
         if (lastMessage && lastMessage.type !== "user" && lastMessage.data === messageObj.data) {
-          return [...prev.slice(0, -1)]
+          return prev.slice(0, -1)
         }
         return [...prev]
       })
@@ -148,7 +148,7 @@ function Chat({ iconStyle = {} }) {
           return [...prev]
         } else {
           // Remove the loading message if service is healthy but no greeting needed
-          return [...prev.slice(0, -1)]
+          return prev.slice(0, -1)
         }
       })
     }
