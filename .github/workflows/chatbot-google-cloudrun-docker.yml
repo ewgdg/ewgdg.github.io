@@ -68,11 +68,8 @@ jobs:
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ secrets.SERVICE_ACCOUNT_EMAIL }}'
 
-      # Debug: Test authentication
-      - name: 'Test Authentication'
-        run: |
-          gcloud auth list
-          gcloud projects get-iam-policy ${{ env.PROJECT_ID }} --flatten="bindings[].members" --filter="bindings.members:serviceAccount:${{ secrets.SERVICE_ACCOUNT_EMAIL }}"
+      - name: Debug gcloud auth
+        run: gcloud auth list
 
       # BEGIN - Docker auth and build
       #
