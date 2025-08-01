@@ -57,6 +57,17 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
       
+      - name: 'Read environment variables'
+        id: env-vars
+        run: |
+          if [ -f ./chatbot/.env.production ]; then
+            {
+              echo "ENV_VARS<<EOF"
+              cat ./chatbot/.env.production
+              echo "EOF"
+            } >> $GITHUB_OUTPUT
+          fi
+      
       # Configure Workload Identity Federation and generate an access token.
       #
       # See https://github.com/google-github-actions/auth for more options,
@@ -92,15 +103,6 @@ jobs:
           cache-to: type=gha,mode=max
 
       # END - Docker auth and build
-
-      - name: 'Read environment variables'
-        id: env-vars
-        run: |
-          if [ -f ./chatbot/.env.production ]; then
-            echo "ENV_VARS<<EOF" >> $GITHUB_OUTPUT
-            cat ./chatbot/.env.production >> $GITHUB_OUTPUT
-            echo "EOF" >> $GITHUB_OUTPUT
-          fi
 
       - name: 'Deploy to Cloud Run'
         id: "deploy"
