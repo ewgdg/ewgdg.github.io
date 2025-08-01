@@ -57,11 +57,6 @@ jobs:
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
       
-      - name: 'Debug Variables'
-        run: |
-          echo "WORKLOAD_IDENTITY_PROVIDER: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}"
-          echo "SERVICE_ACCOUNT_EMAIL: ${{ vars.SERVICE_ACCOUNT_EMAIL }}"
-      
       # Configure Workload Identity Federation and generate an access token.
       #
       # See https://github.com/google-github-actions/auth for more options,
@@ -70,9 +65,8 @@ jobs:
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v2'
         with:
-          workload_identity_provider: '${{ vars.WORKLOAD_IDENTITY_PROVIDER }}'
-          service_account: '${{ vars.SERVICE_ACCOUNT_EMAIL }}'
           project_id: '${{ env.PROJECT_ID }}'
+          workload_identity_provider: '${{ vars.WORKLOAD_IDENTITY_PROVIDER }}'
 
       # BEGIN - Docker auth and build
       #

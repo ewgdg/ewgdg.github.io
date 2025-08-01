@@ -31,11 +31,10 @@ in github secrets and variables, add vars according to the workflow file.
 create google Workload Identity Federation
 <https://github.com/google-github-actions>
 
-in google console IAM/service accounts page, create service account with cloud-run developer and artifact-registry administrator roles.
-grant access for impersonating the service account to your workload identity federation principle with a workloadIdentityUser role.
+in google console IAM page, click grant access.
+grant your workload identity federation principalSet access to cloud-run and artifact-registry and secret-manager.
 or directly grant assign the cloud-run and artifact-registry roles to your identity federation.
-the principle set looks like:
-
+the principal set looks like:
 ```
 ${REPO} is the full repo name including the parent GitHub organization, such as "my-org/my-repo".
 ${WORKLOAD_IDENTITY_POOL_ID} can be printed on cloud shell with command:
@@ -46,6 +45,8 @@ gcloud iam workload-identity-pools describe "github" \
 
 principalSet://iam.googleapis.com/${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/${REPO}
 ```
+
+note that if identity federation impersonates a service account, then the token type need to be access_token.
 
 ### Google cloud-run continuously deployment from github connection
 
