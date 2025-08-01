@@ -11,7 +11,7 @@ const axios = _axios.create({
 async function checkHealth() {
   let resp
   try {
-    resp = await axios.get("/health", { timeout: 1500 })
+    resp = await axios.get("/health", { timeout: 5000 })
   } catch (e) {
     return false
   }

@@ -142,7 +142,7 @@ function Chat({ iconStyle = {} }) {
     } else {
       setMessages(prev => {
         // if first message, greet
-        if (prev.length === 1) {
+        if (prev.length === 1 || lastMessage.type == "error") {
           messageObj.data = "Hi!"
           messageObj.type = "agent"
           return [...prev]
