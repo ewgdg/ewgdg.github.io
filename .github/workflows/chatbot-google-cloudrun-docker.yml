@@ -67,7 +67,7 @@ jobs:
         with:
           project_id: '${{ env.PROJECT_ID }}'
           workload_identity_provider: '${{ vars.WORKLOAD_IDENTITY_PROVIDER }}'
-          service_account: '${{ vars.SERVICE_ACCOUNT_EMAIL }}''
+          service_account: '${{ vars.SERVICE_ACCOUNT_EMAIL }}'
 
       # BEGIN - Docker auth and build
       #
