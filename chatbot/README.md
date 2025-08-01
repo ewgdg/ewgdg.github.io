@@ -45,7 +45,7 @@ gcloud iam workload-identity-pools describe "github" \
 principalSet://iam.googleapis.com/${WORKLOAD_IDENTITY_POOL_ID}/attribute.repository/${REPO}
 ```
 
-note that if identity federation impersonates a service account with google-github-actions/auth, then the token type need to be access_token.
+~~note that if identity federation impersonates a service account with google-github-actions/auth, then the token type need to be access_token?~~
 it might also need serviceAccountUser or workloadIdentityUser access to a service account for the deploy action.
 see <https://github.com/google-github-actions/deploy-cloudrun>.
 

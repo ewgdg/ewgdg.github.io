@@ -93,6 +93,15 @@ jobs:
 
       # END - Docker auth and build
 
+      - name: 'Read environment variables'
+        id: env-vars
+        run: |
+          if [ -f ./chatbot/.env.production ]; then
+            echo "ENV_VARS<<EOF" >> $GITHUB_OUTPUT
+            cat ./chatbot/.env.production >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+
       - name: 'Deploy to Cloud Run'
         id: "deploy"
         uses: 'google-github-actions/deploy-cloudrun@v2'
@@ -101,7 +110,7 @@ jobs:
           region: '${{ env.REGION }}'
           # NOTE: If using a pre-built image, update the image name below:
           image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.SERVICE }}/${{ env.SERVICE }}:${{ github.sha }}'
-          env_vars_file: './chatbot/.env.production'
+          env_vars: '${{ steps.env-vars.outputs.ENV_VARS }}'
           flags: '--max-instances=1 --min-instances=0'
           secrets: |
             OPENAI_API_KEY=openai-qa-chatbot-secret:latest
