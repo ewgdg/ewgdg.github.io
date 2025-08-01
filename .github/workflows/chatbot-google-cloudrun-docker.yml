@@ -67,6 +67,7 @@ jobs:
         with:
           workload_identity_provider: '${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}'
           service_account: '${{ secrets.SERVICE_ACCOUNT_EMAIL }}'
+          project_id: '${{ env.PROJECT_ID }}'
 
       - name: Debug gcloud auth
         run: gcloud auth list
