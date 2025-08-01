@@ -61,11 +61,10 @@ jobs:
         id: env-vars
         run: |
           if [ -f ./chatbot/.env.production ]; then
-            {
-              echo "ENV_VARS<<EOF"
-              cat ./chatbot/.env.production
-              echo "EOF"
-            } >> $GITHUB_OUTPUT
+            ENV_CONTENT=$(cat ./chatbot/.env.production)
+            echo "ENV_VARS<<EOF" >> $GITHUB_OUTPUT
+            echo "$ENV_CONTENT" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
           fi
       
       # Configure Workload Identity Federation and generate an access token.
