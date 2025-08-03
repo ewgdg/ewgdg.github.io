@@ -12,6 +12,8 @@
 out/
 
 .claude/tasks/
+.claude/
+.bmad-core/
 
 # Logs
 logs
