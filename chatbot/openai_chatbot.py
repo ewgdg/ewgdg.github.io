@@ -141,7 +141,7 @@ Provide a single, cohesive response that draws from the most relevant sources av
         resp = client.responses.create(
             model=OPENAI_MODEL,
             input=api_messages,
-            max_output_tokens=300,
+            reasoning={"effort": "minimal"},
         )
         return resp.output_text
     except Exception as e:
