@@ -142,6 +142,7 @@ Provide a single, cohesive response that draws from the most relevant sources av
             model=OPENAI_MODEL,
             input=api_messages,
             reasoning={"effort": "minimal"},
+            text={"verbosity": "low"},
         )
         return resp.output_text
     except Exception as e:
