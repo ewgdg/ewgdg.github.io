@@ -22,7 +22,7 @@ client = OpenAI(api_key=api_key, timeout=30.0)
 SITE_BASE_URL = os.getenv("SITE_BASE_URL")
 
 # OpenAI model constant
-OPENAI_MODEL = "gpt-4.1-nano"
+OPENAI_MODEL = "gpt-5-nano"
 
 # Create cached HTTP session
 cached_session = CacheControl(requests.Session())
