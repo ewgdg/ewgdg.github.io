@@ -19,7 +19,7 @@ if not api_key:
 client = OpenAI(api_key=api_key, timeout=30.0)
 
 # Base URL of your SSG site (update as needed)
-SITE_BASE_URL = os.getenv("SITE_BASE_URL")
+SITE_BASE_URL = os.getenv("SITE_BASE_URL", "")
 
 # OpenAI model constant
 OPENAI_MODEL = "gpt-5-nano"
@@ -69,7 +69,7 @@ class ChatRequest(BaseModel):
 
 
 class ChatResponse(BaseModel):
-    response: str
+    response: str | None
     type: str
     confidence: float = 1.0
 
@@ -107,7 +107,7 @@ def fetch_content_summary(char_limit: int = 5000) -> str:
         return ""
 
 
-def ask_agent(messages: List[Dict]) -> str:
+def ask_agent(messages: List[Dict]) -> str | None:
     """Unified agent that handles both FAQ and content suggestions in a single call."""
     content_summary = fetch_content_summary()
 
@@ -133,23 +133,20 @@ RESPONSE GUIDELINES:
 Provide a single, cohesive response that draws from the most relevant sources available.
 """
 
+    # Prepare messages for OpenAI APIs
+    api_messages = [{"role": "system", "content": system_prompt}, *messages]
+
+    # Prefer the Responses API (required by some newer models like gpt-5-*)
     try:
-        # Prepare messages for OpenAI API
-        api_messages = [{"role": "system", "content": system_prompt}]
-        api_messages.extend(messages)
-
-        response = client.chat.completions.create(
+        resp = client.responses.create(
             model=OPENAI_MODEL,
-            messages=api_messages,
-            max_tokens=300,
-            temperature=0.7,
+            input=api_messages,
+            max_output_tokens=300,
         )
-
-        return response.choices[0].message.content.strip()
-
+        return resp.output_text
     except Exception as e:
-        print(f"OpenAI API error: {e}")
-        return "I apologize, but I'm having trouble processing your request right now. Please try again later."
+        print(f"Error during OpenAI API call: {e}")
+        return None
 
 
 @app.post("/chat")

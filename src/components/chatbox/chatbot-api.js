@@ -35,7 +35,9 @@ async function requestReply(messages) {
   const { data } = resp
 
   if (!data || !data.response) {
-    return { response: "I don't understand.", type: "error" }
+    return {
+      response: "I'm having trouble generating a response right now. Please try again.", type: "error"
+    }
   }
 
   return { response: data.response, type: data.type || "agent" }
