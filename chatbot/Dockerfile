@@ -11,8 +11,12 @@ WORKDIR /app
 # Copy dependency files for better Docker layer caching
 COPY pyproject.toml uv.lock ./
 
+ENV UV_LINK_MODE=copy
+ENV UV_COMPILE_BYTECODE=1
+
 # Install uv and Python dependencies
-RUN --mount=from=ghcr.io/astral-sh/uv,source=/uv,target=/bin/uv \
+RUN --mount=type=cache,target=/root/.cache/uv \
+    --mount=from=ghcr.io/astral-sh/uv,source=/uv,target=/bin/uv \
     uv sync --frozen
 
 # Runtime stage
