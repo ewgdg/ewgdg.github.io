@@ -3,7 +3,7 @@ templateKey: BlogPost
 title: Coding With Claude Code CLI
 date: 2025-09-04T00:00:00.000Z
 featuredPost: false
-description: In short, Claude Code CLI feels like having a coding partner who never gets tired and expands my compressed ideas into working software fast.
+description: In short, Claude Code CLI feels like having a coding partner who motivates me.
 tags:
   - Claude
   - coding
