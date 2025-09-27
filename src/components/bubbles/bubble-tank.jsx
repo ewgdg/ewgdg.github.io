@@ -112,6 +112,8 @@ function initBubbles(dataSize, cellHeight, cellsPerRow) {
       rows,
       cols,
       boundaries: {
+        // Allow a bit of drift outside the cell, but section clamping below
+        // will prevent escaping the visible area.
         minX: pivotX - boundingOffset,
         maxX: maxX + boundingOffset,
         maxY: maxY + boundingOffset,
@@ -139,7 +141,8 @@ function initBubbles(dataSize, cellHeight, cellsPerRow) {
 
     if ((row >= cellsPerCol - 1 && col >= cellsPerRow - 1) || bubbleIndex >= dataSize) {
       if (bubbles.length > 0) {
-        grids.push({ bubbles, height: cellHeight * (row + 1) })
+        const sectionHeight = cellHeight * (row + 1)
+        grids.push({ bubbles, height: sectionHeight })
       }
     }
 
@@ -221,9 +224,15 @@ export default function BubbleTank({
                 }}
                 className={tileClasses.root}
                 triggerHook={0.5}
-                maxProgressValue={
-                  bubbleProps ? bubbleProps.maxProgress * windowSize.height : 0
-                }
+                maxProgressValue={(function () {
+                  if (!bubbleProps) return 0
+                  // Desired parallax in px based on original viewport-proportional config
+                  const desiredPx = bubbleProps.maxProgress * windowSize.height
+                  // Even if the bubble drifts to its lower bound, keep it inside the section
+                  const boundaryHeadroom = gridHeight - bubbleProps.radius - bubbleProps.boundaries.maxY
+                  const allowedPx = Math.max(0, boundaryHeadroom)
+                  return Math.min(desiredPx, allowedPx)
+                })()}
                 progressUnit="px"
                 fade={bubbleProps ? bubbleProps.fade : 0}
                 key={bubbleData.title}
@@ -234,8 +243,6 @@ export default function BubbleTank({
                     color: "white",
                     backgroundColor: bubbleProps.color,
                     position: "absolute",
-                    left: bubbleProps.pos[0],
-                    top: bubbleProps.pos[1],
                   }}
                   bounds={bubbleProps.boundaries}
                   initPos={{ x: bubbleProps.pos[0], y: bubbleProps.pos[1] }}

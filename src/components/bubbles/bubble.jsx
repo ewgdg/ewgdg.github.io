@@ -40,7 +40,7 @@ function random(min, max, isInteger = true) {
 }
 
 function Bubble({
-  style,
+  style = {},
   children,
   className,
   radius,
@@ -49,13 +49,15 @@ function Bubble({
   description,
   links,
   image,
+  initPos,
 }) {
   const ref = useRef(null)
   const { top, left, ...otherStyle } = style
   useLayoutEffect(() => {
-    // Initialize position from style props
-    let x = left || 0
-    let y = top || 0
+    const startX = initPos?.x ?? left ?? 0
+    const startY = initPos?.y ?? top ?? 0
+    let x = startX
+    let y = startY
 
     let targetY = y
     let targetX = x
@@ -67,8 +69,8 @@ function Bubble({
     const currentRef = ref.current  // Use currentRef to ensure the same reference
     if (!currentRef) return
 
-    // Set initial position
-    gsap.set(currentRef, { x, y })
+    // Position bubble purely through GSAP transforms
+    gsap.set(currentRef, { x: startX, y: startY })
 
     function setNextTarget() {
       targetX = random(bounds.minX, bounds.maxX, false)
@@ -102,7 +104,6 @@ function Bubble({
       y += progress * targetSinTheta
       y = targetSinTheta > 0 ? Math.min(y, targetY) : Math.max(y, targetY)
 
-      // Direct DOM manipulation with GSAP - no React re-render, GPU accelerated
       gsap.set(currentRef, { x, y })
 
       lastTimestamp = timestamp
@@ -153,7 +154,7 @@ function Bubble({
       currentRef?.removeEventListener("mouseenter", onmouseenter)
       currentRef?.removeEventListener("mouseleave", onmouseleave)
     }
-  }, [bounds, radius, left, top])
+  }, [bounds, radius, left, top, initPos])
 
   const classes = useStyles({ radius })
   const [
@@ -171,7 +172,7 @@ function Bubble({
   return (
     <>
       <div
-        style={{ ...otherStyle, left: { left }, top: { top } }}
+        style={{ ...otherStyle, left: 0, top: 0 }}
         className={`${classes.circle} ${className || ""}`}
         ref={ref}
         role="button"
