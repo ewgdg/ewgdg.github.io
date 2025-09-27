@@ -17,8 +17,8 @@ function ParallaxSection({
   children,
   style = {},
   triggerHook = 0,
-  maxProgressValue = 50,
-  progressUnit = "%",
+  maxTranslateY = 50,
+  translateYUnit = "%",
   fade = 0,
   innerDivStyle = {},
   className = "",
@@ -31,15 +31,15 @@ function ParallaxSection({
   const scrollCallback = useCallback((progress) => {
     if (!contentRef.current) return
 
-    const yValue = progress * maxProgressValue
+    const yValue = progress * maxTranslateY
     const newOpacity = 1 - progress * fade
 
     // Direct GSAP manipulation - no React re-render, GPU accelerated
     gsap.set(contentRef.current, {
-      y: progressUnit === 'px' ? yValue : `${yValue}${progressUnit}`,
+      y: translateYUnit === 'px' ? yValue : `${yValue}${translateYUnit}`,
       opacity: newOpacity
     })
-  }, [maxProgressValue, fade, progressUnit])
+  }, [maxTranslateY, fade, translateYUnit])
 
   useEffect(() => {
     if (!context.scrollLayer) return

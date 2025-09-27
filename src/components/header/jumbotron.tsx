@@ -77,7 +77,7 @@ const Jumbotron: React.FC<JumbotronProps> = ({ image, headline = "", subtitle = 
         className={classes.figureOverlay}
         style={{ opacity: darkFilter }}
       />
-      <ParallaxSection maxProgressValue={100}>
+      <ParallaxSection maxTranslateY={100}>
         <div
           className={classes.backgroundDiv}
           style={{

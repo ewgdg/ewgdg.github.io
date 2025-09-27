@@ -223,7 +223,7 @@ export default function BubbleTank({
                 }}
                 className={tileClasses.root}
                 triggerHook={0.5}
-                maxProgressValue={(function () {
+                maxTranslateY={(function () {
                   if (!bubbleProps) return 0
                   // Desired parallax in px based on original viewport-proportional config
                   const desiredPx = bubbleProps.maxProgress * windowSize.height
@@ -232,7 +232,7 @@ export default function BubbleTank({
                   const allowedPx = Math.max(0, boundaryHeadroom)
                   return Math.min(desiredPx, allowedPx)
                 })()}
-                progressUnit="px"
+                translateYUnit="px"
                 fade={bubbleProps ? bubbleProps.fade : 0}
                 key={bubbleData.title}
               >
