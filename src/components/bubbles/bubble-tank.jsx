@@ -112,8 +112,7 @@ function initBubbles(dataSize, cellHeight, cellsPerRow) {
       rows,
       cols,
       boundaries: {
-        // Allow a bit of drift outside the cell, but section clamping below
-        // will prevent escaping the visible area.
+        // Allow a bit of drift outside the cell
         minX: pivotX - boundingOffset,
         maxX: maxX + boundingOffset,
         maxY: maxY + boundingOffset,
