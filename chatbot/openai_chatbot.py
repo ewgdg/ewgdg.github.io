@@ -75,7 +75,7 @@ class ChatResponse(BaseModel):
 
 
 @cached(cache=TTLCache(maxsize=1, ttl=3000))
-def fetch_content_summary(char_limit: int = 5000) -> str:
+def fetch_content_summary(char_limit: int = 10000) -> str:
     """Fetch content list with HTTP caching support using CacheControl.
 
     Args:
