@@ -13,34 +13,6 @@ This is a personal portfolio website built with Next.js 15, featuring:
 - Responsive design with parallax sections
 - The project is intended to be served as a github static page
 
-## Common Development Commands
-
-```bash
-# Start development server (accessible at http://localhost:8080)
-npm run dev
-
-# Build for production (static export)
-npm run build
-
-# Start production server
-npm start
-
-# Lint code
-npm run lint
-
-# Export static site
-npm run export
-
-# Clean build cache
-npm run clean
-
-# Run tests
-npm run test
-
-# Update test snapshots
-npm run updateSnap
-```
-
 ## Architecture & Structure
 
 ### Core Architecture
@@ -117,9 +89,3 @@ The `PersistedLayout.jsx` component provides a sophisticated state management sy
 - **Dynamic Routing**: `[slug].tsx` pages dynamically generate routes from markdown files
 - **Static Generation**: Content processed at build time for optimal performance
 - **Template System**: Page templates (`src/templates/`) separate data fetching from presentation
-
-### Key Differences from Gatsby
-- **No GraphQL**: Direct file system operations replace Gatsby's GraphQL layer
-- **Manual Content Processing**: Custom utilities handle markdown parsing vs. Gatsby plugins  
-- **Client-Side State**: React Context replaces Gatsby's build-time data layer
-- **Custom Router Integration**: Uses `src/lib/useRouter.js` for navigation state management
