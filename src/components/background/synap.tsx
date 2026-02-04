@@ -1,38 +1,43 @@
-/* eslint-disable react/prop-types */
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React, { useLayoutEffect, useRef } from "react"
-// import * as PIXI from "pixi.js"
 import { debounce } from "../../lib/performance/throttle"
-import { Application, Container, Graphics } from 'pixi.js';
+import { Application, Container, Graphics, type Ticker } from "pixi.js"
 import SynapGraph from "./synap-graph"
-// console.log(PIXI)
-function Synap({ style }) {
-  const refContainer = useRef(null)
+
+type SynapProps = {
+  style?: React.CSSProperties
+}
+
+function Synap({ style }: SynapProps) {
+  const refContainer = useRef<HTMLDivElement | null>(null)
 
   useLayoutEffect(() => {
     const container = refContainer.current; // <--- Save value
     if (!container) return;
 
     // The application will create a canvas element
-    let app
+    let app: Application | null = null
     try {
       app = new Application()
     } catch (error) {
       console.warn('Failed to create PIXI application:', error)
       return
     }
+    if (!app) return
+
+    const pixiApp = app
 
     let mounted = true;
-    let tickerCallback = null;
-    let canvasSize = null;
-    let onResize = null;
-    let cleanup = null;
+    let tickerCallback: ((ticker: Ticker) => void) | null = null;
+    let canvasSize: [number, number] | null = null;
+    let onResize: (() => void) | null = null;
+    let cleanup: (() => void) | null = null;
 
     // Initialize app asynchronously
     (async () => {
       try {
-        await app.init({
+        await pixiApp.init({
           backgroundAlpha: 0,
           resizeTo: container,
           antialias: true,
@@ -40,8 +45,7 @@ function Synap({ style }) {
           // backgroundColor: 'white',
         })
         cleanup = () => {
-          tra
-          app.destroy(rendererDestroyOptions = true, options = true)
+          pixiApp.destroy(true, true)
         }
 
         // Check if component is still mounted
@@ -50,9 +54,9 @@ function Synap({ style }) {
           return
         }
 
-        if (app.canvas) {
-          container.appendChild(app.canvas)
-          canvasSize = [app.canvas.width, app.canvas.height]
+        if (pixiApp.canvas) {
+          container.appendChild(pixiApp.canvas)
+          canvasSize = [pixiApp.canvas.width, pixiApp.canvas.height]
 
           // Now that app is initialized, set up all PIXI-related functionality
           setupPIXIApp()
@@ -64,13 +68,13 @@ function Synap({ style }) {
       }
     })();
 
-    const setupPIXIApp = () => {
+    function setupPIXIApp() {
       loadApp()
 
       // Set up resize handler
       onResize = debounce(() => {
-        if (!app.canvas || !canvasSize) return
-        const currentCanvasSize = [app.canvas.width, app.canvas.height]
+        if (!pixiApp.canvas || !canvasSize) return
+        const currentCanvasSize: [number, number] = [pixiApp.canvas.width, pixiApp.canvas.height]
         if (
           currentCanvasSize[0] <= canvasSize[0] &&
           currentCanvasSize[1] <= canvasSize[1]
@@ -90,35 +94,40 @@ function Synap({ style }) {
     function resetApp() {
       // to destroy ticker, need to detach the old ticker before destory to avoid app re-trigger destroy call
       if (tickerCallback) {
-        app.ticker.remove(tickerCallback)
+        pixiApp.ticker.remove(tickerCallback)
         tickerCallback = null
       }
-      app.stage.removeChildren().forEach(child => {
+      pixiApp.stage.removeChildren().forEach(child => {
         child.destroy()
       })
     }
 
-    const loadApp = () => {
+    function loadApp() {
       // Use a simple initialization since no assets need loading
-      const initGraphics = () => {
+      function initGraphics() {
         const color = 0x787878
         const opacity = 1
         const lineWidth = 1
         const circleRadius = 4
-        const graphicNodes = []
-        const graphicEdges = []
+        const graphicNodes: Graphics[] = []
+        const graphicEdges: Graphics[] = []
 
         const dotContainer = new Container()
         const lineContainer = new Container()
 
         // draw line first then dots
-        app.stage.addChild(lineContainer)
-        app.stage.addChild(dotContainer)
+        pixiApp.stage.addChild(lineContainer)
+        pixiApp.stage.addChild(dotContainer)
 
-        const graph = new SynapGraph(135, app.canvas)
+        type Point = [number, number]
+        type Edge = [Point, Point]
+        const graph = new SynapGraph(135, pixiApp.canvas)
         graph.generateGraph()
 
-        graph.nodes.forEach(e => {
+        const nodes = graph.nodes as Point[]
+        const edges = graph.edges as Edge[]
+
+        nodes.forEach(e => {
           const graphicNode = new Graphics()
 
           graphicNodes.push(graphicNode)
@@ -131,12 +140,13 @@ function Synap({ style }) {
           dotContainer.addChild(graphicNode)
         })
 
-        graph.edges.forEach(e => {
+        edges.forEach(e => {
           const graphicEdge = new Graphics()
           graphicEdges.push(graphicEdge)
+          const [from, to] = e
           graphicEdge
-            .moveTo(...e[0])
-            .lineTo(...e[1])
+            .moveTo(from[0], from[1])
+            .lineTo(to[0], to[1])
             .stroke({ width: lineWidth, color: color, alpha: opacity })
           lineContainer.addChild(graphicEdge)
         })
@@ -148,22 +158,23 @@ function Synap({ style }) {
 
             const movingDistance = speed * ticker.deltaTime
             graph.updateNode(i, movingDistance)
-            const node = graph.nodes[i];
+            const node = nodes[i];
             [graphicNode.x, graphicNode.y] = node;
           }
 
           for (let i = 0; i < graphicEdges.length; i += 1) {
-            const edge = graph.edges[i]
+            const edge = edges[i]
             const graphicEdge = graphicEdges[i]
+            const [from, to] = edge
             graphicEdge.clear()
             graphicEdge
-              .moveTo(...edge[0])
-              .lineTo(...edge[1])
+              .moveTo(from[0], from[1])
+              .lineTo(to[0], to[1])
               .stroke({ width: lineWidth, color: color, alpha: opacity })
           }
         }
 
-        app.ticker.add(tickerCallback)
+        pixiApp.ticker.add(tickerCallback)
       }
 
       initGraphics()
