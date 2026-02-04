@@ -73,11 +73,6 @@
     "serve": "^14.2.5",
     "typescript": "^5.8.3"
   },
-  "overrides": {
-    "decap-cms-widget-markdown": {
-      "trim": "^0.0.3"
-    }
-  },
   "keywords": [
     "nextjs",
     "portfolio",
