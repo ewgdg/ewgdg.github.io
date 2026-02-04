@@ -74,7 +74,9 @@
     "typescript": "^5.8.3"
   },
   "overrides": {
-    "trim": "^0.0.3"
+    "decap-cms-widget-markdown": {
+      "trim": "^0.0.3"
+    }
   },
   "keywords": [
     "nextjs",
