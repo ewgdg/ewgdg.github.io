@@ -74,7 +74,7 @@
     "typescript": "^5.8.3"
   },
   "overrides": {
-    "decap-cms-widget-markdown": {
+    "decap-cms-app": {
       "trim": "^0.0.3"
     }
   },
