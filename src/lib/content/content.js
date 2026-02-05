@@ -2,27 +2,8 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import processMarkdown from './markdown'
-import { execSync } from 'child_process'
 
 const contentDirectory = path.join(process.cwd(), 'content')
-
-function getGitLastModified(filePath) {
-  try {
-    const gitDate = execSync(
-      `git log -1 --format="%ci" "${filePath}"`,
-      { encoding: 'utf8', cwd: process.cwd() }
-    ).trim()
-    return new Date(gitDate).toISOString()
-  } catch (error) {
-    console.warn(`Could not get git date for ${filePath}, falling back to file mtime`)
-    try {
-      const stats = fs.statSync(filePath)
-      return stats.mtime.toISOString()
-    } catch (statError) {
-      return new Date().toISOString()
-    }
-  }
-}
 
 export async function getMarkdownData(filename, options = {}) {
   const { includeContent = true } = options
@@ -32,7 +13,7 @@ export async function getMarkdownData(filename, options = {}) {
     const fileContents = fs.readFileSync(fullPath, 'utf8')
     const { data, content, excerpt } = matter(fileContents, { excerpt: true })
 
-    const lastModified = getGitLastModified(fullPath)
+    const lastModified = data?.lastModified
 
     const result = {
       frontmatter: {

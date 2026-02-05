@@ -19,7 +19,9 @@
     "build:all": "npm run build && npm run build:cms",
     "watch:cms": "node scripts/build-cms.mjs --watch",
     "predeploy": "echo 'Use GitHub Actions workflow for deployment instead.' && exit 1 && npm run build",
-    "deploy": "gh-pages --no-history --dist out --nojekyll --cname xianzzz.com"
+    "deploy": "gh-pages --no-history --dist out --nojekyll --cname xianzzz.com",
+    "update:last-modified": "node scripts/update-last-modified.mjs --all --mode git --path-prefix content/blog --template-key BlogPost",
+    "install:git-hooks": "node scripts/install-git-hooks.mjs"
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
