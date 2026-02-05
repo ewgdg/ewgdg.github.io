@@ -9,6 +9,7 @@
 
 .netlify/
 .next/
+next-env.d.ts
 out/
 
 .claude/tasks/
