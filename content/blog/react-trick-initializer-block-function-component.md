@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: 'React Trick: How to Create an Initializer Block for a Function Component'
 date: 2019-11-04T23:01:58.242Z
+lastModified: 2025-07-27T09:25:24.000Z
 featuredPost: false
 featuredImage: >-
   /img/react-trick-how-to-create-an-initializer-block-for-a-function-component-image1.png

@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: Coding With Claude Code CLI
 date: 2025-09-04T00:00:00.000Z
+lastModified: 2025-09-04T01:53:45.000Z
 featuredPost: false
 description: In short, Claude Code CLI feels like having a coding partner who motivates me.
 tags:

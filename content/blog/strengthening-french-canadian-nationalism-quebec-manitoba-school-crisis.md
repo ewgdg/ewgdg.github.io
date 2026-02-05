@@ -4,6 +4,7 @@ title: >-
   The Strengthening of French Canadian Nationalism in Quebec Caused by Manitoba
   School Crisis
 date: 2019-10-22T00:02:59.555Z
+lastModified: 2025-07-27T09:25:11.000Z
 description: >-
   An essay from my high school period. I thought it was funny when I found it
   and would like to share it. Tbh, I just want to fill my blog such that it

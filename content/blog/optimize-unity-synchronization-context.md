@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: Optimize Unity Synchronization Context
 date: 2022-07-28T01:33:07.839Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: For better performance.
 featuredPost: false
 tags:

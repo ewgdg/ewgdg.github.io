@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: Patterns of Dynamic Programming
 date: 2020-10-21T11:39:05.000Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: Observe patterns.
 featuredPost: false
 tags:

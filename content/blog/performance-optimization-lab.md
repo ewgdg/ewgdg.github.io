@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: A Performance Optimization Lab
 date: 2019-11-16T00:19:44.387Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: Review on a lab from my university.
 featuredPost: false
 tags:

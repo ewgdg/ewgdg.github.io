@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: 'My HearthStone Gameplay Milestone: Legend Rank Achieved'
 date: 2019-12-26T03:48:19.785Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: Data and gaming.
 featuredPost: false
 tags:

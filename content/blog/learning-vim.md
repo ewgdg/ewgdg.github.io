@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: Learning Vim
 date: 2021-04-01T20:43:15.470Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: In short, for socializing.
 featuredPost: false
 tags:

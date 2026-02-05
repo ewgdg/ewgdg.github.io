@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: Why I Created This Page
 date: 2019-10-30T19:29:43.803Z
+lastModified: 2025-07-27T09:25:18.000Z
 description: 'In short, to get a job.'
 featuredPost: true
 featuredImage: /img/steve-elizabeth-x.jpg

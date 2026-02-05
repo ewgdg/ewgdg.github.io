@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: 'My First Vue Web App: Difficulties and Things I Wish I Knew, Part 3'
 date: 2019-11-08T18:48:19.565Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: Tackling difficulties.
 featuredPost: false
 tags:

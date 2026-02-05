@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: Note Taking App 2
 date: 2021-11-13T20:04:38.538Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: It matters.
 featuredPost: false
 featuredImage: /img/note-taking-app-2-20211113135526.png

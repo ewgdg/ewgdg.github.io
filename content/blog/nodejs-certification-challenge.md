@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: A Node.js certification challenge
 date: 2020-11-11T22:59:39.935Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: To challenge myself.
 featuredPost: false
 featuredImage: /img/nodejs-challenge.png

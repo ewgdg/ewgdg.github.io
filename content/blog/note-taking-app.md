@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: Note-taking App
 date: 2021-03-20T22:31:50.319Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: Sometimes we just can't rely on our memories as human beings.
 featuredPost: false
 tags:

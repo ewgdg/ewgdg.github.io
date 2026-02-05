@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: 2024 LeetCode Contest Goal
 date: 2024-01-17T07:52:39.799Z
+lastModified: 2025-07-27T08:54:45.000Z
 description: Let's Go!
 featuredPost: false
 tags:

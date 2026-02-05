@@ -2,6 +2,7 @@
 templateKey: BlogPost
 title: 'Review on Anime, "Astra Lost in Space", Episode 1'
 date: 2019-10-24T21:18:44.563Z
+lastModified: 2025-07-27T09:25:18.000Z
 description: 'Lesson learnt: an obvious solution might not be an optimal solution.'
 featuredPost: false
 featuredImage: /img/review-on-astra-lost-in-space-image4.png
