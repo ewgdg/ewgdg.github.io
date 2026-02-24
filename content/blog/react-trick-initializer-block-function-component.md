@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: 'React Trick: How to Create an Initializer Block for a Function Component'
 date: 2019-11-04T23:01:58.242Z
-lastModified: 2025-07-27T09:25:24.000Z
+lastModified: 2026-02-24T00:31:27.882Z
 featuredPost: false
 featuredImage: >-
   /img/react-trick-how-to-create-an-initializer-block-for-a-function-component-image1.png
@@ -19,8 +19,8 @@ const [state, setState] = useState(() => {
   const initialState = someExpensiveComputation(props);
   return initialState;
 });
-
 ```
+---
 
 React function components come with many advantages compared to its class components and became suggested since the new release of React hooks. The React hooks allow the function components to be stateful, but it is less obvious on how to initialize states inside a function component and today I am going to solve the question.
 
