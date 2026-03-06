@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: Why I Created This Page
 date: 2019-10-30T19:29:43.803Z
-lastModified: 2025-07-27T09:25:18.000Z
+lastModified: 2026-03-06T09:09:35.623Z
 description: 'In short, to get a job.'
 featuredPost: true
 featuredImage: /img/steve-elizabeth-x.jpg
@@ -216,4 +216,4 @@ impact.</span>
 
 <span dir="ltr">Here is the question of today, have I gotten my job?</span>
 
-<span dir="ltr">Well, we’ll see. For now, happy writing.</span>
+<span dir="ltr">Well, we’ll see. For now, happy reading.</span>
