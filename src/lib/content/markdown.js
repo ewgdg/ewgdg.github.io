@@ -2,11 +2,13 @@ import { remark } from 'remark'
 import remarkGfm from 'remark-gfm'
 import remarkRehype from 'remark-rehype'
 import rehypePrismPlus from 'rehype-prism-plus'
+import rehypeRaw from 'rehype-raw'
 import rehypeStringify from 'rehype-stringify'
 
 const processor = remark()
   .use(remarkGfm)
-  .use(remarkRehype)
+  .use(remarkRehype, { allowDangerousHtml: true })
+  .use(rehypeRaw)
   .use(rehypePrismPlus, {
     showLineNumbers: true,
     ignoreMissing: true
