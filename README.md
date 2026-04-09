@@ -63,21 +63,16 @@ npm run clean        # Clean build cache
 
 ## Project Structure
 
-```shell
-├── content/          # Markdown content files
-│   ├── blog/         # Blog posts
-│   └── portfolio/    # Portfolio items
-├── public/           # Static assets
-│   ├── admin/        # CMS configuration
-│   └── img/          # Images
-├── src/
-│   ├── app/          # Next.js App Router pages
-│   ├── cms/          # CMS configuration and preview templates
-│   ├── components/   # React components
-│   ├── templates/    # Page templates
-│   └── utils/        # Utility functions
-└── .claude/          # Claude Code task management
-```
+Key directories:
+
+- `content/blog/` — blog posts
+- `content/portfolio/` — portfolio items
+- `public/admin/` — CMS configuration
+- `public/img/` — images
+- `src/app/` — Next.js App Router pages
+- `src/cms/` — CMS configuration and preview templates
+- `src/components/` — React components
+- `src/templates/` — page templates
 
 ## Technology Stack
 
