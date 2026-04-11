@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: Pi is a Gift
 date: 2026-03-17T00:00:00.000Z
-lastModified: 2026-04-11T20:36:13.263Z
+lastModified: 2026-04-11T23:28:14.642Z
 featuredPost: false
 description: In short, a quota bug I hated turned out to be the best thing that happened to my agent setup.
 tags:
@@ -20,7 +20,7 @@ While waiting for the quota to reset, I decided to hook up some open-weight mode
 
 I started with the top entries from the terminal-bench leaderboard. I just didn't like them. The benchmarks also set hard time walls for test cases, which does not match how I actually work — sometimes an agent needs more time to reason, and an arbitrary cutoff is not useful feedback.
 
-I also looked at opencode, probably the most popular open-source harness right now. But there were too many red flags: a [cache invalidation bug](https://github.com/anomalyco/opencode/issues/5224) open for months, a persistent [low cache hit rate report](https://github.com/anomalyco/opencode/issues/14065), and no direct support for provider-hosted web search. Web search is the most important agentic tool to me, so that was a dealbreaker.
+I also looked at opencode, probably the most popular open-source harness right now. But there were too many red flags: a [cache invalidation bug](https://github.com/anomalyco/opencode/issues/5224) open for months, a persistent [low cache hit rate report](https://github.com/anomalyco/opencode/issues/14065).
 
 ## The Accidental Discovery
 
