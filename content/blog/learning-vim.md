@@ -2,8 +2,8 @@
 templateKey: BlogPost
 title: Learning Vim
 date: 2021-04-01T20:43:15.470Z
-lastModified: 2025-07-27T08:54:45.000Z
-description: In short, for socializing.
+lastModified: 2026-04-11T20:36:13.263Z
+description: In short, for socializing. I don't ask "are u a programmer?", I ask instead "do u use vim?".
 featuredPost: false
 tags:
   - casual
@@ -26,5 +26,5 @@ As a result, I decide to buy a 9-key auxiliary keyboard as a navigation keyboard
 
 
 
-Lesson learnt:\
+Lesson learned:\
 Motivation is important!
