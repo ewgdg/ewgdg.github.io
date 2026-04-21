@@ -113,7 +113,8 @@ jobs:
           # NOTE: If using a pre-built image, update the image name below:
           image: '${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:latest'
           env_vars: '${{ steps.env-vars.outputs.ENV_VARS }}'
-          flags: '--max-instances=1 --min-instances=0 --port=8080 --cpu-boost --cpu=1 --memory=512Mi'
+          # Keep scale-to-zero, so prefer gen1 here for lower cold-start latency on first /health hit.
+          flags: '--max-instances=1 --min-instances=0 --port=8080 --cpu-boost --cpu=1 --memory=512Mi --execution-environment=gen1'
           secrets: |
             OPENAI_API_KEY=openai-qa-chatbot-secret:latest
       # If required, use the Cloud Run URL output in later steps
