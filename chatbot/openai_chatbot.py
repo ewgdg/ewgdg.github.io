@@ -2,7 +2,6 @@ import os
 import csv
 import json
 import requests
-from cachecontrol import CacheControl
 from cachetools import cached, TTLCache
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -23,9 +22,6 @@ SITE_BASE_URL = os.getenv("SITE_BASE_URL", "")
 
 # OpenAI model constant
 OPENAI_MODEL = "gpt-5.4-nano"
-
-# Create cached HTTP session
-cached_session = CacheControl(requests.Session())
 
 app = FastAPI()
 
@@ -76,7 +72,7 @@ class ChatResponse(BaseModel):
 
 @cached(cache=TTLCache(maxsize=1, ttl=3000))
 def fetch_content_summary(char_limit: int = 10000) -> str:
-    """Fetch content list with HTTP caching support using CacheControl.
+    """Fetch content list with in-memory TTL caching.
 
     Args:
         char_limit: Maximum total character count for formatted content
@@ -86,9 +82,7 @@ def fetch_content_summary(char_limit: int = 10000) -> str:
     """
     url = f"{SITE_BASE_URL}/api/content"
     try:
-        # Reuse CacheControl session so conditional requests can hit HTTP cache
-        # instead of creating a fresh uncached session on every fetch.
-        resp = cached_session.get(url, timeout=10)
+        resp = requests.get(url, timeout=10)
         resp.raise_for_status()
         content_list = resp.json()
 
