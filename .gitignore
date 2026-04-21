@@ -103,3 +103,5 @@ yarn-error.log
 # Decap CMS
 public/admin/cms.bundle.js
 public/admin/cms.bundle.js.map
+
+__pycache__/
