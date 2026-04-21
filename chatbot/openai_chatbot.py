@@ -86,21 +86,22 @@ def fetch_content_summary(char_limit: int = 10000) -> str:
     """
     url = f"{SITE_BASE_URL}/api/content"
     try:
-        with requests.session() as session:
-            resp = session.get(url, timeout=10)
-            resp.raise_for_status()
-            content_list = resp.json()
+        # Reuse CacheControl session so conditional requests can hit HTTP cache
+        # instead of creating a fresh uncached session on every fetch.
+        resp = cached_session.get(url, timeout=10)
+        resp.raise_for_status()
+        content_list = resp.json()
 
-            content_summary = ""
-            for item in content_list:
-                entry = f"- [{item.get('title', 'Untitled')}]({item.get('url', '')}): {item.get('description', 'No description')}\n"
+        content_summary = ""
+        for item in content_list:
+            entry = f"- [{item.get('title', 'Untitled')}]({item.get('url', '')}): {item.get('description', 'No description')}\n"
 
-                if len(content_summary) + len(entry) <= char_limit:
-                    content_summary += entry
-                else:
-                    break
+            if len(content_summary) + len(entry) <= char_limit:
+                content_summary += entry
+            else:
+                break
 
-            return content_summary.rstrip()
+        return content_summary.rstrip()
 
     except Exception as e:
         print(f"Error fetching content list: {e}")
