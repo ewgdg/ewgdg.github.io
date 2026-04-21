@@ -2,6 +2,7 @@ import os
 import csv
 import json
 import requests
+from cachecontrol import CacheControl
 from cachetools import cached, TTLCache
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -20,8 +21,17 @@ client = OpenAI(api_key=api_key, timeout=30.0)
 # Base URL of your SSG site (update as needed)
 SITE_BASE_URL = os.getenv("SITE_BASE_URL", "")
 
+# Keep small in-process TTL so one hot instance does not keep revalidating the
+# same content summary. CacheControl still handles ETag/Last-Modified once TTL
+# expires. Default matches current GitHub Pages max-age for /api/content.
+CONTENT_SUMMARY_TTL_SECONDS = 600
+
 # OpenAI model constant
 OPENAI_MODEL = "gpt-5.4-nano"
+
+# Let origin cache headers drive freshness. GitHub Pages serves ETag/Last-Modified
+# for /api/content, so CacheControl can revalidate cheaply after max-age expires.
+cached_session = CacheControl(requests.Session())
 
 app = FastAPI()
 
@@ -70,9 +80,9 @@ class ChatResponse(BaseModel):
     confidence: float = 1.0
 
 
-@cached(cache=TTLCache(maxsize=1, ttl=3000))
+@cached(cache=TTLCache(maxsize=1, ttl=CONTENT_SUMMARY_TTL_SECONDS))
 def fetch_content_summary(char_limit: int = 10000) -> str:
-    """Fetch content list with in-memory TTL caching.
+    """Fetch content list with short in-process TTL plus HTTP revalidation.
 
     Args:
         char_limit: Maximum total character count for formatted content
@@ -82,7 +92,7 @@ def fetch_content_summary(char_limit: int = 10000) -> str:
     """
     url = f"{SITE_BASE_URL}/api/content"
     try:
-        resp = requests.get(url, timeout=10)
+        resp = cached_session.get(url, timeout=10)
         resp.raise_for_status()
         content_list = resp.json()
 
