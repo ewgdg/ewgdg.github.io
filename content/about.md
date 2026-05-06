@@ -50,7 +50,7 @@ facts:
     image: /img/highschool.jpg
   - title: University
     description: |
-      I graduated from University of Toronto in 2018.
+      I graduated from University of Toronto in 2018 with a degree in computer engineering.
   - title: Name
     description: |
       My name is Xian.
