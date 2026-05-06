@@ -81,6 +81,14 @@ facts:
     description: |
       I like red. It stands for life, or HP(Hit Point) in games.
     image: /img/hp.jpg
+  - title: Color Scheme
+    description: |
+      My current favorite color scheme is gruvbox-dark.
+      I like its warm low-contrast colors for long coding sessions.
+  - title: Font
+    description: |
+      My current favorite coding font is Caskaydia Nerd Font.
+      Nerd Font glyphs make terminal prompts, icons, and editor UI feel complete.
   - title: Number
     description: |
       Number 9 is my lucky number, because it takes 9 strokes to write my name.
