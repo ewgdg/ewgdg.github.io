@@ -2,9 +2,9 @@
 templateKey: BlogPost
 title: 'My First Vue Web App: Difficulties and Things I Wish I Knew, Part 1'
 date: 2019-11-06T21:59:10.643Z
-lastModified: 2025-07-31T05:33:41.000Z
+lastModified: 2026-05-08T07:05:41.351Z
 description: My decision branch tree on dilemmas when developing my first Vue app.
-featuredPost: true
+featuredPost: false
 featuredImage: >-
   /img/my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-1-image1.png
 tags:

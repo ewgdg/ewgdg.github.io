@@ -25,6 +25,8 @@ const useStyles = makeStyles({
     width: ({ radius }) => `${radius ? radius * 2 : 100}px`,
     height: ({ radius }) => `${radius ? radius * 2 : 100}px`,
     fontSize: ({ radius }) => `${radius * 0.33}px`,
+    textAlign: "center",
+    lineHeight: 1.1,
     pointerEvents: "auto",
     userSelect: "none",
     WebkitUserSelect: "none",

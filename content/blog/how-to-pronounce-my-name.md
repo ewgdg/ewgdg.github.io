@@ -2,9 +2,9 @@
 templateKey: BlogPost
 title: How to Pronounce My Name
 date: 2019-10-23T02:12:00.771Z
-lastModified: 2025-07-27T09:25:05.000Z
+lastModified: 2026-05-08T07:05:41.350Z
 description: ''
-featuredPost: false
+featuredPost: true
 tags:
   - name
   - Xian
@@ -56,4 +56,4 @@ A couple of years later, I was in university and I rarely contacted those who pl
  
 I know that that will be a time when I become strong enough and find my life meaningful, I will call Johnny and others again to invite them for a long desired game. Until then, I will be tough for the goal. 
  
-Here is the question of today, do you find out how to articulate my name?
+Here is today’s question: have you figured out how to pronounce my name?
