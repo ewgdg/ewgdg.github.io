@@ -77,8 +77,7 @@
     "typescript": "^5.8.3"
   },
   "overrides": {
-    "trim": "^1.0.1",
-    "postcss": "^8.5.14"
+    "trim": "^1.0.1"
   },
   "keywords": [
     "nextjs",
