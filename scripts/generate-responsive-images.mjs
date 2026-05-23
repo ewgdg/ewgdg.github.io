@@ -12,6 +12,12 @@ const jumbotronImageConfig = JSON.parse(await fs.readFile(variantsConfigPath, 'u
 const FORMAT_OPTIONS = {
   webp: { quality: 82, effort: 5 },
 }
+const PLACEHOLDER_OPTIONS = {
+  width: 32,
+  blurSigma: 4,
+  quality: 35,
+  effort: 4,
+}
 
 function publicPathToFilePath(publicPath) {
   return path.join(publicDir, publicPath.replace(/^\//, ''))
@@ -40,6 +46,17 @@ async function generateVariant(inputPath, outputPath, width, format) {
   }
 
   await pipeline.toFile(outputPath)
+}
+
+async function generatePlaceholderDataUrl(inputPath) {
+  const buffer = await sharp(inputPath)
+    .rotate()
+    .resize({ width: PLACEHOLDER_OPTIONS.width, withoutEnlargement: true })
+    .blur(PLACEHOLDER_OPTIONS.blurSigma)
+    .webp({ quality: PLACEHOLDER_OPTIONS.quality, effort: PLACEHOLDER_OPTIONS.effort })
+    .toBuffer()
+
+  return `data:image/webp;base64,${buffer.toString('base64')}`
 }
 
 async function listGeneratedFiles() {
@@ -79,6 +96,7 @@ async function getTargetImages() {
 
     images[publicImagePath] = {
       alt: imageConfig.alt || '',
+      inputPath,
       widths: targetWidths,
       variants: targetWidths.flatMap(width => Object.keys(FORMAT_OPTIONS).map(format => ({
         inputPath,
@@ -93,15 +111,17 @@ async function getTargetImages() {
 }
 
 async function writeManifest(targetImages) {
-  const manifest = Object.fromEntries(
-    Object.entries(targetImages).map(([publicImagePath, image]) => [
+  const manifestEntries = await Promise.all(
+    Object.entries(targetImages).map(async ([publicImagePath, image]) => [
       publicImagePath,
       {
         alt: image.alt,
         widths: image.widths,
+        placeholderDataUrl: await generatePlaceholderDataUrl(image.inputPath),
       },
     ])
   )
+  const manifest = Object.fromEntries(manifestEntries)
 
   await fs.writeFile(`${manifestPath}.tmp`, `${JSON.stringify(manifest, null, 2)}\n`)
   await fs.rename(`${manifestPath}.tmp`, manifestPath)

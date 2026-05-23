@@ -21,6 +21,7 @@ export function getJumbotronResponsiveImage(imagePath) {
     sizes: "100vw",
     webpSrcSet: buildSrcSet(imagePath, imageConfig.widths, "webp"),
     fallbackSrc: imagePath,
+    placeholderDataUrl: imageConfig.placeholderDataUrl,
   }
 }
 

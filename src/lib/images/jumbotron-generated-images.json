@@ -7,7 +7,8 @@
       1280,
       1600,
       1920
-    ]
+    ],
+    "placeholderDataUrl": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAABQAwCdASogABIAPuFapE6sJSOiN+gBgBwJZwDQVD9oFGc+AAD+7zZ8676wY170ohxEAT6TUs463Bkq6bYobgMFRrC2iRwA"
   },
   "/img/blog-jumbotron.webp": {
     "alt": "",
@@ -15,7 +16,8 @@
       640,
       960,
       1280
-    ]
+    ],
+    "placeholderDataUrl": "data:image/webp;base64,UklGRlgAAABXRUJQVlA4IEwAAACwBACdASogABIAPwFqrE6rJi2mMBgMAbAgCWcAzjgQlyTqdOT4rKBpynpcDnbQAPCmMyMkY4f9F6dr1JHS61Na1iE3Ydl9Hpv4IAAA"
   },
   "/img/about-jumbotron.webp": {
     "alt": "",
@@ -26,6 +28,7 @@
       1600,
       1920,
       2560
-    ]
+    ],
+    "placeholderDataUrl": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAACwBACdASogABoAPvVuqU6qpyQiMAwBUB6JaQAA78/RH4XgSVupUjXXdV0DTTTAAP76GrOvHD1RV27K3WXTyFgec1eJSBSejMTRfNPDLO9ivL3vcUYYDjAAAAA="
   }
 }

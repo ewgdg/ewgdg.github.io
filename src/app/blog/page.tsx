@@ -1,32 +1,44 @@
+import { Suspense } from 'react'
 import { getAllBlogPosts, getMarkdownData } from '@/lib/content/content'
-import BlogPage from '@/templates/blog-page'
+import SEO from '@/components/header/seo'
+import { BlogCardsLoadingSection, BlogPageFrame, BlogPostsSection } from '@/templates/blog-page-template'
 
-async function getBlogPageData() {
-  const blogData = await getMarkdownData('blog.md')
-  const blogPosts = await getAllBlogPosts()
+const BLOG_URI = '/blog'
+const BLOG_TABLE_NAME = 'blogTable'
 
-  // Simplified data structure without GraphQL nesting
-  const data = {
-    frontmatter: {
-      jumbotronProps: (blogData?.frontmatter as any)?.jumbotron || {
-        headline: "Blog",
-        subtitle: "Thoughts and ideas",
-        image: "/img/blog-jumbotron.webp"
-      }
-    },
-    posts: blogPosts
+async function getBlogJumbotronProps() {
+  const blogData = await getMarkdownData('blog.md', { includeContent: false })
+
+  return (blogData?.frontmatter as any)?.jumbotron || {
+    headline: 'Blog',
+    subtitle: 'Thoughts and ideas',
+    image: '/img/blog-jumbotron.webp',
   }
+}
 
-  return data
+async function BlogPostsSectionLoader() {
+  const posts = await getAllBlogPosts()
+
+  return (
+    <BlogPostsSection
+      posts={posts}
+      tableName={BLOG_TABLE_NAME}
+      uri={BLOG_URI}
+    />
+  )
 }
 
 export default async function BlogPageWrapper() {
-  const data = await getBlogPageData()
+  const jumbotronProps = await getBlogJumbotronProps()
 
   return (
-    <BlogPage
-      data={data}
-      uri="/blog"
-    />
+    <>
+      <SEO title="Blog" />
+      <BlogPageFrame jumbotronProps={jumbotronProps}>
+        <Suspense fallback={<BlogCardsLoadingSection />}>
+          <BlogPostsSectionLoader />
+        </Suspense>
+      </BlogPageFrame>
+    </>
   )
 }

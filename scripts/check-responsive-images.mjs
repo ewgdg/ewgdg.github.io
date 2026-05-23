@@ -57,10 +57,16 @@ async function checkResponsiveImages() {
 
     if (!manifestImage) {
       manifestErrors.push(`${publicImagePath} missing from generated manifest`)
-    } else if (!sameArray(manifestImage.widths, targetWidths)) {
-      manifestErrors.push(
-        `${publicImagePath} manifest widths ${JSON.stringify(manifestImage.widths)} do not match expected ${JSON.stringify(targetWidths)}`
-      )
+    } else {
+      if (!sameArray(manifestImage.widths, targetWidths)) {
+        manifestErrors.push(
+          `${publicImagePath} manifest widths ${JSON.stringify(manifestImage.widths)} do not match expected ${JSON.stringify(targetWidths)}`
+        )
+      }
+
+      if (!manifestImage.placeholderDataUrl?.startsWith('data:image/webp;base64,')) {
+        manifestErrors.push(`${publicImagePath} missing WebP placeholder data URL`)
+      }
     }
 
     for (const width of targetWidths) {

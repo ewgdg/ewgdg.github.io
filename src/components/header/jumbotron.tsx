@@ -34,6 +34,9 @@ const useStyles = makeStyles({
     // backgroundAttachment: "fixed",
     margin: 0,
     position: "relative",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+    backgroundRepeat: "no-repeat",
   },
   backgroundPicture: {
     display: "block",
@@ -91,7 +94,12 @@ const Jumbotron: React.FC<JumbotronProps> = ({ image, headline = "", subtitle = 
         style={{ opacity: darkFilter }}
       />
       <ParallaxSection maxTranslateY={100}>
-        <div className={classes.backgroundDiv}>
+        <div
+          className={classes.backgroundDiv}
+          style={responsiveImage?.placeholderDataUrl
+            ? { backgroundImage: `url(${responsiveImage.placeholderDataUrl})` }
+            : undefined}
+        >
           <picture className={classes.backgroundPicture}>
             {responsiveImage && (
               <>
