@@ -45,11 +45,15 @@ class FlyingSpriteObject {
     }
   }
 
+  resetTimestamp(timeStamp) {
+    this.lastTimeStamp = timeStamp
+  }
+
   getSpritePosition(timeStamp) {
     // angle tells the moving direction
 
     const time = timeStamp - this.lastTimeStamp
-    const dist = Math.round(time * this.speed)
+    const dist = time * this.speed
     const radians = (this.angle * Math.PI) / 180
     const distx = dist * Math.cos(radians)
     const disty = dist * Math.sin(radians)
@@ -131,39 +135,87 @@ function startAnimationFlyingSprite(
   speed = 1,
   spriteDimension
 ) {
-  let flyingSpriteObject
-  let ticker
-  
+  const initTimeStamp = performance.now()
+  const flyingSpriteObject = new FlyingSpriteObject(
+    initTimeStamp,
+    speed,
+    spriteDimension
+  )
+
+  let isTickerActive = false
+  const reducedMotionMediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
+
+  function setSpriteAnimationPaused(paused) {
+    if (!elementRef.current) return
+    gsap.set(elementRef.current, {
+      animationPlayState: paused ? "paused" : "running",
+    })
+  }
+
+  function resetTiming(timestamp = performance.now()) {
+    flyingSpriteObject.resetTimestamp(timestamp)
+  }
+
+  function shouldAnimate() {
+    return !document.hidden && !reducedMotionMediaQuery.matches
+  }
+
   function animationStep() {
     if (!elementRef.current) return
-    
-    const timeStamp = performance.now()
-    const pos = flyingSpriteObject.getSpritePosition(timeStamp)
-    
+
+    const timestamp = performance.now()
+    const pos = flyingSpriteObject.getSpritePosition(timestamp)
+
     // Direct DOM manipulation with GSAP - no React re-render, GPU accelerated
-    gsap.set(elementRef.current, { 
-      x: pos.x, 
-      y: pos.y, 
+    gsap.set(elementRef.current, {
+      x: pos.x,
+      y: pos.y,
       rotationY: pos.rotateY,
       display: 'block'
     })
   }
 
-  // Initialize the sprite object
-  const initTimeStamp = performance.now()
-  flyingSpriteObject = new FlyingSpriteObject(
-    initTimeStamp,
-    speed,
-    spriteDimension
-  )
-  
-  // Use GSAP ticker for smooth 60fps updates
-  ticker = gsap.ticker.add(animationStep)
+  function startTicker() {
+    if (isTickerActive || !shouldAnimate()) return
+    resetTiming()
+    setSpriteAnimationPaused(false)
+    gsap.ticker.add(animationStep)
+    isTickerActive = true
+  }
+
+  function stopTicker() {
+    if (isTickerActive) {
+      gsap.ticker.remove(animationStep)
+      isTickerActive = false
+    }
+    resetTiming()
+    setSpriteAnimationPaused(true)
+  }
+
+  function updateAnimationState() {
+    if (shouldAnimate()) {
+      startTicker()
+    } else {
+      stopTicker()
+    }
+  }
+
+  function handleVisibilityChange() {
+    updateAnimationState()
+  }
+
+  function handleReducedMotionChange() {
+    updateAnimationState()
+  }
+
+  document.addEventListener("visibilitychange", handleVisibilityChange)
+  reducedMotionMediaQuery.addEventListener("change", handleReducedMotionChange)
+  updateAnimationState()
 
   return () => {
-    if (ticker) {
-      gsap.ticker.remove(ticker)
-    }
+    stopTicker()
+    document.removeEventListener("visibilitychange", handleVisibilityChange)
+    reducedMotionMediaQuery.removeEventListener("change", handleReducedMotionChange)
   }
 }
 
@@ -215,6 +267,7 @@ function FlyingSprite({ style }) {
         animationFillMode: 'forwards',
         animationIterationCount: 'infinite',
         animationTimingFunction: 'steps(7)',
+        animationPlayState: 'paused',
         transform: 'translate3d(0px, 0px, 0) rotateY(0deg)', // Initial transform, will be updated by GSAP
         display: "none", // Initially hidden, will be shown by animation
         // pointerEvents: "none",
