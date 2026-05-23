@@ -223,7 +223,7 @@ function startAnimationFlyingSprite(
 const SPRITE_DIMENSION = { x: 130, y: 134 }
 
 function FlyingSprite({ style }) {
-  const imgSrc = "/img/bulin.png" // Static asset path
+  const imgSrc = "/img/bulin.webp" // Static asset path
   const spriteRef = useRef(null)
 
   // const context = useLayoutContext();

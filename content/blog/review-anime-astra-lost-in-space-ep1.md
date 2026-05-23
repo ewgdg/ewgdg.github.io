@@ -2,10 +2,10 @@
 templateKey: BlogPost
 title: 'Review on Anime, "Astra Lost in Space", Episode 1'
 date: 2019-10-24T21:18:44.563Z
-lastModified: 2025-07-27T09:25:18.000Z
+lastModified: 2026-05-23T08:25:05.385Z
 description: 'Lesson learnt: an obvious solution might not be an optimal solution.'
 featuredPost: false
-featuredImage: /img/review-on-astra-lost-in-space-image4.png
+featuredImage: /img/review-on-astra-lost-in-space-image4.webp
 ---
 *Astra Lost in Space (彼方のアストラ Kanata no Asutora)* is an anime TV
 series released September 2019. I am very impressed by this
@@ -55,13 +55,13 @@ but luckily they all had their space suit equipped and thus they could
 move in the space with their propulsion
 system.
 
-![](/img/review-on-astra-lost-in-space-image2.png)
+![](/img/review-on-astra-lost-in-space-image2.webp)
 
 More luckily, they found a spaceship! They regrouped themselves at the
 spaceship and it was at that moment they realized that Aries was still
 alone waiting for help with her thruster malfunctioning.
 
-![](/img/review-on-astra-lost-in-space-image3.png)
+![](/img/review-on-astra-lost-in-space-image3.webp)
 
 
 Kanata, the captain, decided to get out of the spaceship to save the
@@ -70,7 +70,7 @@ thing to notice is that he got a safety cable. Everything seemed to be
 fine except the sudden when the cable was not long
 enough.
 
-![](/img/review-on-astra-lost-in-space-image1.png)
+![](/img/review-on-astra-lost-in-space-image1.webp)
 
 Kanata unhooked his cable and he went forward without it. The problem
 came when Kanata and Aries on their way back. They ran out of fuel and
@@ -81,7 +81,7 @@ this reminds me of "The Human Centipede").
 
 
 
-![](/img/review-on-astra-lost-in-space-image4.png)
+![](/img/review-on-astra-lost-in-space-image4.webp)
 
 I mean, this is shocking not because it is heroic, but because it
 doesn't make sense. Why would people not use the cable they found? You
@@ -136,7 +136,7 @@ Each of the joints will give you some extent of freedom for moving you
 arm. The more joints you have the more control you gain. That is why
 there are many joints on the robotic arm.
 
-![](/img/robotic-arm.png)
+![](/img/robotic-arm.webp)
 
 The human chain is an analogy to the arm structure. Each person on the
 chain can exert force to the next person he connects to through their

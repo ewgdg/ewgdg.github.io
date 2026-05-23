@@ -3,6 +3,7 @@
 import React from "react"
 import { makeStyles } from "@mui/styles"
 import ParallaxSection from "../sections/parallax-section"
+import { getJumbotronResponsiveImage } from "../../lib/images/jumbotron-images"
 import { calcViewportHeight, calcViewportWidth } from "../../lib/dom/viewport"
 
 const useStyles = makeStyles({
@@ -32,8 +33,19 @@ const useStyles = makeStyles({
     // this is commented out due to limited browser support on mobile devices, use ParallaxSection instead
     // backgroundAttachment: "fixed",
     margin: 0,
-    backgroundSize: "cover",
-    backgroundPosition: "center center",
+    position: "relative",
+  },
+  backgroundPicture: {
+    display: "block",
+    width: "100%",
+    height: "100%",
+  },
+  backgroundImage: {
+    display: "block",
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    objectPosition: "center center",
   },
   headlineContainer: {
     position: "absolute",
@@ -67,6 +79,7 @@ interface JumbotronProps {
 const Jumbotron: React.FC<JumbotronProps> = ({ image, headline = "", subtitle = "", darkFilter = 0.3 }) => {
   const classes = useStyles()
   const backgroundImage = image || ''
+  const responsiveImage = getJumbotronResponsiveImage(backgroundImage)
 
   const lines = headline.split("\n")
   const [firstLine, ...restLines] = lines
@@ -78,12 +91,24 @@ const Jumbotron: React.FC<JumbotronProps> = ({ image, headline = "", subtitle = 
         style={{ opacity: darkFilter }}
       />
       <ParallaxSection maxTranslateY={100}>
-        <div
-          className={classes.backgroundDiv}
-          style={{
-            backgroundImage: `url(${backgroundImage})`,
-          }}
-        />
+        <div className={classes.backgroundDiv}>
+          <picture className={classes.backgroundPicture}>
+            {responsiveImage && (
+              <>
+                <source srcSet={responsiveImage.webpSrcSet} sizes={responsiveImage.sizes} type="image/webp" />
+              </>
+            )}
+            <img
+              className={classes.backgroundImage}
+              src={responsiveImage?.fallbackSrc || backgroundImage}
+              alt={responsiveImage?.alt || ""}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              draggable={false}
+            />
+          </picture>
+        </div>
       </ParallaxSection>
 
       <div className={classes.headlineContainer}>

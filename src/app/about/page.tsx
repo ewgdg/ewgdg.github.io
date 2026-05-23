@@ -10,7 +10,7 @@ async function getAboutPageData() {
         jumbotronProps: (aboutData?.frontmatter as any)?.jumbotron || {
           headline: "About",
           subtitle: "Get to know me",
-          image: "/img/about-jumbotron.jpg"
+          image: "/img/about-jumbotron.webp"
         },
         facts: (aboutData?.frontmatter as any)?.facts || []
       }

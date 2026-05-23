@@ -20,7 +20,7 @@ async function getHomePageData() {
     jumbotronProps: indexData?.frontmatter?.jumbotron || {
       headline: "Xian",
       subtitle: "显",
-      image: "/img/home-jumbotron.jpg"
+      image: "/img/home-jumbotron.webp"
     },
     blogPosts: featuredBlogPosts,
     portfolioItems: featuredPortfolioItems

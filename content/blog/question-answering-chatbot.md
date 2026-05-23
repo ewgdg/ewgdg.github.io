@@ -2,10 +2,10 @@
 templateKey: BlogPost
 title: Question Answering Chatbot
 date: 2020-11-24T20:41:08.570Z
-lastModified: 2025-07-27T08:54:45.000Z
+lastModified: 2026-05-23T08:25:05.385Z
 description: Screening interview?
 featuredPost: false
-featuredImage: /img/question-answering-chatbot-0.png
+featuredImage: /img/question-answering-chatbot-0.webp
 ---
 Recently I got a phone interview about my experience and background kind stuff. What is interesting is that this interview is a non-technical one but the position I applied to is a technical position. This makes me wonder, is it the necessity for non-tech interviews? If so, how would I pass it? Today I am going to solve the problem.
 
@@ -62,7 +62,7 @@ It is built on top of the Hugging Face transformer and most importantly it comes
 
 The result is as demonstrated:
 
-![](/img/question-answering-chatbot-0.png)
+![](/img/question-answering-chatbot-0.webp)
 
 You might notice that it does not perform well on some cryptic questions; this is because the QA bot is based on my currently existing blog posts, and if there is no relevant context in my blog to the question, then the bot cannot answer it. To solve this issue, I created a new Q&A section below such that the bot can read the context and extract useful answers from it.
 
@@ -70,7 +70,7 @@ Unfortunately, the result with extractive QA method is still poor, I might need 
 
 After adding another assisting sentence embedding document retriever for FAQ section, the result is more reliable now. 
 
-![](/img/question-answering-chatbot-1.png)
+![](/img/question-answering-chatbot-1.webp)
 
 ## Q&A section:
 

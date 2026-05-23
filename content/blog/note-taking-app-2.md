@@ -2,10 +2,10 @@
 templateKey: BlogPost
 title: Note Taking App 2
 date: 2021-11-13T20:04:38.538Z
-lastModified: 2025-07-27T08:54:45.000Z
+lastModified: 2026-05-23T08:25:05.385Z
 description: It matters.
 featuredPost: false
-featuredImage: /img/note-taking-app-2-20211113135526.png
+featuredImage: /img/note-taking-app-2-20211113135526.webp
 tags: []
 ---
 ## Background
@@ -18,7 +18,7 @@ The most touching point of this app is that your note is future proof. Even if o
 
 Besides, Obsidian is more open to the world, it has a large community that can help and contribute to various community plugins. I even created my own plugin to support my style of zettelkasten system.
 
-![](/img/note-taking-app-2-20211113135526.png)
+![](/img/note-taking-app-2-20211113135526.webp)
 
 ## Notion
 
@@ -30,7 +30,7 @@ Another disadvantage is that Notion rarely listen to the community or they are n
 
 As a result, I mainly use Notion for task management, I have a task database where I can insert all todos into it and track their states.
 
-![](/img/note-taking-app-2-20211113145514.png)
+![](/img/note-taking-app-2-20211113145514.webp)
 
 ## Why it matters
 
@@ -38,6 +38,6 @@ In short, for the dopamine rewards.
 
 A right note-taking app can help to reward you when doing note taking with dopamine factor. This reinforce learning model can then help me to solidify this note-taking behavior into a habit.
 
-![](/img/dopamine-factor.png)
+![](/img/dopamine-factor.webp)
 
 Another example is that with Notion's database, I am more motivated to take actions when I visualize how many todos and ideas I have.

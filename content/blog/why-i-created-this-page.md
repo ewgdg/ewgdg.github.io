@@ -2,10 +2,10 @@
 templateKey: BlogPost
 title: Why I Created This Page
 date: 2019-10-30T19:29:43.803Z
-lastModified: 2026-03-06T09:09:35.623Z
+lastModified: 2026-05-23T08:25:05.385Z
 description: 'In short, to get a job.'
 featuredPost: true
-featuredImage: /img/steve-elizabeth-x.jpg
+featuredImage: /img/steve-elizabeth-x.webp
 tags:
   - jobs
   - why
@@ -206,9 +206,9 @@ is the proof. So this is why I created this page, to have an
 impact.</span>
 
 <div style='width:100%;margin:auto;text-align:center;'>
-<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image2.png"/> </div>
-<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image1.png"/> </div>
-<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/steve-elizabeth-x.jpg"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image2.webp"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/why-i-created-this-page-image1.webp"/> </div>
+<div class='figureImage' style="display:inline-block;width:30%;" > <img src="/img/steve-elizabeth-x.webp"/> </div>
 </div>
 
 

@@ -6,5 +6,5 @@ description: >-
   Use strategy to collect more cards.
 externalLink: https://gacha.xianzzz.com/
 isPortfolio: true
-featuredImage: /img/gacha-splash.png
+featuredImage: /img/gacha-splash.webp
 ---

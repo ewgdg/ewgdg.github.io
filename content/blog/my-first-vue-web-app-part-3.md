@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: 'My First Vue Web App: Difficulties and Things I Wish I Knew, Part 3'
 date: 2019-11-08T18:48:19.565Z
-lastModified: 2025-07-27T08:54:45.000Z
+lastModified: 2026-05-23T08:25:05.381Z
 description: Tackling difficulties.
 featuredPost: false
 tags:
@@ -58,7 +58,7 @@ I have to admit it is quite hacky here. But the intuition behind it is that the 
 
 However, this is not the happy ending of the story. You might have guessed the problem as an experienced developer. The profiling tool from google chrome browser illustrates the problem. The below graph is a timeline recording result of the whole loading process. 7430 ms out of 8563 ms is used for idling.
 
-![](/img/my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-3-image1.png)
+![](/img/my-first-vue-web-app-difficulties-and-things-i-wish-i-knew-part-3-image1.webp)
 
 Initially, I thought I misunderstood the word ‘idle’ as a non-native English speaker. After I checked the dictionary and confirmed the meaning of ‘idle’, I realized that something went wrong. Remember that I broke my loading process into \~200 steps and if each step takes \~30 ms break, then the idling time is roughly 6000 ms. That means ~90% of the loading time is wasted. I could compromise for better performance or for better animation, but there would be a trade-off anyway. To really overcome the issue, I have to use true parallelism, the Web Worker.
 

@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: How to Pronounce My Name
 date: 2019-10-23T02:12:00.771Z
-lastModified: 2026-05-08T07:05:41.350Z
+lastModified: 2026-05-23T08:25:05.381Z
 description: ''
 featuredPost: true
 tags:
@@ -23,7 +23,7 @@ You might think this is the end of the story, but it is not. Since learning the 
 
 The first option is to read it the English way, i.e. she-yen/see-yen/shen, whatever you like. Let us represent the action of calling a person’s name as a part of a two-way communication model. 
 
-![](/img/how-to-pronounce-my-name-image0.png)
+![](/img/how-to-pronounce-my-name-image0.webp)
 
 In this model, a sender broadcasts a message, the name, to the receiver, and the receiver then deciphers the message and responds to it by paying attention to the sender. The key is for both the sender and the receiver to have an agreement on the message. Pronouncing the exact sound is hard but recognizing the similar sound is relatively easy. As a result, all of those English version pronunciation like she-yen/see-yen/shen can be captured and recognized correctly by me as a receiver. The problem is solved. 
 
@@ -47,7 +47,7 @@ Johnny is not my real name, but it is a name I would use when ordering a coffee 
 
 Johnny, like many other Chinese international students, was too hurried on having his first English name to really be able to figure the meaning out first. Or it could be the reason that his home stay family was so arrogant to give him this sarcastic English name. Anyway, the source of this name remains mysterious. On the other hand, Johnny is very satisfied with his English name. He likes it so much that he rarely tells his friends his original Chinese name. Obviously his intention failed and people came up with a nickname for him, ‘jie ni gui’(a Chinese name for Squirtle from Pokemon) for how ‘jie ni’ is similar to ‘Johnny’ in terms of pronunciation and how Johnny behaved like a turtle. 
 
-<div class='figureImage' style="width:15em;float: left;margin-right:1.2em;" > <img src="/img/highschool.jpg"/> </div>
+<div class='figureImage' style="width:15em;float: left;margin-right:1.2em;" > <img src="/img/highschool.webp"/> </div>
 
 Although many Chinese parents hold unrealistic expectations on foreign education to turn their naughty kids into elites magically, it turns out that it does not work, at least the public school is not that magical. Being an international student is very stressful and isolated. Gaming was the most relaxing moment for me. I met Johnny through gaming. Johnny is very impressive to me on his gaming skills. He seemed to be born for gaming, and he was very good at predicting opponent players’ move. There is a special term called game sense/awareness to describe this talent. 
 I played games with Johnny and many other friends among which Bill and Tony are another ones. Johnny, Bill, and Tony were the three giants on ‘Dota’ among the group, but Johnny was more capable of that. Johnny was a master on ‘Dota’, ‘League of Legends’, ‘World of Warcraft’, ‘Counter Strike: Global Offensive’, ‘Starcraft’, you name it. 

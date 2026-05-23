@@ -2,12 +2,12 @@
 templateKey: BlogPost
 title: 'Vue Trick: Optimization for the v-for Directive'
 date: 2019-11-04T21:21:47.632Z
-lastModified: 2025-07-27T08:54:45.000Z
+lastModified: 2026-05-23T08:25:05.385Z
 description: |-
   Lesson learnt: an optimized solution might not be the
   best solution.
 featuredPost: false
-featuredImage: /img/vue-trick-optimization-for-v-for-image1.png
+featuredImage: /img/vue-trick-optimization-for-v-for-image1.webp
 tags:
   - vue
   - optimization

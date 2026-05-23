@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: 'My HearthStone Gameplay Milestone: Legend Rank Achieved'
 date: 2019-12-26T03:48:19.785Z
-lastModified: 2025-07-27T08:54:45.000Z
+lastModified: 2026-05-23T08:25:05.381Z
 description: Data and gaming.
 featuredPost: false
 tags:
@@ -11,7 +11,7 @@ tags:
 ---
 Gaming is always the best reward for me. After my completion of my personal page site project, I decided to take a short break and spend my time into playing HearthStone. Within 2 weeks in the new expansion of HS, I achieved my first legend rank for the game. I was very satisfied about it at the moment so I wrote this post to share my joy.
 
-![](/img/my-hearthstone-gameplay-milestone-legend-rank-achieved-1.jpg)
+![](/img/my-hearthstone-gameplay-milestone-legend-rank-achieved-1.webp)
 
 The key to this achievement is on data analysis. To be specific, there is a website collecting match-ups data from HS players named hsreplay.net. By analysing these data, I soon targeting a deck called face hunter to level up my rank tier from 25 to 1. Now rank tier 1 is one level away from the highest rank tier --- legend tier. However, the environment changed very quickly. Face hunter is less competitive in rank tier 1. As the hsreplay.net showed, the win ratio of face hunter in rank tier 1 is barely above 50%, 50.38% to be specific. Players need 5 net wins to achieve legend rank from rank tier 1. With 50.38% win ratio, I need to play n game plays in total in expectation, where 50.38%\*n-(100%-50.38%)\*n = 5 and n ~= 658. It was obviously not a smart choice to continue to play face hunter. Fortunately, there was a new patch arriving to nerf Shaman so that I knew that the environment would be changing soon. If I can find out a deck with high win ratio that is rare enough that nobody is trying to counter against it in the new environment, then I can quickly arrive to the legend rank. 
 

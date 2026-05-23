@@ -1,0 +1,14 @@
+{
+  "widths": [640, 960, 1280, 1600, 1920, 2560],
+  "images": {
+    "/img/home-jumbotron.webp": {
+      "alt": ""
+    },
+    "/img/blog-jumbotron.webp": {
+      "alt": ""
+    },
+    "/img/about-jumbotron.webp": {
+      "alt": ""
+    }
+  }
+}

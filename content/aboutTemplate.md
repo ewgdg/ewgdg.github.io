@@ -6,6 +6,6 @@ isTemplate: true
 facts:
   - title: template
     description: template fact
-    image: /img/hp.jpg
+    image: /img/hp.webp
     links: [about:blank]
 ---

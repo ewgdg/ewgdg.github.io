@@ -2,10 +2,10 @@
 templateKey: BlogPost
 title: A Node.js certification challenge
 date: 2020-11-11T22:59:39.935Z
-lastModified: 2025-07-27T08:54:45.000Z
+lastModified: 2026-05-23T08:25:05.385Z
 description: To challenge myself.
 featuredPost: false
-featuredImage: /img/nodejs-challenge.png
+featuredImage: /img/nodejs-challenge.webp
 tags:
   - challenge
   - node.js
@@ -72,7 +72,7 @@ What is next? I plan to practice with my node.js knowledge to deliver a simple m
 
 The exam is a little bit different from my imagination but I passed the exam anyway. My certificate ID number is LF-mt7qrutu8t. My original expected time to complete this challenge is 21 days and I spent 18 days on this challenge. Achievement reached: node.js learner; look at my badge earned below, what a wonderful reward for this gameplay!
 
-![](/img/nodejs-challenge.png)
+![](/img/nodejs-challenge.webp)
 
 At this point, I decide to continue my node.js study together with mongo DB and express.js on coursera.com. 
 
@@ -82,4 +82,4 @@ At this point, I decide to continue my node.js study together with mongo DB and 
 
 Completed my Coursera express.js backend course.
 
-![](/img/express-certificate.png)
+![](/img/express-certificate.webp)

@@ -2,7 +2,7 @@
 templateKey: BlogPost
 title: An Interesting Hearthstone Conditional Probability Question
 date: 2020-04-17T13:00:00.000Z
-lastModified: 2025-07-27T08:54:45.000Z
+lastModified: 2026-05-23T08:25:05.380Z
 description: Reasonable assumptions make differences.
 featuredPost: false
 tags:
@@ -10,7 +10,7 @@ tags:
   - HearthStone
   - Probability
 ---
-![](/img/An-Interesting-Hearthstone-Conditional-Probability-Question.png)
+![](/img/An-Interesting-Hearthstone-Conditional-Probability-Question.webp)
 
 There was a very interesting conditional probability problem last month
 as shown in the picture and it caused a debate over it. Some claimed

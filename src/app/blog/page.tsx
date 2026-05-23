@@ -11,7 +11,7 @@ async function getBlogPageData() {
       jumbotronProps: (blogData?.frontmatter as any)?.jumbotron || {
         headline: "Blog",
         subtitle: "Thoughts and ideas",
-        image: "/img/blog-jumbotron.jpg"
+        image: "/img/blog-jumbotron.webp"
       }
     },
     posts: blogPosts
