@@ -9,6 +9,10 @@ type SynapProps = {
   style?: React.CSSProperties
 }
 
+const TARGET_ANIMATION_FPS = 30
+const ANIMATION_FRAME_INTERVAL_MS = 1000 / TARGET_ANIMATION_FPS
+const PIXI_BASE_FRAME_MS = 1000 / 60
+
 function Synap({ style }: SynapProps) {
   const refContainer = useRef<HTMLDivElement | null>(null)
 
@@ -32,6 +36,11 @@ function Synap({ style }: SynapProps) {
     let tickerCallback: ((ticker: Ticker) => void) | null = null;
     let canvasSize: [number, number] | null = null;
     let onResize: (() => void) | null = null;
+    let onVisibilityChange: (() => void) | null = null;
+    let reducedMotionMediaQuery: MediaQueryList | null = null;
+    let onReducedMotionChange: (() => void) | null = null;
+    let isTickerActive = false;
+    let frameAccumulatorMs = 0;
     let cleanup: (() => void) | null = null;
 
     // Initialize app asynchronously
@@ -41,9 +50,10 @@ function Synap({ style }: SynapProps) {
           backgroundAlpha: 0,
           resizeTo: container,
           antialias: true,
-          autoStart: true,
+          autoStart: false,
           // backgroundColor: 'white',
         })
+        pixiApp.ticker.maxFPS = TARGET_ANIMATION_FPS
         cleanup = () => {
           pixiApp.destroy(true, true)
         }
@@ -69,7 +79,18 @@ function Synap({ style }: SynapProps) {
     })();
 
     function setupPIXIApp() {
+      reducedMotionMediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)")
       loadApp()
+
+      onVisibilityChange = () => {
+        updateTickerState()
+      }
+      onReducedMotionChange = () => {
+        updateTickerState()
+      }
+      document.addEventListener("visibilitychange", onVisibilityChange)
+      reducedMotionMediaQuery.addEventListener("change", onReducedMotionChange)
+      updateTickerState()
 
       // Set up resize handler
       onResize = debounce(() => {
@@ -91,12 +112,38 @@ function Synap({ style }: SynapProps) {
 
     // initTask is already running from the IIFE above
 
-    function resetApp() {
-      // to destroy ticker, need to detach the old ticker before destory to avoid app re-trigger destroy call
-      if (tickerCallback) {
-        pixiApp.ticker.remove(tickerCallback)
-        tickerCallback = null
+    function shouldAnimate() {
+      return mounted && !document.hidden && !reducedMotionMediaQuery?.matches
+    }
+
+    function startTicker() {
+      if (!tickerCallback || isTickerActive || !shouldAnimate()) return
+      frameAccumulatorMs = 0
+      pixiApp.ticker.add(tickerCallback)
+      pixiApp.ticker.start()
+      isTickerActive = true
+    }
+
+    function stopTicker() {
+      if (!tickerCallback || !isTickerActive) return
+      pixiApp.ticker.remove(tickerCallback)
+      pixiApp.ticker.stop()
+      isTickerActive = false
+      frameAccumulatorMs = 0
+    }
+
+    function updateTickerState() {
+      if (shouldAnimate()) {
+        startTicker()
+      } else {
+        stopTicker()
       }
+    }
+
+    function resetApp() {
+      // Detach ticker before destroying stage children; PIXI can otherwise tick stale Graphics refs.
+      stopTicker()
+      tickerCallback = null
       pixiApp.stage.removeChildren().forEach(child => {
         child.destroy()
       })
@@ -110,12 +157,13 @@ function Synap({ style }: SynapProps) {
         const lineWidth = 1
         const circleRadius = 4
         const graphicNodes: Graphics[] = []
-        const graphicEdges: Graphics[] = []
 
         const dotContainer = new Container()
         const lineContainer = new Container()
+        const edgeGraphics = new Graphics()
 
         // draw line first then dots
+        lineContainer.addChild(edgeGraphics)
         pixiApp.stage.addChild(lineContainer)
         pixiApp.stage.addChild(dotContainer)
 
@@ -140,41 +188,42 @@ function Synap({ style }: SynapProps) {
           dotContainer.addChild(graphicNode)
         })
 
-        edges.forEach(e => {
-          const graphicEdge = new Graphics()
-          graphicEdges.push(graphicEdge)
-          const [from, to] = e
-          graphicEdge
-            .moveTo(from[0], from[1])
-            .lineTo(to[0], to[1])
-            .stroke({ width: lineWidth, color: color, alpha: opacity })
-          lineContainer.addChild(graphicEdge)
-        })
+        function drawEdges() {
+          edgeGraphics.clear()
+          edges.forEach(e => {
+            const [from, to] = e
+            edgeGraphics
+              .moveTo(from[0], from[1])
+              .lineTo(to[0], to[1])
+          })
+          edgeGraphics.stroke({ width: lineWidth, color: color, alpha: opacity })
+        }
+
+        drawEdges()
+        pixiApp.render()
 
         const speed = 0.25
         tickerCallback = (ticker) => {
+          // Clamp elapsed time so background motion does not jump after throttled/hidden frames.
+          frameAccumulatorMs += Math.min(ticker.elapsedMS, ANIMATION_FRAME_INTERVAL_MS)
+          if (frameAccumulatorMs < ANIMATION_FRAME_INTERVAL_MS) return
+
+          const deltaFrames = frameAccumulatorMs / PIXI_BASE_FRAME_MS
+          frameAccumulatorMs = 0
+
           for (let i = 0; i < graphicNodes.length; i += 1) {
             const graphicNode = graphicNodes[i]
 
-            const movingDistance = speed * ticker.deltaTime
+            const movingDistance = speed * deltaFrames
             graph.updateNode(i, movingDistance)
             const node = nodes[i];
             [graphicNode.x, graphicNode.y] = node;
           }
 
-          for (let i = 0; i < graphicEdges.length; i += 1) {
-            const edge = edges[i]
-            const graphicEdge = graphicEdges[i]
-            const [from, to] = edge
-            graphicEdge.clear()
-            graphicEdge
-              .moveTo(from[0], from[1])
-              .lineTo(to[0], to[1])
-              .stroke({ width: lineWidth, color: color, alpha: opacity })
-          }
+          drawEdges()
         }
 
-        pixiApp.ticker.add(tickerCallback)
+        updateTickerState()
       }
 
       initGraphics()
@@ -184,6 +233,16 @@ function Synap({ style }: SynapProps) {
 
     return () => {
       mounted = false
+      if (onVisibilityChange) {
+        document.removeEventListener("visibilitychange", onVisibilityChange)
+      }
+      if (reducedMotionMediaQuery && onReducedMotionChange) {
+        reducedMotionMediaQuery.removeEventListener("change", onReducedMotionChange)
+      }
+      if (onResize) {
+        window.removeEventListener("resize", onResize)
+      }
+      stopTicker()
       if (cleanup) {
         cleanup()
       }
@@ -194,9 +253,6 @@ function Synap({ style }: SynapProps) {
         })
       }
       app = null
-      if (onResize) {
-        window.removeEventListener("resize", onResize)
-      }
     }
   }, [])
 

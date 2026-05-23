@@ -1,7 +1,7 @@
 'use client'
 
 /* eslint-disable react/prop-types */
-import React, { useEffect, useLayoutEffect, useRef } from "react"
+import React, { useLayoutEffect, useRef } from "react"
 import { makeStyles } from "@mui/styles"
 // import from tweenmax since it auto import the plugins
 import { gsap, Elastic } from "gsap"
@@ -52,18 +52,21 @@ function Bubble({
   links,
   image,
   initPos,
+  registerAnimation,
 }) {
   const ref = useRef(null)
   const { top, left, ...otherStyle } = style
+  const initX = initPos?.x
+  const initY = initPos?.y
+
   useLayoutEffect(() => {
-    const startX = initPos?.x ?? left ?? 0
-    const startY = initPos?.y ?? top ?? 0
+    const startX = initX ?? left ?? 0
+    const startY = initY ?? top ?? 0
     let x = startX
     let y = startY
 
     let targetY = y
     let targetX = x
-    let ticker
 
     let targetCosTheta = 0
     let targetSinTheta = 0
@@ -86,38 +89,41 @@ function Bubble({
 
     let lastTimestamp = performance.now()
     const speed = 0.03
+    const animationController = {
+      isPaused: false,
+      resetTimestamp(timestamp = performance.now()) {
+        lastTimestamp = timestamp
+      },
+      setPaused(paused) {
+        this.isPaused = paused
+        if (!paused) {
+          this.resetTimestamp()
+        }
+      },
+      update(timestamp) {
+        if (this.isPaused) return
 
-    function animationStep() {
-      if (!currentRef) return
+        if (
+          (x === targetX || targetCosTheta === 0) &&
+          (y === targetY || targetSinTheta === 0)
+        ) {
+          setNextTarget()
+        }
 
-      const timestamp = performance.now()
+        const elapsed = timestamp - lastTimestamp
+        const progress = elapsed * speed
+        x += progress * targetCosTheta
+        x = targetCosTheta > 0 ? Math.min(x, targetX) : Math.max(x, targetX)
+        y += progress * targetSinTheta
+        y = targetSinTheta > 0 ? Math.min(y, targetY) : Math.max(y, targetY)
 
-      if (
-        (x === targetX || targetCosTheta === 0) &&
-        (y === targetY || targetSinTheta === 0)
-      ) {
-        setNextTarget()
-      }
+        gsap.set(currentRef, { x, y })
 
-      const elapsed = timestamp - lastTimestamp
-      const progress = elapsed * speed
-      x += progress * targetCosTheta
-      x = targetCosTheta > 0 ? Math.min(x, targetX) : Math.max(x, targetX)
-      y += progress * targetSinTheta
-      y = targetSinTheta > 0 ? Math.min(y, targetY) : Math.max(y, targetY)
-
-      gsap.set(currentRef, { x, y })
-
-      lastTimestamp = timestamp
+        lastTimestamp = timestamp
+      },
     }
 
-    function startAnimation() {
-      lastTimestamp = performance.now()
-      ticker = gsap.ticker.add(animationStep)
-    }
-
-    // Initialize first target and start animation
-    startAnimation()
+    const unregisterAnimation = registerAnimation?.(animationController)
 
     // on mouseover
     let isHover = false
@@ -129,10 +135,7 @@ function Bubble({
         ease: Elastic.easeOut.config(1, 0.2),
       })
 
-      if (ticker) {
-        gsap.ticker.remove(ticker)
-        ticker = null
-      }
+      animationController.setPaused(true)
     }
     function onmouseleave() {
       if (!isHover) return
@@ -142,21 +145,18 @@ function Bubble({
         scale: 1,
         ease: Elastic.easeOut.config(1, 0.2),
       })
-      startAnimation()
+      animationController.setPaused(false)
     }
 
     currentRef.addEventListener("mouseenter", onmouseenter)
     currentRef.addEventListener("mouseleave", onmouseleave)
 
     return () => {
-      if (ticker) {
-        gsap.ticker.remove(ticker)
-        ticker = null
-      }
+      unregisterAnimation?.()
       currentRef?.removeEventListener("mouseenter", onmouseenter)
       currentRef?.removeEventListener("mouseleave", onmouseleave)
     }
-  }, [bounds, radius, left, top, initPos])
+  }, [bounds, left, top, initX, initY, registerAnimation])
 
   const classes = useStyles({ radius })
   const [

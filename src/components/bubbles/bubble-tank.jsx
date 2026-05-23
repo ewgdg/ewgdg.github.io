@@ -3,11 +3,12 @@
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/prop-types */
-import React, { useEffect, useRef, useMemo, useState } from "react"
+import React, { useCallback, useEffect, useRef, useMemo, useState } from "react"
 import ImageList from "@mui/material/ImageList"
 import ImageListItem from "@mui/material/ImageListItem"
 import { makeStyles } from "@mui/styles"
 import ListSubheader from "@mui/material/ListSubheader"
+import { gsap } from "gsap"
 import { debounce } from "../../lib/performance/throttle"
 import Bubble from "./bubble"
 import ParallaxSection from "../sections/parallax-section"
@@ -174,6 +175,49 @@ export default function BubbleTank({
   const tileClasses = useTileStyles()
 
   const dataSize = data.length
+  const bubbleAnimationsRef = useRef(new Set())
+  const registerBubbleAnimation = useCallback((animationController) => {
+    bubbleAnimationsRef.current.add(animationController)
+    return () => {
+      bubbleAnimationsRef.current.delete(animationController)
+    }
+  }, [])
+
+  useEffect(() => {
+    let isHidden = document.hidden
+
+    function resetAnimationTimestamps(timestamp = performance.now()) {
+      bubbleAnimationsRef.current.forEach(animation => {
+        animation.resetTimestamp?.(timestamp)
+      })
+    }
+
+    function animationStep() {
+      if (isHidden) return
+
+      const timestamp = performance.now()
+      bubbleAnimationsRef.current.forEach(animation => {
+        animation.update(timestamp)
+      })
+    }
+
+    function handleVisibilityChange() {
+      isHidden = document.hidden
+      if (!isHidden) {
+        resetAnimationTimestamps()
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    gsap.ticker.add(animationStep)
+
+    return () => {
+      gsap.ticker.remove(animationStep)
+      document.removeEventListener("visibilitychange", handleVisibilityChange)
+      bubbleAnimationsRef.current.clear()
+    }
+  }, [])
+
   const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight })
   const { grids, cellWidth, cellHeight: newCellHeight } = useMemo(() => initBubbles(dataSize, cellHeight, cellsPerRow), [dataSize, cellHeight, cellsPerRow])
   cellHeight = newCellHeight
@@ -249,6 +293,7 @@ export default function BubbleTank({
                   description={bubbleData.description}
                   image={bubbleData.image}
                   links={bubbleData.links}
+                  registerAnimation={registerBubbleAnimation}
                 // key={bubbleData.title}
                 >
                   {bubbleData.title}
