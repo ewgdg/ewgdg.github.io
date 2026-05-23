@@ -4,7 +4,6 @@ import BezierEasing from "bezier-easing"
 import { gsap, Power2 } from "gsap"
 import ScrollToPlugin from "gsap/ScrollToPlugin"
 // import { getController } from "../plugins/scrollmagic"
-import throttle from "../performance/throttle"
 
 // prevent tree shaking
 // eslint-disable-next-line no-unused-vars
@@ -65,6 +64,66 @@ triggerHook
 Can be a number between 0 and 1 defining the position of the trigger Hook in relation to the viewport.
 a trigger hook triggers callback when reach trigger elem
 */
+class ScrollDetectorManager {
+  constructor(scrollLayer) {
+    this.scrollLayer = scrollLayer
+    this.detectors = new Set()
+    this.rafId = null
+    this.handleScroll = this.scheduleUpdate.bind(this)
+  }
+
+  add(detector) {
+    const wasEmpty = this.detectors.size === 0
+    this.detectors.add(detector)
+    if (wasEmpty) {
+      this.scrollLayer.addEventListener("scroll", this.handleScroll, { passive: true })
+    }
+  }
+
+  remove(detector) {
+    this.detectors.delete(detector)
+    if (this.detectors.size === 0) {
+      this.scrollLayer.removeEventListener("scroll", this.handleScroll)
+      if (this.rafId !== null) {
+        cancelAnimationFrame(this.rafId)
+        this.rafId = null
+      }
+    }
+  }
+
+  scheduleUpdate() {
+    if (this.rafId !== null) return
+    this.rafId = requestAnimationFrame(() => {
+      this.rafId = null
+      this.updateAll()
+    })
+  }
+
+  updateAll() {
+    if (!this.scrollLayer) return
+    if (this.rafId !== null) {
+      cancelAnimationFrame(this.rafId)
+      this.rafId = null
+    }
+    // Shared for every detector on this scroll layer; avoid N duplicate layout reads.
+    const frameContext = {
+      scrollLayerTop: this.scrollLayer.getBoundingClientRect().top,
+    }
+    this.detectors.forEach(detector => {
+      detector.update(frameContext)
+    })
+  }
+}
+
+const scrollDetectorManagers = new WeakMap()
+
+function getScrollDetectorManager(scrollLayer) {
+  if (!scrollDetectorManagers.has(scrollLayer)) {
+    scrollDetectorManagers.set(scrollLayer, new ScrollDetectorManager(scrollLayer))
+  }
+  return scrollDetectorManagers.get(scrollLayer)
+}
+
 class ScrollDetector {
   constructor({
     scrollLayer,
@@ -80,80 +139,111 @@ class ScrollDetector {
     this.duration = duration
     this.throttleLimit = throttleLimit
     this.offset = offset
+    this.callback = null
+    this.manager = null
+    this.lastProgress = 0
+    this.lastUpdateTimestamp = 0
+    this.pendingThrottleUpdate = null
     ScrollDetector.scrollDetectors.push(this)
   }
 
   setEventListener(callback) {
-    if (this.eventListener) {
-      this.scrollLayer.removeEventListener("scroll", this.eventListener)
+    if (this.manager) {
+      this.manager.remove(this)
     }
-    this.eventListener =
-      this.throttleLimit > 0
-        ? throttle(
-          this.eventListenerFactory(callback),
-          this.throttleLimit,
-          true
-        )
-        : this.eventListenerFactory(callback)
-    this.scrollLayer.addEventListener("scroll", this.eventListener)
-    // immediately update
-    this.update()
+    this.callback = callback
+    this.manager = getScrollDetectorManager(this.scrollLayer)
+    this.manager.add(this)
+    // Initial update should not wait for the next scroll event.
+    this.update(undefined, { force: true })
   }
 
-  update() {
-    if (this.eventListener) this.eventListener()
+  update(frameContext, { force = false } = {}) {
+    if (!this.callback || !this.scrollLayer) return
+
+    if (!force && this.throttleLimit > 0) {
+      const currentTimeStamp = performance.now()
+      const elapsedTime = currentTimeStamp - this.lastUpdateTimestamp
+      if (elapsedTime < this.throttleLimit) {
+        if (this.pendingThrottleUpdate === null) {
+          this.pendingThrottleUpdate = setTimeout(() => {
+            this.pendingThrottleUpdate = null
+            this.update(undefined, { force: true })
+          }, this.throttleLimit - elapsedTime)
+        }
+        return
+      }
+    }
+
+    this.lastUpdateTimestamp = performance.now()
+    this.runUpdate(frameContext)
   }
 
   updateDuration(newDuration) {
     this.duration = newDuration
-    this.update()
+    this.update(undefined, { force: true })
   }
 
-  eventListenerFactory(callback) {
-    let lastProgress = 0
+  runUpdate(frameContext) {
+    if (!this.scrollLayer) return
+    const scrollLayerTop = frameContext
+      ? frameContext.scrollLayerTop
+      : this.scrollLayer.getBoundingClientRect().top
+    const pos = // relative pos of cur elem to viewport top
+      (this.triggerElement
+        ? this.triggerElement.getBoundingClientRect().top - scrollLayerTop
+        : -this.scrollLayer.scrollTop) + this.offset
 
-    return () => {
-      if (!this.scrollLayer) return
-      const pos = // relative pos of cur elem to viewport top
-        (this.triggerElement
-          ? this.triggerElement.getBoundingClientRect().top -
-          this.scrollLayer.getBoundingClientRect().top // the scroll layer is the root container with scroll bar , most of time it is the viewport
-          : -this.scrollLayer.scrollTop) + this.offset
+    let progress = null
+    // pos of trigger relative to viewport top
+    const triggerPos = this.triggerHook * window.innerHeight
 
-      let progress = null
-      // pos of trigger relative to viewport top
-      const triggerPos = this.triggerHook * window.innerHeight
-
-      if (this.duration > 0) {
-        progress = -(pos - triggerPos)
-        progress = Math.max(0, Math.min(this.duration, progress))
-        progress /= this.duration
-      } else if (pos - triggerPos < 0) {
-        progress = 1
-      } else if (pos - triggerPos >= 0) {
-        progress = 0
-      }
-
-      if (progress !== lastProgress) {
-        callback(progress)
-      }
-      lastProgress = progress
+    if (this.duration > 0) {
+      progress = -(pos - triggerPos)
+      progress = Math.max(0, Math.min(this.duration, progress))
+      progress /= this.duration
+    } else if (pos - triggerPos < 0) {
+      progress = 1
+    } else if (pos - triggerPos >= 0) {
+      progress = 0
     }
+
+    if (progress !== this.lastProgress) {
+      this.callback(progress)
+    }
+    this.lastProgress = progress
   }
 
   destroy() {
     ScrollDetector.scrollDetectors = ScrollDetector.scrollDetectors.filter(
       e => !Object.is(e, this)
     )
-    this.scrollLayer.removeEventListener("scroll", this.eventListener)
-    this.eventListener = null
+    if (this.manager) {
+      this.manager.remove(this)
+      this.manager = null
+    }
+    if (this.pendingThrottleUpdate !== null) {
+      clearTimeout(this.pendingThrottleUpdate)
+      this.pendingThrottleUpdate = null
+    }
+    this.callback = null
     this.scrollLayer = null
     this.triggerElement = null
   }
 }
 ScrollDetector.scrollDetectors = []
 ScrollDetector.updateAll = () => {
-  ScrollDetector.scrollDetectors.forEach(e => e.update())
+  const managers = new Set()
+  ScrollDetector.scrollDetectors.forEach(detector => {
+    if (detector.manager) {
+      managers.add(detector.manager)
+    } else {
+      detector.update()
+    }
+  })
+  managers.forEach(manager => {
+    manager.updateAll()
+  })
 }
 
 const animationQueue = []
