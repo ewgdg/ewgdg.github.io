@@ -21,7 +21,7 @@ export default function MediaCard({
   description,
 }) {
   const LinkComponent = target ? "a" : Link
-  const linkProps = { href, scroll, target, rel }
+  const linkProps = { href, scroll, target, rel, draggable: false }
 
   return (
     <Grid size={5} style={{ height: "450px", maxHeight: "100%", ...style }}>

@@ -62,6 +62,7 @@ export default function ImageCard({
           scroll={scroll}
           target={target}
           rel={rel}
+          draggable={false}
           className={classes.action}
         >
           {image ? (

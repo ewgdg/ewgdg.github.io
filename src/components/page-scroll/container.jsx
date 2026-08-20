@@ -1,25 +1,20 @@
 'use client'
 
 import React, {
-  useMemo,
   useRef,
   useEffect,
   useLayoutEffect,
   useContext,
-  useState,
   useCallback,
 } from "react"
 import { makeStyles } from "@mui/styles"
 import {
   isAnyInViewport,
-  // isAboveViewportBottom,
-  // isBelowViewportTop,
   isBottomInViewport,
   isTopInViewport,
 } from "../../lib/dom/viewport"
 import {
   scrollIntoView,
-  scrollByAnimated,
   clearAnimationQueue,
   cancelScrollLayerAnimations,
   ScrollDetector,
@@ -43,33 +38,12 @@ const SectionTypes = {
   Flexible: "Flexible",
 }
 
-// Mobile detection utilities (moved to component level)
-const isMobile = () => {
-  if (typeof window === 'undefined') return false
-  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile|mobile|CriOS/i.test(navigator.userAgent) ||
-    ('ontouchstart' in window) ||
-    (navigator.maxTouchPoints > 0) ||
-    (navigator.msMaxTouchPoints > 0)
-}
-
-const isIOS = () => {
-  if (typeof window === 'undefined') return false
-  // Prefer userAgentData if available, fallback to userAgent and deprecated platform
-  const ua = navigator.userAgent || '';
-  const isAppleDevice = /iPad|iPhone|iPod/.test(ua);
-  return isAppleDevice;
-}
-
-const isSafari = () => {
-  if (typeof window === 'undefined') return false
-  const ua = navigator.userAgent.toLowerCase()
-  return (
-    ua.includes('safari') &&
-    !ua.includes('chrome') &&
-    !ua.includes('android') &&
-    'safari' in window
-  )
-}
+const TOUCH_DRAG_THRESHOLD_PX = 5
+const PRECISE_POINTER_DRAG_THRESHOLD_PX = 2
+const GESTURE_IDLE_TIMEOUT_MS = 500
+// Compatibility clicks follow pointer completion; later activation must not inherit this token.
+const COMPATIBILITY_CLICK_WINDOW_MS = 500
+const GESTURE_HISTORY_SIZE = 10
 
 // The scroll event cannot be canceled or interrupted, so use mouse, touch and button events instead.
 const getHandlers = (container, context, sectionType) => {
@@ -77,12 +51,18 @@ const getHandlers = (container, context, sectionType) => {
   return (() => {
     let isScrolling = false
     let isZooming = false
-    let isTargetClickable = false
-    let touchStartY = null
+    let gestureState = "idle"
+    let activePointerId = null
+    let activePointerType = "mouse"
+    let gestureStartY = null
+    let previousPointerY = null
+    let interactiveTarget = null
+    let clickSuppression = null
+    let clickSuppressionExpiry = null
+    let capturedPointerId = null
 
     const touchPointYList = []
     const touchPointTimeStamp = []
-    let isPointerDown = false
 
     function preventDefault(e) {
       if (e.cancelable || !e.isCustomEvent) {
@@ -99,21 +79,12 @@ const getHandlers = (container, context, sectionType) => {
         return
       }
 
-      let useFallback = false
       let activeSection = null
       let activeSectionI = 0
       let isInViewPortTest
       let scrollOffsetY = 0
 
-      // Enhanced viewport calculation for mobile
-      const getViewportHeight = () => {
-        // Use visual viewport on mobile if available (better for mobile browsers)
-        // if (window.visualViewport && isMobile()) {
-        //   return window.visualViewport.height
-        // }
-        // return window.innerHeight || document.documentElement.clientHeight
-        return scrollLayer.clientHeight
-      }
+      const getViewportHeight = () => scrollLayer.clientHeight
 
       const marginForViewPortTest = Math.max(
         Math.min(getViewportHeight() * 0.01, 5),
@@ -137,8 +108,6 @@ const getHandlers = (container, context, sectionType) => {
 
       // ignore the scroll event if the container is not in viewport
       if (!container || !isAnyInViewport(container)) {
-        // useFallback = true
-        // fall back to default behavior
         return
       }
       // have to query every time cause the child sections may change
@@ -177,7 +146,6 @@ const getHandlers = (container, context, sectionType) => {
         // todo: early termination check or binary search
       }
       if (!activeSection) {
-        // useFallback = true
         return
       }
 
@@ -247,6 +215,8 @@ const getHandlers = (container, context, sectionType) => {
     }
 
     function isClickable(elem) {
+      if (!elem?.tagName) return false
+
       const { tagName } = elem
       return (
         tagName === "INPUT" ||
@@ -258,44 +228,94 @@ const getHandlers = (container, context, sectionType) => {
         elem.hasAttribute("clickable")
       )
     }
-    function pointerDownHandler(e) {
-      // check event path, if found clickable, ignore this pointer move
 
-      let elem = e.target || e.srcElement
-      isTargetClickable = false
-      while (elem) {
-        if (isClickable(elem)) {
-          isTargetClickable = true
-          break
-        }
+    function findInteractiveTarget(target) {
+      let elem = target
+      while (elem && elem !== context.scrollLayer) {
+        if (isClickable(elem)) return elem
         elem = elem.parentElement
       }
-      // mobile can distinguish between drag and click
-      if (isTargetClickable && !isMobile()) {
-        return
-      }
-      isPointerDown = true
+      return null
+    }
 
+    function gestureThreshold(pointerType) {
+      return pointerType === "touch"
+        ? TOUCH_DRAG_THRESHOLD_PX
+        : PRECISE_POINTER_DRAG_THRESHOLD_PX
+    }
+
+    function resetGesture() {
+      gestureState = "idle"
+      activePointerId = null
+      activePointerType = "mouse"
+      gestureStartY = null
+      previousPointerY = null
+      interactiveTarget = null
       touchPointYList.length = 0
       touchPointTimeStamp.length = 0
-
-      if (isScrolling) {
-        preventDefault(e)
-        return
-      }
-
-      preventDefault(e)
-      clearAnimationQueue()
-      const touchPoint = e
-
-      touchStartY = touchPoint.clientY
-      touchPointYList.push(touchPoint.clientY)
-      touchPointTimeStamp.push(performance.now())
     }
-    function pointerMoveHandler(e) {
-      if (!isPointerDown) {
-        return
+
+    function recordPointerPoint(clientY) {
+      touchPointYList.push(clientY)
+      touchPointTimeStamp.push(performance.now())
+
+      while (touchPointYList.length > GESTURE_HISTORY_SIZE) {
+        touchPointYList.shift()
+        touchPointTimeStamp.shift()
       }
+    }
+
+    function clearClickSuppression() {
+      if (clickSuppressionExpiry !== null) {
+        clearTimeout(clickSuppressionExpiry)
+        clickSuppressionExpiry = null
+      }
+      clickSuppression = null
+    }
+
+    function armClickSuppression(target, pointerId) {
+      if (!target) return
+
+      clearClickSuppression()
+      clickSuppression = { target, pointerId }
+      clickSuppressionExpiry = setTimeout(() => {
+        clickSuppression = null
+        clickSuppressionExpiry = null
+      }, COMPATIBILITY_CLICK_WINDOW_MS)
+    }
+
+    function capturePointer(pointerId) {
+      if (typeof context.scrollLayer.setPointerCapture === "function") {
+        context.scrollLayer.setPointerCapture(pointerId)
+        capturedPointerId = pointerId
+      }
+    }
+
+    function releaseCapturedPointer() {
+      if (capturedPointerId === null) return
+
+      const pointerId = capturedPointerId
+      capturedPointerId = null
+      const { hasPointerCapture, releasePointerCapture } = context.scrollLayer
+      const ownsPointer = typeof hasPointerCapture !== "function" ||
+        hasPointerCapture.call(context.scrollLayer, pointerId)
+
+      if (ownsPointer && typeof releasePointerCapture === "function") {
+        releasePointerCapture.call(context.scrollLayer, pointerId)
+      }
+    }
+
+    function cleanupGesture() {
+      releaseCapturedPointer()
+      resetGesture()
+      clearClickSuppression()
+    }
+
+    function pointerDownHandler(e) {
+      if (gestureState !== "idle") return
+
+      // A fresh press starts a new gesture, so an earlier compatibility click can no longer belong to it.
+      clearClickSuppression()
 
       if (isScrolling) {
         preventDefault(e)
@@ -303,74 +323,104 @@ const getHandlers = (container, context, sectionType) => {
         return
       }
 
+      interactiveTarget = findInteractiveTarget(e.target || e.srcElement)
+      gestureState = interactiveTarget ? "pending" : "dragging"
+      activePointerId = e.pointerId
+      activePointerType = e.pointerType || "mouse"
+      gestureStartY = e.clientY
+      previousPointerY = e.clientY
+      recordPointerPoint(e.clientY)
+
+      clearAnimationQueue()
+
+      if (gestureState === "dragging") {
+        capturePointer(activePointerId)
+        preventDefault(e)
+      }
+    }
+
+    function pointerMoveHandler(e) {
+      if (gestureState === "idle" || e.pointerId !== activePointerId) return
+
+      if (isScrolling) {
+        preventDefault(e)
+        e.preventDefault()
+        return
+      }
+
+      const verticalMove = e.clientY - previousPointerY
+      previousPointerY = e.clientY
+      recordPointerPoint(e.clientY)
+
+      if (gestureState === "pending") {
+        if (
+          Math.abs(e.clientY - gestureStartY) <=
+          gestureThreshold(activePointerType)
+        ) {
+          return
+        }
+
+        gestureState = "dragging"
+        capturePointer(activePointerId)
+      }
+
       preventDefault(e)
-
-      const touchPoint = e
-      let verticalMove = 0
-      if (touchPointYList.length > 0) {
-        verticalMove =
-          touchPoint.clientY - touchPointYList[touchPointYList.length - 1]
-      }
-      touchPointYList.push(touchPoint.clientY)
-      touchPointTimeStamp.push(performance.now())
-
-      while (touchPointYList.length > 10) {
-        touchPointYList.shift()
-        touchPointTimeStamp.shift()
-      }
+      e.preventDefault()
 
       if (Math.abs(verticalMove) > 0) {
-        // scrollByAnimated(context.scrollLayer, -verticalMove, 1)
         context.scrollLayer.scrollTop -= verticalMove
         ScrollDetector.updateAll()
       }
     }
+
     function pointerUpHandler(e) {
-      if (!isPointerDown) return
-      isPointerDown = false
+      if (gestureState === "idle" || e.pointerId !== activePointerId) return
+
+      const completedGestureState = gestureState
+      const completedInteractiveTarget = interactiveTarget
+      const completedPointerId = activePointerId
+      const touchEndY = e.clientY
+      const completedPointerType = activePointerType
+
+      if (completedGestureState === "pending") {
+        resetGesture()
+        return
+      }
+
+      releaseCapturedPointer()
+      armClickSuppression(completedInteractiveTarget, completedPointerId)
+      preventDefault(e)
+      e.preventDefault()
 
       if (isScrolling || touchPointYList.length <= 0) {
-        preventDefault(e)
-        e.preventDefault()
+        resetGesture()
         return
       }
-
-      if (touchPointYList.length <= 0) {
-        return
-      }
-
-      const touchPoint = e
-
-      const touchEndY = touchPoint.clientY
 
       let ready = true
-      // Unified gesture detection for all devices
-      const gestureThreshold = isMobile() ? 5 : 2    // Slightly higher threshold on mobile for touch precision
-      const timeThreshold = isMobile() ? 500 : 500     // Slightly longer time on mobile
+      const completedGestureThreshold = gestureThreshold(completedPointerType)
+      const timeThreshold = GESTURE_IDLE_TIMEOUT_MS
 
       let recentVerticalMove = 0
       let recentVerticalMovePassThreshold = false
       for (let i = touchPointYList.length - 1; i >= 0; i -= 1) {
-
-        if (i == touchPointYList.length - 1) {
+        if (i === touchPointYList.length - 1) {
           recentVerticalMove += touchEndY - touchPointYList[i]
-        }
-        else {
+        } else {
           recentVerticalMove += touchPointYList[i + 1] - touchPointYList[i]
         }
 
-        if (Math.abs(recentVerticalMove) > gestureThreshold) {
+        if (Math.abs(recentVerticalMove) > completedGestureThreshold) {
           recentVerticalMovePassThreshold = true
           break
         }
       }
-      // discard subtle motion
+
       if (!recentVerticalMovePassThreshold) {
         ready = false
       }
 
       let idlingTime = performance.now()
-
       for (let i = touchPointYList.length - 1; i >= 0; i -= 1) {
         if (Math.abs(touchEndY - touchPointYList[i]) >= 2 || i === 0) {
           idlingTime -= touchPointTimeStamp[i]
@@ -382,6 +432,8 @@ const getHandlers = (container, context, sectionType) => {
         ready = false
       }
 
+      resetGesture()
+
       if (ready && recentVerticalMove > 0) {
         scrollPage("up", e)
       } else if (ready && recentVerticalMove < 0) {
@@ -390,14 +442,56 @@ const getHandlers = (container, context, sectionType) => {
     }
 
     function pointerCancelHandler(e) {
-      if (!isPointerDown) return
+      if (gestureState === "idle" || e.pointerId !== activePointerId) return
 
-      touchPointYList.length = 0
-      touchPointTimeStamp.length = 0
-      isPointerDown = false
+      const canceledInteractiveTarget = gestureState === "dragging"
+        ? interactiveTarget
+        : null
+      const canceledPointerId = activePointerId
+      releaseCapturedPointer()
+      resetGesture()
+      armClickSuppression(canceledInteractiveTarget, canceledPointerId)
 
       preventDefault(e)
       e.preventDefault()
+    }
+
+    function pointerLeaveHandler(e) {
+      if (gestureState !== "pending" || e.pointerId !== activePointerId) return
+
+      resetGesture()
+    }
+
+    function lostPointerCaptureHandler(e) {
+      if (
+        capturedPointerId !== e.pointerId ||
+        gestureState !== "dragging" ||
+        activePointerId !== e.pointerId
+      ) {
+        return
+      }
+
+      const lostInteractiveTarget = interactiveTarget
+      const lostPointerId = activePointerId
+      capturedPointerId = null
+      resetGesture()
+      armClickSuppression(lostInteractiveTarget, lostPointerId)
+    }
+
+    function clickCaptureHandler(e) {
+      const exposesPointerIdentity = Number.isFinite(e.pointerId)
+      if (
+        e.detail === 0 ||
+        !clickSuppression ||
+        !clickSuppression.target.contains(e.target) ||
+        (exposesPointerIdentity && e.pointerId !== clickSuppression.pointerId)
+      ) {
+        return
+      }
+
+      clearClickSuppression()
+      e.preventDefault()
+      e.stopImmediatePropagation()
     }
     function keyDownHandler(e) {
       if (e.key === "Control") {
@@ -423,6 +517,10 @@ const getHandlers = (container, context, sectionType) => {
       pointerMoveHandler,
       pointerUpHandler,
       pointerCancelHandler,
+      pointerLeaveHandler,
+      lostPointerCaptureHandler,
+      clickCaptureHandler,
+      cleanupGesture,
     ]
   })()
 }
@@ -470,6 +568,10 @@ function Container({
       pointerMoveHandler,
       pointerUpHandler,
       pointerCancelHandler,
+      pointerLeaveHandler,
+      lostPointerCaptureHandler,
+      clickCaptureHandler,
+      cleanupGesture,
     ] = getHandlers(container, context, sectionType)
     const { scrollLayer } = context
 
@@ -486,11 +588,14 @@ function Container({
       scrollLayer.addEventListener("pointermove", pointerMoveHandler, { passive: false })
       scrollLayer.addEventListener("pointerup", pointerUpHandler, { passive: false })
       scrollLayer.addEventListener("pointercancel", pointerCancelHandler, { passive: false })
-      scrollLayer.addEventListener("pointerleave", pointerCancelHandler, { passive: false })
+      scrollLayer.addEventListener("pointerleave", pointerLeaveHandler, { passive: false })
+      scrollLayer.addEventListener("lostpointercapture", lostPointerCaptureHandler)
+      scrollLayer.addEventListener("click", clickCaptureHandler, true)
     }
 
     // Store cleanup function
     cleanupRef.current = () => {
+      cleanupGesture()
       container.removeEventListener("wheel", wheelHandler)
 
       document.removeEventListener("keydown", keyDownHandler)
@@ -503,7 +608,9 @@ function Container({
         scrollLayer.removeEventListener("pointermove", pointerMoveHandler)
         scrollLayer.removeEventListener("pointerup", pointerUpHandler)
         scrollLayer.removeEventListener("pointercancel", pointerCancelHandler)
-        scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
+        scrollLayer.removeEventListener("pointerleave", pointerLeaveHandler)
+        scrollLayer.removeEventListener("lostpointercapture", lostPointerCaptureHandler)
+        scrollLayer.removeEventListener("click", clickCaptureHandler, true)
       }
     }
   }, [context, enabled, sectionType])
