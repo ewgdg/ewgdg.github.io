@@ -39,7 +39,7 @@ const SectionTypes = {
 }
 
 const TOUCH_DRAG_THRESHOLD_PX = 5
-const PRECISE_POINTER_DRAG_THRESHOLD_PX = 2
+const PRECISE_POINTER_DRAG_THRESHOLD_PX = 5
 const GESTURE_IDLE_TIMEOUT_MS = 500
 // Compatibility clicks follow pointer completion; later activation must not inherit this token.
 const COMPATIBILITY_CLICK_WINDOW_MS = 500

@@ -143,7 +143,7 @@ describe('card pointer gestures', () => {
     })
   })
 
-  test('sub-threshold mouse movement on a touch-capable device neither scrolls nor blocks the link', () => {
+  test('five pixels of mouse jitter neither scrolls nor blocks the link', () => {
     const beforeNavigation = jest.fn()
     routerEventSource.subscribe(ROUTER_EVENTS.BEFORE_NAVIGATION, beforeNavigation)
     const view = renderPageContainer(React.createElement(MediaCard, {
@@ -154,11 +154,11 @@ describe('card pointer gestures', () => {
     const link = view.getAllByRole('link', { name: /Internal media card/i })[0]
 
     dispatchPointer(link, 'pointerdown', { clientY: 100 })
-    dispatchPointer(link, 'pointermove', { clientY: 99 })
+    dispatchPointer(link, 'pointermove', { clientY: 95 })
 
     expect(view.scrollLayer.scrollTop).toBe(0)
 
-    dispatchPointer(link, 'pointerup', { clientY: 99 })
+    dispatchPointer(link, 'pointerup', { clientY: 95 })
     dispatchClick(link, { detail: 1, pointerId: 1 })
 
     expect(beforeNavigation).toHaveBeenCalledTimes(1)
@@ -182,7 +182,7 @@ describe('card pointer gestures', () => {
     })
 
     dispatchPointer(link, 'pointerdown', { clientY: 100 })
-    dispatchPointer(link, 'pointermove', { clientY: 96 })
+    dispatchPointer(link, 'pointermove', { clientY: 94 })
     const scrollTopAfterThreshold = view.scrollLayer.scrollTop
     dispatchPointer(link, 'pointermove', { clientY: 90 })
 
@@ -208,8 +208,8 @@ describe('card pointer gestures', () => {
     const link = view.getAllByRole('link', { name: /Internal media card/i })[0]
 
     dispatchPointer(link, 'pointerdown', { clientY: 100, pointerId: 7 })
-    dispatchPointer(link, 'pointermove', { clientY: 96, pointerId: 7 })
-    dispatchPointer(link, 'pointerup', { clientY: 96, pointerId: 7 })
+    dispatchPointer(link, 'pointermove', { clientY: 94, pointerId: 7 })
+    dispatchPointer(link, 'pointerup', { clientY: 94, pointerId: 7 })
     dispatchClick(link, { detail: 1, pointerId: 8 })
 
     expect(beforeNavigation).toHaveBeenCalledTimes(1)
@@ -226,8 +226,8 @@ describe('card pointer gestures', () => {
     const link = view.getAllByRole('link', { name: /Internal media card/i })[0]
 
     dispatchPointer(link, 'pointerdown', { clientY: 100, pointerId: 7 })
-    dispatchPointer(link, 'pointermove', { clientY: 96, pointerId: 7 })
-    dispatchPointer(link, 'pointerup', { clientY: 96, pointerId: 7 })
+    dispatchPointer(link, 'pointermove', { clientY: 94, pointerId: 7 })
+    dispatchPointer(link, 'pointerup', { clientY: 94, pointerId: 7 })
     dispatchClick(link, { detail: 0 })
 
     expect(beforeNavigation).toHaveBeenCalledTimes(1)
@@ -245,8 +245,8 @@ describe('card pointer gestures', () => {
     const link = view.getByRole('link', { name: /Internal image card/i })
 
     dispatchPointer(link, 'pointerdown', { clientY: 100, pointerId: 2 })
-    dispatchPointer(link, 'pointermove', { clientY: 96, pointerId: 2 })
-    dispatchPointer(link, 'pointercancel', { clientY: 96, pointerId: 2 })
+    dispatchPointer(link, 'pointermove', { clientY: 94, pointerId: 2 })
+    dispatchPointer(link, 'pointercancel', { clientY: 94, pointerId: 2 })
 
     expect(view.scrollLayer.releasePointerCapture).toHaveBeenCalledWith(2)
 
@@ -280,8 +280,8 @@ describe('card pointer gestures', () => {
     const button = view.getByRole('button', { name: 'Unrelated control' })
 
     dispatchPointer(link, 'pointerdown', { clientY: 100, pointerId: 1 })
-    dispatchPointer(link, 'pointermove', { clientY: 96, pointerId: 1 })
-    dispatchPointer(link, 'pointerup', { clientY: 96, pointerId: 1 })
+    dispatchPointer(link, 'pointermove', { clientY: 94, pointerId: 1 })
+    dispatchPointer(link, 'pointerup', { clientY: 94, pointerId: 1 })
     dispatchClick(button, { detail: 1, pointerId: 9 })
 
     expect(unrelatedClick).toHaveBeenCalledTimes(1)
@@ -331,8 +331,8 @@ describe('card pointer gestures', () => {
     const content = view.getByTestId('non-interactive-content')
 
     dispatchPointer(link, 'pointerdown', { clientY: 100 })
-    dispatchPointer(link, 'pointermove', { clientY: 96 })
-    dispatchPointer(view.scrollLayer, 'pointerleave', { clientY: 96 })
+    dispatchPointer(link, 'pointermove', { clientY: 94 })
+    dispatchPointer(view.scrollLayer, 'pointerleave', { clientY: 94 })
     dispatchPointer(view.scrollLayer, 'pointermove', { clientY: 90 })
     expect(view.scrollLayer.scrollTop).toBe(10)
 
@@ -353,7 +353,7 @@ describe('card pointer gestures', () => {
     const link = view.getByRole('link', { name: /Internal image card/i })
 
     dispatchPointer(link, 'pointerdown', { clientY: 100 })
-    dispatchPointer(link, 'pointermove', { clientY: 96 })
+    dispatchPointer(link, 'pointermove', { clientY: 94 })
 
     view.rerenderPageContainer({ enabled: false })
 
@@ -369,7 +369,7 @@ describe('card pointer gestures', () => {
     const link = view.getByRole('link', { name: /Internal image card/i })
 
     dispatchPointer(link, 'pointerdown', { clientY: 100 })
-    dispatchPointer(link, 'pointermove', { clientY: 96 })
+    dispatchPointer(link, 'pointermove', { clientY: 94 })
     view.unmount()
 
     expect(view.scrollLayer.releasePointerCapture).toHaveBeenCalledWith(1)
