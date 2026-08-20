@@ -9,7 +9,6 @@ import Image from "next/image"
 import { makeStyles } from "@mui/styles"
 import { useTheme, useMediaQuery } from "@mui/material"
 import { calcViewportHeight } from "../lib/dom/viewport"
-import { useHistoryState } from "../lib/contexts/use-restore-component-state"
 
 export const useStyles = makeStyles({
   taglist: {
@@ -40,13 +39,11 @@ export const useStyles = makeStyles({
 })
 
 export function BackToList() {
-  const savedBlogScrollState = useHistoryState(["/blog", "scroll"])
-
   return (
     <div style={{ textAlign: "right" }}>
       <Link
         href="/blog"
-        scroll={!savedBlogScrollState}
+        scroll={false}
         style={{
           display: "inline-block",
           marginRight: "5px",

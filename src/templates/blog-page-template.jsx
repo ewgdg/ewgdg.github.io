@@ -12,6 +12,7 @@ import Footer from "../components/footer/footer"
 import ParallaxSection from "../components/sections/parallax-section"
 import { setComponentState } from "../lib/contexts/use-restore-component-state"
 import useLayoutContext from "../lib/contexts/use-layout-context"
+import useRestoreScrollTop from "../lib/contexts/use-restore-scroll-top"
 import { calcViewportHeight } from "../lib/dom/viewport"
 
 function BlogPagePreview({ jumbotronProps }) {
@@ -105,6 +106,9 @@ function BlogPostsSection({ posts, uri, tableName = "blogTable" }) {
   const searchParams = useSearchParams()
   const tags = searchParams.get('tags')
   const context = useLayoutContext()
+  const locationHash = typeof window !== 'undefined' ? window.location.hash : null
+
+  useRestoreScrollTop([uri], locationHash)
 
   if (tags) {
     setComponentState([uri, tableName, "keywords"], tags, context)
