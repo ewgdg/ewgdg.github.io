@@ -27,7 +27,7 @@ SITE_BASE_URL = os.getenv("SITE_BASE_URL", "")
 CONTENT_SUMMARY_TTL_SECONDS = 600
 
 # OpenAI model constant
-OPENAI_MODEL = "gpt-5.4-nano"
+OPENAI_MODEL = "gpt-5.6-luna"
 
 # Let origin cache headers drive freshness. GitHub Pages serves ETag/Last-Modified
 # for /api/content, so CacheControl can revalidate cheaply after max-age expires.
@@ -146,7 +146,7 @@ Provide a single, cohesive response that draws from the most relevant sources av
         resp = client.responses.create(
             model=OPENAI_MODEL,
             input=api_messages,
-            reasoning={"effort": "minimal"},
+            reasoning={"effort": "none"},
             text={"verbosity": "low"},
         )
         return resp.output_text
