@@ -2,6 +2,7 @@
 
 /* eslint-disable react/prop-types */
 import React from "react"
+import Link from "@/components/navigation/link"
 import { makeStyles } from "@mui/styles"
 import Card from "@mui/material/Card"
 import CardActionArea from "@mui/material/CardActionArea"
@@ -40,18 +41,29 @@ const useStyles = makeStyles({
 
 /* return a card that shows description on hover */
 export default function ImageCard({
-  onClick,
+  href,
+  scroll,
+  target,
+  rel,
   style,
   image,
   title,
   description,
 }) {
   const classes = useStyles()
+  const LinkComponent = target ? "a" : Link
 
   return (
     <Grid size={5} style={{ height: "400px", ...style }}>
       <Card className={classes.card}>
-        <CardActionArea className={classes.action} onClick={onClick}>
+        <CardActionArea
+          component={LinkComponent}
+          href={href}
+          scroll={scroll}
+          target={target}
+          rel={rel}
+          className={classes.action}
+        >
           {image ? (
             <CardMedia
               className={classes.media}
@@ -97,11 +109,6 @@ export default function ImageCard({
             </CardContent>
           </Grid>
         </CardActionArea>
-        {/* <CardActions>
-          <Button size="small" color="primary" onClick={onClick}>
-            Learn More
-          </Button>
-        </CardActions> */}
       </Card>
     </Grid>
   )

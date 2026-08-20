@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 'use client'
-import React, { useEffect, useState } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from 'next/navigation'
 import { debounce } from "../lib/performance/throttle"
 import CardTable from "../components/thumbnail/card-table"
@@ -10,9 +10,6 @@ import Section from "../components/page-scroll/section"
 import HeaderContainer from "../components/header/header-container"
 import Footer from "../components/footer/footer"
 import ParallaxSection from "../components/sections/parallax-section"
-import { setComponentState } from "../lib/contexts/use-restore-component-state"
-import useLayoutContext from "../lib/contexts/use-layout-context"
-import useRestoreScrollTop from "../lib/contexts/use-restore-scroll-top"
 import { calcViewportHeight } from "../lib/dom/viewport"
 
 function BlogPagePreview({ jumbotronProps }) {
@@ -24,49 +21,31 @@ function BlogPagePreview({ jumbotronProps }) {
   )
 }
 
-function BlogPageFrame({ jumbotronProps, children }) {
+function BlogPageFrame({
+  jumbotronProps,
+  children,
+  enabled = true,
+  ...pageContainerProps
+}) {
   return (
-    <div>
-      <PageContainer>
-        <Section>
-          <HeaderContainer
-            headerProps={{ color: "white", position: "absolute" }}
-            jumbotronProps={jumbotronProps}
-          />
-        </Section>
-        {children}
-        <Section height="auto">
-          <Footer />
-        </Section>
-      </PageContainer>
-    </div>
-  )
-}
-
-function BlogCardsLoadingSection() {
-  return (
-    <Section id="search">
-      <ParallaxSection innerDivStyle={{ height: calcViewportHeight(100) }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100%",
-            color: "white",
-          }}
-        >
-          Loading posts...
-        </div>
-      </ParallaxSection>
-    </Section>
+    <PageContainer enabled={enabled} {...pageContainerProps}>
+      <Section>
+        <HeaderContainer
+          headerProps={{ color: "white", position: "absolute" }}
+          jumbotronProps={jumbotronProps}
+        />
+      </Section>
+      {children}
+      <Section height="auto">
+        <Footer />
+      </Section>
+    </PageContainer>
   )
 }
 
 function BlogCardsSection({
-  uri,
   blogRollData,
-  tableName = "blogTable",
+  initialKeywords = "",
 }) {
   const [itemsPerPage, setItemsPerPage] = useState(4)
   useEffect(() => {
@@ -93,8 +72,7 @@ function BlogCardsSection({
       <ParallaxSection innerDivStyle={{ height: calcViewportHeight(100) }}>
         <CardTable
           datalist={blogRollData}
-          name={tableName}
-          uri={uri}
+          requestedKeywords={initialKeywords}
           itemsPerPage={itemsPerPage}
         />
       </ParallaxSection>
@@ -102,45 +80,32 @@ function BlogCardsSection({
   )
 }
 
-function BlogPostsSection({ posts, uri, tableName = "blogTable" }) {
+function BlogTagFilter({ onChange }) {
   const searchParams = useSearchParams()
-  const tags = searchParams.get('tags')
-  const context = useLayoutContext()
-  const locationHash = typeof window !== 'undefined' ? window.location.hash : null
+  const tags = searchParams.get('tags') || ''
 
-  useRestoreScrollTop([uri], locationHash)
+  useEffect(() => {
+    if (tags) onChange(tags)
+  }, [onChange, tags])
 
-  if (tags) {
-    setComponentState([uri, tableName, "keywords"], tags, context)
-  }
+  return null
+}
 
+function BlogPostsSection({ posts }) {
+  const [requestedKeywords, setRequestedKeywords] = useState('')
   const blogRollData = useBlogPostCards(posts)
 
   return (
-    <BlogCardsSection
-      blogRollData={blogRollData}
-      tableName={tableName}
-      uri={uri}
-    />
-  )
-}
-
-function BlogPageTemplate({
-  jumbotronProps,
-  uri,
-  blogRollData,
-  tableName = "blogTable",
-}) {
-  return (
-    <BlogPageFrame jumbotronProps={jumbotronProps}>
+    <>
       <BlogCardsSection
         blogRollData={blogRollData}
-        tableName={tableName}
-        uri={uri}
+        initialKeywords={requestedKeywords}
       />
-    </BlogPageFrame>
+      <Suspense fallback={null}>
+        <BlogTagFilter onChange={setRequestedKeywords} />
+      </Suspense>
+    </>
   )
 }
 
-export { BlogCardsLoadingSection, BlogCardsSection, BlogPageFrame, BlogPageTemplate, BlogPagePreview, BlogPostsSection }
-export default BlogPageTemplate
+export { BlogPageFrame, BlogPagePreview, BlogPostsSection }

@@ -1,6 +1,14 @@
 'use client'
 
-import React, { useMemo, useRef, useEffect, useContext, useState, useCallback } from "react"
+import React, {
+  useMemo,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useContext,
+  useState,
+  useCallback,
+} from "react"
 import { makeStyles } from "@mui/styles"
 import {
   isAnyInViewport,
@@ -13,6 +21,7 @@ import {
   scrollIntoView,
   scrollByAnimated,
   clearAnimationQueue,
+  cancelScrollLayerAnimations,
   ScrollDetector,
 } from "../../lib/dom/scroll"
 import LayoutContext from "../../lib/contexts/layout-context"
@@ -419,12 +428,27 @@ const getHandlers = (container, context, sectionType) => {
 }
 
 // a container component whose children should be of type Section
-function Container({ children, sectionType = SectionTypes.FullView }) {
+function Container({
+  children,
+  sectionType = SectionTypes.FullView,
+  enabled = true,
+  className = "",
+  ...rootProps
+}) {
   const classes = useStyles()
   const context = useContext(LayoutContext)
 
   // Store cleanup function to be called when ref changes
   const cleanupRef = useRef(null)
+  const wasEnabledRef = useRef(enabled)
+
+  useLayoutEffect(() => {
+    if (wasEnabledRef.current && !enabled) {
+      // Listener cleanup cannot stop a GSAP tween that is already mutating the retained layer.
+      cancelScrollLayerAnimations(context.scrollLayer)
+    }
+    wasEnabledRef.current = enabled
+  }, [context.scrollLayer, enabled])
 
   // Ref callback to handle container element changes
   const containerRefCallback = useCallback((container) => {
@@ -434,8 +458,8 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
       cleanupRef.current = null
     }
 
-    // If container is null (unmounting), just return
-    if (!container) return
+    // Disabled containers stay mounted but must not own global navigation input.
+    if (!container || !enabled) return
 
     // Set up event listeners for the new container
     const [
@@ -482,7 +506,7 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
         scrollLayer.removeEventListener("pointerleave", pointerCancelHandler)
       }
     }
-  }, [context, sectionType])
+  }, [context, enabled, sectionType])
 
   // Clean up on unmount
   useEffect(() => {
@@ -496,7 +520,8 @@ function Container({ children, sectionType = SectionTypes.FullView }) {
 
   return (
     <div
-      className={classes.root}
+      {...rootProps}
+      className={`${classes.root} ${className}`}
       ref={containerRefCallback}
       id="pageContainer"
     >

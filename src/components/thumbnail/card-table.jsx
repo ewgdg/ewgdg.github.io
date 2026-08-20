@@ -6,7 +6,6 @@ import React, {
   useCallback,
   useState,
   useRef,
-  useLayoutEffect,
   useEffect,
 } from "react"
 import Container from "@mui/material/Container"
@@ -15,7 +14,6 @@ import TextField from "@mui/material/TextField"
 import MediaCard from "./media-card"
 import Paginator from "../others/paginator"
 import CardDivision from "./card-division"
-import { useRestoreComponentStateToBeforeRouting } from "../../lib/contexts/use-restore-component-state"
 // import SlideInSection from "../sections/SlideInSection"
 import { debounce } from "../../lib/performance/throttle"
 import FadeInSection from "../sections/fade-in-section"
@@ -24,8 +22,7 @@ function CardTable({
   datalist = [],
   itemsPerPage = 4,
   CardComp = MediaCard,
-  name,
-  uri,
+  requestedKeywords = "",
 }) {
   const [currentPage, setPage] = useState(0)
   const [keywords, setKeywords] = useState("")
@@ -95,6 +92,10 @@ function CardTable({
     }
   }, [datalist])
 
+  useEffect(() => {
+    if (requestedKeywords) setKeywords(requestedKeywords)
+  }, [requestedKeywords])
+
   // Apply filter when keywords change
   useEffect(() => {
     if (debouncedFilterRef.current) {
@@ -127,7 +128,10 @@ function CardTable({
             title={data.title}
             description={data.description}
             image={data.image}
-            onClick={data.onClick}
+            href={data.href}
+            scroll={data.scroll}
+            target={data.target}
+            rel={data.rel}
           />
         ))}
       </CardDivision>
@@ -147,50 +151,6 @@ function CardTable({
     const { value } = event.target
     setKeywords(value)
   }, [])
-
-  const stateContainer = useRef({ currentPage, keywords })
-  stateContainer.current.currentPage = currentPage
-  stateContainer.current.keywords = keywords
-
-  const getCurrentState = useCallback(() => {
-    const { currentPage, keywords } = stateContainer.current
-    return {
-      currentPage,
-      keywords,
-    }
-  }, [])
-
-  const historyState = useRestoreComponentStateToBeforeRouting([uri, name], getCurrentState)
-  const isRestoredRef = useRef(false)
-  const [isReadyToRender, setIsReadyToRender] = useState(false)
-
-  useEffect(() => {
-    if (isRestoredRef.current) return
-    isRestoredRef.current = true
-
-    if (historyState) {
-      // Restore state from history
-      const restoredKeywords = historyState.keywords || ""
-      const restoredPage = historyState.currentPage || 0
-
-      setKeywords(restoredKeywords)
-      stateContainer.current.keywords = restoredKeywords
-      setPage(restoredPage)
-      stateContainer.current.currentPage = restoredPage
-
-      // Apply filter immediately without debounce when restoring from history
-      if (filterRef.current) {
-        filterRef.current(restoredKeywords)
-      }
-    }
-
-    // Always set ready to render after history restoration attempt
-    setIsReadyToRender(true)
-  }, [historyState])
-
-  if (!isReadyToRender) {
-    return null
-  }
 
   return (
     <div

@@ -32,8 +32,5 @@ export default async function PortfolioItemWrapper({ params }: Props) {
     notFound()
   }
 
-  return <BlogPost
-    data={item}
-    uri={`/portfolio/${resolvedParams.slug}`}
-  />
+  return <BlogPost data={item} />
 }

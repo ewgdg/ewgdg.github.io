@@ -1,12 +1,6 @@
 import { useMemo } from "react"
-import { useRouter } from "@/lib/navigation/router"
-import { clearHistoryState } from "../../lib/contexts/use-restore-component-state"
-import useLayoutContext from "../../lib/contexts/use-layout-context"
 
 export default function useBlogPostCards(posts) {
-  const context = useLayoutContext()
-  const router = useRouter()
-
   return useMemo(() => {
     if (!Array.isArray(posts)) {
       return []
@@ -23,28 +17,19 @@ export default function useBlogPostCards(posts) {
       const description = post.frontmatter.description || post.excerpt || (post.content?.substring(0, 200) ?? '') + '...'
       const { tags } = post.frontmatter
       const publicationDate = post.frontmatter.date
-      const onClick = (() => {
-        if (post.frontmatter.externalLink) {
-          return () => {
-            if (window.open)
-              window.open(post.frontmatter.externalLink, "_blank")
-            else window.location.href = post.frontmatter.externalLink
-          }
-        }
-        return () => {
-          clearHistoryState([post.uri], context)
-          router.push(post.uri)
-        }
-      })()
+      const externalLink = post.frontmatter.externalLink
       res.push({
         title,
         image,
         description,
-        onClick,
+        href: externalLink || post.uri,
+        scroll: externalLink ? undefined : false,
+        target: externalLink ? "_blank" : undefined,
+        rel: externalLink ? "noopener noreferrer" : undefined,
         tags,
         publicationDate,
       })
     })
     return res
-  }, [posts, router, context])
+  }, [posts])
 }

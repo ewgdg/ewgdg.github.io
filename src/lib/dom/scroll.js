@@ -347,6 +347,11 @@ function clearAnimationQueue() {
   animationQueue.splice(0)
 }
 
+function cancelScrollLayerAnimations(scrollLayer) {
+  if (!scrollLayer) return
+  gsap.killTweensOf(scrollLayer)
+}
+
 function scrollIntoView(elem, scrollLayer, duration = 700, offsetY = 0) {
   if (!scrollLayer) return Promise.reject()
   /*
@@ -386,6 +391,7 @@ export {
   getScrollTop,
   scrollByAnimated,
   clearAnimationQueue,
+  cancelScrollLayerAnimations,
   animationQueue,
   easing,
   ScrollDetector,

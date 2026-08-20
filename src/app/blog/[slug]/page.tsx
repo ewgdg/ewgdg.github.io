@@ -32,17 +32,5 @@ export default async function BlogPostWrapper({ params }: Props) {
     notFound()
   }
 
-  // return <BlogPostTemplate
-  //   title={post.frontmatter.title}
-  //   description={post.frontmatter.description}
-  //   tags={post.frontmatter.tags}
-  //   publicationDate={post.frontmatter.date}
-  //   featuredImage={post.frontmatter.featuredImage}
-  //   content={post.html}
-  //   helmet=""
-  // />
-  return <BlogPost
-    data={post}
-    uri={`/blog/${resolvedParams.slug}`}
-  />
+  return <BlogPost data={post} />
 }

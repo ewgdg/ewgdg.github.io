@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react"
+import Link from "@/components/navigation/link"
 import Card from "@mui/material/Card"
 import CardActionArea from "@mui/material/CardActionArea"
 import CardActions from "@mui/material/CardActions"
@@ -10,16 +11,22 @@ import Typography from "@mui/material/Typography"
 import Grid from "@mui/material/Grid"
 
 export default function MediaCard({
-  onClick,
+  href,
+  scroll,
+  target,
+  rel,
   image,
   style,
   title,
   description,
 }) {
+  const LinkComponent = target ? "a" : Link
+  const linkProps = { href, scroll, target, rel }
+
   return (
     <Grid size={5} style={{ height: "450px", maxHeight: "100%", ...style }}>
       <Card sx={{ maxWidth: "100%", backgroundColor: "transparent", height: "100%" }}>
-        <CardActionArea onClick={onClick} sx={{ height: "90%" }}>
+        <CardActionArea component={LinkComponent} {...linkProps} sx={{ height: "90%" }}>
           {image ? (
             <CardMedia
               sx={{ height: "65%" }}
@@ -63,7 +70,7 @@ export default function MediaCard({
           </CardContent>
         </CardActionArea>
         <CardActions sx={{ height: "10%" }}>
-          <Button size="small" color="primary" onClick={onClick}>
+          <Button component={LinkComponent} {...linkProps} size="small" color="primary">
             Learn More
           </Button>
         </CardActions>
