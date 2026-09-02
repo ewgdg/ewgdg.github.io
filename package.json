@@ -49,7 +49,7 @@
     "next": "^16.2.12",
     "pixi.js": "^8.11.0",
     "prismjs": "^1.30.0",
-    "query-string": "^9.2.2",
+    "query-string": "^9.5.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-paginate": "^8.3.0",
