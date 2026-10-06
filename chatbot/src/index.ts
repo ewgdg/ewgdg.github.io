@@ -5,8 +5,9 @@ import { buildSystemPrompt } from "./knowledge"
 // Gemma 4 26B (4B active) is the cheapest capable chat model on Workers AI:
 // ~30 neurons per chat, so the 10k/day free allocation covers ~300 chats.
 const MODEL = "@cf/google/gemma-4-26b-a4b-it"
-// ~300 words, the length the system prompt asks for.
-const MAX_REPLY_TOKENS = 500
+// Headroom over the ~300 words the prompt asks for, plus markdown link URLs, so
+// replies aren't cut mid-sentence; neurons are only spent on tokens generated.
+const MAX_REPLY_TOKENS = 1024
 
 const CHAT_ROLES = ["user", "assistant"]
 

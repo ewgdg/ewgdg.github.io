@@ -26,7 +26,7 @@ Checks: `npm run check` (types) and `npm test`.
 ## Deployment
 
 `.github/workflows/chatbot-cloudflare-worker.yml` tests every PR touching `chatbot/` and deploys on push to `main`.
-It needs repository secrets `CLOUDFLARE_API_TOKEN` (the "Edit Cloudflare Workers" token template) and `CLOUDFLARE_ACCOUNT_ID`.
+It needs repository secrets `CLOUDFLARE_API_TOKEN` (the "Edit Cloudflare Workers" token template, with the `xianzzz.com` zone included so the custom domain can be attached) and `CLOUDFLARE_ACCOUNT_ID`.
 
 The Worker owns `qa-chatbot.xianzzz.com` as a [Custom Domain](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/); Cloudflare creates its DNS record and certificate on deploy.
 
