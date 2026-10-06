@@ -9,6 +9,11 @@ const MODEL = "@cf/google/gemma-4-26b-a4b-it"
 // replies aren't cut mid-sentence; neurons are only spent on tokens generated.
 const MAX_REPLY_TOKENS = 1024
 
+// The chat box sends at most 4 turns (3 of history plus the new question), and
+// replies stay under MAX_REPLY_TOKENS; anything larger only burns free neurons.
+const MAX_MESSAGES = 8
+const MAX_MESSAGE_CHARS = 5_000
+
 const CHAT_ROLES = ["user", "assistant"]
 
 type ChatMessage = { role: "user" | "assistant"; content: string }
@@ -17,12 +22,21 @@ type ChatMessage = { role: "user" | "assistant"; content: string }
 function isChatMessage(message: unknown): message is ChatMessage {
   if (typeof message !== "object" || message === null) return false
   const { role, content } = message as Record<string, unknown>
-  return CHAT_ROLES.includes(role as string) && typeof content === "string"
+  return (
+    CHAT_ROLES.includes(role as string) &&
+    typeof content === "string" &&
+    content.length <= MAX_MESSAGE_CHARS
+  )
 }
 
 function isChatRequest(body: unknown): body is { messages: ChatMessage[] } {
   const messages = (body as { messages?: unknown } | null)?.messages
-  return Array.isArray(messages) && messages.length > 0 && messages.every(isChatMessage)
+  return (
+    Array.isArray(messages) &&
+    messages.length > 0 &&
+    messages.length <= MAX_MESSAGES &&
+    messages.every(isChatMessage)
+  )
 }
 
 async function generateReply(env: Env, messages: ChatMessage[]): Promise<string | null> {
@@ -50,9 +64,17 @@ app.use(
 app.get("/health", (c) => c.json({ status: "ok" }))
 
 app.post("/chat", async (c) => {
+  // Visitors are anonymous, so their IP is the only per-visitor key. Cloudflare
+  // sets this header on every request; it is only missing in unit tests.
+  const visitorIp = c.req.header("CF-Connecting-IP") ?? "unknown"
+  const { success } = await c.env.CHAT_RATE_LIMITER.limit({ key: visitorIp })
+  if (!success) {
+    return c.json({ detail: "Too many messages; please wait a minute" }, 429)
+  }
+
   const body = await c.req.json().catch(() => null)
   if (!isChatRequest(body)) {
-    return c.json({ detail: "messages must be a non-empty list of user/assistant turns" }, 400)
+    return c.json({ detail: `messages must be 1-${MAX_MESSAGES} user/assistant turns of text` }, 400)
   }
 
   try {

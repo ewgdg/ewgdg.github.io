@@ -29,6 +29,9 @@ async function requestReply(messages) {
       conversation_id: null
     })
   } catch (e) {
+    if (e.response?.status === 429) {
+      return { response: "You're sending messages too quickly. Please wait a minute and try again.", type: "error" }
+    }
     return { response: "Error!", type: "error" }
   }
 

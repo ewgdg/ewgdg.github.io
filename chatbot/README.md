@@ -12,6 +12,8 @@ The site's chat box calls it at `https://qa-chatbot.xianzzz.com` (`NEXT_PUBLIC_C
 Runs on the Workers Free plan. Workers AI gives 10,000 neurons/day free; a chat costs ~30 neurons, so roughly 300 chats/day.
 When the allocation runs out, `/chat` returns `response: null` and the site shows its "try again" message until the next UTC day. Nothing is billed.
 
+To keep one client from draining the allocation, `/chat` allows 5 messages per minute per visitor IP (`CHAT_RATE_LIMITER`, enforced per Cloudflare location) and rejects requests larger than the chat box ever sends.
+
 ## Local development
 
 ```bash
