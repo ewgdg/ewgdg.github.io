@@ -1,0 +1,23 @@
+name = "qa-chatbot"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+# Only the custom domain is public; no extra workers.dev endpoint to abuse.
+workers_dev = false
+routes = [{ pattern = "qa-chatbot.xianzzz.com", custom_domain = true }]
+
+[vars]
+# Site whose /api/content feeds the prompt; also the only CORS-allowed origin.
+SITE_BASE_URL = "https://xianzzz.com"
+
+[ai]
+binding = "AI"
+
+# Per-visitor chat limit so one client can't drain the free daily neuron allocation.
+[[ratelimits]]
+name = "CHAT_RATE_LIMITER"
+namespace_id = "1001"
+simple = { limit = 5, period = 60 }
+
+[dev]
+# Matches NEXT_PUBLIC_CHATBOT_URL in the site's .env.development.
+port = 8082

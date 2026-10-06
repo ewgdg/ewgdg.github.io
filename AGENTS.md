@@ -15,6 +15,7 @@ Personal portfolio site built with Next.js 15 App Router, TypeScript, and Materi
 - `content/`: markdown content for blog and pages
 - `public/`: static assets
 - `src/app/client-providers.tsx`: client-side theme/providers
+- `chatbot/`: separate Cloudflare Worker package (Hono + Workers AI, Vitest) behind the site's chat box; excluded from the root tsconfig and Jest
 
 ## Important implementation details
 - `PersistedLayout.jsx` and `LayoutContext` preserve shared state and scroll behavior across navigation.

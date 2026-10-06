@@ -1,0 +1,2 @@
+# Copy to .dev.vars for `npm run dev`; points the worker at the local Next.js dev server.
+SITE_BASE_URL=http://localhost:8080
