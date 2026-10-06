@@ -1,0 +1,62 @@
+# Tests the chatbot Cloudflare Worker on PRs and deploys it on pushes to main.
+#
+# Requires repository secrets:
+#   CLOUDFLARE_API_TOKEN  - token from the "Edit Cloudflare Workers" template
+#   CLOUDFLARE_ACCOUNT_ID - Cloudflare account ID
+
+name: 'Test and Deploy Chatbot Worker'
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'chatbot/**'
+      - '.github/workflows/chatbot-cloudflare-worker.yml'
+  pull_request:
+    paths:
+      - 'chatbot/**'
+      - '.github/workflows/chatbot-cloudflare-worker.yml'
+  workflow_dispatch:
+
+defaults:
+  run:
+    working-directory: chatbot
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: chatbot/package-lock.json
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+
+  deploy:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: chatbot-worker-deploy
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: chatbot/package-lock.json
+      - run: npm ci
+      - uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: chatbot
