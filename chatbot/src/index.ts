@@ -8,6 +8,9 @@ const MODEL = "@cf/google/gemma-4-26b-a4b-it"
 // Headroom over the ~300 words the prompt asks for, plus markdown link URLs, so
 // replies aren't cut mid-sentence; neurons are only spent on tokens generated.
 const MAX_REPLY_TOKENS = 1024
+// AI Gateway holding the daily spend limit; it keeps chats capped even if the
+// account leaves the Workers Free plan, whose neuron allocation is the only other cap.
+const SPEND_CAPPED_GATEWAY_ID = "qa-chatbot"
 
 // The chat box sends at most 4 turns (3 of history plus the new question), and
 // replies stay under MAX_REPLY_TOKENS; anything larger only burns free neurons.
@@ -41,12 +44,16 @@ function isChatRequest(body: unknown): body is { messages: ChatMessage[] } {
 
 async function generateReply(env: Env, messages: ChatMessage[]): Promise<string | null> {
   const systemPrompt = await buildSystemPrompt(env.SITE_BASE_URL)
-  const result = await env.AI.run(MODEL, {
-    messages: [{ role: "system", content: systemPrompt }, ...messages],
-    max_tokens: MAX_REPLY_TOKENS,
-    // Thinking adds latency and neurons; FAQ-style answers don't need it.
-    chat_template_kwargs: { enable_thinking: false },
-  })
+  const result = await env.AI.run(
+    MODEL,
+    {
+      messages: [{ role: "system", content: systemPrompt }, ...messages],
+      max_tokens: MAX_REPLY_TOKENS,
+      // Thinking adds latency and neurons; FAQ-style answers don't need it.
+      chat_template_kwargs: { enable_thinking: false },
+    },
+    { gateway: { id: SPEND_CAPPED_GATEWAY_ID } },
+  )
   return result.choices[0]?.message.content ?? null
 }
 

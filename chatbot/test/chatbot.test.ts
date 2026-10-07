@@ -11,6 +11,7 @@ type ChatReply = { response: string | null; type: string }
 type ModelRun = (
   model: string,
   input: { messages: { role: string; content: string }[] },
+  options?: { gateway?: { id: string } },
 ) => Promise<unknown>
 
 function modelReplying(content: string) {
@@ -99,6 +100,14 @@ describe("POST /chat", () => {
     expect(systemPromptOf(run)).toContain("Q: What are your career goals?")
     expect(systemPromptOf(run)).toContain("- [My Post](/blog/my-post): A post about things")
     expect(fetch).toHaveBeenCalledWith(`${SITE_BASE_URL}/api/content`, expect.anything())
+  })
+
+  it("routes the model through the spend-capped AI Gateway", async () => {
+    const run = modelReplying("ok")
+
+    await postChat(createEnv(run), { messages: [{ role: "user", content: "Hi" }] })
+
+    expect(run.mock.calls[0][2]?.gateway?.id).toBe("qa-chatbot")
   })
 
   it("still answers from the FAQ when site content is unavailable", async () => {
