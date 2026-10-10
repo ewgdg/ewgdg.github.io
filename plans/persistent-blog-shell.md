@@ -1,3 +1,7 @@
+---
+status: done
+---
+
 # Persistent blog shell
 
 ## Goal
